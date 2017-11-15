@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Form</title>
+<style>
+	/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+<link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<div class="container" align="justify">
+<hr>
+<table>
+ 	<label>Company : </label>
+ 	&nbsp;
+  <input type="text" placeholder="Company" name="companyname" required>
+ </table>
+<br>
+ <table>
+ <br>
+ 	<label>Order Type :</label>
+<form>
+<select name="categories" required>    
+</select>
+</form>
+<br>
+<br>
+ </table>
+ <label>Order By :</label>
+<form action="">
+  <input type="radio" name="CMOB" value="CMOB"> &nbsp; CMOB &nbsp; &nbsp; <input type="radio" name="manual" value="manual"> Manual
+</form>
+<br>
+<table>
+<label>Lead Time :</label>&nbsp;
+<input type="text" name="leadtime" required>
+</table> 
+<br>
+</div>
+<hr>
+  <div class="col-lg-offset-1 col-lg-10" align="left">
+  	<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg" style="undefined;table-layout: fixed; width: 192px">
+<colgroup>
+<col style="width: 93px">
+<col style="width: 300px">
+</colgroup>
+  <tr>
+    <th class="tg-yw4l"><button name="addorder" id="addorder" onClick="addFunction()">Add Order</button></th>
+    <th class="tg-yw4l"><button name="deleteorder" id="deleteorder" onClick="deleteFunction()">Delete Order</button></th>
+	</tr>
+<div id="myModal" class="modal">
+ <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+	  </div>
+</table>
+ 	<br>
+ 	<br>
+  	<div class="table" align="left">
+  	<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table id="myTable" class="tg" style="undefined; width: 1000px">
+<colgroup>
+<col style="width: 25px">
+<col style="width: 160px">
+<col style="width: 160px">
+<col style="width: 120px">
+<col style="width: 165px">
+<col style="width: 120px">
+<col style="width: 160px">
+<col style="width: 160px">
+<col style="width: 160px">
+<col style="width: 160px">
+<col style="width: 160px">
+</colgroup>
+  <tr>
+    <th class="tg-yw4l"><label>&nbsp;</label></th>
+    <th class="tg-yw4l"><label>Order</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Po Date</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Ship To</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Ekspedisi</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Jenis Mobil</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Total Amount</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Tonase Mobil</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Tonase Order</label></th>
+    <th class="tg-yw4l"><label style="text-align: center">Selisih Tonase</label></th>
+    <th class="tg-yw4l"></th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l"><input type="checkbox" name="order1"></td>
+    <td class="tg-yw4l"><input type="text" placeholder="generate number" name="ponumber1" size="17px" required></td>
+    <td class="tg-yw4l"><input type="date" name="date1" required></td>
+    <td class="tg-yw4l"><select name="ship1"></select></td>
+    <td class="tg-yw4l"><input type="text" name="ekspedisi1" size="17px" required></td>
+    <td class="tg-yw4l"><select name="jenismobil1"></select></td>
+    <td class="tg-yw4l"><input type="text" name="tonaseamount1" size="17px" required></td>
+    <td class="tg-yw4l"><input type="text" name="tonasemobil1" size="17px" required></td>
+    <td class="tg-yw4l"><input type="text" name="tonaseorder1" size="17px" required></td>
+    <td class="tg-yw4l"><input type="text" name="selisihtonase1" size="17px" required></td>
+    <td class="tg-yw4l"><button id="myBtn">Detail</button></td>
+  </tr>
+</table>
+  	</div>
+  </div>
+  <div class="col-lg-offset-1 col-lg-10" align="left">&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <label></label>
+   <input type="text" name="unitprice1" size="3px" placeholder="Unit price">&nbsp;<input type="text" name="amount1" size="7px" placeholder="Amount">&nbsp;&nbsp;<input type="text" name="unitprice2" size="3px" placeholder="Unit price">&nbsp;<input type="text" name="amount2" size="7px" placeholder="Amount">&nbsp;&nbsp;<input type="text" name="unitprice3" size="3px" placeholder="Unit price">&nbsp;<input type="text" name="amount3" size="7px" placeholder="Amount">&nbsp;&nbsp;<input type="text" name="unitprice4" size="3px" placeholder="Unit price">&nbsp;<input type="text" name="amount4" size="7px" placeholder="Amount">&nbsp;&nbsp;<input type="text" name="unitprice5" size="3px" placeholder="Unit price">&nbsp;<input type="text" name="amount5" size="7px" placeholder="Amount">&nbsp;&nbsp;<input type="text" name="unitpricetotal" size="3px" placeholder="Unit price">&nbsp;<input type="text" name="amounttotal" size="7px" placeholder="Amount">
+   </div>
+   <div class="col-lg-offset-1 col-lg-10" align="left">
+   <br>
+   Sisa Limit :  <input type="text" name="sisalimit" size="10px">
+	</div>
+<script>
+/// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+function addFunction() {
+	var order = "order";
+	var count = 1;
+	var neworder =(count++);
+    var table = document.getElementById("myTable");
+    var row = table.insertRow(2);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3= row.insertCell(2);
+    var cell4= row.insertCell(3);
+    var cell5= row.insertCell(4);
+    var cell6= row.insertCell(5);
+    var cell7= row.insertCell(6);
+    var cell8= row.insertCell(7);
+    var cell9= row.insertCell(8);
+    var cell10= row.insertCell(9);
+    var cell11= row.insertCell(10);
+    cell1.innerHTML = "<input type='checkbox' name='order'>";
+    cell2.innerHTML = "<input type='text' placeholder='generate number' name='ponumber2' size='17px' required>";
+    cell3.innerHTML = "<input type='date' name='date1' required>";
+    cell4.innerHTML = "<select name='ship1'></select>";
+    cell5.innerHTML = "<input type='text' name='ekspedisi1' size='17px' required>";
+    cell6.innerHTML = "<select name='jenismobil1'></select>";
+    cell7.innerHTML = "<input type='text' name='tonaseamount' size='17px' required>";
+    cell8.innerHTML = "<input type='text' name='tonasemobil' size='17px' required>";
+    cell9.innerHTML = "<input type='text' name='tonaseorder' size='17px' required>";
+    cell10.innerHTML = "<input type='text' name='selisihtonase' size='17px' required>";
+    cell11.innerHTML = "<button id='myBtn'>Detail</button>";
+}
+	
+
+function deleteFunction() {
+    document.getElementById("myTable").deleteRow(2);
+}
+</script>
+<br>
+<br>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script> 
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.js"></script>
+</body>
+</html>

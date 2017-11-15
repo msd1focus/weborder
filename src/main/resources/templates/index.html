@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Web Order - PT Focus Distribusi Indonesia</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../static/css/main.css" media="screen"  />
+</head>
+<body>
+<h1>Web Order</h1>
+
+<h2>PT Focus Distribusi Indonesia</h2>
+
+<form action="#" th:action="@{/}" th:object="${order}" method="post">
+  <label for="groupId">Group Id:</label>
+  <input type="text" th:field="*{groupId}" />
+  <label for="orderId">Order Id:</label>
+  <input type="text" th:field="*{orderId}" />
+  <label for="orderDate">Order Date:</label>
+  <input type="text" th:field="*{orderDate}" />
+  <label for="shipTo">Ship To:</label>
+  <input type="text" th:field="*{shipTo}" />
+  <label for="expedisi">Expedisi:</label>
+  <input type="text" th:field="*{expedisi}" />
+  <label for="jenisMobil">Jenis Mobil:</label>
+  <input type="text" th:field="*{jenisMobil}" />
+  <label for="totalAmount">Total Amount:</label>
+  <input type="text" th:field="*{totalAmount}" />
+  <label for="tonaseMobil">Tonase Mobil:</label>
+  <input type="text" th:field="*{tonaseMobil}" />
+  <label for="tonaseOrder">Tonase Order:</label>
+  <input type="text" th:field="*{tonaseOrder}" />
+  <label for="selisihTonase">Selisih Tonase:</label>
+  <input type="text" th:field="*{selisihTonase}" />
+  <label for="totalPrice">Total Price:</label>
+  <input type="text" th:field="*{totalPrice}" />
+  <input type="submit" />
+</form>
+
+<h1>Orders</h1>
+
+<th:block th:each="o : ${orders}">
+    <tr>
+        <td th:text="${o.orderId}"></td>
+        <td th:text="${o.orderDate}"></td>
+    </tr>
+</th:block>
+            
+</body>
+</html>

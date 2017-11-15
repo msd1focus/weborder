@@ -1,0 +1,92 @@
+<html>
+<head>
+	<title>Register</title>
+</head>
+<body>
+<script>
+function randomname() {
+	if(document.getElementById("password").value==document.getElementById("repassword").value)
+	{
+		document.getElementById("register").click();
+	}
+	else 
+	{
+		alert("Passwords do not match")
+	}
+}
+</script>
+  <div class="imgcontainer" align="center">
+    <img src="file:///C:\xampp\htdocs\form\images\metrodata.png" width="156" height="138"/>
+  </div>
+<form action="*" method="post">
+<div align="center">
+<table width="600" border="0">
+  <tbody>
+  <tr>
+      <td style="font-size:45px"><strong>Register</strong></td>
+      </tr>
+      <tr>
+      <td style="font-size:35px">Masukan Informasi Anda </td>
+    </tr>
+    <tr>
+    <td>&nbsp;</td>
+    </tr>
+        <tr>
+    <td>&nbsp;</td>
+    </tr>
+        <tr>
+    <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">User ID : </td>
+      <td><input type="text" name="userid" id="userid"></td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">Username : </td>
+      <td><input type="text" name="Username" id="username"></td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">Password : </td>
+      <td><input type="password" name="Password" id="password"></td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">Masukan ulang Password: </td>
+      <td><input type="password" name="rePassword" id="repassword"></td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">Nama : </td>
+      <td><input type="text" name="Nama" id="nama"></td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">Email : </td>
+      <td><input type="text" name="email" id="email" required="@"></td>
+    </tr>
+      <tr>
+      <td style="font-size:25px">Organisasi : </td>
+      <td><input type="text" name="organisasi" id="organisasi"></td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">Telepon : </td>
+      <td><input type="text" name="telepon" id="telepon"></td>
+    </tr>
+    <tr>
+      <td style="font-size:25px">Jabatan : </td>
+      <td><input type="text" name="jabatan" id="jabatan"></td>
+    </tr>
+     <br>
+     <td><p>&nbsp;</p>
+       <p>&nbsp;</p>
+     	<tr>
+     	&nbsp;<br>
+     	</tr>
+     </td>
+     <tr>
+      <td><button a href="#" onclick="randomname()" style="font-size: 26px">Register</button> </td>
+      <input type="submit" name="registerbtn" id="registerbtn" style="display:none">
+      </tr>
+  </tbody>
+</table>
+</div>
+</form>
+</body>
+</html>
