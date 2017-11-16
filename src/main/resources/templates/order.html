@@ -2,1605 +2,832 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"/>
-<style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-th, td {
-    padding: 2px;
-}
-th.prod {
-    width: 400px;
-}
-th.ord {
-    width: 200px;
-}
-th:nth-child(n+17), td:nth-child(n+17) {display:none}
-</style>
+<link rel="stylesheet" 
+	href="../static/css/style.css"
+	th:href="@{css/style.css}"/>
 
-<script th:inline="javascript">
-
-window.onload = function(){
-	
-	
-	var orderBySelected = document.getElementById("orderBySelected").value;
-	var manual = document.getElementById("manual");
-	var cmob = document.getElementById("cmob");
-	
-	var orderType = document.getElementById("orderType");
-	changeOrderType(orderType);
-	
-	
-	if(orderBySelected=="CMOB"){
-		cmob.checked = "checked";
-	}
-	else if(orderBySelected="Manual"){
-		manual.checked = "checked";
-	}
-	
-	changeJumlahOrder(jumlahOrder);	
-}
-
-function changeUom(obj){
-	var uom = obj.value;
-	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	var uomSelected = document.getElementById("uomSelected");
-	uomSelected.value = uom;
-	var jumlahOrder = document.getElementById("jumlahOrder");
-	var tblOrder = document.getElementById("tblOrder");
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[9].children[0];
-	var untPriceInit = tblOrder.rows[idxRowCurrent].cells[10].children[0].value;
-	var up = 0;
-	up = parseFloat(uom)*parseFloat(untPriceInit);
-	untPrice.value = up;
-	changeJumlahOrder(jumlahOrder);	
-}
-
-function calcAmount1(obj){
-	var dtl1 = obj.value;
-	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
-	var tblOrder = document.getElementById("tblOrder");
-	var totalAmount1 = document.getElementById("totalAmount1");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[9].children[0].value;
-	var up1 = document.getElementById("up1");
-	var amt1 = document.getElementById("amt1");
-	var amtTotal = document.getElementById("amtTotal");
-	var dimensiMobil1 = document.getElementById("dimensiMobil1");
-	var dimensiOrder1 = document.getElementById("dimensiOrder1");
-	var selisihDimensi1 = document.getElementById("selisihDimensi1");
-    var sisaLimit = document.getElementById("sisaLimit");
-    var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	up1.value = untPrice;
-	amt1.value = untPrice*dtl1;
-	var totAmount1 = 0;
-	var totAmount = 0;
-	var dimensiOrder = 0;
-	
-	for(var idxRow = 3, productQty;; idxRow++){	
-		
-		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[3].children[0].value
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[1].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[2].value)
-			/1000000;
-		
-		var amountCurrentLine = 0;
-		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-		totAmount1 += amountCurrentLine;	
-		
-		if(jumlahOrder === "1"){
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					amountCurrentLine;
-			}
-			totAmount += amountCurrentLine;
-		}
-		else if(jumlahOrder === "2"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine; 
-		}
-		else if(jumlahOrder === "3"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;
-			}
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "4"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "5"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-
-	dimensiOrder1.value = parseInt(dimensiOrder);
-	selisihDimensi1.value = parseInt(dimensiMobil1.value - dimensiOrder);
-	totalAmount1.value = totAmount1;
-	amtTotal.value = totAmount;
-	sisaLimit.value = sisaLimitInit - totAmount;
-	return;
-}
-
-function calcAmount2(obj){
-	var dtl2 = obj.value;
-	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
-	var tblOrder = document.getElementById("tblOrder");
-	var totalAmount2 = document.getElementById("totalAmount2");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[9].children[0].value;
-	var up2 = document.getElementById("up2");
-	var amt2 = document.getElementById("amt2");
-	var amtTotal = document.getElementById("amtTotal");
-	var dimensiMobil2 = document.getElementById("dimensiMobil2");
-	var dimensiOrder2 = document.getElementById("dimensiOrder2");
-	var selisihDimensi2 = document.getElementById("selisihDimensi2");
-    var sisaLimit = document.getElementById("sisaLimit");
-    var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	up2.value = untPrice;
-	amt2.value = untPrice*dtl2;
-	var totAmount2 = 0;
-	var totAmount = 0;
-	var dimensiOrder = 0;
-	
-	for(var idxRow = 3, productQty;; idxRow++){	
-		
-		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[4].children[0].value
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[1].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[2].value)
-			/1000000;
-		
-		var amountCurrentLine = 0;
-		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-		totAmount2 += amountCurrentLine;
-		
-		if(jumlahOrder === "2"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine; 
-		}
-		else if(jumlahOrder === "3"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;
-			}
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "4"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "5"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-
-	dimensiOrder2.value = parseInt(dimensiOrder);
-	selisihDimensi2.value = parseInt(dimensiMobil2.value - dimensiOrder);
-	totalAmount2.value = totAmount2;
-	amtTotal.value = totAmount;
-	sisaLimit.value = sisaLimitInit - totAmount;
-	return;
-}
-
-function calcAmount3(obj){
-	var dtl3 = obj.value;
-	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
-	var tblOrder = document.getElementById("tblOrder");
-	var totalAmount3 = document.getElementById("totalAmount3");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[9].children[0].value;
-	var up3 = document.getElementById("up3");
-	var amt3 = document.getElementById("amt3");
-	var amtTotal = document.getElementById("amtTotal");
-	var dimensiMobil3 = document.getElementById("dimensiMobil3");
-	var dimensiOrder3 = document.getElementById("dimensiOrder3");
-	var selisihDimensi3 = document.getElementById("selisihDimensi3");
-    var sisaLimit = document.getElementById("sisaLimit");
-    var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	up3.value = untPrice;
-	amt3.value = untPrice*dtl3;
-	var totAmount3 = 0;
-	var totAmount = 0;
-	var dimensiOrder = 0;
-	
-	for(var idxRow = 3, productQty;; idxRow++){	
-		
-		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[5].children[0].value
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[1].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[2].value)
-			/1000000;
-		
-		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-		totAmount3 += amountCurrentLine;
-		
-		if(jumlahOrder === "3"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;
-			}
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "4"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "5"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-
-	dimensiOrder3.value = parseInt(dimensiOrder);
-	selisihDimensi3.value = parseInt(dimensiMobil3.value - dimensiOrder);
-	totalAmount3.value = totAmount3;
-	amtTotal.value = totAmount;
-	sisaLimit.value = sisaLimitInit - totAmount;
-	return;
-}
-
-function calcAmount4(obj){
-	var dtl4 = obj.value;
-	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
-	var tblOrder = document.getElementById("tblOrder");
-	var totalAmount4 = document.getElementById("totalAmount4");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[9].children[0].value;
-	var up4 = document.getElementById("up4");
-	var amt4 = document.getElementById("amt4");
-	var amtTotal = document.getElementById("amtTotal");
-	var dimensiMobil4 = document.getElementById("dimensiMobil4");
-	var dimensiOrder4 = document.getElementById("dimensiOrder4");
-	var selisihDimensi4 = document.getElementById("selisihDimensi4");
-    var sisaLimit = document.getElementById("sisaLimit");
-    var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	up4.value = untPrice;
-	amt4.value = untPrice*dtl4;
-	var totAmount4 = 0;
-	var totAmount = 0;
-	var dimensiOrder = 0;
-	
-	for(var idxRow = 3, productQty;; idxRow++){	
-		
-		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[6].children[0].value
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[1].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[2].value)
-			/1000000;
-		
-		var amountCurrentLine = 0;
-		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-		totAmount4 += amountCurrentLine;
-		
-		if(jumlahOrder === "4"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "5"){
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			if(idxRow === idxRowCurrent){
-				tblOrder.rows[idxRow].cells[8].children[0].value =
-					totAmountPerLine;	
-			}
-			totAmount += totAmountPerLine;
-		}
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-
-	dimensiOrder4.value = parseInt(dimensiOrder);
-	selisihDimensi4.value = parseInt(dimensiMobil4.value - dimensiOrder);
-	totalAmount4.value = totAmount4;
-	amtTotal.value = totAmount;
-	sisaLimit.value = sisaLimitInit - totAmount;
-	return;
-}
-
-function calcAmount5(obj){
-	var dtl5 = obj.value;
-	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
-	var tblOrder = document.getElementById("tblOrder");
-	var totalAmount5 = document.getElementById("totalAmount5");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[9].children[0].value;
-	var up5 = document.getElementById("up5");
-	var amt5 = document.getElementById("amt5");
-	var amtTotal = document.getElementById("amtTotal");
-	var dimensiMobil5 = document.getElementById("dimensiMobil5");
-	var dimensiOrder5 = document.getElementById("dimensiOrder5");
-	var selisihDimensi5 = document.getElementById("selisihDimensi5");
-    var sisaLimit = document.getElementById("sisaLimit");
-    var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	up5.value = untPrice;
-	amt5.value = untPrice*dtl5;
-	var totAmount5 = 0;
-	var totAmount = 0;
-	var dimensiOrder = 0;
-	
-	for(var idxRow = 3, productQty;; idxRow++){	
-		
-		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[7].children[0].value
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[1].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[11].children[2].value)
-			/1000000;
-		
-		var amountCurrentLine = 0;
-		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-		totAmount5 += amountCurrentLine;
-		
-		var totAmountPerLine = 0;
-		totAmountPerLine = 
-			amountCurrentLine
-			+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-			* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)) 
-			+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-			* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-			+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-			* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-			+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-			* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		if(idxRow === idxRowCurrent){
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;	
-		}
-		totAmount += totAmountPerLine;
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-
-	dimensiOrder5.value = parseInt(dimensiOrder);
-	selisihDimensi5.value = parseInt(dimensiMobil5.value - dimensiOrder);
-	totalAmount5.value = totAmount5;
-	amtTotal.value = totAmount;
-	sisaLimit.value = sisaLimitInit - totAmount;
-	return;
-}
-
-function generateCMOB(){
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
-	var orderBySelected = document.getElementById("orderBySelected");
-	orderBySelected.value = "CMOB";
-	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	var totalAmount1 = document.getElementById("totalAmount1");
-	var totalAmount2 = document.getElementById("totalAmount2");
-	var totalAmount3 = document.getElementById("totalAmount3");
-	var totalAmount4 = document.getElementById("totalAmount4");
-	var totalAmount5 = document.getElementById("totalAmount5");
-	var sisaLimit = document.getElementById("sisaLimit");
-	var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-	
-	var totAmount1 = 0;
-	var totAmount2 = 0;
-	var totAmount3 = 0;
-	var totAmount4 = 0;
-	var totAmount5 = 0;
-	
-	var amtTotal = document.getElementById("amtTotal");
-    var totAmount = 0;
-	
-	var cmobInitial = 5;
-	var cmobMultiplier = 0;
-	
-	for(var idxRow = 3, productQty;; idxRow++){
-		
-		cmobMultiplier += 1;
-		var qty = (cmobInitial * cmobMultiplier) / jumlahOrder;
-		
-		if(jumlahOrder === "1"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[5].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[6].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[7].children[0].value = 0;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "2"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[6].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[7].children[0].value = 0;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "3"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[6].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[7].children[0].value = 0;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "4"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[6].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[7].children[0].value = 0;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "5"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[6].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[7].children[0].value = qty;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		
-		totAmount1 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount2 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount3 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount4 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount5 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-	
-	totalAmount1.value = totAmount1;
-	totalAmount2.value = totAmount2;
-	totalAmount3.value = totAmount3;
-	totalAmount4.value = totAmount4;
-	totalAmount5.value = totAmount5;
-	amtTotal.value = totAmount;
-	sisaLimit.value = sisaLimitInit - totAmount;
-}
-
-function resetOrder(){
-	
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
-	var orderBySelected = document.getElementById("orderBySelected");
-	orderBySelected.value = "Manual";
-	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	var totalAmount1 = document.getElementById("totalAmount1");
-	var totalAmount2 = document.getElementById("totalAmount2");
-	var totalAmount3 = document.getElementById("totalAmount3");
-	var totalAmount4 = document.getElementById("totalAmount4");
-	var totalAmount5 = document.getElementById("totalAmount5");
-	var sisaLimit = document.getElementById("sisaLimit");
-	var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-	var amtTotal = document.getElementById("amtTotal");
-    var dimensiMobil1 = document.getElementById("dimensiMobil1").value;
-    var dimensiMobil2 = document.getElementById("dimensiMobil2").value;
-    var dimensiMobil3 = document.getElementById("dimensiMobil3").value;
-    var dimensiMobil4 = document.getElementById("dimensiMobil4").value;
-    var dimensiMobil5 = document.getElementById("dimensiMobil5").value;
-	var dimensiOrder1 = document.getElementById("dimensiOrder1");
-	var dimensiOrder2 = document.getElementById("dimensiOrder2");
-	var dimensiOrder3 = document.getElementById("dimensiOrder3");
-	var dimensiOrder4 = document.getElementById("dimensiOrder4");
-	var dimensiOrder5 = document.getElementById("dimensiOrder5");
-	var selisihDimensi1 = document.getElementById("selisihDimensi1");
-	var selisihDimensi2 = document.getElementById("selisihDimensi2");
-	var selisihDimensi3 = document.getElementById("selisihDimensi3");
-	var selisihDimensi4 = document.getElementById("selisihDimensi4");
-	var selisihDimensi5 = document.getElementById("selisihDimensi5");
-	
-	sisaLimit.value = sisaLimitInit;
-	totalAmount1.value = 0;
-	totalAmount2.value = 0;
-	totalAmount3.value = 0;
-	totalAmount4.value = 0;
-	totalAmount5.value = 0;
-	amtTotal.value = 0;
-	dimensiOrder1.value = 0;
-	dimensiOrder2.value = 0;
-	dimensiOrder3.value = 0;
-	dimensiOrder4.value = 0;
-	dimensiOrder5.value = 0;
-	selisihDimensi1.value = dimensiMobil1;
-	selisihDimensi2.value = dimensiMobil2;
-	selisihDimensi3.value = dimensiMobil3;
-	selisihDimensi4.value = dimensiMobil4;
-	selisihDimensi5.value = dimensiMobil5;
-	
-	for(var idxRow = 3, productQty;; idxRow++){
-		
-		tblOrder.rows[idxRow].cells[3].children[0].value = 0;
-		tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-		tblOrder.rows[idxRow].cells[5].children[0].value = 0;
-		tblOrder.rows[idxRow].cells[6].children[0].value = 0;
-		tblOrder.rows[idxRow].cells[7].children[0].value = 0;
-		tblOrder.rows[idxRow].cells[8].children[0].value = 0;
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-	
-}
-
-function changeMobil1(obj){
-	
-	var selectBox = obj;
-	var dimensiMobil = obj.value;
-	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
-    var jenisMobilSelected = document.getElementById("mobil1Selected");
-    jenisMobilSelected.value = jenisMobil;
-    var dimensiMobil1 = document.getElementById("dimensiMobil1");
-	var selisihDimensi = document.getElementById("selisihDimensi1");
-    dimensiMobil1.value = obj.value;
-	var dimensiOrder = document.getElementById("dimensiOrder1").value;
-	var sd = 0;
-	sd = parseFloat(dimensiMobil) - parseFloat(dimensiOrder);
-	selisihDimensi.value = sd;
-}
-
-function changeMobil2(obj){
-	
-	var selectBox = obj;
-	var dimensiMobil = obj.value;
-	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
-    var jenisMobilSelected = document.getElementById("mobil2Selected");
-    jenisMobilSelected.value = jenisMobil;
-    var dimensiMobil2 = document.getElementById("dimensiMobil2");
-	var selisihDimensi = document.getElementById("selisihDimensi2");
-    dimensiMobil2.value = obj.value;
-	var dimensiOrder = document.getElementById("dimensiOrder2").value;
-	var sd = 0;
-	sd = parseFloat(dimensiMobil) - parseFloat(dimensiOrder);
-	selisihDimensi.value = sd;
-}
-
-function changeMobil3(obj){
-	
-	var selectBox = obj;
-	var dimensiMobil = obj.value;
-	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
-    var jenisMobilSelected = document.getElementById("mobil3Selected");
-    jenisMobilSelected.value = jenisMobil;
-    var dimensiMobil3 = document.getElementById("dimensiMobil3");
-	var selisihDimensi = document.getElementById("selisihDimensi3");
-    dimensiMobil3.value = obj.value;
-	var dimensiOrder = document.getElementById("dimensiOrder3").value;
-	var sd = 0;
-	sd = parseFloat(dimensiMobil) - parseFloat(dimensiOrder);
-	selisihDimensi.value = sd;
-}
-
-function changeMobil4(obj){
-	
-	var selectBox = obj;
-	var dimensiMobil = obj.value;
-	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
-    var jenisMobilSelected = document.getElementById("mobil4Selected");
-    jenisMobilSelected.value = jenisMobil;
-    var dimensiMobil4 = document.getElementById("dimensiMobil4");
-	var selisihDimensi = document.getElementById("selisihDimensi4");
-    dimensiMobil4.value = obj.value;
-	var dimensiOrder = document.getElementById("dimensiOrder4").value;
-	var sd = 0;
-	sd = parseFloat(dimensiMobil) - parseFloat(dimensiOrder);
-	selisihDimensi.value = sd;
-}
-
-function changeMobil5(obj){
-	
-	var selectBox = obj;
-	var dimensiMobil = obj.value;
-	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
-    var jenisMobilSelected = document.getElementById("mobil5Selected");
-    jenisMobilSelected.value = jenisMobil;
-    var dimensiMobil5 = document.getElementById("dimensiMobil5");
-	var selisihDimensi = document.getElementById("selisihDimensi5");
-    dimensiMobil5.value = obj.value;
-	var dimensiOrder = document.getElementById("dimensiOrder5").value;
-	var sd = 0;
-	sd = parseFloat(dimensiMobil) - parseFloat(dimensiOrder);
-	selisihDimensi.value = sd;
-}
-
-function changeExpedisi1(obj){
-	var expedisi = obj.value;
-    var expedisi1Selected = document.getElementById("expedisi1Selected");
-    expedisi1Selected.value = expedisi;
-}
-
-function changeExpedisi2(obj){
-	var expedisi = obj.value;
-    var expedisi2Selected = document.getElementById("expedisi2Selected");
-    expedisi2Selected.value = expedisi;
-}
-
-function changeExpedisi3(obj){
-	var expedisi = obj.value;
-    var expedisi3Selected = document.getElementById("expedisi3Selected");
-    expedisi3Selected.value = expedisi;
-}
-
-function changeExpedisi4(obj){
-	var expedisi = obj.value;
-    var expedisi4Selected = document.getElementById("expedisi4Selected");
-    expedisi4Selected.value = expedisi;
-}
-
-function changeExpedisi5(obj){
-	var expedisi = obj.value;
-    var expedisi5Selected = document.getElementById("expedisi5Selected");
-    expedisi5Selected.value = expedisi;
-}
-
-function changeShipTo1(obj){
-	var selectBox = obj;
-	var shipTo = selectBox.options[selectBox.selectedIndex].value;
-    var shipToSelected = document.getElementById("shipTo1Selected");
-    shipToSelected.value = shipTo;
-}
-
-function changeShipTo2(obj){
-	var selectBox = obj;
-	var shipTo = selectBox.options[selectBox.selectedIndex].value;
-    var shipToSelected = document.getElementById("shipTo2Selected");
-    shipToSelected.value = shipTo;
-}
-
-function changeShipTo3(obj){
-	var selectBox = obj;
-	var shipTo = selectBox.options[selectBox.selectedIndex].value;
-    var shipToSelected = document.getElementById("shipTo3Selected");
-    shipToSelected.value = shipTo;
-}
-
-function changeShipTo4(obj){
-	var selectBox = obj;
-	var shipTo = selectBox.options[selectBox.selectedIndex].value;
-    var shipToSelected = document.getElementById("shipTo4Selected");
-    shipToSelected.value = shipTo;
-}
-
-function changeShipTo5(obj){
-	var selectBox = obj;
-	var shipTo = selectBox.options[selectBox.selectedIndex].value;
-    var shipToSelected = document.getElementById("shipTo5Selected");
-    shipToSelected.value = shipTo;
-}
-
-function changeOrderType(obj){
-	
-	var selectBox = obj;
-	var orderType = selectBox.options[selectBox.selectedIndex].value;
-    var orderTypeSelected = document.getElementById("orderTypeSelected");
-    orderTypeSelected.value = orderType;
-	var sisaLimit = document.getElementById("sisaLimit");
-	var sisaLimitDP = document.getElementById("sisaLimitDP");
-	var poNumber1 = document.getElementById("poNumber1");
-	var poNumber2 = document.getElementById("poNumber2");
-	var poNumber3 = document.getElementById("poNumber3");
-	var poNumber4 = document.getElementById("poNumber4");
-	var poNumber5 = document.getElementById("poNumber5");
-
-	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value) + 2;
-	
-	if(orderType === "SO Lokal Food With CO"
-			|| orderType === "SO Lokal Non Food With CO"){
-		sisaLimit.style.display = "block";
-		sisaLimitDP.style.display = "none";
-	}
-	else{
-		sisaLimit.style.display = "none";
-		sisaLimitDP.style.display = "block";
-	}
-	
-	for(var idxRow = 3, productQty;; idxRow++){
-		
-		if(orderType === "SO Lokal Non Food With CO - DP"
-			|| orderType === "SO Lokal Non Food With CO"){
-			tblOrder.rows[idxRow].style.display = "none";
-		}
-		else{
-			tblOrder.rows[idxRow].style.display = "table-row";
-		}
-		
-		if(idxRow===productQty){
-			break;
-		}
-	}
-	
-}
-
-String.prototype.replaceAt=function(index, replacement) {
-    return this.substr(0, index) + replacement
-    	+ this.substr(index + replacement.length);
-}
-
-function changePeriode(obj){
-	var selectBox = obj;
-    var periode = selectBox.options[selectBox.selectedIndex].text;
-    var periodeSelected = document.getElementById("periodeSelected");
-    periodeSelected.value = periode;
-    var poDate1 = document.getElementById("poDate1");
-    var poDate2 = document.getElementById("poDate2");
-    var poDate3 = document.getElementById("poDate3");
-    var poDate4 = document.getElementById("poDate4");
-    var poDate5 = document.getElementById("poDate5");
-    var poNumber1 = document.getElementById("poNumber1");
-    var poNumber2 = document.getElementById("poNumber2");
-    var poNumber3 = document.getElementById("poNumber3");
-    var poNumber4 = document.getElementById("poNumber4");
-    var poNumber5 = document.getElementById("poNumber5");
-    
-    var p = periode.split(" ");
-    var month = p[0];
-    var year = p[1];
-    var minDate = '2017-01-01';
-    var maxDate = '2117-12-31';
-    var monthIndex = "00";
-    
-    if(month === "Januari"){
-    	minDate = year + "-01-01";
-    	maxDate = year + "-01-31";
-    	monthIndex = "01";
-    }
-    else if(month === "Pebruari"){
-    	minDate = year + "-02-01";
-    	maxDate = year + "-02-28";
-    	monthIndex = "02";
-    }
-    else if(month === "Maret"){
-    	minDate = year + "-03-01";
-    	maxDate = year + "-03-31";
-    	monthIndex = "03";
-    }
-    else if(month === "April"){
-    	minDate = year + "-04-01";
-    	maxDate = year + "-04-30";
-    	monthIndex = "04";
-    }
-    else if(month === "Mei"){
-    	minDate = year + "-05-01";
-    	maxDate = year + "-05-31";
-    	monthIndex = "05";
-    }
-    else if(month === "Juni"){
-    	minDate = year + "-06-01";
-    	maxDate = year + "-06-30";
-    	monthIndex = "06";
-    }
-    else if(month === "Juli"){
-    	minDate = year + "-07-01";
-    	maxDate = year + "-07-31";
-    	monthIndex = "07";
-    }
-    else if(month === "Agustus"){
-    	minDate = year + "-08-01";
-    	maxDate = year + "-08-31";
-    	monthIndex = "08";
-    }
-    else if(month === "September"){
-    	minDate = year + "-09-01";
-    	maxDate = year + "-09-30";
-    	monthIndex = "09";
-    }
-    else if(month === "Oktober"){
-    	minDate = year + "-10-01";
-    	maxDate = year + "-10-31";
-    	monthIndex = "10";
-    }
-    else if(month === "November"){
-    	minDate = year + "-11-01";
-    	maxDate = year + "-11-30";
-    	monthIndex = "11";
-    }
-    else if(month === "Desember"){
-    	minDate = year + "-12-01";
-    	maxDate = year + "-12-31";
-    	monthIndex = "12";
-    } 
-    
-    poDate1.min = minDate;
-    poDate1.max = maxDate;
-    poDate2.min = minDate;
-    poDate2.max = maxDate;
-    poDate3.min = minDate;
-    poDate3.max = maxDate;
-    poDate4.min = minDate;
-    poDate4.max = maxDate;
-    poDate5.min = minDate;
-    poDate5.max = maxDate;
-    
-    po1 = poNumber1.value;
-    po1 = po1.replaceAt(6, monthIndex);
-    poNumber1.value = po1;
-    po2 = poNumber2.value;
-    po2 = po2.replaceAt(6, monthIndex);
-    poNumber2.value = po2;
-    po3 = poNumber3.value;
-    po3 = po3.replaceAt(6, monthIndex);
-    poNumber3.value = po3;
-    po4 = poNumber4.value;
-    po4 = po4.replaceAt(6, monthIndex);
-    poNumber4.value = po4;
-    po5 = poNumber5.value;
-    po5 = po5.replaceAt(6, monthIndex);
-    poNumber5.value = po5;
-}
-
-function changeJumlahOrder(obj) {
-	var selectBox = obj;
-    var jumlahOrder = selectBox.options[selectBox.selectedIndex].value;
-    var jumlahOrderSelected = document.getElementById("jumlahOrderSelected");
-    jumlahOrderSelected.value = jumlahOrder;
-    var tblOrder = document.getElementById("tblOrder");
-    var productQty = 
-    	parseFloat(document.getElementById("productQty").value) + 2;
-    var cmob = document.getElementById("cmob");
-    var manual = document.getElementById("manual");
-    var orderHeader2 = document.getElementById("orderHeader2");
-    var orderHeader3 = document.getElementById("orderHeader3");
-    var orderHeader4 = document.getElementById("orderHeader4");
-    var orderHeader5 = document.getElementById("orderHeader5");
-    var order2 = document.getElementById("order2");
-    var order3 = document.getElementById("order3");
-    var order4 = document.getElementById("order4");
-    var order5 = document.getElementById("order5");
-    var detailHeader2 = document.getElementById("detailHeader2");
-    var detailHeader3 = document.getElementById("detailHeader3");
-    var detailHeader4 = document.getElementById("detailHeader4");
-    var detailHeader5 = document.getElementById("detailHeader5");
-    var unitPrice2 = document.getElementById("unitPrice2");
-    var unitPrice3 = document.getElementById("unitPrice3");
-    var unitPrice4 = document.getElementById("unitPrice4");
-    var unitPrice5 = document.getElementById("unitPrice5");
-    var amount2 = document.getElementById("amount2");
-    var amount3 = document.getElementById("amount3");
-    var amount4 = document.getElementById("amount4");
-    var amount5 = document.getElementById("amount5");
-    var sisaLimit = document.getElementById("sisaLimit");
-    var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    var totalAmount1 = document.getElementById("totalAmount1").value;
-    var totalAmount2 = document.getElementById("totalAmount2").value;
-    var totalAmount3 = document.getElementById("totalAmount3").value;
-    var totalAmount4 = document.getElementById("totalAmount4").value;
-    var totalAmount5 = document.getElementById("totalAmount5").value;
-
-	var amtTotal = document.getElementById("amtTotal");
-    var totAmount = 0;
-
-    if(jumlahOrder === "1"){
-    	
-    	sisaLimit.value = sisaLimitInit 
-    		- totalAmount1;
-    	
-    	orderHeader2.style.display = "none";
-    	orderHeader3.style.display = "none";
-    	orderHeader4.style.display = "none";
-    	orderHeader5.style.display = "none";
-    	order2.style.display = "none";
-    	order3.style.display = "none";
-    	order4.style.display = "none";
-    	order5.style.display = "none";
-    	detailHeader2.style.display = "none";
-    	detailHeader3.style.display = "none";
-    	detailHeader4.style.display = "none";
-    	detailHeader5.style.display = "none";
-    	unitPrice2.style.display = "none";
-    	unitPrice3.style.display = "none";
-    	unitPrice4.style.display = "none";
-    	unitPrice5.style.display = "none";
-    	amount2.style.display = "none";
-    	amount3.style.display = "none";
-    	amount4.style.display = "none";
-    	amount5.style.display = "none";
-    	
-    	for(var idxRow = 2, productQty;; idxRow++){
-    		tblOrder.rows[idxRow].cells[4].style.display = "none";
-    		tblOrder.rows[idxRow].cells[5].style.display = "none";
-    		tblOrder.rows[idxRow].cells[6].style.display = "none";
-    		tblOrder.rows[idxRow].cells[7].style.display = "none";
-    		
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 2){
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-        			tblOrder.rows[idxRow].cells[8].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
-    		}
-    		
-    		if(idxRow === productQty){
-   				break;
-   			}
-    	}
-    }
-    else if(jumlahOrder === "2"){
-    	
-    	sisaLimit.value = sisaLimitInit 
-    		- totalAmount1
-    		- totalAmount2;
-    	
-    	orderHeader2.style.display = "table-cell";
-    	orderHeader3.style.display = "none";
-    	orderHeader4.style.display = "none";
-    	orderHeader5.style.display = "none";
-    	order2.style.display = "table-cell";
-    	order3.style.display = "none";
-    	order4.style.display = "none";
-    	order5.style.display = "none";
-    	detailHeader2.style.display = "table-cell";
-    	detailHeader3.style.display = "none";
-    	detailHeader4.style.display = "none";
-    	detailHeader5.style.display = "none";
-    	unitPrice2.style.display = "table-cell";
-    	unitPrice3.style.display = "none";
-    	unitPrice4.style.display = "none";
-    	unitPrice5.style.display = "none";
-    	amount2.style.display = "table-cell";
-    	amount3.style.display = "none";
-    	amount4.style.display = "none";
-    	amount5.style.display = "none";
-    	
-    	for(var idxRow = 2, productQty;; idxRow++){
-    		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[5].style.display = "none";
-    		tblOrder.rows[idxRow].cells[6].style.display = "none";
-    		tblOrder.rows[idxRow].cells[7].style.display = "none";
-
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 2){
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-        	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-        			tblOrder.rows[idxRow].cells[8].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
-    		}
-    		
-    		if(idxRow === productQty){
-   				break;
-   			}
-    	}
-    }
-    else if(jumlahOrder === "3"){
-    	
-    	sisaLimit.value = sisaLimitInit 
-    		- totalAmount1
-    		- totalAmount2
-    		- totalAmount3;
-    	
-    	orderHeader2.style.display = "table-cell";
-    	orderHeader3.style.display = "table-cell";
-    	orderHeader4.style.display = "none";
-    	orderHeader5.style.display = "none";
-    	order2.style.display = "table-cell";
-    	order3.style.display = "table-cell";
-    	order4.style.display = "none";
-    	order5.style.display = "none";
-    	detailHeader2.style.display = "table-cell";
-    	detailHeader3.style.display = "table-cell";
-    	detailHeader4.style.display = "none";
-    	detailHeader5.style.display = "none";
-    	unitPrice2.style.display = "table-cell";
-    	unitPrice3.style.display = "table-cell";
-    	unitPrice4.style.display = "none";
-    	unitPrice5.style.display = "none";
-    	amount2.style.display = "table-cell";
-    	amount3.style.display = "table-cell";
-    	amount4.style.display = "none";
-    	amount5.style.display = "none";
-    	
-    	for(var idxRow = 2, productQty;; idxRow++){
-    		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[5].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[6].style.display = "none";
-    		tblOrder.rows[idxRow].cells[7].style.display = "none";
-			
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 2){
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-        	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-        			tblOrder.rows[idxRow].cells[8].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
-    		}
-    		
-    		if(idxRow === productQty){
-   				break;
-   			}
-    	}
-    }
-    else if(jumlahOrder === "4"){
-    	
-    	sisaLimit.value = sisaLimitInit 
-    		- totalAmount1
-    		- totalAmount2
-    		- totalAmount3
-    		- totalAmount4;
-    	
-    	orderHeader2.style.display = "table-cell";
-    	orderHeader3.style.display = "table-cell";
-    	orderHeader4.style.display = "table-cell";
-    	orderHeader5.style.display = "none";
-    	order2.style.display = "table-cell";
-    	order3.style.display = "table-cell";
-    	order4.style.display = "table-cell";
-    	order5.style.display = "none";
-    	detailHeader2.style.display = "table-cell";
-    	detailHeader3.style.display = "table-cell";
-    	detailHeader4.style.display = "table-cell";
-    	detailHeader5.style.display = "none";
-    	unitPrice2.style.display = "table-cell";
-    	unitPrice3.style.display = "table-cell";
-    	unitPrice4.style.display = "table-cell";
-    	unitPrice5.style.display = "none";
-    	amount2.style.display = "table-cell";
-    	amount3.style.display = "table-cell";
-    	amount4.style.display = "table-cell";
-    	amount5.style.display = "none";
-    	
-    	for(var idxRow = 2, productQty;; idxRow++){
-    		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[5].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[6].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[7].style.display = "none";
-			
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 2){
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-    	   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-        			tblOrder.rows[idxRow].cells[8].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
-    		}
-    		
-    		if(idxRow === productQty){
-   				break;
-   			}
-    	}
-    }
-    else if(jumlahOrder === "5"){
-    	
-    	sisaLimit.value = sisaLimitInit 
-    		- totalAmount1
-    		- totalAmount2
-    		- totalAmount3
-    		- totalAmount4
-    		- totalAmount5;
-    	
-    	orderHeader2.style.display = "table-cell";
-    	orderHeader3.style.display = "table-cell";
-    	orderHeader4.style.display = "table-cell";
-    	orderHeader5.style.display = "table-cell";
-    	order2.style.display = "table-cell";
-    	order3.style.display = "table-cell";
-    	order4.style.display = "table-cell";
-    	order5.style.display = "table-cell";
-    	detailHeader2.style.display = "table-cell";
-    	detailHeader3.style.display = "table-cell";
-    	detailHeader4.style.display = "table-cell";
-    	detailHeader5.style.display = "table-cell";
-    	unitPrice2.style.display = "table-cell";
-    	unitPrice3.style.display = "table-cell";
-    	unitPrice4.style.display = "table-cell";
-    	unitPrice5.style.display = "table-cell";
-    	amount2.style.display = "table-cell";
-    	amount3.style.display = "table-cell";
-    	amount4.style.display = "table-cell";
-    	amount5.style.display = "table-cell";
-    	
-    	for(var idxRow = 2, productQty;; idxRow++){
-    		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[5].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[6].style.display = "table-cell";
-    		tblOrder.rows[idxRow].cells[7].style.display = "table-cell";
-   			
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 2){
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
-    	   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-        			tblOrder.rows[idxRow].cells[8].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
-    		}
-    		
-    		if(idxRow === productQty){
-   				break;
-   			}
-    	}
-    }
-    if(!cmob.checked){
-    	amtTotal.value = totAmount;
-	}
-}
-
+<script th:inline="javascript"
+	src="../static/js/order.js"
+	th:src="@{js/order.js}">
 </script>
 
 <title>Input Order - Focus Distribusi Indonesia</title>
 </head>
 
 <body>
-<form action="#" th:action="@{/order}" th:object="${inputWebOrder}" method="post">
-<table width="100%" style="border: none;"> 
+<div class="bagianlogo" id="logo">
+    <img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" 
+    	src="../static/images/logo.png" 
+    	th:src="@{images/logo.png}"
+    	alt="" width="200" height="85px" />
+</div>
+ 
+<form action="#" 
+	th:action="@{/order}" th:object="${inputWebOrder}" method="post">
+
+<div id="framesetting">
+<table> 
 	<tr>
-		<td style="border: none;" align="right" colspan="2">
-			Welcome,
-			<b><label th:text="*{customer.custCompanyId}"></label></b>!
+		<td>
+			<h4>
+				<font style="padding-left: 20px">Welcome,</font>
+				<b><label th:text="*{customer.custCompanyId}"></label></b>!
+			</h4>
 		</td>
-	</tr> 
-	<tr>
-		<td style="border: none;">
-			<b>Input Order</b>
-		</td>
-	   	<td style="border: none;" align="right">
-		   	<input type="submit" name="action" value="Save"/>
-		   	<input type="submit" name="action" value="Submit"/>
+	   	<td style="padding-left: 10px">
+		   	<input 
+		   		style="align: right" 
+		   		type="submit" name="action" value="Save"/>
+		   	<input 
+		   		style="align: right"
+		   		type="submit" name="action" value="Submit"/>
 	   	</td>  
 	</tr>  
 </table>
 
-<fieldset>
-<legend>Header</legend>
-<table style="border: none;">
-	<tr style="border: none;">
-		<td width="150px" style="border: none;" align="right">
-			<b>Company:</b>&nbsp;&nbsp;
-		</td>
-		<td style="border: none;">
+<table id="table1">
+	<tr>
+		<th style="width: 130px">
+			Company:&nbsp;
+		</th>
+		<td>
 			<input type="text" 
 				th:value="*{customer.company}" 
-			  	readonly="readonly"/>
+			  	readonly="readonly"
+			  	style="width: 300px"/>
 			<input id="company" type="hidden" 
 				th:field="*{customer.company}" />
 		</td>
 	</tr>
-</table>
- 	<table style="border: none;">
-	<tr style="border: none;">
-		<td width="150px" style="border: none; vertical-align: top;" align="right">
-			<b>Customer:</b>&nbsp;&nbsp;
-		</td>
-		<td style="border: none;">
-			Kode
-			<input type="text" 
-				th:value="*{customer.custCompanyId}" 
-			  	readonly="readonly"/>
-			<input id="custId" type="hidden" 
-				th:field="*{customer.custId}" />
-			 Nama
-			 <input type="text" 
-			 	th:value="*{customer.customerName}"
-			  	readonly="readonly"/>
-			 Region
-			 <input type="text" 
-			 	th:value="*{customer.custRegion}"
-			  	readonly="readonly"/>
-			 Area
-			 <input type="text" 
-			 	th:value="*{customer.custAddress}" 
-			  	readonly="readonly"/>
-			 Location
-			 <input type="text" 
-			 	th:value="*{customer.custLocation}" 
-			  	readonly="readonly"/>
+	<tr>
+		<th>
+			Customer:&nbsp;
+		</th>
+		<td>
+			<table>
+		        <tr>
+		          	<td>Kode</td>
+		          	<td>Nama</td>
+		          	<td>Region</td>
+		          	<td>Area</td>
+		         	<td>Location</td>
+		        </tr>
+		        <tr>
+		        	<td style="border-bottom: none">
+						<input type="text" 
+							th:value="*{customer.custCompanyId}" 
+						  	readonly="readonly"/>
+						<input id="custId" type="hidden" 
+							th:field="*{customer.custId}" />
+					</td>
+					<td style="border-bottom: none">
+						<input type="text" 
+							th:value="*{customer.customerName}"
+						 	readonly="readonly"/>
+					</td>
+					<td style="border-bottom: none">
+						<input type="text" 
+							th:value="*{customer.custRegion}"
+						 	readonly="readonly"/>
+					</td>
+					<td style="border-bottom: none">
+						<input type="text" 
+							th:value="*{customer.custAddress}" 
+						 	readonly="readonly"/>
+					</td>
+					<td style="border-bottom: none">
+						<input type="text" 
+							th:value="*{customer.custLocation}" 
+						 	readonly="readonly"/>
+					</td>
+			  	</tr>
+		  	</table>
 		</td>
 	</tr>
-</table>
-<table style="border: none;">
-	<tr style="border: none;">
-		<td width="150px" style="border: none;" align="right">
-			<b>Periode:</b>&nbsp;&nbsp;
-		</td>
-		<td style="border: none;"> 
-		  <select name="periode" onChange="changePeriode(this)">
-		  	<option th:each="periode : ${periodes}"
-               th:value="${periode}"
-               th:text="${periode}"
-               th:selected="${inputWebOrder.inputOrder.orderGrp.periodeOrder==periode}"/>
-		  </select>
+	<tr>
+		<th>
+			Periode:&nbsp;
+		</th>
+		<td> 
+			<select name="periode" onChange="changePeriode(this)">
+				<option th:each="periode : ${periodes}"
+			           th:value="${periode}"
+			           th:text="${periode}"
+			           th:selected="${inputWebOrder.inputOrder.orderGrp.periodeOrder==periode}"/>
+			</select>
 			<input id="periodeSelected" type="hidden" 
 				th:field="*{inputOrder.orderGrp.periodeOrder}" />
 		</td>
 	</tr>
+	<tr>
+		<th>
+			Order Type:&nbsp;
+		</th>
+		<td>
+			<select id="orderType" name="orderType"
+				onchange="changeOrderType(this)">
+				<option th:each="orderType : ${orderTypes}"
+			             th:value="${orderType}"
+			             th:text="${orderType}"
+			             th:selected="${inputWebOrder.inputOrder.orderGrp.orderType==orderType}"/>
+			</select>
+			<input id="orderTypeSelected" type="hidden" 
+				th:field="*{inputOrder.orderGrp.orderType}" />
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Order By:&nbsp;
+		</th>
+		<td>
+			<input type="radio" name="orderby"
+				style="width: 20px"
+				id="cmob"
+				value="CMOB"
+				onclick="generateCMOB()"/>
+				CMOB
+			<input type="radio" name="orderby"
+				style="width: 30px"
+				id="manual"
+				value="Manual"
+				onclick="resetOrder()"/>
+				Manual
+			<input id="orderBySelected" type="hidden" 
+				th:field="*{inputOrder.orderGrp.orderBy}" />
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Lead Time:&nbsp;
+		</th>
+		<td> 
+			 <input type="number" name="leadtime" 
+			 	th:field="*{inputOrder.orderGrp.leadTime}" 
+			 	min="0"/>
+			 Days
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Jumlah Order:&nbsp;
+		</th>
+		<td> 
+			<select id="jumlahOrder" name="jmlOrder" 
+				onchange="changeJumlahOrder(this)">
+			     <option th:each="jumlahOrder : ${jumlahOrders}"
+			             th:value="${jumlahOrder}"
+			             th:text="${jumlahOrder}"
+			             th:selected="${inputWebOrder.inputOrder.orderGrp.jumlahOrder==jumlahOrder}"/>
+			</select>
+			<input id="jumlahOrderSelected" type="hidden" 
+				th:field="*{inputOrder.orderGrp.jumlahOrder}" />
+		</td>
+	</tr>
+	<tr>
+		<th>
+			Sisa Limit:&nbsp;
+		</th>
+		<td> 
+			<input id="sisaLimit" type="number" 
+				th:field="*{inputOrder.orderGrp.sisaLimit}" 
+				readonly="readonly"/>
+			<input id="sisaLimitInit" type="hidden" 
+				th:field="*{customer.creditLimit}" />
+			<label id="sisaLimitDP"
+				style="display: none;">
+				Sisa limit tidak berlaku untuk order dengan DP
+			</label>
+		</td>
+	</tr>
 </table>
-  <table style="border: none;">
-		<tr style="border: none;">
-			<td width="150px" style="border: none;" align="right">
-				<b>Order Type:</b>&nbsp;&nbsp;
+</div> <!-- div framesetting -->
+
+<div id="ordercontainer">
+
+<div id="fixedpart">
+	<table id="tblOrderFixed" >
+		<tr><th style="text-align: right; width: 408px">PO Number:</th></tr>
+		<tr><th style="text-align: right">PO Date:</th></tr>
+		<tr><th style="text-align: right">Ship To:</th></tr>
+		<tr><th style="text-align: right">Expedisi:</th></tr>
+		<tr><th style="text-align: right">Jenis Mobil:</th></tr>
+		<tr><th style="text-align: right">Total Amount:</th></tr>
+		<tr><th style="text-align: right">Dimensi Mobil (m3):</th></tr>
+		<tr><th style="text-align: right">Dimensi Order (m3):</th></tr>
+		<tr><th style="text-align: right">Selisih Dimensi (m3):</th></tr>
+		<tr><th height="60" style="text-align: right">Keterangan:</th></tr>
+	</table>
+	<p/>
+	<table id="tblOrderItemFixed" style="font-align: center">
+		<tr id="prod_r0">
+			<th style="font-align: center">
+				Product ID</th>
+			<th>
+				Product Name</th>
+			<th>
+				Unit</th>
+		</tr> 
+		<th:block th:each="inputProduct,stat : *{inputProducts}">
+			<tr>
+				<td width="100px" 
+					th:text="${inputProduct.custProd.productCode}">
+				</td>
+				<td width="230px" 
+					th:text="${inputProduct.product.productName}">
+				</td>
+				<td>
+					<select id="uom" 
+						style="width: 60px"
+						onchange="changeUom(this)">
+						<option th:each="prodUom : ${inputProduct.prodUoms}"
+						        th:value="${prodUom.conversionRate}"
+						        th:text="${prodUom.uomCode}"
+						        th:selected="${inputWebOrder.inputProducts[__${stat.index}__].custProd.priceUom==prodUom.uomCode}"/>
+					</select>
+				</td>
+			</tr>
+		</th:block>
+		<tr>
+			<td style="border: none;" colspan="3" align="right">
+				<b>Unit Price:</b>&nbsp;&nbsp;
 			</td>
-			<td style="border: none;">
-				<select id="orderType" name="orderType"
-					onchange="changeOrderType(this)">
-					<option th:each="orderType : ${orderTypes}"
-		               th:value="${orderType}"
-		               th:text="${orderType}"
-		               th:selected="${inputWebOrder.inputOrder.orderGrp.orderType==orderType}"/>
-				  </select>
-					<input id="orderTypeSelected" type="hidden" 
-						th:field="*{inputOrder.orderGrp.orderType}" />
+		</tr>
+		<tr>
+			<td style="border: none;" colspan="3" align="right">	
+				<b>Amount:</b>&nbsp;&nbsp;
 			</td>
 		</tr>
 	</table>
-  	<table style="border: none;">
-		<tr style="border: none;">
-			<td width="150px" style="border: none;" align="right">
-				<b>Order By:</b>&nbsp;&nbsp;
+</div> <!-- div fixedpart --> 
+
+<div class="dataordercontainer" id="23l">
+	<table id="tblOrderData">
+		<tr>
+			<td>
+				<input id="poNumber1" type="text" 
+						th:field="*{inputOrder.order1.poNumber}"
+						readonly="readonly"/>
+				<input type="hidden" th:field="*{inputOrder.order1.orderId}" />
+				<input type="hidden" th:field="*{inputOrder.order1.company}" />
+				<input type="hidden" th:field="*{inputOrder.order1.custId}" />
 			</td>
-			<td style="border: none;">
-				<input type="radio" name="orderby"
-					id="cmob"
-					value="CMOB"
-					onclick="generateCMOB()"/>
-					CMOB
-				<input type="radio" name="orderby"
-					id="manual"
-					value="Manual"
-					onclick="resetOrder()"/>
-					Manual
-				<input id="orderBySelected" type="hidden" 
-					th:field="*{inputOrder.orderGrp.orderBy}" />
+			<td id="po2" class="order2" style="display: none;">		
+				<input id="poNumber2" type="text" 
+					th:field="*{inputOrder.order2.poNumber}"
+					readonly="readonly"/>
+				<input type="hidden" th:field="*{inputOrder.order2.orderId}" />
+				<input type="hidden" th:field="*{inputOrder.order2.company}" />
+				<input type="hidden" th:field="*{inputOrder.order2.custId}" />
 			</td>
-		</tr>
-	</table>
-  <table style="border: none;">
-		<tr style="border: none;">
-			<td width="150px" style="border: none;" align="right">
-				<b>Lead Time:</b>&nbsp;&nbsp;
+			<td id="po3" class="order3" style="display: none;">
+				<input id="poNumber3" type="text" 
+					th:field="*{inputOrder.order3.poNumber}"
+					readonly="readonly"/>
+				<input type="hidden" th:field="*{inputOrder.order3.orderId}" />
+				<input type="hidden" th:field="*{inputOrder.order3.company}" />
+				<input type="hidden" th:field="*{inputOrder.order3.custId}" />
 			</td>
-			<td style="border: none;"> 
-			  <input type="number" name="leadtime" 
-			  	th:field="*{inputOrder.orderGrp.leadTime}" 
-			  	min="0"/>
-			  Days
+			<td id="po4" class="order4" style="display: none;">	
+				<input id="poNumber4" type="text" 
+					th:field="*{inputOrder.order4.poNumber}"
+					readonly="readonly"/>
+				<input type="hidden" th:field="*{inputOrder.order4.orderId}" />
+				<input type="hidden" th:field="*{inputOrder.order4.company}" />
+				<input type="hidden" th:field="*{inputOrder.order4.custId}" />
 			</td>
-		</tr>
-	</table>
-  <table style="border: none;">
-		<tr style="border: none;">
-			<td width="150px" style="border: none;" align="right">
-				<b>Jumlah Order:</b>&nbsp;&nbsp;
-			</td>
-			<td style="border: none;"> 
-			  <select id="jumlahOrder" name="jmlOrder" 
-			  	onchange="changeJumlahOrder(this)">
-			       <option th:each="jumlahOrder : ${jumlahOrders}"
-			               th:value="${jumlahOrder}"
-			               th:text="${jumlahOrder}"
-			               th:selected="${inputWebOrder.inputOrder.orderGrp.jumlahOrder==jumlahOrder}"/>
-			  </select>
-				<input id="jumlahOrderSelected" type="hidden" 
-					th:field="*{inputOrder.orderGrp.jumlahOrder}" />
+			<td id="po5" class="order5" style="display: none;">
+				<input id="poNumber5" type="text" 
+					th:field="*{inputOrder.order5.poNumber}"
+					readonly="readonly"/>
+				<input type="hidden" th:field="*{inputOrder.order5.orderId}" />
+				<input type="hidden" th:field="*{inputOrder.order5.company}" />
+				<input type="hidden" th:field="*{inputOrder.order5.custId}" />
 			</td>
 		</tr>
-	</table>
-	<table style="border: none;">
-		<tr style="border: none;">
-			<td width="150px" style="border: none;" align="right">
-				<b>Sisa Limit:</b>&nbsp;&nbsp;
+		<tr>
+			<td>
+				<input id="poDate1" type="date" 
+					data-date-inline-picker="true"
+					th:field="*{inputOrder.order1.orderDate}"
+					th:min="${minOrderDate}"
+					th:max="${maxOrderDate}"/>
 			</td>
-			<td style="border: none;"> 
-			  <input id="sisaLimit" type="number" 
-			  	th:field="*{inputOrder.orderGrp.sisaLimit}" 
-			  	readonly="readonly"/>
-			  <input id="sisaLimitInit" type="hidden" 
-			  	th:field="*{customer.creditLimit}" />
-			  <label id="sisaLimitDP"
-			  	style="display: none;">
-			  	Sisa limit tidak berlaku untuk order dengan DP
-			  </label>
+			<td class="order2" style="display: none;">
+				<input id="poDate2" type="date" 
+					data-date-inline-picker="true" 
+					th:field="*{inputOrder.order2.orderDate}"
+					th:min="${minOrderDate}"
+					th:max="${maxOrderDate}"/>
+			</td>
+			<td class="order3" style="display: none;">
+				<input id="poDate3" type="date" 
+					data-date-inline-picker="true"
+					th:field="*{inputOrder.order3.orderDate}"
+					th:min="${minOrderDate}"
+					th:max="${maxOrderDate}"/>
+			</td>
+			<td class="order4" style="display: none;">
+				<input id="poDate4" type="date" 
+					data-date-inline-picker="true"
+					th:field="*{inputOrder.order4.orderDate}"
+					th:min="${minOrderDate}"
+					th:max="${maxOrderDate}"/>
+			</td>
+			<td class="order5" style="display: none;">
+				<input id="poDate5" type="date" 
+					data-date-inline-picker="true"
+					th:field="*{inputOrder.order5.orderDate}"
+					th:min="${minOrderDate}"
+					th:max="${maxOrderDate}"/>
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<select name="shipTo1"
+					onchange="changeShipTo1(this)">
+		    		<option th:each="cst : ${custShipTo}"
+			               th:value="${cst.shipToId}"
+			               th:text="${cst.shipToLocation}"
+			               th:selected="${inputWebOrder.inputOrder.order1.shipTo==cst.shipToId}"/>
+				</select>
+				<input id="shipTo1Selected" type="hidden" 
+					th:field="*{inputOrder.order1.shipTo}" />
+			</td>
+			<td class="order2" style="display: none;">
+				<select name="shipTo2"
+					onchange="changeShipTo2(this)">
+		    		<option th:each="cst : ${custShipTo}"
+			               th:value="${cst.shipToId}"
+			               th:text="${cst.shipToLocation}"
+			               th:selected="${inputWebOrder.inputOrder.order2.shipTo==cst.shipToId}"/>
+				</select>
+				<input id="shipTo2Selected" type="hidden" 
+					th:field="*{inputOrder.order2.shipTo}" />
+			</td>
+			<td class="order3" style="display: none;">
+				<select name="shipTo3"
+					onchange="changeShipTo3(this)">
+		    		<option th:each="cst : ${custShipTo}"
+			               th:value="${cst.shipToId}"
+			               th:text="${cst.shipToLocation}"
+			               th:selected="${inputWebOrder.inputOrder.order3.shipTo==cst.shipToId}"/>
+				</select>
+				<input id="shipTo3Selected" type="hidden" 
+					th:field="*{inputOrder.order3.shipTo}" />
+			</td>
+			<td class="order4" style="display: none;">
+				<select name="shipTo4"
+					onchange="changeShipTo4(this)">
+		    		<option th:each="cst : ${custShipTo}"
+			               th:value="${cst.shipToId}"
+			               th:text="${cst.shipToLocation}"
+			               th:selected="${inputWebOrder.inputOrder.order4.shipTo==cst.shipToId}"/>
+				</select>
+				<input id="shipTo4Selected" type="hidden" 
+					th:field="*{inputOrder.order4.shipTo}" />
+			</td>
+			<td class="order5" style="display: none;">
+				<select name="shipTo5"
+					onchange="changeShipTo5(this)">
+		    		<option th:each="cst : ${custShipTo}"
+			               th:value="${cst.shipToId}"
+			               th:text="${cst.shipToLocation}"
+			               th:selected="${inputWebOrder.inputOrder.order5.shipTo==cst.shipToId}"/>
+				</select>
+				<input id="shipTo5Selected" type="hidden" 
+					th:field="*{inputOrder.order5.shipTo}" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input list="kurir1" name="ekspedisi1" 
+					th:value="*{inputOrder.order1.expedisi}"
+					onchange="changeExpedisi1(this)"/>
+				<datalist id="kurir1">
+					<select name="ekspedisi1">
+						<option th:each="expedisi : ${expedisis}"
+			               th:value="${expedisi}"
+			               th:text="${expedisi}"/>
+					</select>
+				</datalist>
+				<input id="expedisi1Selected" type="hidden" 
+					th:field="*{inputOrder.order1.expedisi}" />
+			</td>
+			<td class="order2" style="display: none;">
+				<input list="kurir2" name="ekspedisi2" 
+					th:value="*{inputOrder.order2.expedisi}"
+					onchange="changeExpedisi2(this)"/>
+				<datalist id="kurir2">
+					<select name="ekspedisi2">
+						<option th:each="expedisi : ${expedisis}"
+			               th:value="${expedisi}"
+			               th:text="${expedisi}"/>
+					</select>
+				</datalist>
+				<input id="expedisi2Selected" type="hidden" 
+					th:field="*{inputOrder.order2.expedisi}" />
+			</td>
+			<td class="order3" style="display: none;">
+				<input list="kurir3" name="ekspedisi3" 
+					th:value="*{inputOrder.order3.expedisi}"
+					onchange="changeExpedisi3(this)"/>
+				<datalist id="kurir3">
+					<select name="ekspedisi3">
+						<option th:each="expedisi : ${expedisis}"
+			               th:value="${expedisi}"
+			               th:text="${expedisi}"/>
+					</select>
+				</datalist>
+				<input id="expedisi3Selected" type="hidden" 
+					th:field="*{inputOrder.order3.expedisi}" />
+			</td>
+			<td class="order4" style="display: none;">					
+				<input list="kurir4" name="ekspedisi4" 
+					th:value="*{inputOrder.order4.expedisi}"
+					onchange="changeExpedisi4(this)"/>
+				<datalist id="kurir4">
+					<select name="ekspedisi4">
+						<option th:each="expedisi : ${expedisis}"
+			               th:value="${expedisi}"
+			               th:text="${expedisi}"/>
+					</select>
+				</datalist>
+				<input id="expedisi4Selected" type="hidden" 
+					th:field="*{inputOrder.order4.expedisi}" />
+			</td>
+			<td class="order5" style="display: none;">					
+				<input list="kurir5" name="ekspedisi5" 
+					th:value="*{inputOrder.order5.expedisi}"
+					onchange="changeExpedisi5(this)"/>
+				<datalist id="kurir5">
+					<select name="ekspedisi5">
+						<option th:each="expedisi : ${expedisis}"
+			               th:value="${expedisi}"
+			               th:text="${expedisi}"/>
+					</select>
+				</datalist>
+				<input id="expedisi5Selected" type="hidden" 
+					th:field="*{inputOrder.order5.expedisi}" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<select id="mobil1" onchange="changeMobil1(this)">
+		       		<option th:each="mobil : ${listMobils}"
+			               th:value="${mobil.mobilPanjang
+			               		*mobil.mobilLebar
+			               		*mobil.mobilTinggi/1000000000}"
+			               th:text="${mobil.mobilDesc}"
+			               th:selected="${inputWebOrder.inputOrder.order1.jenisMobil==mobil.mobilDesc}"/>
+				</select>
+				<input id="mobil1Selected" type="hidden" 
+					th:field="*{inputOrder.order1.jenisMobil}" />
+			</td>
+			<td class="order2" style="display: none;">
+				<select id="mobil2" onchange="changeMobil2(this)">
+		       		<option th:each="mobil : ${listMobils}"
+			               th:value="${mobil.mobilPanjang
+			               		*mobil.mobilLebar
+			               		*mobil.mobilTinggi/1000000000}"
+			               th:text="${mobil.mobilDesc}"
+			               th:selected="${inputWebOrder.inputOrder.order2.jenisMobil==mobil.mobilDesc}"/>
+				</select>
+				<input id="mobil2Selected" type="hidden" 
+					th:field="*{inputOrder.order2.jenisMobil}" />
+			</td>
+			<td class="order3" style="display: none;">
+				<select name="mobil3" onchange="changeMobil3(this)">
+				    <option th:each="mobil : ${listMobils}"
+			               th:value="${mobil.mobilPanjang
+			               		*mobil.mobilLebar
+			               		*mobil.mobilTinggi/1000000000}"
+			               th:text="${mobil.mobilDesc}"
+			               th:selected="${inputWebOrder.inputOrder.order3.jenisMobil==mobil.mobilDesc}"/>
+				</select>
+				<input id="mobil3Selected" type="hidden" 
+					th:field="*{inputOrder.order3.jenisMobil}" />
+			</td>
+			<td class="order4" style="display: none;">
+				<select name="mobil4" onchange="changeMobil4(this)">
+				    <option th:each="mobil : ${listMobils}"
+			               th:value="${mobil.mobilPanjang
+			               		*mobil.mobilLebar
+			               		*mobil.mobilTinggi/1000000000}"
+			               th:text="${mobil.mobilDesc}"
+			               th:selected="${inputWebOrder.inputOrder.order4.jenisMobil==mobil.mobilDesc}"/>
+				</select>
+				<input id="mobil4Selected" type="hidden" 
+					th:field="*{inputOrder.order4.jenisMobil}" />
+			</td>
+			<td class="order5" style="display: none;">
+				<select name="mobil5" onchange="changeMobil5(this)">
+				    <option th:each="mobil : ${listMobils}"
+			               th:value="${mobil.mobilPanjang
+			               		*mobil.mobilLebar
+			               		*mobil.mobilTinggi/1000000000}"
+			               th:text="${mobil.mobilDesc}"
+			               th:selected="${inputWebOrder.inputOrder.order5.jenisMobil==mobil.mobilDesc}"/>
+				</select>
+				<input id="mobil5Selected" type="hidden" 
+					th:field="*{inputOrder.order5.jenisMobil}" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="totalAmount1" type="number" 
+					th:field="*{inputOrder.order1.totalPrice}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order2" style="display: none;">
+				<input id="totalAmount2" type="number" 
+					th:field="*{inputOrder.order2.totalPrice}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order3" style="display: none;">
+				<input id="totalAmount3" type="number" 
+					th:field="*{inputOrder.order3.totalPrice}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order4" style="display: none;">
+				<input id="totalAmount4" type="number" 
+					th:field="*{inputOrder.order4.totalPrice}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order5" style="display: none;">
+				<input id="totalAmount5" type="number" 
+					th:field="*{inputOrder.order5.totalPrice}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="dimensiMobil1" type="number" 
+					th:field="*{inputOrder.order1.tonaseMobil}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order2" style="display: none;">
+				<input id="dimensiMobil2" type="number" 
+					th:field="*{inputOrder.order2.tonaseMobil}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order3" style="display: none;">
+				<input id="dimensiMobil3" type="number" 
+					th:field="*{inputOrder.order3.tonaseMobil}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order4" style="display: none;">
+				<input id="dimensiMobil4" type="number" 
+					th:field="*{inputOrder.order4.tonaseMobil}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order5" style="display: none;">
+				<input id="dimensiMobil5" type="number" 
+					th:field="*{inputOrder.order5.tonaseMobil}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="dimensiOrder1" type="number" 
+					th:field="*{inputOrder.order1.tonaseOrder}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order2" style="display: none;">
+				<input id="dimensiOrder2" type="number" 
+					th:field="*{inputOrder.order2.tonaseOrder}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order3" style="display: none;">
+				<input id="dimensiOrder3" type="number" 
+					th:field="*{inputOrder.order3.tonaseOrder}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order4" style="display: none;">
+				<input id="dimensiOrder4" type="number" 
+					th:field="*{inputOrder.order4.tonaseOrder}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+			<td class="order5" style="display: none;">
+				<input id="dimensiOrder5" type="number" 
+					th:field="*{inputOrder.order5.tonaseOrder}"
+					readonly="readonly"
+					style="text-align: right;"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="selisihDimensi1" type="number" 
+					th:field="*{inputOrder.order1.selisihTonase}"
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order2" style="display: none;">
+				<input id="selisihDimensi2" type="number" 
+					th:field="*{inputOrder.order2.selisihTonase}"
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order3" style="display: none;">
+				<input id="selisihDimensi3" type="number" 
+					th:field="*{inputOrder.order3.selisihTonase}"
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order4" style="display: none;">
+				<input id="selisihDimensi4" type="number" 
+					th:field="*{inputOrder.order4.selisihTonase}"
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order5" style="display: none;">
+				<input id="selisihDimensi5" type="number" 
+					th:field="*{inputOrder.order5.selisihTonase}"
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+		</tr>
+        <tr>
+			<td height="60" >
+			  <textarea name="remark1" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order2" style="display: none;">
+			  <textarea name="remark2" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order3" style="display: none;">
+			  <textarea name="remark3" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order4" style="display: none;">
+			  <textarea name="remark4" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order5" style="display: none;">
+			  <textarea name="remark5" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+        </tr>
 	</table>
-</fieldset>
-<br/>
+	<p/>
+    <table id="tblOrderItem">
+      <tr>
+        <th>Quantity 1</th>
+        <th class="order2" style="display: none;">Quantity 2</th>
+        <th class="order3" style="display: none;">Quantity 3</th>
+        <th class="order4" style="display: none;">Quantity 4</th>
+        <th class="order5" style="display: none;">Quantity 5</th>
+        <th>Total</th>  
+      </tr>
+      <th:block th:each="inputProduct,stat : *{inputProducts}">
+      	<tr>
+			<td>
+				<input id="dtl1" type="number" 
+					 th:field="*{inputProducts[__${stat.index}__].orderQty1}"
+					min="0"
+					onkeyup="calcAmount1(this)"
+					onfocus="calcAmount1(this)" 
+					onclick="calcAmount1(this)"
+					style="text-align: right;"/>
+				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.company}" />
+				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.productCode}" />
+				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.productName}" />
+			</td>
+			<td class="order2"
+				width="150px" id="detail2" style="display: none;">
+				<input id="dtl2" type="number" 
+					th:field="*{inputProducts[__${stat.index}__].orderQty2}"  
+					min="0"
+					onkeyup="calcAmount2(this)"
+					onfocus="calcAmount2(this)"
+					onclick="calcAmount2(this)"
+					style="text-align: right;"/>
+			</td>
+			<td class="order3"
+				width="150px" id="detail3" style="display: none;">
+				<input id="dtl3" type="number"
+					th:field="*{inputProducts[__${stat.index}__].orderQty3}"  
+					min="0"
+					onkeyup="calcAmount3(this)"
+					onfocus="calcAmount3(this)"
+					onclick="calcAmount3(this)"
+					style="text-align: right;"/>
+			</td>
+			<td class="order4"
+				width="150px" id="detail4" style="display: none;">
+				<input id="dtl4" type="number" 
+					th:field="*{inputProducts[__${stat.index}__].orderQty4}" 
+					min="0"
+					onkeyup="calcAmount4(this)"
+					onfocus="calcAmount4(this)"
+					onclick="calcAmount4(this)"
+					style="text-align: right;"/>
+			</td>
+			<td class="order5"
+				width="150px" id="detail5" style="display: none;">
+				<input id="dtl5" type="number" 
+					th:field="*{inputProducts[__${stat.index}__].orderQty5}" 
+					min="0"
+					onkeyup="calcAmount5(this)"
+					onfocus="calcAmount5(this)"
+					onclick="calcAmount5(this)"
+					style="text-align: right;"/>
+			</td>
+			<td>
+				<input id="dtlTotal" type="number" value="0"
+					style="text-align: right;" disabled="disabled"/>
+			</td>
+			<td style="display: none;">
+				<input id="untPrice" type="number" 
+					th:value="${inputProduct.custProd.price}"
+				style="text-align: right;"/>
+			</td>
+			<td style="display: none;">
+				<input id="untPriceInit" type="number" 
+					th:value="${inputProduct.custProd.price}"
+				style="text-align: right;"/>
+			</td>
+			<td style="display: none;">
+				<input id="prodWidth" type="number" 
+					th:value="${inputProduct.product.prodWidth}"/>
+				<input id="prodLength" type="number" 
+					th:value="${inputProduct.product.prodLength}"/>
+				<input id="prodHeight" type="number" 
+					th:value="${inputProduct.product.prodHeight}"/>
+				<input id="productCat1" type="text" 
+					th:value="${inputProduct.product.productCat1}"/>
+			</td>
+		</tr>
+      </th:block> 
+		<tr>
+			<td style="border: none;" width="150px">	
+		<input id="up1" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+		</td>
+		<td style="border: none; display: none;" width="150px" id="unitPrice2">	
+		<input id="up2" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>	
+		</td>
+		<td style="border: none; display: none;" width="150px" id="unitPrice3">	
+		<input id="up3" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>	
+		</td>
+		<td style="border: none; display: none;" width="150px" id="unitPrice4">	
+		<input id="up4" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>	
+		</td>
+		<td style="border: none; display: none;" width="150px" id="unitPrice5">	
+		<input id="up5" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+		</td>
+		<td style="border: none;" width="150px">	
+		<input id="upTotal" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+			</td>
+		</tr>
+		<tr>
+			<td style="border: none;" width="150px">	
+		<input id="amt1" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+		</td>
+		<td style="border: none; display: none;" width="150px" id="amount2">	
+		<input id="amt2" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>	
+		</td>
+		<td style="border: none; display: none;" width="150px" id="amount3">	
+		<input id="amt3" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+		</td>
+		<td style="border: none; display: none;" width="150px" id="amount4">	
+		<input id="amt4" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+		</td>
+		<td style="border: none; display: none;" width="150px" id="amount5">	
+		<input id="amt5" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+		</td>
+		<td style="border: none;" width="150px">	
+		<input id="amtTotal" type="number" value="0" disabled="disabled"
+			style="text-align: right;"/>
+			</td>
+		</tr>   
+    </table>
+</div>
+</div>
 
 <section>
 
@@ -1619,601 +846,18 @@ function changeJumlahOrder(obj) {
 </tr>
 <tr style="border: none;">
 	<td width="535px" style="border: none;" colspan="4">
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>PO Number:</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<input id="poNumber1" type="text" 
-						th:field="*{inputOrder.order1.poNumber}"
-						readonly="readonly"/>
-					<input type="hidden" th:field="*{inputOrder.order1.orderId}" />
-					<input type="hidden" th:field="*{inputOrder.order1.company}" />
-					<input type="hidden" th:field="*{inputOrder.order1.custId}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>PO Date:</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<input id="poDate1" type="date" 
-						data-date-inline-picker="true"
-						th:field="*{inputOrder.order1.orderDate}"
-						th:min="${minOrderDate}"
-						th:max="${maxOrderDate}"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>Ship To:</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<select name="shipTo1"
-						onchange="changeShipTo1(this)">
-			    		<option th:each="cst : ${custShipTo}"
-				               th:value="${cst.shipToId}"
-				               th:text="${cst.shipToLocation}"
-				               th:selected="${inputWebOrder.inputOrder.order1.shipTo==cst.shipToId}"/>
-					</select>
-					<input id="shipTo1Selected" type="hidden" 
-						th:field="*{inputOrder.order1.shipTo}" />
-				</td>
-			</tr>
-		</table>
-    	<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>Expedisi:</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<input list="kurir1" name="ekspedisi1" 
-						th:value="*{inputOrder.order1.expedisi}"
-						onchange="changeExpedisi1(this)"/>
-					<datalist id="kurir1">
-						<select name="ekspedisi1">
-							<option th:each="expedisi : ${expedisis}"
-				               th:value="${expedisi}"
-				               th:text="${expedisi}"/>
-						</select>
-					</datalist>
-					<input id="expedisi1Selected" type="hidden" 
-						th:field="*{inputOrder.order1.expedisi}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>Jenis Mobil:</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<select id="mobil1" onchange="changeMobil1(this)">
-			       		<option th:each="mobil : ${listMobils}"
-				               th:value="${mobil.mobilPanjang
-				               		*mobil.mobilLebar
-				               		*mobil.mobilTinggi/1000000}"
-				               th:text="${mobil.mobilDesc}"
-				               th:selected="${inputWebOrder.inputOrder.order1.jenisMobil==mobil.mobilDesc}"/>
-					</select>
-					<input id="mobil1Selected" type="hidden" 
-						th:field="*{inputOrder.order1.jenisMobil}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>Total Amount:</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<input id="totalAmount1" type="number" 
-						th:field="*{inputOrder.order1.totalPrice}"
-						readonly="readonly"
-						style="text-align: right;"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>Dimensi Mobil (m3):</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<input id="dimensiMobil1" type="number" 
-						th:field="*{inputOrder.order1.tonaseMobil}"
-						readonly="readonly"
-						style="text-align: right;"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>Dimensi Order(m3):</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<input id="dimensiOrder1" type="number" 
-						th:field="*{inputOrder.order1.tonaseOrder}"
-						readonly="readonly"
-						style="text-align: right;"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="410px" style="border: none;" align="right">
-					<b>Selisih Dimensi (m3):</b>&nbsp;&nbsp;
-				</td>
-				<td width="150px" style="border: none;">
-					<input id="selisihDimensi1" type="number" 
-						th:field="*{inputOrder.order1.selisihTonase}"
-						readonly="readonly"
-						style="text-align: right;" />
-				</td>
-			</tr>
-		</table>
 	</td>
 	<td id="order2" style="display: none; border: none;">
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poNumber2" type="text" 
-						th:field="*{inputOrder.order2.poNumber}"
-						readonly="readonly"/>
-					<input type="hidden" th:field="*{inputOrder.order2.orderId}" />
-					<input type="hidden" th:field="*{inputOrder.order2.company}" />
-					<input type="hidden" th:field="*{inputOrder.order2.custId}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poDate2" type="date" 
-						data-date-inline-picker="true" 
-						th:field="*{inputOrder.order2.orderDate}"
-						th:min="${minOrderDate}"
-						th:max="${maxOrderDate}"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select name="shipTo2"
-						onchange="changeShipTo2(this)">
-			    		<option th:each="cst : ${custShipTo}"
-				               th:value="${cst.shipToId}"
-				               th:text="${cst.shipToLocation}"
-				               th:selected="${inputWebOrder.inputOrder.order2.shipTo==cst.shipToId}"/>
-					</select>
-					<input id="shipTo2Selected" type="hidden" 
-						th:field="*{inputOrder.order2.shipTo}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input list="kurir2" name="ekspedisi2" 
-						th:value="*{inputOrder.order2.expedisi}"
-						onchange="changeExpedisi2(this)"/>
-					<datalist id="kurir2">
-						<select name="ekspedisi2">
-							<option th:each="expedisi : ${expedisis}"
-				               th:value="${expedisi}"
-				               th:text="${expedisi}"/>
-						</select>
-					</datalist>
-					<input id="expedisi2Selected" type="hidden" 
-						th:field="*{inputOrder.order2.expedisi}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select id="mobil2" onchange="changeMobil2(this)">
-			       		<option th:each="mobil : ${listMobils}"
-				               th:value="${mobil.mobilPanjang
-				               		*mobil.mobilLebar
-				               		*mobil.mobilTinggi/1000000}"
-				               th:text="${mobil.mobilDesc}"
-				               th:selected="${inputWebOrder.inputOrder.order2.jenisMobil==mobil.mobilDesc}"/>
-					</select>
-					<input id="mobil2Selected" type="hidden" 
-						th:field="*{inputOrder.order2.jenisMobil}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="totalAmount2" type="number" 
-						th:field="*{inputOrder.order2.totalPrice}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiMobil2" type="number" 
-						th:field="*{inputOrder.order2.tonaseMobil}"
-						style="text-align: right;" 
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiOrder2" type="number" 
-						th:field="*{inputOrder.order2.tonaseOrder}"
-						style="text-align: right;" 
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="selisihDimensi2" type="number" 
-						th:field="*{inputOrder.order2.selisihTonase}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
+		
 	</td>
 	<td id="order3" style="display: none; border: none;">
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poNumber3" type="text" 
-						th:field="*{inputOrder.order3.poNumber}"
-						readonly="readonly"/>
-					<input type="hidden" th:field="*{inputOrder.order3.orderId}" />
-					<input type="hidden" th:field="*{inputOrder.order3.company}" />
-					<input type="hidden" th:field="*{inputOrder.order3.custId}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poDate3" type="date" 
-						data-date-inline-picker="true"
-						th:field="*{inputOrder.order3.orderDate}"
-						th:min="${minOrderDate}"
-						th:max="${maxOrderDate}"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select name="shipTo3"
-						onchange="changeShipTo3(this)">
-			    		<option th:each="cst : ${custShipTo}"
-				               th:value="${cst.shipToId}"
-				               th:text="${cst.shipToLocation}"
-				               th:selected="${inputWebOrder.inputOrder.order3.shipTo==cst.shipToId}"/>
-					</select>
-					<input id="shipTo3Selected" type="hidden" 
-						th:field="*{inputOrder.order3.shipTo}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input list="kurir3" name="ekspedisi3" 
-						th:value="*{inputOrder.order3.expedisi}"
-						onchange="changeExpedisi3(this)"/>
-					<datalist id="kurir3">
-						<select name="ekspedisi3">
-							<option th:each="expedisi : ${expedisis}"
-				               th:value="${expedisi}"
-				               th:text="${expedisi}"/>
-						</select>
-					</datalist>
-					<input id="expedisi3Selected" type="hidden" 
-						th:field="*{inputOrder.order3.expedisi}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select name="mobil3" onchange="changeMobil3(this)">
-					    <option th:each="mobil : ${listMobils}"
-				               th:value="${mobil.mobilPanjang
-				               		*mobil.mobilLebar
-				               		*mobil.mobilTinggi/1000000}"
-				               th:text="${mobil.mobilDesc}"
-				               th:selected="${inputWebOrder.inputOrder.order3.jenisMobil==mobil.mobilDesc}"/>
-					</select>
-					<input id="mobil3Selected" type="hidden" 
-						th:field="*{inputOrder.order3.jenisMobil}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="totalAmount3" type="number" 
-						th:field="*{inputOrder.order3.totalPrice}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiMobil3" type="number" 
-						th:field="*{inputOrder.order3.tonaseMobil}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiOrder3" type="number" 
-						th:field="*{inputOrder.order3.tonaseOrder}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="selisihDimensi3" type="number" 
-						th:field="*{inputOrder.order3.selisihTonase}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
+		
 	</td>
 	<td id="order4" style="display: none; border: none;">
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poNumber4" type="text" 
-						th:field="*{inputOrder.order4.poNumber}"
-						readonly="readonly"/>
-					<input type="hidden" th:field="*{inputOrder.order4.orderId}" />
-					<input type="hidden" th:field="*{inputOrder.order4.company}" />
-					<input type="hidden" th:field="*{inputOrder.order4.custId}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poDate4" type="date" 
-						data-date-inline-picker="true"
-						th:field="*{inputOrder.order4.orderDate}"
-						th:min="${minOrderDate}"
-						th:max="${maxOrderDate}"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select name="shipTo4"
-						onchange="changeShipTo4(this)">
-			    		<option th:each="cst : ${custShipTo}"
-				               th:value="${cst.shipToId}"
-				               th:text="${cst.shipToLocation}"
-				               th:selected="${inputWebOrder.inputOrder.order4.shipTo==cst.shipToId}"/>
-					</select>
-					<input id="shipTo4Selected" type="hidden" 
-						th:field="*{inputOrder.order4.shipTo}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">					
-					<input list="kurir4" name="ekspedisi4" 
-						th:value="*{inputOrder.order4.expedisi}"
-						onchange="changeExpedisi4(this)"/>
-					<datalist id="kurir4">
-						<select name="ekspedisi4">
-							<option th:each="expedisi : ${expedisis}"
-				               th:value="${expedisi}"
-				               th:text="${expedisi}"/>
-						</select>
-					</datalist>
-					<input id="expedisi4Selected" type="hidden" 
-						th:field="*{inputOrder.order4.expedisi}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select name="mobil4" onchange="changeMobil4(this)">
-					    <option th:each="mobil : ${listMobils}"
-				               th:value="${mobil.mobilPanjang
-				               		*mobil.mobilLebar
-				               		*mobil.mobilTinggi/1000000}"
-				               th:text="${mobil.mobilDesc}"
-				               th:selected="${inputWebOrder.inputOrder.order4.jenisMobil==mobil.mobilDesc}"/>
-					</select>
-					<input id="mobil4Selected" type="hidden" 
-						th:field="*{inputOrder.order4.jenisMobil}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="totalAmount4" type="number" 
-						th:field="*{inputOrder.order4.totalPrice}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiMobil4" type="number" 
-						th:field="*{inputOrder.order4.tonaseMobil}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiOrder4" type="number" 
-						th:field="*{inputOrder.order4.tonaseOrder}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="selisihDimensi4" type="number" 
-						th:field="*{inputOrder.order4.selisihTonase}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
+		
 	</td>
 	<td id="order5" style="display: none; border: none;">
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poNumber5" type="text" 
-						th:field="*{inputOrder.order5.poNumber}"
-						readonly="readonly"/>
-					<input type="hidden" th:field="*{inputOrder.order5.orderId}" />
-					<input type="hidden" th:field="*{inputOrder.order5.company}" />
-					<input type="hidden" th:field="*{inputOrder.order5.custId}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="poDate5" type="date" 
-						data-date-inline-picker="true"
-						th:field="*{inputOrder.order5.orderDate}"
-						th:min="${minOrderDate}"
-						th:max="${maxOrderDate}"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select name="shipTo5"
-						onchange="changeShipTo5(this)">
-			    		<option th:each="cst : ${custShipTo}"
-				               th:value="${cst.shipToId}"
-				               th:text="${cst.shipToLocation}"
-				               th:selected="${inputWebOrder.inputOrder.order5.shipTo==cst.shipToId}"/>
-					</select>
-					<input id="shipTo5Selected" type="hidden" 
-						th:field="*{inputOrder.order5.shipTo}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">					
-					<input list="kurir5" name="ekspedisi5" 
-						th:value="*{inputOrder.order5.expedisi}"
-						onchange="changeExpedisi5(this)"/>
-					<datalist id="kurir5">
-						<select name="ekspedisi5">
-							<option th:each="expedisi : ${expedisis}"
-				               th:value="${expedisi}"
-				               th:text="${expedisi}"/>
-						</select>
-					</datalist>
-					<input id="expedisi5Selected" type="hidden" 
-						th:field="*{inputOrder.order5.expedisi}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<select name="mobil5" onchange="changeMobil5(this)">
-					    <option th:each="mobil : ${listMobils}"
-				               th:value="${mobil.mobilPanjang
-				               		*mobil.mobilLebar
-				               		*mobil.mobilTinggi/1000000}"
-				               th:text="${mobil.mobilDesc}"
-				               th:selected="${inputWebOrder.inputOrder.order5.jenisMobil==mobil.mobilDesc}"/>
-					</select>
-					<input id="mobil5Selected" type="hidden" 
-						th:field="*{inputOrder.order5.jenisMobil}" />
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="totalAmount5" type="number" 
-						th:field="*{inputOrder.order5.totalPrice}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiMobil5" type="number" 
-						th:field="*{inputOrder.order5.tonaseMobil}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="dimensiOrder5" type="number" 
-						th:field="*{inputOrder.order5.tonaseOrder}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
-		<table style="border: none;">
-			<tr style="border: none;">
-				<td width="150px" style="border: none;">
-					<input id="selisihDimensi5" type="number" 
-						th:field="*{inputOrder.order5.selisihTonase}"
-						style="text-align: right;"
-						readonly="readonly"/>
-				</td>
-			</tr>
-		</table>
+		
 	</td>
 </tr>
 <tr>
@@ -2321,7 +965,7 @@ function changeJumlahOrder(obj) {
 			th:value="${inputProduct.product.prodLength}"/>
 		<input id="prodHeight" type="number" 
 			th:value="${inputProduct.product.prodHeight}"/>
-		<input id="productCat1" type="number" 
+		<input id="productCat1" type="text" 
 			th:value="${inputProduct.product.productCat1}"/>
 	</td>
 

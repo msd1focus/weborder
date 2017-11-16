@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.focus.weborder.custshipto.CustShipTo;
-import com.focus.weborder.custshipto.CustShipToService;
 import com.focus.weborder.services.customer.Customer;
 import com.focus.weborder.services.customer.CustomerService;
 import com.focus.weborder.services.custprod.CustProd;
 import com.focus.weborder.services.custprod.CustProdService;
+import com.focus.weborder.services.custshipto.CustShipTo;
+import com.focus.weborder.services.custshipto.CustShipToService;
 import com.focus.weborder.services.listmobil.ListMobil;
 import com.focus.weborder.services.listmobil.ListMobilService;
 import com.focus.weborder.services.order.Order;

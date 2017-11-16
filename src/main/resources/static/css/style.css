@@ -1,0 +1,178 @@
+
+
+/*
+Author: XpeedStudio
+Author URI: http://themeforest.net/user/XpeedStudio/portfolio
+*/
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+html,
+body {
+    background-color: #ffffff;
+    font-size: 15px;
+    color: #565656;
+    width: 100%;
+    padding: 0;
+    margin-left: 10;
+    margin-right: 10;
+    font-family: 'roboto', sans-serif;
+    font-weight: 300;
+    font-family: 'Raleway', sans-serif;
+}
+
+.order1 {} /* edit amin 20171117*/
+.order2 {} /* edit amin 20171117*/
+.order3 {} /* edit amin 20171117*/
+.order4 {} /* edit amin 20171117*/
+.order5 {} /* edit amin 20171117*/
+
+/*============== Frans ============*/
+.bagianlogo {
+    position: static;
+    top: 0;
+  /*  left: 0;
+    right: 0; 
+    bottom: 0; */
+    background-color: #304360;
+    z-index: 5;
+    height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+    width: 95%;
+    overflow: hidden !important; 
+}
+
+.bagianlogox {
+    position: static;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #304360;
+    z-index: 9;
+    height: 100px;
+    overflow: hidden !important; 
+}
+
+#framesetting{
+    position: static;
+    background-color: #f2f9ef;
+    border: 1px solid #73A3f1;
+    z-index: 95002;
+/*    height: 30em; */
+	margin-left: auto;
+	margin-right: auto;
+    width: 95%;
+    overflow: hidden; 
+}
+
+#ordercontainer{
+    position: relative;
+    background-color: #f4f8ff;
+    border: 1px solid #73A3f1;
+    z-index: 90;
+    min-height: 1020px;  
+	margin-left: auto;
+	margin-right: auto;
+    width: 95%;
+    /* overflow: hidden; */  /* edit amin 20171117*/
+    overflow-x: hidden; /* edit amin 20171117*/
+	overflow-y: auto; /* edit amin 20171117*/
+}
+
+#fixedpart {
+    position: absolute;
+    background-color: #ede7d0;
+/*    left:0px;*/
+	float: left;
+/*    border: 1px solid #72AD21; */
+    z-index: 200;
+/*    height: 40em; */
+    width: 415px; 
+    display: inline-block;
+    overflow: hidden;
+}
+
+.dataordercontainer{
+    position: absolute;
+    left: 415px;
+    background-color: #ede7d0;
+    border: 1px solid #73A3f1;
+    z-index: 998;
+/**    height: 60%; */
+    width: 700px;
+    overflow-x: auto;
+}
+
+
+p.label {
+    color: blue;
+}
+p.data {
+    color: black;
+}
+
+
+.hidepo2 tr th:nth-child(2), 
+.hidepo2 tr td:nth-child(2) {display: none;}
+
+.hidepo3 tr th:nth-child(3), 
+.hidepo3 tr td:nth-child(3) {display: none;}
+
+.hidepo4 tr th:nth-child(4), 
+.hidepo4 tr td:nth-child(4) {display: none;}
+
+.hidepo5 tr th:nth-child(5), 
+.hidepo5 tr td:nth-child(5) {display: none;}
+
+
+select, input, textarea{
+    width: 150px;
+}
+
+div.container {
+  width: 100%;
+  border: 1px solid gray;
+}
+
+tr {
+  height: 30px;
+}
+th, td {
+/*	border-bottom: 1px solid green; */
+    padding: 1px;
+}
+
+th {text-align: right}
+
+#table1 {
+    border: 1px solid black;
+    border-collapse: collapse;  
+    margin-left: 30px;
+ /*   border-color: #eaf4f7; */
+}
+#table1 tr th,
+#table1 tr td {
+    border-bottom: 1px solid green; 
+    padding: 1px;
+}
+
+#tblOrderItemFixed tr th,
+#tblOrderItemFixed tr td,
+#tblOrderItem tr th,
+#tblOrderItem tr td
+ {
+    border-bottom: 1px solid green; 
+    padding: 1px;
+}
+
+/*
+#tblOrder tr td:nth-child(n+3), 
+#tblOrderItem tr th:nth-child(n+2),
+#tblOrderItem tr td:nth-child(n+2) {display:none;}
+#tblOrderItem tr th:nth-child(3),
+#tblOrderItem tr td:nth-child(3)  {display: none;}
+*/
+
+                
