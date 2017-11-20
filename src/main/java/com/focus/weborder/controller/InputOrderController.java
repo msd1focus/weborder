@@ -763,7 +763,7 @@ public class InputOrderController {
 		Long tonaseMobil = (listMobils.get(0).getMobilPanjang()
 				*listMobils.get(0).getMobilLebar()
 				*listMobils.get(0).getMobilTinggi())
-				/1000000;
+				/1000000000;
 		order.setTonaseMobil(tonaseMobil);
 		order.setTonaseOrder((long)0);
 		order.setSelisihTonase(tonaseMobil);

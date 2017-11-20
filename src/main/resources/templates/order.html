@@ -31,7 +31,7 @@
 		<td>
 			<h4>
 				<font style="padding-left: 20px">Welcome,</font>
-				<b><label th:text="*{customer.custCompanyId}"></label></b>!
+				<b><label th:text="*{customer.customerNumber}"></label></b>!
 			</h4>
 		</td>
 	   	<td style="padding-left: 10px">
@@ -75,7 +75,7 @@
 		        <tr>
 		        	<td style="border-bottom: none">
 						<input type="text" 
-							th:value="*{customer.custCompanyId}" 
+							th:value="*{customer.customerNumber}" 
 						  	readonly="readonly"/>
 						<input id="custId" type="hidden" 
 							th:field="*{customer.custId}" />
@@ -156,7 +156,7 @@
 				th:field="*{inputOrder.orderGrp.orderBy}" />
 		</td>
 	</tr>
-	<tr>
+	<tr id="rowLeadTime" style="display: none;">
 		<th>
 			Lead Time:&nbsp;
 		</th>
@@ -204,10 +204,11 @@
 
 <div id="ordercontainer">
 
-<div id="fixedpart">
+<!-- <div id="fixedpart"> -->
 	<table id="tblOrderFixed" >
 		<tr><th style="text-align: right; width: 408px">PO Number:</th></tr>
 		<tr><th style="text-align: right">PO Date:</th></tr>
+		<tr><th height="60" style="text-align: right">Keterangan:</th></tr>
 		<tr><th style="text-align: right">Ship To:</th></tr>
 		<tr><th style="text-align: right">Expedisi:</th></tr>
 		<tr><th style="text-align: right">Jenis Mobil:</th></tr>
@@ -215,16 +216,15 @@
 		<tr><th style="text-align: right">Dimensi Mobil (m3):</th></tr>
 		<tr><th style="text-align: right">Dimensi Order (m3):</th></tr>
 		<tr><th style="text-align: right">Selisih Dimensi (m3):</th></tr>
-		<tr><th height="60" style="text-align: right">Keterangan:</th></tr>
 	</table>
 	<p/>
 	<table id="tblOrderItemFixed" style="font-align: center">
 		<tr id="prod_r0">
-			<th style="font-align: center">
+			<th style="text-align: center">
 				Product ID</th>
-			<th>
+			<th style="text-align: center">
 				Product Name</th>
-			<th>
+			<th style="text-align: center">
 				Unit</th>
 		</tr> 
 		<th:block th:each="inputProduct,stat : *{inputProducts}">
@@ -258,7 +258,8 @@
 			</td>
 		</tr>
 	</table>
-</div> <!-- div fixedpart --> 
+    <p style="height:1px"/>
+<!-- </div> --> <!-- div fixedpart --> 
 
 <div class="dataordercontainer" id="23l">
 	<table id="tblOrderData">
@@ -341,13 +342,35 @@
 					th:max="${maxOrderDate}"/>
 			</td>
 		</tr>
+        <tr>
+			<td height="60" >
+			  <textarea name="remark1" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order2" style="display: none;">
+			  <textarea name="remark2" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order3" style="display: none;">
+			  <textarea name="remark3" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order4" style="display: none;">
+			  <textarea name="remark4" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+			<td height="60" class="order5" style="display: none;">
+			  <textarea name="remark5" maxlength="65" rows="3" cols="23"
+			  	style="resize: none">isi ini</textarea>
+			</td>
+        </tr>
 		<tr>
 			<td>
 				<select name="shipTo1"
 					onchange="changeShipTo1(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
-			               th:text="${cst.shipToLocation}"
+			               th:text="${cst.shipToLocation + ' - ' + cst.shipToAddr}"
 			               th:selected="${inputWebOrder.inputOrder.order1.shipTo==cst.shipToId}"/>
 				</select>
 				<input id="shipTo1Selected" type="hidden" 
@@ -358,7 +381,7 @@
 					onchange="changeShipTo2(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
-			               th:text="${cst.shipToLocation}"
+			               th:text="${cst.shipToLocation + ' - ' + cst.shipToAddr}"
 			               th:selected="${inputWebOrder.inputOrder.order2.shipTo==cst.shipToId}"/>
 				</select>
 				<input id="shipTo2Selected" type="hidden" 
@@ -369,7 +392,7 @@
 					onchange="changeShipTo3(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
-			               th:text="${cst.shipToLocation}"
+			               th:text="${cst.shipToLocation + ' - ' + cst.shipToAddr}"
 			               th:selected="${inputWebOrder.inputOrder.order3.shipTo==cst.shipToId}"/>
 				</select>
 				<input id="shipTo3Selected" type="hidden" 
@@ -380,7 +403,7 @@
 					onchange="changeShipTo4(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
-			               th:text="${cst.shipToLocation}"
+			               th:text="${cst.shipToLocation + ' - ' + cst.shipToAddr}"
 			               th:selected="${inputWebOrder.inputOrder.order4.shipTo==cst.shipToId}"/>
 				</select>
 				<input id="shipTo4Selected" type="hidden" 
@@ -391,7 +414,7 @@
 					onchange="changeShipTo5(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
-			               th:text="${cst.shipToLocation}"
+			               th:text="${cst.shipToLocation + ' - ' + cst.shipToAddr}"
 			               th:selected="${inputWebOrder.inputOrder.order5.shipTo==cst.shipToId}"/>
 				</select>
 				<input id="shipTo5Selected" type="hidden" 
@@ -660,37 +683,15 @@
 					style="text-align: right;" />
 			</td>
 		</tr>
-        <tr>
-			<td height="60" >
-			  <textarea name="remark1" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
-			</td>
-			<td height="60" class="order2" style="display: none;">
-			  <textarea name="remark2" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
-			</td>
-			<td height="60" class="order3" style="display: none;">
-			  <textarea name="remark3" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
-			</td>
-			<td height="60" class="order4" style="display: none;">
-			  <textarea name="remark4" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
-			</td>
-			<td height="60" class="order5" style="display: none;">
-			  <textarea name="remark5" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
-			</td>
-        </tr>
 	</table>
 	<p/>
-    <table id="tblOrderItem">
-      <tr>
-        <th>Quantity 1</th>
-        <th class="order2" style="display: none;">Quantity 2</th>
-        <th class="order3" style="display: none;">Quantity 3</th>
-        <th class="order4" style="display: none;">Quantity 4</th>
-        <th class="order5" style="display: none;">Quantity 5</th>
+    <table id="tblOrder">
+      <tr>   	
+        <th style="text-align: center">Quantity 1</th>
+        <th class="order2" style="text-align: center; display: none;">Quantity 2</th>
+        <th class="order3" style="text-align: center; display: none;">Quantity 3</th>
+        <th class="order4" style="text-align: center; display: none;">Quantity 4</th>
+        <th class="order5" style="text-align: center; display: none;">Quantity 5</th>
         <th>Total</th>  
       </tr>
       <th:block th:each="inputProduct,stat : *{inputProducts}">
@@ -699,9 +700,8 @@
 				<input id="dtl1" type="number" 
 					 th:field="*{inputProducts[__${stat.index}__].orderQty1}"
 					min="0"
-					onkeyup="calcAmount1(this)"
-					onfocus="calcAmount1(this)" 
-					onclick="calcAmount1(this)"
+					onchange="calcAmount1(this)"
+					onfocus="focus1(this)"
 					style="text-align: right;"/>
 				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.company}" />
 				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.productCode}" />
@@ -712,9 +712,8 @@
 				<input id="dtl2" type="number" 
 					th:field="*{inputProducts[__${stat.index}__].orderQty2}"  
 					min="0"
-					onkeyup="calcAmount2(this)"
-					onfocus="calcAmount2(this)"
-					onclick="calcAmount2(this)"
+					onchange="calcAmount2(this)"
+					onfocus="focus2(this)"
 					style="text-align: right;"/>
 			</td>
 			<td class="order3"
@@ -722,9 +721,8 @@
 				<input id="dtl3" type="number"
 					th:field="*{inputProducts[__${stat.index}__].orderQty3}"  
 					min="0"
-					onkeyup="calcAmount3(this)"
-					onfocus="calcAmount3(this)"
-					onclick="calcAmount3(this)"
+					onchange="calcAmount3(this)"
+					onfocus="focus3(this)"
 					style="text-align: right;"/>
 			</td>
 			<td class="order4"
@@ -732,9 +730,8 @@
 				<input id="dtl4" type="number" 
 					th:field="*{inputProducts[__${stat.index}__].orderQty4}" 
 					min="0"
-					onkeyup="calcAmount4(this)"
-					onfocus="calcAmount4(this)"
-					onclick="calcAmount4(this)"
+					onchange="calcAmount4(this)"
+					onfocus="focus4(this)"
 					style="text-align: right;"/>
 			</td>
 			<td class="order5"
@@ -742,9 +739,8 @@
 				<input id="dtl5" type="number" 
 					th:field="*{inputProducts[__${stat.index}__].orderQty5}" 
 					min="0"
-					onkeyup="calcAmount5(this)"
-					onfocus="calcAmount5(this)"
-					onclick="calcAmount5(this)"
+					onchange="calcAmount5(this)"
+					onfocus="focus5(this)"
 					style="text-align: right;"/>
 			</td>
 			<td>
@@ -775,273 +771,69 @@
       </th:block> 
 		<tr>
 			<td style="border: none;" width="150px">	
-		<input id="up1" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-		</td>
-		<td style="border: none; display: none;" width="150px" id="unitPrice2">	
-		<input id="up2" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-		</td>
-		<td style="border: none; display: none;" width="150px" id="unitPrice3">	
-		<input id="up3" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-		</td>
-		<td style="border: none; display: none;" width="150px" id="unitPrice4">	
-		<input id="up4" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-		</td>
-		<td style="border: none; display: none;" width="150px" id="unitPrice5">	
-		<input id="up5" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-		</td>
-		<td style="border: none;" width="150px">	
-		<input id="upTotal" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
+				<input id="up1" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
+				</td>
+				<td style="border: none; display: none;" width="150px" id="unitPrice2">	
+				<input id="up2" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>	
+				</td>
+				<td style="border: none; display: none;" width="150px" id="unitPrice3">	
+				<input id="up3" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>	
+				</td>
+				<td style="border: none; display: none;" width="150px" id="unitPrice4">	
+				<input id="up4" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>	
+				</td>
+				<td style="border: none; display: none;" width="150px" id="unitPrice5">	
+				<input id="up5" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
+				</td>
+				<td style="border: none;" width="150px">	
+				<input id="upTotal" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
 			</td>
 		</tr>
 		<tr>
 			<td style="border: none;" width="150px">	
-		<input id="amt1" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-		</td>
-		<td style="border: none; display: none;" width="150px" id="amount2">	
-		<input id="amt2" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-		</td>
-		<td style="border: none; display: none;" width="150px" id="amount3">	
-		<input id="amt3" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-		</td>
-		<td style="border: none; display: none;" width="150px" id="amount4">	
-		<input id="amt4" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-		</td>
-		<td style="border: none; display: none;" width="150px" id="amount5">	
-		<input id="amt5" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-		</td>
-		<td style="border: none;" width="150px">	
-		<input id="amtTotal" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
+				<input id="amt1" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
+				</td>
+				<td style="border: none; display: none;" width="150px" id="amount2">	
+				<input id="amt2" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>	
+				</td>
+				<td style="border: none; display: none;" width="150px" id="amount3">	
+				<input id="amt3" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
+				</td>
+				<td style="border: none; display: none;" width="150px" id="amount4">	
+				<input id="amt4" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
+				</td>
+				<td style="border: none; display: none;" width="150px" id="amount5">	
+				<input id="amt5" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
+				</td>
+				<td style="border: none;" width="150px">	
+				<input id="amtTotal" type="number" value="0" disabled="disabled"
+					style="text-align: right;"/>
 			</td>
 		</tr>   
     </table>
-</div>
-</div>
+    <input id="productQty" type="text" th:value="${productQty}" 
+		disabled="disabled"
+		style="display: none;" />
+	<input id="orderGrpId" type="hidden" 
+		th:field="*{inputOrder.orderGrp.orderGrpId}" />
+	<input id="company" type="hidden" 
+		th:field="*{inputOrder.orderGrp.company}" />
+	<input id="custId" type="hidden" 
+		th:field="*{inputOrder.orderGrp.custId}" />
+</div> <!-- div dataordercontainer -->
+</div> <!-- div ordercontainer -->
 
-<section>
-
-<table id="tblOrder" style="border: none;">
-<tr style="border: none;">
-	<th width="410px" style="border: none;" colspan="3"></th>
-	<th width="150px" style="border: none;">Order 1</th>
-	<th width="150px" id="orderHeader2"
-		style="display: none; border: none;">Order 2</th>
-	<th width="150px" id="orderHeader3"
-		style="display: none; border: none;">Order 3</th>
-	<th width="150px" id="orderHeader4"
-		style="display: none; border: none;">Order 4</th>
-	<th width="150px" id="orderHeader5"
-	style="display: none; border: none;">Order 5</th>
-</tr>
-<tr style="border: none;">
-	<td width="535px" style="border: none;" colspan="4">
-	</td>
-	<td id="order2" style="display: none; border: none;">
-		
-	</td>
-	<td id="order3" style="display: none; border: none;">
-		
-	</td>
-	<td id="order4" style="display: none; border: none;">
-		
-	</td>
-	<td id="order5" style="display: none; border: none;">
-		
-	</td>
-</tr>
-<tr>
-	<th width="100px">Product ID</th>
-	<th width="200px">Product Name</th>
-	<th width="100px">Unit</th>
-	<th width="150px">QTY 1</th>
-	<th width="150px" id="detailHeader2" style="display: none;">QTY 2</th>
-	<th width="150px" id="detailHeader3" style="display: none;">QTY 3</th>
-	<th width="150px" id="detailHeader4" style="display: none;">QTY 4</th>
-	<th width="150px" id="detailHeader5" style="display: none;">QTY 5</th>
-	<th width="150px">Total</th>
-	<th style="display: none;">Unit Price</th>
-</tr>
-<th:block th:each="inputProduct,stat : *{inputProducts}">
-<tr>
-	<td width="100px" th:text="${inputProduct.custProd.productCode}">
-	</td>
-	<td width="200px" th:text="${inputProduct.product.productName}">
-	</td>
-	<td width="100px">
-		<select id="uom" onchange="changeUom(this)">
-		       <option th:each="prodUom : ${inputProduct.prodUoms}"
-		               th:value="${prodUom.conversionRate}"
-		               th:text="${prodUom.uomCode}"
-		               th:selected="${inputWebOrder.inputProducts[__${stat.index}__].custProd.priceUom==prodUom.uomCode}"/>
-		</select>
-		<input id="uomSelected" type="hidden" 
-			th:field="*{inputProducts[__${stat.index}__].custProd.priceUom}"/>
-		<input type="hidden"
-			th:field="*{inputProducts[__${stat.index}__].custProd.company}"/>
-		<input type="hidden"
-			th:field="*{inputProducts[__${stat.index}__].custProd.productCode}"/>
-		<input type="hidden"
-			th:field="*{inputProducts[__${stat.index}__].custProd.custId}" />
-		<input type="hidden"
-			th:field="*{inputProducts[__${stat.index}__].custProd.price}"/>
-	</td>
-	<td>
-		<input id="dtl1" type="number" 
-			 th:field="*{inputProducts[__${stat.index}__].orderQty1}"
-			min="0"
-			onkeyup="calcAmount1(this)"
-			onfocus="calcAmount1(this)" 
-			onclick="calcAmount1(this)"
-			style="text-align: right;"/>
-		<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.company}" />
-		<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.productCode}" />
-		<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.productName}" />
-	</td>
-	<td width="150px" id="detail2" style="display: none;">
-		<input id="dtl2" type="number" 
-			th:field="*{inputProducts[__${stat.index}__].orderQty2}"  
-			min="0"
-			onkeyup="calcAmount2(this)"
-			onfocus="calcAmount2(this)"
-			onclick="calcAmount2(this)"
-			style="text-align: right;"/>
-	</td>
-	<td width="150px" id="detail3" style="display: none;">
-		<input id="dtl3" type="number"
-			th:field="*{inputProducts[__${stat.index}__].orderQty3}"  
-			min="0"
-			onkeyup="calcAmount3(this)"
-			onfocus="calcAmount3(this)"
-			onclick="calcAmount3(this)"
-			style="text-align: right;"/>
-	</td>
-	<td width="150px" id="detail4" style="display: none;">
-		<input id="dtl4" type="number" 
-			th:field="*{inputProducts[__${stat.index}__].orderQty4}" 
-			min="0"
-			onkeyup="calcAmount4(this)"
-			onfocus="calcAmount4(this)"
-			onclick="calcAmount4(this)"
-			style="text-align: right;"/>
-	</td>
-	<td width="150px" id="detail5" style="display: none;">
-		<input id="dtl5" type="number" 
-			th:field="*{inputProducts[__${stat.index}__].orderQty5}" 
-			min="0"
-			onkeyup="calcAmount5(this)"
-			onfocus="calcAmount5(this)"
-			onclick="calcAmount5(this)"
-			style="text-align: right;"/>
-	</td>
-	<td>
-		<input id="dtlTotal" type="number" value="0"
-			style="text-align: right;" disabled="disabled"/>
-	</td>
-	<td style="display: none;">
-		<input id="untPrice" type="number" 
-			th:value="${inputProduct.custProd.price}"
-		style="text-align: right;"/>
-	</td>
-	<td style="display: none;">
-		<input id="untPriceInit" type="number" 
-			th:value="${inputProduct.custProd.price}"
-		style="text-align: right;"/>
-	</td>
-	<td style="display: none;">
-		<input id="prodWidth" type="number" 
-			th:value="${inputProduct.product.prodWidth}"/>
-		<input id="prodLength" type="number" 
-			th:value="${inputProduct.product.prodLength}"/>
-		<input id="prodHeight" type="number" 
-			th:value="${inputProduct.product.prodHeight}"/>
-		<input id="productCat1" type="text" 
-			th:value="${inputProduct.product.productCat1}"/>
-	</td>
-
-</tr>
-</th:block>
-<tr>
-	<td style="border: none;" colspan="3" align="right">
-		<b>Unit Price:</b>&nbsp;&nbsp;
-	</td>
-	<td style="border: none;" width="150px">	
-		<input id="up1" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-	<td style="border: none; display: none;" width="150px" id="unitPrice2">	
-		<input id="up2" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-	</td>
-	<td style="border: none; display: none;" width="150px" id="unitPrice3">	
-		<input id="up3" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-	</td>
-	<td style="border: none; display: none;" width="150px" id="unitPrice4">	
-		<input id="up4" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-	</td>
-	<td style="border: none; display: none;" width="150px" id="unitPrice5">	
-		<input id="up5" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-	<td style="border: none;" width="150px">	
-		<input id="upTotal" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-</tr>
-<tr>
-	<td style="border: none;" colspan="3" align="right">	
-		<b>Amount:</b>&nbsp;&nbsp;
-	</td>
-	<td style="border: none;" width="150px">	
-		<input id="amt1" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-	<td style="border: none; display: none;" width="150px" id="amount2">	
-		<input id="amt2" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>	
-	</td>
-	<td style="border: none; display: none;" width="150px" id="amount3">	
-		<input id="amt3" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-	<td style="border: none; display: none;" width="150px" id="amount4">	
-		<input id="amt4" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-	<td style="border: none; display: none;" width="150px" id="amount5">	
-		<input id="amt5" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-	<td style="border: none;" width="150px">	
-		<input id="amtTotal" type="number" value="0" disabled="disabled"
-			style="text-align: right;"/>
-	</td>
-</tr>
-</table>
-<br/>
-<input id="productQty" type="text" th:value="${productQty}" 
-	disabled="disabled"
-	style="display: none;" />
-	
-</section>
-<input id="orderGrpId" type="hidden" 
-	th:field="*{inputOrder.orderGrp.orderGrpId}" />
-<input id="company" type="hidden" 
-	th:field="*{inputOrder.orderGrp.company}" />
-<input id="custId" type="hidden" 
-	th:field="*{inputOrder.orderGrp.custId}" />
 </form>
 </body>
 </html>

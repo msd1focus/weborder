@@ -72,13 +72,13 @@ body {
     background-color: #f4f8ff;
     border: 1px solid #73A3f1;
     z-index: 90;
-    min-height: 1020px;  
+    /* min-height: 1020px; */  
 	margin-left: auto;
 	margin-right: auto;
     width: 95%;
-    /* overflow: hidden; */  /* edit amin 20171117*/
-    overflow-x: hidden; /* edit amin 20171117*/
-	overflow-y: auto; /* edit amin 20171117*/
+    overflow: hidden; 
+    /* overflow-x: hidden; */ /* edit amin 20171117*/
+	/* overflow-y: auto; */ /* edit amin 20171117*/
 }
 
 #fixedpart {
@@ -97,6 +97,7 @@ body {
 .dataordercontainer{
     position: absolute;
     left: 415px;
+    top: 0px;
     background-color: #ede7d0;
     border: 1px solid #73A3f1;
     z-index: 998;
@@ -160,8 +161,8 @@ th {text-align: right}
 
 #tblOrderItemFixed tr th,
 #tblOrderItemFixed tr td,
-#tblOrderItem tr th,
-#tblOrderItem tr td
+#tblOrder tr th,
+#tblOrder tr td
  {
     border-bottom: 1px solid green; 
     padding: 1px;
