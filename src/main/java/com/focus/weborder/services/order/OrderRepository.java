@@ -79,7 +79,8 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 			+ "o.ebsSubmitDate = :ebsSubmitDate, o.soNumber = :soNumber, "
 			+ "o.soStatus = :soStatus, o.soDate = :soDate, "
 			+ "o.invoiceStatus = :invoiceStatus, "
-            + "o.invoiceDate = :invoiceDate "
+            + "o.invoiceDate = :invoiceDate, "
+            + "o.notes = :notes "
 			+ "WHERE "
             + "o.company = :company AND "
             + "o.custId = :custId AND "
@@ -108,7 +109,8 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     		@Param("soStatus") String soStatus,
 			@Param("soDate") Date soDate,
     		@Param("invoiceStatus") String invoiceStatus,
-    		@Param("invoiceDate") Date invoiceDate
+    		@Param("invoiceDate") Date invoiceDate,
+    		@Param("notes") String notes
     	);
 	
 	@Modifying

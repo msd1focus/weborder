@@ -57,6 +57,8 @@ public class Order {
 	private String invoiceStatus;
 	@Column(name="INVOICE_DATE")
 	private Date invoiceDate;
+	@Column(name="NOTES")
+	private String notes;
 	
 	
 	public Order() {
@@ -70,7 +72,7 @@ public class Order {
 			Long tonaseOrder, Long selisihTonase, Long totalPrice,
 			String periode, String ebsSubmitStatus, Date ebsSubmitDate, 
 			String soNumber, String soStatus, Date soDate, String invoiceStatus,
-			Date invoiceDate) {
+			Date invoiceDate, String notes) {
 		
 		super();
 		this.orderId = orderId;
@@ -94,6 +96,7 @@ public class Order {
 		this.soDate = soDate;
 		this.invoiceStatus = invoiceStatus;
 		this.invoiceDate = invoiceDate;
+		this.notes = notes;
 	}
 
 	public Long getOrderId() {
@@ -262,5 +265,13 @@ public class Order {
 
 	public void setInvoiceDate(Date invoiceDate) {
 		this.invoiceDate = invoiceDate;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 }

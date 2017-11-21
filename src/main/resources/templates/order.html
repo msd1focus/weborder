@@ -344,24 +344,29 @@
 		</tr>
         <tr>
 			<td height="60" >
-			  <textarea name="remark1" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
+			  <textarea name="remark1" maxlength="100" rows="3" cols="23"
+			  	style="resize: none"		  	
+				th:field="*{inputOrder.order1.notes}"></textarea>
 			</td>
 			<td height="60" class="order2" style="display: none;">
-			  <textarea name="remark2" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
+			  <textarea name="remark2" maxlength="100" rows="3" cols="23"
+			  	style="resize: none"		  	
+				th:field="*{inputOrder.order2.notes}"></textarea>
 			</td>
 			<td height="60" class="order3" style="display: none;">
-			  <textarea name="remark3" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
+			  <textarea name="remark3" maxlength="100" rows="3" cols="23"
+			  	style="resize: none"		  	
+				th:field="*{inputOrder.order3.notes}"></textarea>
 			</td>
 			<td height="60" class="order4" style="display: none;">
-			  <textarea name="remark4" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
+			  <textarea name="remark4" maxlength="100" rows="3" cols="23"
+			  	style="resize: none"		  	
+				th:field="*{inputOrder.order4.notes}"></textarea>
 			</td>
 			<td height="60" class="order5" style="display: none;">
-			  <textarea name="remark5" maxlength="65" rows="3" cols="23"
-			  	style="resize: none">isi ini</textarea>
+			  <textarea name="remark5" maxlength="100" rows="3" cols="23"
+			  	style="resize: none"		  	
+				th:field="*{inputOrder.order5.notes}"></textarea>
 			</td>
         </tr>
 		<tr>
@@ -751,6 +756,16 @@
 				<input id="untPrice" type="number" 
 					th:value="${inputProduct.custProd.price}"
 				style="text-align: right;"/>
+				<input id="uomSelected" type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].custProd.priceUom}"/>
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.company}"/>
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.productCode}"/>
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.custId}" />
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.price}"/>
 			</td>
 			<td style="display: none;">
 				<input id="untPriceInit" type="number" 
@@ -830,7 +845,7 @@
 	<input id="company" type="hidden" 
 		th:field="*{inputOrder.orderGrp.company}" />
 	<input id="custId" type="hidden" 
-		th:field="*{inputOrder.orderGrp.custId}" />
+		th:field="*{inputOrder.orderGrp.custId}" />	
 </div> <!-- div dataordercontainer -->
 </div> <!-- div ordercontainer -->
 

@@ -70,7 +70,7 @@ public class OrderService {
 				order.getEbsSubmitDate(), 
 				order.getSoNumber(), order.getSoStatus(),
 				order.getSoDate(), order.getInvoiceStatus(), 
-				order.getInvoiceDate());
+				order.getInvoiceDate(), order.getNotes());
 	}
 	
 	public void deleteOrder(Long orderId) {
