@@ -40,6 +40,7 @@
 		   		type="submit" name="action" value="Save"/>
 		   	<input 
 		   		style="align: right"
+		   		onclick="validateSubmit()"
 		   		type="submit" name="action" value="Submit"/>
 	   	</td>  
 	</tr>  
@@ -693,11 +694,16 @@
     <table id="tblOrder">
       <tr>   	
         <th style="text-align: center">Quantity 1</th>
-        <th class="order2" style="text-align: center; display: none;">Quantity 2</th>
-        <th class="order3" style="text-align: center; display: none;">Quantity 3</th>
-        <th class="order4" style="text-align: center; display: none;">Quantity 4</th>
-        <th class="order5" style="text-align: center; display: none;">Quantity 5</th>
-        <th>Total</th>  
+        <th class="order2" style="text-align: center; display: none;">
+        	Quantity 2</th>
+        <th class="order3" style="text-align: center; display: none;">
+        	Quantity 3</th>
+        <th class="order4" style="text-align: center; display: none;">
+        	Quantity 4</th>
+        <th class="order5" style="text-align: center; display: none;">
+        	Quantity 5</th>
+        <th style="text-align: center;">Total Quantity</th>  
+        <th style="text-align: center;">Total Amount</th>
       </tr>
       <th:block th:each="inputProduct,stat : *{inputProducts}">
       	<tr>
@@ -706,7 +712,6 @@
 					 th:field="*{inputProducts[__${stat.index}__].orderQty1}"
 					min="0"
 					onchange="calcAmount1(this)"
-					onfocus="focus1(this)"
 					style="text-align: right;"/>
 				<input type="hidden" 
 					th:field="*{inputProducts[__${stat.index}__].product.company}" />
@@ -758,6 +763,10 @@
 					onchange="calcAmount5(this)"
 					onfocus="focus5(this)"
 					style="text-align: right;"/>
+			</td>
+			<td>
+				<input id="dtlTotalQty" type="number" value="0"
+					style="text-align: right;" disabled="disabled"/>
 			</td>
 			<td>
 				<input id="dtlTotal" type="number" value="0"

@@ -562,11 +562,11 @@ public class InputOrderController {
     		if(jumlahOrder>0) {
     			
     			if(orderQty1>0) {
-    				System.out.println(orderQty1);
     				if(orderDetail1==null) {
         				orderDetail1 = new OrderDetail();
         				orderDetail1.setOrderId(orderId1);
         			}
+    				System.out.println(orderQty1);
     				orderDetail1.setProductCode(productCode);
     				orderDetail1.setProductDesc(productDesc);
     				orderDetail1.setUom(uom);
