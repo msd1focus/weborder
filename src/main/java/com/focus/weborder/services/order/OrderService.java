@@ -37,7 +37,8 @@ public class OrderService {
 	}
 	
 	public Order getByOrderid(Long orderId) {
-		return orderRepository.findOne(orderId);
+		//return orderRepository.findOne(orderId);
+		return null;
 	}
 	
 	public void addOrder(Order order) {

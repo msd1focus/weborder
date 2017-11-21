@@ -114,7 +114,6 @@ public class InputOrderController {
 					String poNumberLast =
 							orderSubmittedLast.getPoNumber();
 					String sPoNumberLast = poNumberLast.substring(8,11);
-					System.out.println(sPoNumberLast);
 					Long lPoNumberLast = Long.parseLong(sPoNumberLast);
 					poNumber1 = lPoNumberLast + 1;
 					poNumber2 = lPoNumberLast + 2;
@@ -563,7 +562,7 @@ public class InputOrderController {
     		if(jumlahOrder>0) {
     			
     			if(orderQty1>0) {
-    				
+    				System.out.println(orderQty1);
     				if(orderDetail1==null) {
         				orderDetail1 = new OrderDetail();
         				orderDetail1.setOrderId(orderId1);

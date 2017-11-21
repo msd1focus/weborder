@@ -708,9 +708,20 @@
 					onchange="calcAmount1(this)"
 					onfocus="focus1(this)"
 					style="text-align: right;"/>
-				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.company}" />
-				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.productCode}" />
-				<input type="hidden" th:field="*{inputProducts[__${stat.index}__].product.productName}" />
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].product.company}" />
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].product.productCode}" />
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].product.productName}" />
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.company}"/>
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.productCode}"/>
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.custId}" />
+				<input type="hidden"
+					th:field="*{inputProducts[__${stat.index}__].custProd.price}"/>
 			</td>
 			<td class="order2"
 				width="150px" id="detail2" style="display: none;">
@@ -758,14 +769,6 @@
 				style="text-align: right;"/>
 				<input id="uomSelected" type="hidden" 
 					th:field="*{inputProducts[__${stat.index}__].custProd.priceUom}"/>
-				<input type="hidden"
-					th:field="*{inputProducts[__${stat.index}__].custProd.company}"/>
-				<input type="hidden"
-					th:field="*{inputProducts[__${stat.index}__].custProd.productCode}"/>
-				<input type="hidden"
-					th:field="*{inputProducts[__${stat.index}__].custProd.custId}" />
-				<input type="hidden"
-					th:field="*{inputProducts[__${stat.index}__].custProd.price}"/>
 			</td>
 			<td style="display: none;">
 				<input id="untPriceInit" type="number" 

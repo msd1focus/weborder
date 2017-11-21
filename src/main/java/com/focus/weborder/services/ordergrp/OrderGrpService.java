@@ -26,7 +26,7 @@ public class OrderGrpService {
 	}
 	
 	public void addOrderGrp(OrderGrp orderGrp) {
-		orderGrpRepository.save(orderGrp);
+		//orderGrpRepository.save(orderGrp);
 	}
 	
 	public void updateOrderGrp(OrderGrp orderGrp) {
@@ -34,7 +34,7 @@ public class OrderGrpService {
 	}
 	
 	public void deleteOrderGrp(Long groupId) {
-		orderGrpRepository.delete(groupId);
+		//orderGrpRepository.delete(groupId);
 	}
 
 }
