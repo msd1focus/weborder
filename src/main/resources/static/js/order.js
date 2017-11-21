@@ -315,7 +315,7 @@ function calcAmount1(obj){
 	else{
 		sisaLimit.style.backgroundColor = "white";
 	}
-	//return;
+	return;
 }
 
 function calcAmount2(obj){
@@ -887,6 +887,21 @@ function generateCMOB(){
 	var totalAmount5 = document.getElementById("totalAmount5");
 	var sisaLimit = document.getElementById("sisaLimit");
 	var sisaLimitInit = document.getElementById("sisaLimitInit").value;
+	var dimensiMobil1 = document.getElementById("dimensiMobil1");
+	var dimensiMobil2 = document.getElementById("dimensiMobil2");
+	var dimensiMobil3 = document.getElementById("dimensiMobil3");
+	var dimensiMobil4 = document.getElementById("dimensiMobil4");
+	var dimensiMobil5 = document.getElementById("dimensiMobil5");
+	var dimensiOrder1 = document.getElementById("dimensiOrder1");
+	var dimensiOrder2 = document.getElementById("dimensiOrder2");
+	var dimensiOrder3 = document.getElementById("dimensiOrder3");
+	var dimensiOrder4 = document.getElementById("dimensiOrder4");
+	var dimensiOrder5 = document.getElementById("dimensiOrder5");
+	var selisihDimensi1 = document.getElementById("selisihDimensi1");
+	var selisihDimensi2 = document.getElementById("selisihDimensi2");
+	var selisihDimensi3 = document.getElementById("selisihDimensi3");
+	var selisihDimensi4 = document.getElementById("selisihDimensi4");
+	var selisihDimensi5 = document.getElementById("selisihDimensi5");
 	
 	var totAmount1 = 0;
 	var totAmount2 = 0;
@@ -899,19 +914,32 @@ function generateCMOB(){
 	
 	var cmobInitial = 5;
 	var cmobMultiplier = 0;
+	var do1= 0;
+	var do2= 0;
+	var do3= 0;
+	var do4= 0;
+	var do5= 0;
 	
 	for(var idxRow = 1, productQty;; idxRow++){
 		
 		cmobMultiplier += 1;
 		var qty = (cmobInitial * cmobMultiplier) / jumlahOrder;
 		
-		if(jumlahOrder === "1"){
+		if(jumlahOrder === "1"){		
+			
 			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[1].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
+			
+			do1 += 
+				tblOrder.rows[idxRow].cells[0].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
@@ -922,12 +950,26 @@ function generateCMOB(){
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "2"){
+			
 			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[5].children[0].value = qty*2;
+			
+			do1 += 
+				tblOrder.rows[idxRow].cells[0].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do2 += 
+				tblOrder.rows[idxRow].cells[1].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
@@ -940,12 +982,32 @@ function generateCMOB(){
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "3"){
+			
 			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[5].children[0].value = qty*3;
+
+			do1 += 
+				tblOrder.rows[idxRow].cells[0].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do2 += 
+				tblOrder.rows[idxRow].cells[1].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do3 += 
+				tblOrder.rows[idxRow].cells[2].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
@@ -965,7 +1027,32 @@ function generateCMOB(){
 			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[5].children[0].value = qty*4;
+			tblOrder.rows[idxRow].cells[5].children[0].value = qty*4;	
+
+			do1 += 
+				tblOrder.rows[idxRow].cells[0].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do2 += 
+				tblOrder.rows[idxRow].cells[1].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do3 += 
+				tblOrder.rows[idxRow].cells[2].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do4 += 
+				tblOrder.rows[idxRow].cells[3].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
@@ -988,6 +1075,37 @@ function generateCMOB(){
 			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[5].children[0].value = qty*5;
+
+			do1 += 
+				tblOrder.rows[idxRow].cells[0].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do2 += 
+				tblOrder.rows[idxRow].cells[1].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do3 += 
+				tblOrder.rows[idxRow].cells[2].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do4 += 
+				tblOrder.rows[idxRow].cells[3].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
+			do5 += 
+				tblOrder.rows[idxRow].cells[4].children[0].value
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
+				/1000000000;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
@@ -1024,6 +1142,89 @@ function generateCMOB(){
 		
 		if(idxRow===productQty){
 			break;
+		}
+	}
+	
+	console.log("jo: " + jumlahOrder);
+	console.log("do1: " + do1);
+	console.log("do2: " + do2);
+	console.log("do3: " + do3);
+	console.log("do4: " + do4);
+	console.log("do5: " + do5);
+	
+	if(jumlahOrder>0){
+		
+		dimensiOrder1.value = parseFloat(do1);
+		var sd1 = 0;
+		sd1 =  parseFloat(dimensiMobil1.value - do1);
+		selisihDimensi1.value = sd1;
+		if(sd1<0){
+			selisihDimensi1.style.backgroundColor = "yellow";
+			alert("Dimensi Mobil Tidak Mencukupi. Mohon Periksa Kembali");
+		}
+		else{
+			selisihDimensi1.style.backgroundColor = "white";
+		}
+		
+		if(jumlahOrder>1){
+			
+			dimensiOrder2.value = parseFloat(do2);
+			var sd1 = 0;
+			sd2 =  parseFloat(dimensiMobil2.value - do2);
+			selisihDimensi2.value = sd2;
+			if(sd2<0){
+				selisihDimensi2.style.backgroundColor = "yellow";
+				alert("Dimensi Mobil Tidak Mencukupi. Mohon Periksa Kembali");
+			}
+			else{
+				selisihDimensi2.style.backgroundColor = "white";
+			}
+			
+			if(jumlahOrder>2){
+				
+				dimensiOrder3.value = parseFloat(do3);
+				var sd3 = 0;
+				sd3 =  parseFloat(dimensiMobil3.value - do3);
+				selisihDimensi3.value = sd3;
+				if(sd3<0){
+					selisihDimensi3.style.backgroundColor = "yellow";
+					alert("Dimensi Mobil Tidak Mencukupi. Mohon Periksa Kembali");
+				}
+				else{
+					selisihDimensi3.style.backgroundColor = "white";
+				}
+				
+				if(jumlahOrder>3){
+					
+					dimensiOrder4.value = parseFloat(do4);
+					var sd4 = 0;
+					sd4 =  parseFloat(dimensiMobil4.value - do4);
+					selisihDimensi4.value = sd4;
+					if(sd4<0){
+						selisihDimensi4.style.backgroundColor = "yellow";
+						alert("Dimensi Mobil Tidak Mencukupi. Mohon Periksa Kembali");
+					}
+					else{
+						selisihDimensi4.style.backgroundColor = "white";
+					}
+					
+					if(jumlahOrder>4){
+						
+						dimensiOrder5.value = parseFloat(do5);
+						var sd5 = 0;
+						sd5 =  parseFloat(dimensiMobil5.value - do5);
+						selisihDimensi5.value = sd5;
+						if(sd5<0){
+							selisihDimensi5.style.backgroundColor = "yellow";
+							alert("Dimensi Mobil Tidak Mencukupi. Mohon Periksa Kembali");
+						}
+						else{
+							selisihDimensi5.style.backgroundColor = "white";
+						}
+						
+					}
+				}
+			}
 		}
 	}
 	
@@ -1096,6 +1297,11 @@ function resetOrder(){
 	selisihDimensi3.value = dimensiMobil3;
 	selisihDimensi4.value = dimensiMobil4;
 	selisihDimensi5.value = dimensiMobil5;
+	selisihDimensi1.style.backgroundColor = "white";
+	selisihDimensi2.style.backgroundColor = "white";
+	selisihDimensi3.style.backgroundColor = "white";
+	selisihDimensi4.style.backgroundColor = "white";
+	selisihDimensi5.style.backgroundColor = "white";
 	
 	for(var idxRow = 1, productQty;; idxRow++){
 		
@@ -1547,25 +1753,20 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[2].style.display = "none";
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
-    		
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 0){
-    				var totQtyPerLine = 0;
-    				totQtyPerLine = 
-    					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value);
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
-        			tblOrder.rows[idxRow].cells[5].children[0].value =
-        				totQtyPerLine;
-        			tblOrder.rows[idxRow].cells[6].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
+
+			if((idxRow !== 0)&&!cmob.checked){
+				var totQtyPerLine = 0;
+				totQtyPerLine = 
+					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value);
+    			var totAmountPerLine = 0;
+    			totAmountPerLine = 
+    				parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
+    			tblOrder.rows[idxRow].cells[5].children[0].value =
+    				totQtyPerLine;
+    			tblOrder.rows[idxRow].cells[6].children[0].value =
+    				totAmountPerLine;
+    			totAmount += totAmountPerLine;
     		}
     		
     		if(idxRow === productQty){
@@ -1619,28 +1820,23 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[2].style.display = "none";
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
-
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 0){
-    				var totQtyPerLine = 0;
-    				totQtyPerLine = 
-    					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value);
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-        	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
-        			tblOrder.rows[idxRow].cells[5].children[0].value =
-        				totQtyPerLine;
-        			tblOrder.rows[idxRow].cells[6].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
+    		
+			if((idxRow !== 0)&&!cmob.checked){
+				var totQtyPerLine = 0;
+				totQtyPerLine = 
+					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value);
+    			var totAmountPerLine = 0;
+    			totAmountPerLine = 
+    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+    			tblOrder.rows[idxRow].cells[5].children[0].value =
+    				totQtyPerLine;
+    			tblOrder.rows[idxRow].cells[6].children[0].value =
+    				totAmountPerLine;
+    			totAmount += totAmountPerLine;
     		}
     		
     		if(idxRow === productQty){
@@ -1696,30 +1892,25 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
 			
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 0){
-    				var totQtyPerLine = 0;
-    				totQtyPerLine = 
-    					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value);
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-        	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
-        			tblOrder.rows[idxRow].cells[5].children[0].value =
-        				totQtyPerLine;
-        			tblOrder.rows[idxRow].cells[6].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
+			if((idxRow !== 0)&&!cmob.checked){
+				var totQtyPerLine = 0;
+				totQtyPerLine = 
+					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value);
+    			var totAmountPerLine = 0;
+    			totAmountPerLine = 
+    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+    				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+    	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+    			tblOrder.rows[idxRow].cells[5].children[0].value =
+    				totQtyPerLine;
+    			tblOrder.rows[idxRow].cells[6].children[0].value =
+    				totAmountPerLine;
+    			totAmount += totAmountPerLine;
     		}
     		
     		if(idxRow === productQty){
@@ -1776,33 +1967,28 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
 			
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 0){
-    				var totQtyPerLine = 0;
-    				totQtyPerLine = 
-    					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-    	   	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
-        			tblOrder.rows[idxRow].cells[5].children[0].value =
-        				totQtyPerLine;
-        			tblOrder.rows[idxRow].cells[6].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
+			if((idxRow !== 0)&&!cmob.checked){
+				var totQtyPerLine = 0;
+				totQtyPerLine = 
+					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+    			var totAmountPerLine = 0;
+    			totAmountPerLine = 
+    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+	   				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+	   				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+	   	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+    			tblOrder.rows[idxRow].cells[5].children[0].value =
+    				totQtyPerLine;
+    			tblOrder.rows[idxRow].cells[6].children[0].value =
+    				totAmountPerLine;
+    			totAmount += totAmountPerLine;
     		}
     		
     		if(idxRow === productQty){
@@ -1860,36 +2046,31 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
    			
-    		if(cmob.checked){
-    			this.generateCMOB();
-    		}
-    		else{
-    			if(idxRow !== 0){
-    				var totQtyPerLine = 0;
-    				totQtyPerLine = 
-    					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-    					parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
-        			var totAmountPerLine = 0;
-        			totAmountPerLine = 
-        				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-        				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-        				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-    	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    	   				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-    	   	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
-        			tblOrder.rows[idxRow].cells[5].children[0].value =
-        				totQtyPerLine;
-        			tblOrder.rows[idxRow].cells[6].children[0].value =
-        				totAmountPerLine;
-        			totAmount += totAmountPerLine;
-        		}
+    		if((idxRow !== 0)&&!cmob.checked){
+				var totQtyPerLine = 0;
+				totQtyPerLine = 
+					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+					parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
+    			var totAmountPerLine = 0;
+    			totAmountPerLine = 
+    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+    				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+	   				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
+	   				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+	   	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+    			tblOrder.rows[idxRow].cells[5].children[0].value =
+    				totQtyPerLine;
+    			tblOrder.rows[idxRow].cells[6].children[0].value =
+    				totAmountPerLine;
+    			totAmount += totAmountPerLine;
     		}
     		
     		if(idxRow === productQty){
@@ -1897,7 +2078,11 @@ function changeJumlahOrder(obj) {
    			}
     	}
     }
-    if(!cmob.checked){
+
+    if(cmob.checked){
+    	generateCMOB();
+    }
+    else{
     	amtTotal.value = totAmount;
 	}
 }
