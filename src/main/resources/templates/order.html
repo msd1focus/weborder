@@ -36,11 +36,12 @@
 		</td>
 	   	<td style="padding-left: 10px">
 		   	<input 
-		   		style="align: right" 
+		   		style="align: right" 	
+		   		onclick="save(this)"
 		   		type="submit" name="action" value="Save"/>
 		   	<input 
 		   		style="align: right"
-		   		onclick="validateSubmit()"
+		   		onclick="submit(this)"
 		   		type="submit" name="action" value="Submit"/>
 	   	</td>  
 	</tr>  
@@ -712,6 +713,7 @@
 					 th:field="*{inputProducts[__${stat.index}__].orderQty1}"
 					min="0"
 					onchange="calcAmount1(this)"
+					onfocus="focus1(this)"
 					style="text-align: right;"/>
 				<input type="hidden" 
 					th:field="*{inputProducts[__${stat.index}__].product.company}" />

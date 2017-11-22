@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -379,8 +380,14 @@ public class InputOrderController {
     }
 	
 	@RequestMapping(value="/order", method=RequestMethod.POST)
-	public String inputOrderRequest(@ModelAttribute InputWebOrder inputWebOrder, 
+	public String inputOrderRequest(
+			@ModelAttribute InputWebOrder inputWebOrder, 
+			BindingResult bindingResult,
 	        @RequestParam(value="action", required=true) String action) {
+		
+		if(bindingResult.hasErrors()) {
+			System.out.println(bindingResult.getFieldError());
+		}
 		
 		String company = inputWebOrder.getCustomer().getCompany();
 		Long custId = inputWebOrder.getCustomer().getCustId();
@@ -566,7 +573,6 @@ public class InputOrderController {
         				orderDetail1 = new OrderDetail();
         				orderDetail1.setOrderId(orderId1);
         			}
-    				System.out.println(orderQty1);
     				orderDetail1.setProductCode(productCode);
     				orderDetail1.setProductDesc(productDesc);
     				orderDetail1.setUom(uom);
