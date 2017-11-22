@@ -15,18 +15,18 @@ public class ListMobil {
 	@Column(name="MOBIL_DESC")
 	private String mobilDesc;
 	@Column(name="MOBIL_PANJANG")
-	private Long mobilPanjang;
+	private Double mobilPanjang;
 	@Column(name="MOBIL_LEBAR")
-	private Long mobilLebar;
+	private Double mobilLebar;
 	@Column(name="MOBIL_TINGGI")
-	private Long mobilTinggi;
+	private Double mobilTinggi;
 	
 	public ListMobil() {
 		
 	}
 	
-	public ListMobil(Long mobilId, String mobilDesc, Long mobilPanjang,
-			Long mobilLebar, Long mobilTinggi) {
+	public ListMobil(Long mobilId, String mobilDesc, Double mobilPanjang,
+			Double mobilLebar, Double mobilTinggi) {
 		super();
 		this.mobilId = mobilId;
 		this.mobilDesc = mobilDesc;
@@ -51,27 +51,27 @@ public class ListMobil {
 		this.mobilDesc = mobilDesc;
 	}
 
-	public Long getMobilPanjang() {
+	public Double getMobilPanjang() {
 		return mobilPanjang;
 	}
 
-	public void setMobilPanjang(Long mobilPanjang) {
+	public void setMobilPanjang(Double mobilPanjang) {
 		this.mobilPanjang = mobilPanjang;
 	}
 
-	public Long getMobilLebar() {
+	public Double getMobilLebar() {
 		return mobilLebar;
 	}
 
-	public void setMobilLebar(Long mobilLebar) {
+	public void setMobilLebar(Double mobilLebar) {
 		this.mobilLebar = mobilLebar;
 	}
 
-	public Long getMobilTinggi() {
+	public Double getMobilTinggi() {
 		return mobilTinggi;
 	}
 
-	public void setMobilTinggi(Long mobilTinggi) {
+	public void setMobilTinggi(Double mobilTinggi) {
 		this.mobilTinggi = mobilTinggi;
 	}
 

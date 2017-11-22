@@ -765,10 +765,14 @@ public class InputOrderController {
 		order.setJenisMobil(
 				listMobils.get(0).getMobilDesc().toString());
 		order.setTotalPrice((long)0);
-		Long tonaseMobil = (listMobils.get(0).getMobilPanjang()
+		Double tonaseMobil =  (listMobils.get(0).getMobilPanjang()
 				*listMobils.get(0).getMobilLebar()
 				*listMobils.get(0).getMobilTinggi())
 				/1000000000;
+		System.out.println(listMobils.get(0).getMobilPanjang());
+		System.out.println(listMobils.get(0).getMobilLebar());
+		System.out.println(listMobils.get(0).getMobilTinggi());
+		System.out.println(tonaseMobil);
 		order.setTonaseMobil(tonaseMobil);
 		order.setTonaseOrder((long)0);
 		order.setSelisihTonase(tonaseMobil);

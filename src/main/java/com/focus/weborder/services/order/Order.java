@@ -34,11 +34,11 @@ public class Order {
 	@Column(name="JENIS_MOBIL")
 	private String jenisMobil;
 	@Column(name="TONASE_MOBIL")
-	private Long tonaseMobil;
+	private Double tonaseMobil;
 	@Column(name="TONASE_ORDER")
 	private Long tonaseOrder;
 	@Column(name="SELISIH_TONASE")
-	private Long selisihTonase;
+	private Double selisihTonase;
 	@Column(name="TOTAL_PRICE")
 	private Long totalPrice;
 	@Column(name="PERIODE")
@@ -68,8 +68,8 @@ public class Order {
 	public Order(
 			Long orderId, Long orderGrpId, String company, 
 			Long custId, String poNumber, Date orderDate, String shipTo,
-			String expedisi, String jenisMobil, Long tonaseMobil,
-			Long tonaseOrder, Long selisihTonase, Long totalPrice,
+			String expedisi, String jenisMobil, Double tonaseMobil,
+			Long tonaseOrder, Double selisihTonase, Long totalPrice,
 			String periode, String ebsSubmitStatus, Date ebsSubmitDate, 
 			String soNumber, String soStatus, Date soDate, String invoiceStatus,
 			Date invoiceDate, String notes) {
@@ -171,11 +171,11 @@ public class Order {
 		this.jenisMobil = jenisMobil;
 	}
 
-	public Long getTonaseMobil() {
+	public Double getTonaseMobil() {
 		return tonaseMobil;
 	}
 
-	public void setTonaseMobil(Long tonaseMobil) {
+	public void setTonaseMobil(Double tonaseMobil) {
 		this.tonaseMobil = tonaseMobil;
 	}
 
@@ -187,11 +187,11 @@ public class Order {
 		this.tonaseOrder = tonaseOrder;
 	}
 
-	public Long getSelisihTonase() {
+	public Double getSelisihTonase() {
 		return selisihTonase;
 	}
 
-	public void setSelisihTonase(Long selisihTonase) {
+	public void setSelisihTonase(Double selisihTonase) {
 		this.selisihTonase = selisihTonase;
 	}
 
