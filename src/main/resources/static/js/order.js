@@ -53,6 +53,14 @@ function formatText(obj){
 	//}
 }
 
+function unformatText(obj){
+	text = obj;
+	var value = 0;
+	text = text.replace(/,/g, "");
+	value = parseFloat(text);
+	return value;
+}
+
 function changeUom(obj){
 	var uom = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
@@ -166,6 +174,7 @@ function calcAmount1(obj){
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
 	var up1 = document.getElementById("up1");
 	var amt1 = document.getElementById("amt1");
+	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil1 = document.getElementById("dimensiMobil1");
 	var dimensiOrder1 = document.getElementById("dimensiOrder1");
@@ -176,13 +185,17 @@ function calcAmount1(obj){
 	up1.value = untPrice;
 	amt1.value = untPrice*dtl1;
 	var totAmount1 = 0;
+	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
 	for(var idxRow = 1, productQty;; idxRow++){	
 		
+		var qty1 =
+			unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+		
 		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[0].children[0].value
+			qty1
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -190,11 +203,11 @@ function calcAmount1(obj){
 		
 		var qtyCurrentLine = 0;
 		qtyCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value);
+			qty1;
 		
 		var amountCurrentLine = 0;
 		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+			qty1
 			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
 		totAmount1 += amountCurrentLine;	
 		
@@ -205,18 +218,21 @@ function calcAmount1(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					amountCurrentLine;
 			}
+			totQty += qtyCurrentLine;
 			totAmount += amountCurrentLine;
 		}
 		else if(jumlahOrder === "2"){
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value);
+				+ qty2;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -225,21 +241,26 @@ function calcAmount1(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine; 
 		}
 		else if(jumlahOrder === "3"){
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value);
+				+ qty2
+				+ qty3;
 						
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -248,24 +269,31 @@ function calcAmount1(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "4"){
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+			var qty4 =
+				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+				+ qty2
+				+ qty3
+				+ qty4;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -274,27 +302,36 @@ function calcAmount1(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "5"){
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+			var qty4 =
+				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
+			var qty5 =
+				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
+				+ qty2
+				+ qty3
+				+ qty4
+				+ qty5;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+				+ (qty5
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
@@ -302,6 +339,7 @@ function calcAmount1(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		
@@ -322,6 +360,7 @@ function calcAmount1(obj){
 		selisihDimensi1.style.backgroundColor = "white";
 	}
 	totalAmount1.value = totAmount1;
+	qtyTotal.value = totQty;
 	amtTotal.value = totAmount;
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
@@ -347,6 +386,7 @@ function calcAmount2(obj){
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
 	var up2 = document.getElementById("up2");
 	var amt2 = document.getElementById("amt2");
+	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil2 = document.getElementById("dimensiMobil2");
 	var dimensiOrder2 = document.getElementById("dimensiOrder2");
@@ -357,13 +397,17 @@ function calcAmount2(obj){
 	up2.value = untPrice;
 	amt2.value = untPrice*dtl2;
 	var totAmount2 = 0;
+	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
 	for(var idxRow = 1, productQty;; idxRow++){	
 		
+		var qty2 =
+			unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+		
 		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[1].children[0].value
+			qty2
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -371,24 +415,26 @@ function calcAmount2(obj){
 
 		var qtyCurrentLine = 0;
 		qtyCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value);
+			qty2;
 		
 		var amountCurrentLine = 0;
 		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+			qty2
 			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
 		totAmount2 += amountCurrentLine;
 		
 		if(jumlahOrder === "2"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value);
+				+ qty1;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -397,21 +443,26 @@ function calcAmount2(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine; 
 		}
 		else if(jumlahOrder === "3"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value);
+				+ qty1
+				+ qty3;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -420,24 +471,31 @@ function calcAmount2(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "4"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+			var qty4 =
+				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+				+ qty1
+				+ qty3
+				+ qty4;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -446,27 +504,36 @@ function calcAmount2(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "5"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+			var qty4 =
+				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
+			var qty5 =
+				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
+				+ qty1
+				+ qty3
+				+ qty4
+				+ qty5;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+				+ (qty5
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
@@ -474,6 +541,7 @@ function calcAmount2(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		
@@ -494,6 +562,7 @@ function calcAmount2(obj){
 		selisihDimensi2.style.backgroundColor = "white";
 	}
 	totalAmount2.value = totAmount2;
+	qtyTotal.value = totQty;
 	amtTotal.value = totAmount;
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
@@ -519,6 +588,7 @@ function calcAmount3(obj){
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
 	var up3 = document.getElementById("up3");
 	var amt3 = document.getElementById("amt3");
+	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil3 = document.getElementById("dimensiMobil3");
 	var dimensiOrder3 = document.getElementById("dimensiOrder3");
@@ -529,13 +599,17 @@ function calcAmount3(obj){
 	up3.value = untPrice;
 	amt3.value = untPrice*dtl3;
 	var totAmount3 = 0;
+	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
 	for(var idxRow = 1, productQty;; idxRow++){	
+
+		var qty3 =
+			unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 		
 		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[2].children[0].value
+			qty3
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -543,26 +617,30 @@ function calcAmount3(obj){
 
 		var qtyCurrentLine = 0;
 		qtyCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+			qty3;
 		
 		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+			qty3
 			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
 		totAmount3 += amountCurrentLine;
 		
 		if(jumlahOrder === "3"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value);
+				+ qty1
+				+ qty2;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -571,24 +649,31 @@ function calcAmount3(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "4"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+			var qty4 =
+				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+				+ qty1
+				+ qty2
+				+ qty4;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -597,16 +682,25 @@ function calcAmount3(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "5"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+			var qty4 =
+				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
+			var qty5 =
+				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
+				+ qty1
+				+ qty2
+				+ qty4
+				+ qty5;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
@@ -625,6 +719,7 @@ function calcAmount3(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		
@@ -645,6 +740,7 @@ function calcAmount3(obj){
 		selisihDimensi3.style.backgroundColor = "white";
 	}
 	totalAmount3.value = totAmount3;
+	qtyTotal.value = totQty;
 	amtTotal.value = totAmount;
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
@@ -670,6 +766,7 @@ function calcAmount4(obj){
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
 	var up4 = document.getElementById("up4");
 	var amt4 = document.getElementById("amt4");
+	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil4 = document.getElementById("dimensiMobil4");
 	var dimensiOrder4 = document.getElementById("dimensiOrder4");
@@ -680,13 +777,17 @@ function calcAmount4(obj){
 	up4.value = untPrice;
 	amt4.value = untPrice*dtl4;
 	var totAmount4 = 0;
+	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
 	for(var idxRow = 1, productQty;; idxRow++){	
+
+		var qty4 =
+			unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 		
 		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[3].children[0].value
+			qty4
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -694,30 +795,36 @@ function calcAmount4(obj){
 
 		var qtyCurrentLine = 0;
 		qtyCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+			qty4;
 		
 		var amountCurrentLine = 0;
 		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+			qty4
 			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
 		totAmount4 += amountCurrentLine;
 		
 		if(jumlahOrder === "4"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value);
+				+ qty1
+				+ qty2
+				+ qty3;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			
 			if(idxRow === idxRowCurrent){
@@ -726,27 +833,36 @@ function calcAmount4(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "5"){
+			var qty1 =
+				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+			var qty2 =
+				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+			var qty3 =
+				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+			var qty5 =
+				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
 			totQtyPerLine = 
 				qtyCurrentLine
-				+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-				+ parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
+				+ qty1
+				+ qty2
+				+ qty3
+				+ qty5;
 			
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+				+ (qty5
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
@@ -754,6 +870,7 @@ function calcAmount4(obj){
 				tblOrder.rows[idxRow].cells[6].children[0].value =
 					totAmountPerLine;	
 			}
+			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
 		
@@ -774,6 +891,7 @@ function calcAmount4(obj){
 		selisihDimensi4.style.backgroundColor = "white";
 	}
 	totalAmount4.value = totAmount4;
+	qtyTotal.value = totQty;
 	amtTotal.value = totAmount;
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
@@ -799,6 +917,7 @@ function calcAmount5(obj){
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
 	var up5 = document.getElementById("up5");
 	var amt5 = document.getElementById("amt5");
+	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil5 = document.getElementById("dimensiMobil5");
 	var dimensiOrder5 = document.getElementById("dimensiOrder5");
@@ -809,10 +928,14 @@ function calcAmount5(obj){
 	up5.value = untPrice;
 	amt5.value = untPrice*dtl5;
 	var totAmount5 = 0;
+	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
 	for(var idxRow = 1, productQty;; idxRow++){	
+
+		var qty5 =
+			unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 		
 		dimensiOrder += 
 			tblOrder.rows[idxRow].cells[4].children[0].value
@@ -823,32 +946,41 @@ function calcAmount5(obj){
 
 		var qtyCurrentLine = 0;
 		qtyCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
+			qty5;
 		
 		var amountCurrentLine = 0;
 		amountCurrentLine = 
-			parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+			qty5
 			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
 		totAmount5 += amountCurrentLine;
 
+		var qty1 =
+			unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+		var qty2 =
+			unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+		var qty3 =
+			unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+		var qty4 =
+			unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
+		
 		var totQtyPerLine = 0;
 		totQtyPerLine = 
 			qtyCurrentLine
-			+ parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-			+ parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-			+ parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-			+ parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+			+ qty1
+			+ qty2
+			+ qty3
+			+ qty4;
 		
 		var totAmountPerLine = 0;
 		totAmountPerLine = 
 			amountCurrentLine
-			+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+			+ (qty1
 			* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-			+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+			+ (qty2
 			* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-			+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+			+ (qty3
 			* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-			+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+			+ (qty5
 			* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 		if(idxRow === idxRowCurrent){
 			tblOrder.rows[idxRow].cells[5].children[0].value =
@@ -856,6 +988,7 @@ function calcAmount5(obj){
 			tblOrder.rows[idxRow].cells[6].children[0].value =
 				totAmountPerLine;	
 		}
+		totQty += totQtyPerLine;
 		totAmount += totAmountPerLine;
 		
 		if(idxRow===productQty){
@@ -875,6 +1008,7 @@ function calcAmount5(obj){
 		selisihDimensi5.style.backgroundColor = "white";
 	}
 	totalAmount5.value = totAmount5;
+	qtyTotal.value = totQty;
 	amtTotal.value = totAmount;
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
@@ -1728,6 +1862,8 @@ function changeJumlahOrder(obj) {
 	var totAmount4 = 0;
 	var totAmount5 = 0;
 	
+	var qtyTotal = document.getElementById("qtyTotal");
+    var totQty = 0;
 	var amtTotal = document.getElementById("amtTotal");
     var totAmount = 0;
     
@@ -1781,9 +1917,12 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
 
 			if((idxRow !== 0)&&!cmob.checked){
+
+				var qty1 =
+					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
 				
 				do1 += 
-					tblOrder.rows[idxRow].cells[0].children[0].value
+					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -1791,21 +1930,23 @@ function changeJumlahOrder(obj) {
 				
 				var totQtyPerLine = 0;
 				totQtyPerLine = 
-					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value);
+					qty1;
     			
 				var totAmountPerLine = 0;
     			totAmountPerLine = 
-    				parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value);
     			
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				totQtyPerLine;
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				totAmountPerLine;
+    			
+    			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
     			
     			totAmount1 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				(qty1
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     		}
 			
@@ -1849,16 +1990,20 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
     		
 			if((idxRow !== 0)&&!cmob.checked){
-				
+
+				var qty1 =
+					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+				var qty2 =
+					unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
 
 				do1 += 
-					tblOrder.rows[idxRow].cells[0].children[0].value
+					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
 				do2 += 
-					tblOrder.rows[idxRow].cells[1].children[0].value
+					qty2
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -1866,27 +2011,29 @@ function changeJumlahOrder(obj) {
 				
 				var totQtyPerLine = 0;
 				totQtyPerLine = 
-					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value);
+					qty1
+					+ qty2;
     			
 				var totAmountPerLine = 0;
     			totAmountPerLine = 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				+ (qty2
     	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				totQtyPerLine;
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				totAmountPerLine;
+    			
+    			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
     			totAmount1 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				(qty1
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			totAmount2 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				(qty2
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			
     		}
@@ -1932,20 +2079,27 @@ function changeJumlahOrder(obj) {
 			
 			if((idxRow !== 0)&&!cmob.checked){
 
+				var qty1 =
+					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+				var qty2 =
+					unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+				var qty3 =
+					unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+				
 				do1 += 
-					tblOrder.rows[idxRow].cells[0].children[0].value
+					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
 				do2 += 
-					tblOrder.rows[idxRow].cells[1].children[0].value
+					qty2
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
 				do3 += 
-					tblOrder.rows[idxRow].cells[2].children[0].value
+					qty3
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -1953,34 +2107,36 @@ function changeJumlahOrder(obj) {
 				
 				var totQtyPerLine = 0;
 				totQtyPerLine = 
-					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value);
+					qty1
+					+ qty2
+					+ qty3;
     			
 				var totAmountPerLine = 0;
     			totAmountPerLine = 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				+ (qty2
     				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+    				+ (qty3
     	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				totQtyPerLine;
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				totAmountPerLine;
+    			
+    			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
     			totAmount1 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-    					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+    				(qty1
+    				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			totAmount2 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-    					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+    				(qty2
+    				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			totAmount3 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-    					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+    				(qty3
+    				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
         		
     		}
 			
@@ -2024,27 +2180,36 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
 			
 			if((idxRow !== 0)&&!cmob.checked){
+
+				var qty1 =
+					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+				var qty2 =
+					unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+				var qty3 =
+					unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+				var qty4 =
+					unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 				
 				do1 += 
-					tblOrder.rows[idxRow].cells[0].children[0].value
+					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
 				do2 += 
-					tblOrder.rows[idxRow].cells[1].children[0].value
+					qty2
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
 				do3 += 
-					tblOrder.rows[idxRow].cells[2].children[0].value
+					qty3
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
 				do4 += 
-					tblOrder.rows[idxRow].cells[3].children[0].value
+					qty4
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -2052,39 +2217,41 @@ function changeJumlahOrder(obj) {
 				
 				var totQtyPerLine = 0;
 				totQtyPerLine = 
-					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value);
+					qty1
+					+ qty2
+					+ qty3
+					+ qty4;
     			
 				var totAmountPerLine = 0;
     			totAmountPerLine = 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				+ (qty2
 	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-	   				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+	   				+ (qty3
 	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-	   				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+	   				+ (qty4
 	   	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				totQtyPerLine;
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				totAmountPerLine;
+    			
+    			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
     			totAmount1 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				(qty1
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			totAmount2 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				(qty2
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			totAmount3 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+    				(qty3
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			totAmount4 += 
-    				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+    				(qty4
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
         		
     		}
@@ -2129,34 +2296,44 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
    			
     		if((idxRow !== 0)&&!cmob.checked){
-    			
+
+				var qty1 =
+					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
+				var qty2 =
+					unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
+				var qty3 =
+					unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
+				var qty4 =
+					unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
+				var qty5 =
+					unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 
     			do1 += 
-    				tblOrder.rows[idxRow].cells[0].children[0].value
+    				qty1
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
     			do2 += 
-    				tblOrder.rows[idxRow].cells[1].children[0].value
+    				qty2
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
     			do3 += 
-    				tblOrder.rows[idxRow].cells[2].children[0].value
+    				qty3
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
     			do4 += 
-    				tblOrder.rows[idxRow].cells[3].children[0].value
+    				qty4
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
     			do5 += 
-    				tblOrder.rows[idxRow].cells[4].children[0].value
+    				qty5
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -2164,46 +2341,48 @@ function changeJumlahOrder(obj) {
     			
 				var totQtyPerLine = 0;
 				totQtyPerLine = 
-					parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-					parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value);
+					qty1
+					+ qty2
+					+ qty3
+					+ qty4
+					+ qty5;
     			
 				var totAmountPerLine = 0;
     			totAmountPerLine = 
-    				(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+    				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+    				+ (qty2
     				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-    				+ (parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
+    				+ (qty3
 	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-	   				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+	   				+ (qty4
 	   				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-	   				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+	   				+ (qty5
 	   	    		* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     			
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				totQtyPerLine;
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				totAmountPerLine;
+    			
+    			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
         		totAmount1 += 
-        			(parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
-        				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+        			(qty1
+        			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
         		totAmount2 += 
-        			(parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
-        				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+        			(qty2
+        			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
         		totAmount3 += 
-        			(parseFloat(tblOrder.rows[idxRow].cells[2].children[0].value)
-        				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+        			(qty3
+        			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
         		totAmount4 += 
-        			(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-        				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+        			(qty4
+        			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
         		totAmount5 += 
-        			(parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-        				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
+        			(qty5
+        			*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
         		
     		}
     		
@@ -2299,6 +2478,7 @@ function changeJumlahOrder(obj) {
     	totalAmount3.value = totAmount3;
     	totalAmount4.value = totAmount4;
     	totalAmount5.value = totAmount5;
+    	qtyTotal.value = totQty;
     	amtTotal.value = totAmount;
     	
     	var sl = 0;
