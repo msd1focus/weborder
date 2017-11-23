@@ -62,6 +62,9 @@ function formatTextValue(obj){
 	if(text===""){
 		text = "0";
 	}
+	/*if(obj<0){
+		text = "-" + obj;
+	}*/
 	return text;
 }
 
@@ -99,7 +102,7 @@ function focus1(obj){
 	var amt1 = document.getElementById("amt1");
 	
 	up1.value = formatTextValue(untPrice);
-	amt1.value = formatTextValue(untPrice*dtl1);
+	amt1.value = formatTextValue(untPrice*unformatText(dtl1));
 	obj.select();
 	
 	return;
@@ -116,7 +119,7 @@ function focus2(obj){
 	var amt2 = document.getElementById("amt2");
 	
 	up2.value = formatTextValue(untPrice);
-	amt2.value = formatTextValue(untPrice*dtl2);
+	amt2.value = formatTextValue(untPrice*unformatText(dtl2));
 	obj.select();
 	
 	return;
@@ -133,7 +136,7 @@ function focus3(obj){
 	var amt3 = document.getElementById("amt3");
 	
 	up3.value = formatTextValue(untPrice);
-	amt3.value = formatTextValue(untPrice*dtl3);
+	amt3.value = formatTextValue(untPrice*unformatText(dtl3));
 	obj.select();
 	
 	return;
@@ -151,7 +154,7 @@ function focus4(obj){
 	var amt4 = document.getElementById("amt4");
 	
 	up4.value = formatTextValue(untPrice);
-	amt4.value = formatTextValue(untPrice*dtl4);
+	amt4.value = formatTextValue(untPrice*unformatText(dtl4));
 	obj.select();
 	
 	return;
@@ -169,7 +172,7 @@ function focus5(obj){
 	var amt5 = document.getElementById("amt5");
 	
 	up5.value = formatTextValue(untPrice);
-	amt5.value = formatTextValue(untPrice*dtl5);
+	amt5.value = formatTextValue(untPrice*unformatText(dtl5));
 	obj.select();
 	
 	return;
@@ -181,22 +184,35 @@ function calcAmount1(obj){
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
 	var tblOrder = document.getElementById("tblOrder");
 	var totalAmount1 = document.getElementById("totalAmount1");
+	var totalAmount2 = document.getElementById("totalAmount2");
+	var totalAmount3 = document.getElementById("totalAmount3");
+	var totalAmount4 = document.getElementById("totalAmount4");
+	var totalAmount5 = document.getElementById("totalAmount5");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
-	//var up1 = document.getElementById("up1");
-	//var amt1 = document.getElementById("amt1");
 	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil1 = document.getElementById("dimensiMobil1");
 	var dimensiOrder1 = document.getElementById("dimensiOrder1");
 	var selisihDimensi1 = document.getElementById("selisihDimensi1");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimit1 = document.getElementById("sisaLimit1");
+    var sisaLimit2 = document.getElementById("sisaLimit2");
+    var sisaLimit3 = document.getElementById("sisaLimit3");
+    var sisaLimit4 = document.getElementById("sisaLimit4");
+    var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	//up1.value = untPrice;
-	//amt1.value = untPrice*dtl1;
+
 	var totAmount1 = 0;
+	var totAmount2 = 0;
+	totAmount2 = totalAmount2.value;
+	var totAmount3 = 0;
+	totAmount3 = totalAmount3.value;
+	var totAmount4 = 0;
+	totAmount4 = totalAmount4.value;
+	var totAmount5 = 0;
+	totAmount5 = totalAmount5.value;
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
@@ -374,6 +390,79 @@ function calcAmount1(obj){
 	totalAmount1.value = totAmount1;
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
+	
+	if(jumlahOrder>0){
+		
+		var sl1 = 0;
+		sl1 = sisaLimitInit - totAmount1;
+		sisaLimit1.value = formatTextValue(sl1);
+		if(sl1<0){
+			sisaLimit1.style.backgroundColor = "yellow";
+			alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		}
+		else{
+			sisaLimit1.style.backgroundColor = "white";
+		}
+		
+		if(jumlahOrder>1){
+			
+			var sl2 = 0;
+			sl2 = sl1 - totAmount2;
+			sisaLimit2.value = formatTextValue(sl2);
+			if(sl2<0){
+				sisaLimit2.style.backgroundColor = "yellow";
+				alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+			}
+			else{
+				sisaLimit2.style.backgroundColor = "white";
+			}
+			
+			if(jumlahOrder>2){
+				
+				var sl3 = 0;
+				sl3 = sl2 - totAmount3;
+				sisaLimit3.value = formatTextValue(sl3);
+				if(sl3<0){
+					sisaLimit3.style.backgroundColor = "yellow";
+					alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+				}
+				else{
+					sisaLimit3.style.backgroundColor = "white";
+				}
+				
+				if(jumlahOrder>3){
+					
+					var sl4 = 0;
+					sl4 = sl3 - totAmount4;
+					sisaLimit4.value = formatTextValue(sl4);
+					if(sl4<0){
+						sisaLimit4.style.backgroundColor = "yellow";
+						alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+					}
+					else{
+						sisaLimit4.style.backgroundColor = "white";
+					}
+					
+					if(jumlahOrder>4){
+						
+						var sl5 = 0;
+						sl5 = sl4 - totAmount5;
+						sisaLimit5.value = formatTextValue(sl5);
+						if(sl5<0){
+							sisaLimit5.style.backgroundColor = "yellow";
+							alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+						}
+						else{
+							sisaLimit5.style.backgroundColor = "white";
+						}
+						
+						
+					}
+				}
+			}
+		}
+	}
+	
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -392,23 +481,36 @@ function calcAmount2(obj){
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
 	var tblOrder = document.getElementById("tblOrder");
+	var totalAmount1 = document.getElementById("totalAmount1");
 	var totalAmount2 = document.getElementById("totalAmount2");
+	var totalAmount3 = document.getElementById("totalAmount3");
+	var totalAmount4 = document.getElementById("totalAmount4");
+	var totalAmount5 = document.getElementById("totalAmount5");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
-	//var up2 = document.getElementById("up2");
-	//var amt2 = document.getElementById("amt2");
 	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil2 = document.getElementById("dimensiMobil2");
 	var dimensiOrder2 = document.getElementById("dimensiOrder2");
 	var selisihDimensi2 = document.getElementById("selisihDimensi2");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimit1 = document.getElementById("sisaLimit1");
+    var sisaLimit2 = document.getElementById("sisaLimit2");
+    var sisaLimit3 = document.getElementById("sisaLimit3");
+    var sisaLimit4 = document.getElementById("sisaLimit4");
+    var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
     
-	//up2.value = untPrice;
-	//amt2.value = untPrice*dtl2;
+	var totAmount1 = 0;
+	totAmount1 = totalAmount1.value;
 	var totAmount2 = 0;
+	var totAmount3 = 0;
+	totAmount3 = totalAmount3.value;
+	var totAmount4 = 0;
+	totAmount4 = totalAmount4.value;
+	var totAmount5 = 0;
+	totAmount5 = totalAmount5.value;
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
@@ -573,9 +675,83 @@ function calcAmount2(obj){
 	else{
 		selisihDimensi2.style.backgroundColor = "white";
 	}
+	
 	totalAmount2.value = totAmount2;
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
+
+	if(jumlahOrder>0){
+		
+		var sl1 = 0;
+		sl1 = sisaLimitInit - totAmount1;
+		sisaLimit1.value = formatTextValue(sl1);
+		if(sl1<0){
+			sisaLimit1.style.backgroundColor = "yellow";
+			alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		}
+		else{
+			sisaLimit1.style.backgroundColor = "white";
+		}
+		
+		if(jumlahOrder>1){
+			
+			var sl2 = 0;
+			sl2 = sl1 - totAmount2;
+			sisaLimit2.value = formatTextValue(sl2);
+			if(sl2<0){
+				sisaLimit2.style.backgroundColor = "yellow";
+				alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+			}
+			else{
+				sisaLimit2.style.backgroundColor = "white";
+			}
+			
+			if(jumlahOrder>2){
+				
+				var sl3 = 0;
+				sl3 = sl2 - totAmount3;
+				sisaLimit3.value = formatTextValue(sl3);
+				if(sl3<0){
+					sisaLimit3.style.backgroundColor = "yellow";
+					alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+				}
+				else{
+					sisaLimit3.style.backgroundColor = "white";
+				}
+				
+				if(jumlahOrder>3){
+					
+					var sl4 = 0;
+					sl4 = sl3 - totAmount4;
+					sisaLimit4.value = formatTextValue(sl4);
+					if(sl4<0){
+						sisaLimit4.style.backgroundColor = "yellow";
+						alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+					}
+					else{
+						sisaLimit4.style.backgroundColor = "white";
+					}
+					
+					if(jumlahOrder>4){
+						
+						var sl5 = 0;
+						sl5 = sl4 - totAmount5;
+						sisaLimit5.value = formatTextValue(sl5);
+						if(sl5<0){
+							sisaLimit5.style.backgroundColor = "yellow";
+							alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+						}
+						else{
+							sisaLimit5.style.backgroundColor = "white";
+						}
+						
+						
+					}
+				}
+			}
+		}
+	}
+	
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -594,23 +770,37 @@ function calcAmount3(obj){
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
 	var tblOrder = document.getElementById("tblOrder");
+	var totalAmount1 = document.getElementById("totalAmount1");
+	var totalAmount2 = document.getElementById("totalAmount2");
 	var totalAmount3 = document.getElementById("totalAmount3");
+	var totalAmount4 = document.getElementById("totalAmount4");
+	var totalAmount5 = document.getElementById("totalAmount5");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
-	//var up3 = document.getElementById("up3");
-	//var amt3 = document.getElementById("amt3");
 	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil3 = document.getElementById("dimensiMobil3");
 	var dimensiOrder3 = document.getElementById("dimensiOrder3");
 	var selisihDimensi3 = document.getElementById("selisihDimensi3");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimit1 = document.getElementById("sisaLimit1");
+    var sisaLimit2 = document.getElementById("sisaLimit2");
+    var sisaLimit3 = document.getElementById("sisaLimit3");
+    var sisaLimit4 = document.getElementById("sisaLimit4");
+    var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	//up3.value = untPrice;
-	//amt3.value = untPrice*dtl3;
+
+	var totAmount1 = 0;
+	totAmount1 = totalAmount1.value;
+	var totAmount2 = 0;
+	totAmount2 = totalAmount2.value;
 	var totAmount3 = 0;
+	var totAmount4 = 0;
+	totAmount4 = totalAmount4.value;
+	var totAmount5 = 0;
+	totAmount5 = totalAmount5.value;
+	
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
@@ -751,9 +941,83 @@ function calcAmount3(obj){
 	else{
 		selisihDimensi3.style.backgroundColor = "white";
 	}
+	
 	totalAmount3.value = totAmount3;
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
+
+	if(jumlahOrder>0){
+		
+		var sl1 = 0;
+		sl1 = sisaLimitInit - totAmount1;
+		sisaLimit1.value = formatTextValue(sl1);
+		if(sl1<0){
+			sisaLimit1.style.backgroundColor = "yellow";
+			alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		}
+		else{
+			sisaLimit1.style.backgroundColor = "white";
+		}
+		
+		if(jumlahOrder>1){
+			
+			var sl2 = 0;
+			sl2 = sl1 - totAmount2;
+			sisaLimit2.value = formatTextValue(sl2);
+			if(sl2<0){
+				sisaLimit2.style.backgroundColor = "yellow";
+				alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+			}
+			else{
+				sisaLimit2.style.backgroundColor = "white";
+			}
+			
+			if(jumlahOrder>2){
+				
+				var sl3 = 0;
+				sl3 = sl2 - totAmount3;
+				sisaLimit3.value = formatTextValue(sl3);
+				if(sl3<0){
+					sisaLimit3.style.backgroundColor = "yellow";
+					alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+				}
+				else{
+					sisaLimit3.style.backgroundColor = "white";
+				}
+				
+				if(jumlahOrder>3){
+					
+					var sl4 = 0;
+					sl4 = sl3 - totAmount4;
+					sisaLimit4.value = formatTextValue(sl4);
+					if(sl4<0){
+						sisaLimit4.style.backgroundColor = "yellow";
+						alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+					}
+					else{
+						sisaLimit4.style.backgroundColor = "white";
+					}
+					
+					if(jumlahOrder>4){
+						
+						var sl5 = 0;
+						sl5 = sl4 - totAmount5;
+						sisaLimit5.value = formatTextValue(sl5);
+						if(sl5<0){
+							sisaLimit5.style.backgroundColor = "yellow";
+							alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+						}
+						else{
+							sisaLimit5.style.backgroundColor = "white";
+						}
+						
+						
+					}
+				}
+			}
+		}
+	}
+		
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -772,23 +1036,36 @@ function calcAmount4(obj){
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
 	var tblOrder = document.getElementById("tblOrder");
+	var totalAmount1 = document.getElementById("totalAmount1");
+	var totalAmount2 = document.getElementById("totalAmount2");
+	var totalAmount3 = document.getElementById("totalAmount3");
 	var totalAmount4 = document.getElementById("totalAmount4");
+	var totalAmount5 = document.getElementById("totalAmount5");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
-	//var up4 = document.getElementById("up4");
-	//var amt4 = document.getElementById("amt4");
 	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil4 = document.getElementById("dimensiMobil4");
 	var dimensiOrder4 = document.getElementById("dimensiOrder4");
 	var selisihDimensi4 = document.getElementById("selisihDimensi4");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimit1 = document.getElementById("sisaLimit1");
+    var sisaLimit2 = document.getElementById("sisaLimit2");
+    var sisaLimit3 = document.getElementById("sisaLimit3");
+    var sisaLimit4 = document.getElementById("sisaLimit4");
+    var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
-	//up4.value = untPrice;
-	//amt4.value = untPrice*dtl4;
+
+	var totAmount1 = 0;
+	totAmount1 = totalAmount1.value;
+	var totAmount2 = 0;
+	totAmount2 = totalAmount2.value;
+	var totAmount3 = 0;
+	totAmount3 = totalAmount3.value;
 	var totAmount4 = 0;
+	var totAmount5 = 0;
+	totAmount5 = totalAmount5.value;
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
@@ -902,12 +1179,86 @@ function calcAmount4(obj){
 	else{
 		selisihDimensi4.style.backgroundColor = "white";
 	}
+	
 	totalAmount4.value = totAmount4;
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
+
+	if(jumlahOrder>0){
+		
+		var sl1 = 0;
+		sl1 = sisaLimitInit - totAmount1;
+		sisaLimit1.value = formatTextValue(sl1);
+		if(sl1<0){
+			sisaLimit1.style.backgroundColor = "yellow";
+			alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		}
+		else{
+			sisaLimit1.style.backgroundColor = "white";
+		}
+		
+		if(jumlahOrder>1){
+			
+			var sl2 = 0;
+			sl2 = sl1 - totAmount2;
+			sisaLimit2.value = formatTextValue(sl2);
+			if(sl2<0){
+				sisaLimit2.style.backgroundColor = "yellow";
+				alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+			}
+			else{
+				sisaLimit2.style.backgroundColor = "white";
+			}
+			
+			if(jumlahOrder>2){
+				
+				var sl3 = 0;
+				sl3 = sl2 - totAmount3;
+				sisaLimit3.value = formatTextValue(sl3);
+				if(sl3<0){
+					sisaLimit3.style.backgroundColor = "yellow";
+					alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+				}
+				else{
+					sisaLimit3.style.backgroundColor = "white";
+				}
+				
+				if(jumlahOrder>3){
+					
+					var sl4 = 0;
+					sl4 = sl3 - totAmount4;
+					sisaLimit4.value = formatTextValue(sl4);
+					if(sl4<0){
+						sisaLimit4.style.backgroundColor = "yellow";
+						alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+					}
+					else{
+						sisaLimit4.style.backgroundColor = "white";
+					}
+					
+					if(jumlahOrder>4){
+						
+						var sl5 = 0;
+						sl5 = sl4 - totAmount5;
+						sisaLimit5.value = formatTextValue(sl5);
+						if(sl5<0){
+							sisaLimit5.style.backgroundColor = "yellow";
+							alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+						}
+						else{
+							sisaLimit5.style.backgroundColor = "white";
+						}
+						
+						
+					}
+				}
+			}
+		}
+	}
+	
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
-	sisaLimit.value = sl;
+	sisaLimit.value = formatTextValue(sl);
 	if(sl<0){
 		sisaLimit.style.backgroundColor = "yellow";
 		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
@@ -923,22 +1274,35 @@ function calcAmount5(obj){
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
 	var tblOrder = document.getElementById("tblOrder");
+	var totalAmount1 = document.getElementById("totalAmount1");
+	var totalAmount2 = document.getElementById("totalAmount2");
+	var totalAmount3 = document.getElementById("totalAmount3");
+	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
-	//var up5 = document.getElementById("up5");
-	//var amt5 = document.getElementById("amt5");
 	var qtyTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil5 = document.getElementById("dimensiMobil5");
 	var dimensiOrder5 = document.getElementById("dimensiOrder5");
 	var selisihDimensi5 = document.getElementById("selisihDimensi5");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimit1 = document.getElementById("sisaLimit1");
+    var sisaLimit2 = document.getElementById("sisaLimit2");
+    var sisaLimit3 = document.getElementById("sisaLimit3");
+    var sisaLimit4 = document.getElementById("sisaLimit4");
+    var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
     
-	//up5.value = untPrice;
-	//amt5.value = untPrice*dtl5;
+	var totAmount1 = 0;
+	totAmount1 = totalAmount1.value;
+	var totAmount2 = 0;
+	totAmount2 = totalAmount2.value;
+	var totAmount3 = 0;
+	totAmount3 = totalAmount3.value;
+	var totAmount4 = 0;
+	totAmount4 = totalAmount4.value;
 	var totAmount5 = 0;
 	var totQty = 0;
 	var totAmount = 0;
@@ -950,7 +1314,7 @@ function calcAmount5(obj){
 			unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 		
 		dimensiOrder += 
-			tblOrder.rows[idxRow].cells[4].children[0].value
+			qty5
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
@@ -1022,6 +1386,79 @@ function calcAmount5(obj){
 	totalAmount5.value = totAmount5;
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
+
+	if(jumlahOrder>0){
+		
+		var sl1 = 0;
+		sl1 = sisaLimitInit - totAmount1;
+		sisaLimit1.value = formatTextValue(sl1);
+		if(sl1<0){
+			sisaLimit1.style.backgroundColor = "yellow";
+			alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		}
+		else{
+			sisaLimit1.style.backgroundColor = "white";
+		}
+		
+		if(jumlahOrder>1){
+			
+			var sl2 = 0;
+			sl2 = sl1 - totAmount2;
+			sisaLimit2.value = formatTextValue(sl2);
+			if(sl2<0){
+				sisaLimit2.style.backgroundColor = "yellow";
+				alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+			}
+			else{
+				sisaLimit2.style.backgroundColor = "white";
+			}
+			
+			if(jumlahOrder>2){
+				
+				var sl3 = 0;
+				sl3 = sl2 - totAmount3;
+				sisaLimit3.value = formatTextValue(sl3);
+				if(sl3<0){
+					sisaLimit3.style.backgroundColor = "yellow";
+					alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+				}
+				else{
+					sisaLimit3.style.backgroundColor = "white";
+				}
+				
+				if(jumlahOrder>3){
+					
+					var sl4 = 0;
+					sl4 = sl3 - totAmount4;
+					sisaLimit4.value = formatTextValue(sl4);
+					if(sl4<0){
+						sisaLimit4.style.backgroundColor = "yellow";
+						alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+					}
+					else{
+						sisaLimit4.style.backgroundColor = "white";
+					}
+					
+					if(jumlahOrder>4){
+						
+						var sl5 = 0;
+						sl5 = sl4 - totAmount5;
+						sisaLimit5.value = formatTextValue(sl5);
+						if(sl5<0){
+							sisaLimit5.style.backgroundColor = "yellow";
+							alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+						}
+						else{
+							sisaLimit5.style.backgroundColor = "white";
+						}
+						
+						
+					}
+				}
+			}
+		}
+	}
+	
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -1050,6 +1487,11 @@ function generateCMOB(){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
 	var sisaLimit = document.getElementById("sisaLimit");
+	var sisaLimit = document.getElementById("sisaLimit1");
+	var sisaLimit = document.getElementById("sisaLimit2");
+	var sisaLimit = document.getElementById("sisaLimit3");
+	var sisaLimit = document.getElementById("sisaLimit4");
+	var sisaLimit = document.getElementById("sisaLimit5");
 	var sisaLimitInit = document.getElementById("sisaLimitInit").value;
 	var dimensiMobil1 = document.getElementById("dimensiMobil1");
 	var dimensiMobil2 = document.getElementById("dimensiMobil2");
@@ -1321,7 +1763,7 @@ function generateCMOB(){
 			break;
 		}
 	}
-	
+
 	if(jumlahOrder>0){
 		
 		dimensiOrder1.value = parseFloat(do1);
@@ -1336,6 +1778,17 @@ function generateCMOB(){
 			selisihDimensi1.style.backgroundColor = "white";
 		}
 		
+		var sl1 = 0;
+    	sl1 = sisaLimitInit - totAmount1;
+    	sisaLimit1.value = sl1;
+    	if(sl1<0){
+    		sisaLimit1.style.backgroundColor = "yellow";
+    		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+    	}
+    	else{
+    		sisaLimit1.style.backgroundColor = "white";
+    	}
+		
 		if(jumlahOrder>1){
 			
 			dimensiOrder2.value = parseFloat(do2);
@@ -1349,6 +1802,17 @@ function generateCMOB(){
 			else{
 				selisihDimensi2.style.backgroundColor = "white";
 			}
+
+    		var sl2 = 0;
+        	sl2 = sl1 - totAmount2;
+        	sisaLimit2.value = sl2;
+        	if(sl2<0){
+        		sisaLimit2.style.backgroundColor = "yellow";
+        		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+        	}
+        	else{
+        		sisaLimit2.style.backgroundColor = "white";
+        	}
 			
 			if(jumlahOrder>2){
 				
@@ -1363,6 +1827,17 @@ function generateCMOB(){
 				else{
 					selisihDimensi3.style.backgroundColor = "white";
 				}
+
+        		var sl3 = 0;
+            	sl3 = sl2 - totAmount3;
+            	sisaLimit3.value = sl3;
+            	if(sl3<0){
+            		sisaLimit3.style.backgroundColor = "yellow";
+            		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+            	}
+            	else{
+            		sisaLimit3.style.backgroundColor = "white";
+            	}
 				
 				if(jumlahOrder>3){
 					
@@ -1377,6 +1852,17 @@ function generateCMOB(){
 					else{
 						selisihDimensi4.style.backgroundColor = "white";
 					}
+
+	        		var sl4 = 0;
+	            	sl4 = sl3 - totAmount4;
+	            	sisaLimit4.value = sl4;
+	            	if(sl4<0){
+	            		sisaLimit4.style.backgroundColor = "yellow";
+	            		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+	            	}
+	            	else{
+	            		sisaLimit4.style.backgroundColor = "white";
+	            	}
 					
 					if(jumlahOrder>4){
 						
@@ -1384,6 +1870,18 @@ function generateCMOB(){
 						var sd5 = 0;
 						sd5 =  parseFloat(dimensiMobil5.value - do5);
 						selisihDimensi5.value = sd5;
+
+		        		var sl5 = 0;
+		            	sl5 = sl4 - totAmount5;
+		            	sisaLimit5.value = sl5;
+		            	if(sl5<0){
+		            		sisaLimit5.style.backgroundColor = "yellow";
+		            		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+		            	}
+		            	else{
+		            		sisaLimit5.style.backgroundColor = "white";
+		            	}
+		            	
 						if(sd5<0){
 							selisihDimensi5.style.backgroundColor = "yellow";
 							alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -1433,6 +1931,11 @@ function resetOrder(){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
 	var sisaLimit = document.getElementById("sisaLimit");
+	var sisaLimit1 = document.getElementById("sisaLimit1");
+	var sisaLimit2 = document.getElementById("sisaLimit2");
+	var sisaLimit3 = document.getElementById("sisaLimit3");
+	var sisaLimit4 = document.getElementById("sisaLimit4");
+	var sisaLimit5 = document.getElementById("sisaLimit5");
 	var sisaLimitInit = document.getElementById("sisaLimitInit").value;
 	var amtTotal = document.getElementById("qtyTotal");
 	var amtTotal = document.getElementById("amtTotal");
@@ -1475,6 +1978,16 @@ function resetOrder(){
 	selisihDimensi3.style.backgroundColor = "white";
 	selisihDimensi4.style.backgroundColor = "white";
 	selisihDimensi5.style.backgroundColor = "white";
+	sisaLimit1.value = 0;
+	sisaLimit2.value = 0;
+	sisaLimit3.value = 0;
+	sisaLimit4.value = 0;
+	sisaLimit5.value = 0;
+	sisaLimit1.style.backgroundColor = "white";
+	sisaLimit2.style.backgroundColor = "white";
+	sisaLimit3.style.backgroundColor = "white";
+	sisaLimit4.style.backgroundColor = "white";
+	sisaLimit5.style.backgroundColor = "white";
 	
 	for(var idxRow = 1, productQty;; idxRow++){
 		
@@ -1862,6 +2375,11 @@ function changeJumlahOrder(obj) {
     var amount4 = document.getElementById("amount4");
     var amount5 = document.getElementById("amount5");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimit = document.getElementById("sisaLimit1");
+    var sisaLimit = document.getElementById("sisaLimit2");
+    var sisaLimit = document.getElementById("sisaLimit3");
+    var sisaLimit = document.getElementById("sisaLimit4");
+    var sisaLimit = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
     var totalAmount1 = document.getElementById("totalAmount1");
     var totalAmount2 = document.getElementById("totalAmount2");
@@ -2439,6 +2957,17 @@ function changeJumlahOrder(obj) {
     			selisihDimensi1.style.backgroundColor = "white";
     		}
     		
+    		var sl1 = 0;
+        	sl1 = sisaLimitInit - totAmount1;
+        	sisaLimit1.value = sl1;
+        	if(sl1<0){
+        		sisaLimit1.style.backgroundColor = "yellow";
+        		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+        	}
+        	else{
+        		sisaLimit1.style.backgroundColor = "white";
+        	}
+    		
     		if(jumlahOrder>1){
     			
     			dimensiOrder2.value = parseFloat(do2);
@@ -2452,6 +2981,17 @@ function changeJumlahOrder(obj) {
     			else{
     				selisihDimensi2.style.backgroundColor = "white";
     			}
+
+        		var sl2 = 0;
+            	sl2 = sl1 - totAmount2;
+            	sisaLimit2.value = sl2;
+            	if(sl2<0){
+            		sisaLimit2.style.backgroundColor = "yellow";
+            		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+            	}
+            	else{
+            		sisaLimit2.style.backgroundColor = "white";
+            	}
     			
     			if(jumlahOrder>2){
     				
@@ -2466,6 +3006,17 @@ function changeJumlahOrder(obj) {
     				else{
     					selisihDimensi3.style.backgroundColor = "white";
     				}
+
+            		var sl3 = 0;
+                	sl3 = sl2 - totAmount3;
+                	sisaLimit3.value = sl3;
+                	if(sl3<0){
+                		sisaLimit3.style.backgroundColor = "yellow";
+                		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+                	}
+                	else{
+                		sisaLimit3.style.backgroundColor = "white";
+                	}
     				
     				if(jumlahOrder>3){
     					
@@ -2480,6 +3031,17 @@ function changeJumlahOrder(obj) {
     					else{
     						selisihDimensi4.style.backgroundColor = "white";
     					}
+
+    	        		var sl4 = 0;
+    	            	sl4 = sl3 - totAmount4;
+    	            	sisaLimit4.value = sl4;
+    	            	if(sl4<0){
+    	            		sisaLimit4.style.backgroundColor = "yellow";
+    	            		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+    	            	}
+    	            	else{
+    	            		sisaLimit4.style.backgroundColor = "white";
+    	            	}
     					
     					if(jumlahOrder>4){
     						
@@ -2487,6 +3049,18 @@ function changeJumlahOrder(obj) {
     						var sd5 = 0;
     						sd5 =  parseFloat(dimensiMobil5.value - do5);
     						selisihDimensi5.value = sd5;
+
+    		        		var sl5 = 0;
+    		            	sl5 = sl4 - totAmount5;
+    		            	sisaLimit5.value = sl5;
+    		            	if(sl5<0){
+    		            		sisaLimit5.style.backgroundColor = "yellow";
+    		            		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+    		            	}
+    		            	else{
+    		            		sisaLimit5.style.backgroundColor = "white";
+    		            	}
+    		            	
     						if(sd5<0){
     							selisihDimensi5.style.backgroundColor = "yellow";
     							alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");

@@ -48,7 +48,7 @@ public class OrderDetailService {
 	}
 	
 	public void deleteOrderDetail(Long orderDetailId) {
-		orderDetailRepository.delete(orderDetailId);
+		orderDetailRepository.deleteByOrderdetailid(orderDetailId);
 	}
 
 }

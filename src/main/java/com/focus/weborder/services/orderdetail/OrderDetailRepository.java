@@ -28,6 +28,15 @@ public interface OrderDetailRepository extends CrudRepository<OrderDetail, Long>
 			@Param("orderId") Long orderId,
 			@Param("productCode") String productCode
     	);
+
+	@Modifying
+	@Query("DELETE FROM OrderDetail o WHERE "
+            + "o.orderDetailId = :orderDetailId"
+           )
+	@Transactional
+	void deleteByOrderdetailid(
+			@Param("orderDetailId") Long orderDetailId
+    	);
 	
 	@Modifying
 	@Query("UPDATE OrderDetail o SET "

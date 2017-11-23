@@ -218,6 +218,7 @@
 		<tr><th style="text-align: right">Dimensi Mobil (m3):</th></tr>
 		<tr><th style="text-align: right">Dimensi Order (m3):</th></tr>
 		<tr><th style="text-align: right">Selisih Dimensi (m3):</th></tr>
+		<tr><th style="text-align: right">Sisa Limit:</th></tr>
 	</table>
 	<p/>
 	<table id="tblOrderItemFixed" style="font-align: center">
@@ -686,6 +687,33 @@
 			<td class="order5" style="display: none;">
 				<input id="selisihDimensi5" type="number" 
 					th:field="*{inputOrder.order5.selisihTonase}"
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input id="sisaLimit1" type="text" 
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order2" style="display: none;">
+				<input id="sisaLimit2" type="text" 
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order3" style="display: none;">
+				<input id="sisaLimit3" type="text" 
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order4" style="display: none;">
+				<input id="sisaLimit4" type="text" 
+					readonly="readonly"
+					style="text-align: right;" />
+			</td>
+			<td class="order5" style="display: none;">
+				<input id="sisaLimit5" type="text" 
 					readonly="readonly"
 					style="text-align: right;" />
 			</td>
