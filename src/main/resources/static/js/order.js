@@ -19,6 +19,15 @@ window.onload = function(){
 	changeJumlahOrder(jumlahOrder);	
 }
 
+$(document).keypress(
+	    function(event){
+	     if (event.which == '13') {
+	    	 console.log("enter");
+	        event.preventDefault();
+	      }
+
+});
+
 function save(obj){
 	alert("save");
 }

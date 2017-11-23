@@ -769,10 +769,6 @@ public class InputOrderController {
 				*listMobils.get(0).getMobilLebar()
 				*listMobils.get(0).getMobilTinggi())
 				/1000000000;
-		System.out.println(listMobils.get(0).getMobilPanjang());
-		System.out.println(listMobils.get(0).getMobilLebar());
-		System.out.println(listMobils.get(0).getMobilTinggi());
-		System.out.println(tonaseMobil);
 		order.setTonaseMobil(tonaseMobil);
 		order.setTonaseOrder((long)0);
 		order.setSelisihTonase(tonaseMobil);
