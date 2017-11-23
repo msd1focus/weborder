@@ -11,11 +11,11 @@ public class InputProduct {
 	private CustProd custProd;
 	private Product product;
 	private List<ProdUom> prodUoms;
-	private Long orderQty1;
-	private Long orderQty2;
-	private Long orderQty3;
-	private Long orderQty4;
-	private Long orderQty5;
+	private String orderQty1;
+	private String orderQty2;
+	private String orderQty3;
+	private String orderQty4;
+	private String orderQty5;
 
 	public InputProduct() {
 		
@@ -24,9 +24,9 @@ public class InputProduct {
 	public InputProduct(
 			CustProd custProd, Product product, 
 			List<ProdUom> prodUoms,
-			Long orderQty1, Long orderQty2, 
-			Long orderQty3, Long orderQty4,
-			Long orderQty5) {
+			String orderQty1, String orderQty2, 
+			String orderQty3, String orderQty4,
+			String orderQty5) {
 		super();
 		this.custProd = custProd;
 		this.product = product;
@@ -62,43 +62,43 @@ public class InputProduct {
 		this.prodUoms = prodUoms;
 	}
 
-	public Long getOrderQty1() {
+	public String getOrderQty1() {
 		return orderQty1;
 	}
 
-	public void setOrderQty1(Long orderQty1) {
+	public void setOrderQty1(String orderQty1) {
 		this.orderQty1 = orderQty1;
 	}
 
-	public Long getOrderQty2() {
+	public String getOrderQty2() {
 		return orderQty2;
 	}
 
-	public void setOrderQty2(Long orderQty2) {
+	public void setOrderQty2(String orderQty2) {
 		this.orderQty2 = orderQty2;
 	}
 
-	public Long getOrderQty3() {
+	public String getOrderQty3() {
 		return orderQty3;
 	}
 
-	public void setOrderQty3(Long orderQty3) {
+	public void setOrderQty3(String orderQty3) {
 		this.orderQty3 = orderQty3;
 	}
 
-	public Long getOrderQty4() {
+	public String getOrderQty4() {
 		return orderQty4;
 	}
 
-	public void setOrderQty4(Long orderQty4) {
+	public void setOrderQty4(String orderQty4) {
 		this.orderQty4 = orderQty4;
 	}
 
-	public Long getOrderQty5() {
+	public String getOrderQty5() {
 		return orderQty5;
 	}
 
-	public void setOrderQty5(Long orderQty5) {
+	public void setOrderQty5(String orderQty5) {
 		this.orderQty5 = orderQty5;
 	}
 

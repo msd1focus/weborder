@@ -4,7 +4,6 @@ window.onload = function(){
 	var orderBySelected = document.getElementById("orderBySelected").value;
 	var manual = document.getElementById("manual");
 	var cmob = document.getElementById("cmob");
-	
 	var orderType = document.getElementById("orderType");
 	changeOrderType(orderType);
 	
@@ -19,14 +18,14 @@ window.onload = function(){
 	changeJumlahOrder(jumlahOrder);	
 }
 
-$(document).keypress(
+/*$(document).keypress(
 	    function(event){
 	     if (event.which == '13') {
 	    	 console.log("enter");
 	        event.preventDefault();
 	      }
 
-});
+});*/
 
 function save(obj){
 	alert("save");
@@ -40,16 +39,18 @@ function submit(obj){
 }
 
 function formatText(obj){
-	//var text = obj.value;
+	
+	text = obj.value;
 	//if(!isNaN(text)){
-		//text = text.replace(/[\D\s\._\-]+/g, "");
-		//text = text ? parseFloat( text, 10 ) : 0;
-		//text = ( text === 0 ) ? "" : text.toLocaleString( "en-US" )
+		text = text.replace(/[\D\s\._\-]+/g, "");
+		text = text ? parseFloat( text, 10 ) : 0;
+		text = ( text === 0 ) ? "" : text.toLocaleString( "en-US" )
+		if(text===""){
+			text = "0";
+		}
+		obj.value = text;
 		//obj.value = text.toFixed(2);
-	/*}
-	else{
-		obj.value = "asu";
-	}*/
+	//}
 }
 
 function changeUom(obj){
@@ -79,6 +80,7 @@ function focus1(obj){
 	
 	up1.value = untPrice;
 	amt1.value = untPrice*dtl1;
+	obj.select();
 	
 	return;
 }
@@ -95,6 +97,7 @@ function focus2(obj){
 	
 	up2.value = untPrice;
 	amt2.value = untPrice*dtl2;
+	obj.select();
 	
 	return;
 }
@@ -111,6 +114,7 @@ function focus3(obj){
 	
 	up3.value = untPrice;
 	amt3.value = untPrice*dtl3;
+	obj.select();
 	
 	return;
 }
@@ -128,6 +132,7 @@ function focus4(obj){
 	
 	up4.value = untPrice;
 	amt4.value = untPrice*dtl4;
+	obj.select();
 	
 	return;
 }
@@ -145,6 +150,7 @@ function focus5(obj){
 	
 	up5.value = untPrice;
 	amt5.value = untPrice*dtl5;
+	obj.select();
 	
 	return;
 }

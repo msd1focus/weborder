@@ -2,10 +2,12 @@ package com.focus.weborder.controller;
 
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -302,11 +304,11 @@ public class InputOrderController {
 								order1.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail1!=null) {
-					inputProduct.setOrderQty1(orderDetail1.getJumlah());
+					inputProduct.setOrderQty1(formatText(orderDetail1.getJumlah()));
 				}
 				else {
 
-					inputProduct.setOrderQty1((long)0);
+					inputProduct.setOrderQty1("0");
 				}
 				
 				OrderDetail orderDetail2 = 
@@ -314,11 +316,11 @@ public class InputOrderController {
 								order2.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail2!=null) {
-					inputProduct.setOrderQty2(orderDetail2.getJumlah());
+					inputProduct.setOrderQty2(formatText(orderDetail2.getJumlah()));
 				}
 				else {
 
-					inputProduct.setOrderQty2((long)0);
+					inputProduct.setOrderQty2("0");
 				}
 				
 				OrderDetail orderDetail3 = 
@@ -326,11 +328,11 @@ public class InputOrderController {
 								order3.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail3!=null) {
-					inputProduct.setOrderQty3(orderDetail3.getJumlah());
+					inputProduct.setOrderQty3(formatText(orderDetail3.getJumlah()));
 				}
 				else {
 
-					inputProduct.setOrderQty3((long)0);
+					inputProduct.setOrderQty3("0");
 				}
 				
 				OrderDetail orderDetail4 = 
@@ -338,11 +340,11 @@ public class InputOrderController {
 								order4.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail4!=null) {
-					inputProduct.setOrderQty4(orderDetail4.getJumlah());
+					inputProduct.setOrderQty4(formatText(orderDetail4.getJumlah()));
 				}
 				else {
 
-					inputProduct.setOrderQty4((long)0);
+					inputProduct.setOrderQty4("0");
 				}
 				
 				OrderDetail orderDetail5 = 
@@ -350,11 +352,11 @@ public class InputOrderController {
 								order5.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail5!=null) {
-					inputProduct.setOrderQty5(orderDetail5.getJumlah());
+					inputProduct.setOrderQty5(formatText(orderDetail5.getJumlah()));
 				}
 				else {
 
-					inputProduct.setOrderQty5((long)0);
+					inputProduct.setOrderQty5("0");
 				}
 				inputProducts.add(inputProduct);
 			}
@@ -498,13 +500,12 @@ public class InputOrderController {
     		String productDesc = inputProduct.getProduct().getProductName();
     		String uom = inputProduct.getCustProd().getPriceUom();
     		Long unitPrice = inputProduct.getCustProd().getPrice();
-    		Long orderQty1 = inputProduct.getOrderQty1();
-    		Long orderQty2 = inputProduct.getOrderQty2();
-    		Long orderQty3 = inputProduct.getOrderQty3();
-    		Long orderQty4 = inputProduct.getOrderQty4();
-    		Long orderQty5 = inputProduct.getOrderQty5();
+    		Long orderQty1 = unFormatText(inputProduct.getOrderQty1());
+    		Long orderQty2 = unFormatText(inputProduct.getOrderQty2());
+    		Long orderQty3 = unFormatText(inputProduct.getOrderQty3());
+    		Long orderQty4 = unFormatText(inputProduct.getOrderQty4());
+    		Long orderQty5 = unFormatText(inputProduct.getOrderQty5());
     		
-
     		OrderDetail orderDetail1 = null;
     		OrderDetail orderDetail2 = null;
 			OrderDetail orderDetail3 = null;
@@ -727,6 +728,20 @@ public class InputOrderController {
 		}
     	
 	    return "home";
+	}
+	
+	private String formatText(Long value) {
+		String text = "0";
+		NumberFormat usFormat = NumberFormat.getNumberInstance(Locale.US);
+		text = usFormat.format(value);
+		return text;
+	}
+	
+	private Long unFormatText(String text) {
+		Long value = (long)0;
+		text = text.replaceAll("[^\\d.]+", "");
+		value = Long.parseLong(text);
+		return value;
 	}
 	
 	private Order setDefaultOrder(

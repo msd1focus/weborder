@@ -709,11 +709,12 @@
       <th:block th:each="inputProduct,stat : *{inputProducts}">
       	<tr>
 			<td>
-				<input id="dtl1" type="number" 
-					 th:field="*{inputProducts[__${stat.index}__].orderQty1}"
-					min="0"
+				<input id="dtl1"
+					type="text" 
+					th:field="*{inputProducts[__${stat.index}__].orderQty1}"
 					onchange="calcAmount1(this)"
 					onfocus="focus1(this)"
+					onkeyup="formatText(this)"
 					style="text-align: right;"/>
 				<input type="hidden" 
 					th:field="*{inputProducts[__${stat.index}__].product.company}" />
@@ -732,38 +733,46 @@
 			</td>
 			<td class="order2"
 				width="150px" id="detail2" style="display: none;">
-				<input id="dtl2" type="number" 
+				<input id="dtl2"
+					type="text" 
 					th:field="*{inputProducts[__${stat.index}__].orderQty2}"  
 					min="0"
 					onchange="calcAmount2(this)"
 					onfocus="focus2(this)"
+					onkeyup="formatText(this)"
 					style="text-align: right;"/>
 			</td>
 			<td class="order3"
 				width="150px" id="detail3" style="display: none;">
-				<input id="dtl3" type="number"
+				<input id="dtl3"
+					type="text"
 					th:field="*{inputProducts[__${stat.index}__].orderQty3}"  
 					min="0"
 					onchange="calcAmount3(this)"
 					onfocus="focus3(this)"
+					onkeyup="formatText(this)"
 					style="text-align: right;"/>
 			</td>
 			<td class="order4"
 				width="150px" id="detail4" style="display: none;">
-				<input id="dtl4" type="number" 
+				<input id="dtl4"
+					type="text" 
 					th:field="*{inputProducts[__${stat.index}__].orderQty4}" 
 					min="0"
 					onchange="calcAmount4(this)"
 					onfocus="focus4(this)"
+					onkeyup="formatText(this)"
 					style="text-align: right;"/>
 			</td>
 			<td class="order5"
 				width="150px" id="detail5" style="display: none;">
-				<input id="dtl5" type="number" 
+				<input id="dtl5"
+					type="text" 
 					th:field="*{inputProducts[__${stat.index}__].orderQty5}" 
 					min="0"
 					onchange="calcAmount5(this)"
 					onfocus="focus5(this)"
+					onkeyup="formatText(this)"
 					style="text-align: right;"/>
 			</td>
 			<td>
