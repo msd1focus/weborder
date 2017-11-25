@@ -17,4 +17,13 @@ public class CustProdSalesService {
 		return custProdSales;		
 	}
 
+	public CustProdSales getBygetByCompanyCustidProductcodePeriode(
+			String company, Long custId,
+			String productCode, String periode) {
+		CustProdSales custProdSales = 
+				custProdSalesRepository.getByCompanyCustidProductcodePeriode(
+						company, custId, 
+						productCode, periode);
+		return custProdSales;		
+	}
 }

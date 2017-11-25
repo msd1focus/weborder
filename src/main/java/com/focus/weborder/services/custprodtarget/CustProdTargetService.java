@@ -16,6 +16,26 @@ public class CustProdTargetService {
 				custProdTargetRepository.getAll();
 		return custProdTargets;		
 	}
+
+	public CustProdTarget getBygetByCompanyCustidProductcodePeriodetarget(
+			String company, Long custId,
+			String productCode, String periodeTarget) {
+		CustProdTarget custProdTarget = 
+				custProdTargetRepository.getByCompanyCustidProductcodePeriodetarget(
+						company, custId, 
+						productCode, periodeTarget);
+		return custProdTarget;		
+	}
+
+	public CustProdTarget getBygetByCompanyCustidProductcodePeriodestock(
+			String company, Long custId,
+			String productCode, String periodeStock) {
+		CustProdTarget custProdTarget = 
+				custProdTargetRepository.getByCompanyCustidProductcodePeriodestock(
+						company, custId, 
+						productCode, periodeStock);
+		return custProdTarget;		
+	}
 	
 	public void addCustTarget(CustProdTarget custProdTarget) {
 		//custTargetRepository.save(custTarget);

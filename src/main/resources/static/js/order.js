@@ -1477,7 +1477,7 @@ function generateCMOB(){
 	var orderBySelected = document.getElementById("orderBySelected");
 	orderBySelected.value = "CMOB";
 	var rowLeadTime = document.getElementById("rowLeadTime");
-	rowLeadTime.style.display = "block";
+	rowLeadTime.style.display = "table-row";
 	var tblOrder = document.getElementById("tblOrder");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);

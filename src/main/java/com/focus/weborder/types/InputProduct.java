@@ -2,6 +2,7 @@ package com.focus.weborder.types;
 
 import java.util.List;
 
+import com.focus.weborder.services.custinvoice.CustInvoice;
 import com.focus.weborder.services.custprod.CustProd;
 import com.focus.weborder.services.product.Product;
 import com.focus.weborder.services.produom.ProdUom;
@@ -16,6 +17,11 @@ public class InputProduct {
 	private String orderQty3;
 	private String orderQty4;
 	private String orderQty5;
+	private Double averageSales; //cust_prod_sales.avg_sales
+	private Long targetCustomerCurrentMonth; //cust_prod_target.target_sales
+	private Long targetCustomerNextMonth; //cust_prod_target.target_sales
+	private Long qtyOnHand; //cust_prod_target.end_stock
+	private List<CustInvoice> custInvoice; //cust_invoice
 
 	public InputProduct() {
 		
@@ -26,7 +32,10 @@ public class InputProduct {
 			List<ProdUom> prodUoms,
 			String orderQty1, String orderQty2, 
 			String orderQty3, String orderQty4,
-			String orderQty5) {
+			String orderQty5, Double averageSales,
+			Long targetCustomerCurrentMonth, Long targetCustomerNextMonth,
+			Long qtyOnHand, List<CustInvoice> custInvoice
+			) {
 		super();
 		this.custProd = custProd;
 		this.product = product;
@@ -36,6 +45,11 @@ public class InputProduct {
 		this.orderQty3 = orderQty3;
 		this.orderQty4 = orderQty4;
 		this.orderQty5 = orderQty5;
+		this.averageSales = averageSales;
+		this.targetCustomerCurrentMonth = targetCustomerCurrentMonth;
+		this.targetCustomerNextMonth = targetCustomerNextMonth;
+		this.qtyOnHand = qtyOnHand;
+		this.custInvoice = custInvoice;
 	}
 
 	public CustProd getCustProd() {
@@ -102,4 +116,43 @@ public class InputProduct {
 		this.orderQty5 = orderQty5;
 	}
 
+	public Double getAverageSales() {
+		return averageSales;
+	}
+
+	public void setAverageSales(Double averageSales) {
+		this.averageSales = averageSales;
+	}
+
+	public Long getTargetCustomerCurrentMonth() {
+		return targetCustomerCurrentMonth;
+	}
+
+	public void setTargetCustomerCurrentMonth(Long targetCustomerCurrentMonth) {
+		this.targetCustomerCurrentMonth = targetCustomerCurrentMonth;
+	}
+
+	public Long getTargetCustomerNextMonth() {
+		return targetCustomerNextMonth;
+	}
+
+	public void setTargetCustomerNextMonth(Long targetCustomerNextMonth) {
+		this.targetCustomerNextMonth = targetCustomerNextMonth;
+	}
+
+	public Long getQtyOnHand() {
+		return qtyOnHand;
+	}
+
+	public void setQtyOnHand(Long qtyOnHand) {
+		this.qtyOnHand = qtyOnHand;
+	}
+
+	public List<CustInvoice> getCustInvoice() {
+		return custInvoice;
+	}
+
+	public void setCustInvoice(List<CustInvoice> custInvoice) {
+		this.custInvoice = custInvoice;
+	}
 }

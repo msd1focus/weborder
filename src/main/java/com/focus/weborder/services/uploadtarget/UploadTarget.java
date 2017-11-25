@@ -1,4 +1,4 @@
-package com.focus.weborder.services.uploadstock;
+package com.focus.weborder.services.uploadtarget;
 
 import java.sql.Date;
 
@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "UPLOADSTOCK")
-public class UploadStock {
+@Table(name = "UPLOADTARGET")
+public class UploadTarget {
 
 	@Column(name="TRANSACTIONDATE")
-	private Date transctionDate;
+	private Date transactionDate;
 	@Column(name="COMPANY")
 	private String company;
 	@Column(name="OUTLET_ID")
@@ -23,26 +23,28 @@ public class UploadStock {
 	@Column(name="SALES_QTY")
 	private String salesQty;
 	
-	public UploadStock() {
+	public UploadTarget() {
+		
 	}
 	
-	public UploadStock(
+	public UploadTarget(
 			Date transactionDate, String company, String outletId,
-			String itemId, String salesQty) {
+			String itemId, String salesQty
+			) {
 		super();
-		this.transctionDate = transactionDate;
+		this.transactionDate = transactionDate;
 		this.company = company;
 		this.outletId = outletId;
 		this.itemId = itemId;
 		this.salesQty = salesQty;
 	}
 
-	public Date getTransctionDate() {
-		return transctionDate;
+	public Date getTransactionDate() {
+		return transactionDate;
 	}
 
-	public void setTransctionDate(Date transctionDate) {
-		this.transctionDate = transctionDate;
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
 	}
 
 	public String getCompany() {
@@ -76,5 +78,4 @@ public class UploadStock {
 	public void setSalesQty(String salesQty) {
 		this.salesQty = salesQty;
 	}
-
 }
