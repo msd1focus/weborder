@@ -18,10 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.focus.weborder.services.custinvoice.CustInvoice;
+import com.focus.weborder.services.custinvoice.CustInvoiceService;
 import com.focus.weborder.services.customer.Customer;
 import com.focus.weborder.services.customer.CustomerService;
 import com.focus.weborder.services.custprod.CustProd;
 import com.focus.weborder.services.custprod.CustProdService;
+import com.focus.weborder.services.custprodsales.CustProdSales;
+import com.focus.weborder.services.custprodsales.CustProdSalesService;
+import com.focus.weborder.services.custprodtarget.CustProdTarget;
+import com.focus.weborder.services.custprodtarget.CustProdTargetRepository;
+import com.focus.weborder.services.custprodtarget.CustProdTargetService;
 import com.focus.weborder.services.custshipto.CustShipTo;
 import com.focus.weborder.services.custshipto.CustShipToService;
 import com.focus.weborder.services.listmobil.ListMobil;
@@ -70,6 +77,15 @@ public class InputOrderController {
 	@Autowired
 	private CustShipToService custShipToService;
 	
+	@Autowired
+	private CustInvoiceService custInvoiceService;
+
+	@Autowired
+	private CustProdSalesService custProdSalesService;
+	
+	@Autowired
+	private CustProdTargetService custProdTargetService;
+	
 	@RequestMapping(value="/order", method=RequestMethod.GET)
     public String order(Model model){
 		
@@ -81,11 +97,77 @@ public class InputOrderController {
 		Integer month = c.get(Calendar.MONTH) + 1;
 		String monthName = getMonthName(month);
 		
-		Customer customer = customerService.getCustomer(company, custId);
-		OrderGrp orderGrp = orderGrpService.getOrderGrpDraft(company, custId);
-		List<CustShipTo> custShipTo = custShipToService.getCustShipTo(company, custId);
-		List<ListMobil> listMobils = listMobilService.getListMobils();
-		List<String> expedisis = orderService.getExpedisiByCompanyCustid(company, custId);
+		List<String> periodes = new ArrayList<>();
+		periodes.add(monthName + " " + year);
+		
+		Integer monthNext = month;
+		Integer month1Before = month-1;
+		Integer month2Before = month-2;
+		Integer month3Before = month;
+		Integer yearNext = year;
+		Integer year1MonthBefore = year;
+		Integer year2MonthBefore = year;
+		Integer year3MonthBefore = year;
+
+		if(month==1) {
+			month1Before = 12;
+			month2Before = 11;
+			month3Before = 10;
+			year1MonthBefore -= 1;
+			year2MonthBefore -= 1;
+			year3MonthBefore -= 1;
+		}
+		else if(month==2) {
+			month2Before = 12;
+			month3Before = 11;
+			year2MonthBefore -= 1;
+			year3MonthBefore -= 1;
+		}
+		else if(month==3) {
+			month3Before = 12;
+			year3MonthBefore = year-1;
+		}
+		else if(month==12) {
+			monthNext = 1;
+			yearNext += 1;
+		}
+		else {
+			monthNext += 1;
+		}
+		String monthNameNext = getMonthName(monthNext);
+		periodes.add(monthNameNext + " " + yearNext);
+		
+		String periodeCurrentOracle =
+				getMonthNameOracle(month)
+				+ "-"
+				+ year;
+		String periodeNextOracle =
+				getMonthNameOracle(monthNext)
+				+ "-"
+				+ yearNext;
+		String periode1BeforeOracle =
+				getMonthNameOracle(month1Before)
+				+ "-"
+				+ year1MonthBefore;
+		String periode2BeforeOracle =
+				getMonthNameOracle(month2Before)
+				+ "-"
+				+ year2MonthBefore;
+		String periode3BeforeOracle =
+				getMonthNameOracle(month3Before)
+				+ "-"
+				+ year3MonthBefore;
+		
+		Customer customer =
+				customerService.getCustomer(company, custId);
+		OrderGrp orderGrp =
+				orderGrpService.getOrderGrpDraft(company, custId);
+		List<CustShipTo> custShipTo =
+				custShipToService.getCustShipTo(company, custId);
+		List<ListMobil> listMobils =
+				listMobilService.getListMobils();
+		List<String> expedisis =
+				orderService.getExpedisiByCompanyCustid(company, custId);
 		
 		List<Order> orders = new ArrayList<>();
 		Order order1 = null;
@@ -106,23 +188,27 @@ public class InputOrderController {
 					orderGrpService.getOrderGrpSubmitted(company, custId);
 			
 			if(orderGrpSubmitteds!=null) {
-				OrderGrp orderGrpSubmittedLast = 
-						orderGrpSubmitteds.get(0);
-				List<Order> orderSubmittedLasts = 
-						orderService.getByCompanyCustidGrpid(
-								orderGrpSubmittedLast.getOrderGrpId(), custId, company); 
-				if(orderSubmittedLasts!=null) {
-					Order orderSubmittedLast = 
-							orderSubmittedLasts.get(orderSubmittedLasts.size()-1);
-					String poNumberLast =
-							orderSubmittedLast.getPoNumber();
-					String sPoNumberLast = poNumberLast.substring(8,11);
-					Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-					poNumber1 = lPoNumberLast + 1;
-					poNumber2 = lPoNumberLast + 2;
-					poNumber3 = lPoNumberLast + 3;
-					poNumber4 = lPoNumberLast + 4;
-					poNumber5 = lPoNumberLast + 5;
+				if(orderGrpSubmitteds.size()>0) {
+					OrderGrp orderGrpSubmittedLast = 
+							orderGrpSubmitteds.get(0);
+					List<Order> orderSubmittedLasts = 
+							orderService.getByCompanyCustidGrpid(
+									orderGrpSubmittedLast.getOrderGrpId(),
+									custId, company); 
+					if(orderSubmittedLasts!=null) {
+						Order orderSubmittedLast = 
+								orderSubmittedLasts.get(
+										orderSubmittedLasts.size()-1);
+						String poNumberLast =
+								orderSubmittedLast.getPoNumber();
+						String sPoNumberLast = poNumberLast.substring(8,11);
+						Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+						poNumber1 = lPoNumberLast + 1;
+						poNumber2 = lPoNumberLast + 2;
+						poNumber3 = lPoNumberLast + 3;
+						poNumber4 = lPoNumberLast + 4;
+						poNumber5 = lPoNumberLast + 5;
+					}
 				}
 						
 			}
@@ -243,18 +329,6 @@ public class InputOrderController {
 		inputOrder.setOrder4(order4);
 		inputOrder.setOrder5(order5);
 		
-		List<String> periodes = new ArrayList<>();
-		periodes.add(monthName + " " + year);
-		if(month==12) {
-			month = 1;
-			year += 1;
-		}
-		else {
-			month += 1;
-		}
-		monthName = getMonthName(month);
-		periodes.add( monthName + " " + year);
-		
 		String minOrderDate = getMinDate(orderGrp.getPeriodeOrder());
 		String maxOrderDate = getMaxDate(orderGrp.getPeriodeOrder());
 		
@@ -304,7 +378,8 @@ public class InputOrderController {
 								order1.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail1!=null) {
-					inputProduct.setOrderQty1(formatText(orderDetail1.getJumlah()));
+					inputProduct.setOrderQty1(
+							formatText(orderDetail1.getJumlah()));
 				}
 				else {
 
@@ -316,7 +391,8 @@ public class InputOrderController {
 								order2.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail2!=null) {
-					inputProduct.setOrderQty2(formatText(orderDetail2.getJumlah()));
+					inputProduct.setOrderQty2(
+							formatText(orderDetail2.getJumlah()));
 				}
 				else {
 
@@ -328,7 +404,8 @@ public class InputOrderController {
 								order3.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail3!=null) {
-					inputProduct.setOrderQty3(formatText(orderDetail3.getJumlah()));
+					inputProduct.setOrderQty3(
+							formatText(orderDetail3.getJumlah()));
 				}
 				else {
 
@@ -340,7 +417,8 @@ public class InputOrderController {
 								order4.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail4!=null) {
-					inputProduct.setOrderQty4(formatText(orderDetail4.getJumlah()));
+					inputProduct.setOrderQty4(
+							formatText(orderDetail4.getJumlah()));
 				}
 				else {
 
@@ -352,12 +430,129 @@ public class InputOrderController {
 								order5.getOrderId(),
 								custProd.getProductCode());
 				if(orderDetail5!=null) {
-					inputProduct.setOrderQty5(formatText(orderDetail5.getJumlah()));
+					inputProduct.setOrderQty5(
+							formatText(orderDetail5.getJumlah()));
 				}
 				else {
 
 					inputProduct.setOrderQty5("0");
 				}
+				
+				Double averageSalesCurrentMonth = (double) 0;
+				CustProdSales custProdSalesCurrent = 
+						custProdSalesService.
+							getBygetByCompanyCustidProductcodePeriode(
+									company, custId,
+									productCode, periodeCurrentOracle);
+				if(custProdSalesCurrent!=null) {
+					if(custProdSalesCurrent.getAvgSales()!=null) {
+						averageSalesCurrentMonth =
+								custProdSalesCurrent.getAvgSales();
+					}
+				}
+				inputProduct.setAverageSalesCurrentMonth(
+						averageSalesCurrentMonth);
+				
+				Double averageSales1MonthBefore = (double) 0;
+				CustProdSales custProdSales1MonthBefore = 
+						custProdSalesService.
+							getBygetByCompanyCustidProductcodePeriode(
+									company, custId,
+									productCode, periode1BeforeOracle);
+				if(custProdSales1MonthBefore!=null) {
+					if(custProdSales1MonthBefore.getAvgSales()!=null) {
+						averageSales1MonthBefore =
+								custProdSales1MonthBefore.getAvgSales();
+					}
+				}
+				inputProduct.setAverageSales1MonthBefore(
+						averageSales1MonthBefore);
+				
+				Double averageSales2MonthBefore = (double) 0;
+				CustProdSales custProdSales2MonthBefore = 
+						custProdSalesService.
+							getBygetByCompanyCustidProductcodePeriode(
+									company, custId,
+									productCode, periode2BeforeOracle);
+				if(custProdSales2MonthBefore!=null) {
+					if(custProdSales2MonthBefore.getAvgSales()!=null) {
+						averageSales2MonthBefore =
+								custProdSales2MonthBefore.getAvgSales();
+					}
+				}
+				inputProduct.setAverageSales2MonthBefore(
+						averageSales2MonthBefore);
+				
+				Double averageSales3MonthBefore = (double) 0;
+				CustProdSales custProdSales3MonthBefore = 
+						custProdSalesService.
+							getBygetByCompanyCustidProductcodePeriode(
+									company, custId,
+									productCode, periode3BeforeOracle);
+				if(custProdSales3MonthBefore!=null) {
+					if(custProdSales3MonthBefore.getAvgSales()!=null) {
+						averageSales3MonthBefore =
+								custProdSales3MonthBefore.getAvgSales();
+					}
+				}
+				inputProduct.setAverageSales3MonthBefore(
+						averageSales3MonthBefore);
+				
+				Long targetCustomerCurrentMonth = (long)0;
+				Long qtyOnHand = (long)0;
+				CustProdTarget custProdTargetCurrent =
+						custProdTargetService.
+							getBygetByCompanyCustidProductcodePeriodetarget(
+									company, custId,
+									productCode, periodeCurrentOracle);
+				if(custProdTargetCurrent!=null) {
+					if(custProdTargetCurrent.getTargetSales()!=null) {
+						targetCustomerCurrentMonth =
+								custProdTargetCurrent.getTargetSales();						
+					}
+					if(custProdTargetCurrent.getEndStock()!=null) {
+						qtyOnHand =
+								custProdTargetCurrent.getEndStock();
+					}
+				}
+				inputProduct.setTargetCustomerCurrentMonth(
+						targetCustomerCurrentMonth);
+				inputProduct.setQtyOnHand(qtyOnHand);
+				
+				Long targetCustomerNextMonth = (long)0;
+				CustProdTarget custProdTargetNextMonth =
+						custProdTargetService.
+							getBygetByCompanyCustidProductcodePeriodetarget(
+									company, custId,
+									productCode, periodeNextOracle);
+				if(custProdTargetNextMonth!=null) {
+					if(custProdTargetNextMonth.getTargetSales()!=null) {
+						targetCustomerNextMonth =
+								custProdTargetNextMonth.getTargetSales();
+					}
+				}
+				inputProduct.setTargetCustomerNextMonth(
+						targetCustomerNextMonth);
+				
+				/*CustInvoice ci = new CustInvoice();
+				ci.setTrxNumber("001");
+				ci.setTrxId((long) 1);
+				ci.setTrxDate(
+						Date.valueOf("2017-11-20"));
+				ci.setUomCode("dus");
+				ci.setQty((long) 10);
+				
+				List<CustInvoice> custInvoices = 
+						new ArrayList<>();
+				custInvoices.add(ci);*/
+				
+				List<CustInvoice> custInvoices =
+						custInvoiceService.
+							getByCompanyCustidProductcode(
+									company, custId,
+									productCode);
+				inputProduct.setCustInvoices(custInvoices);
+				
 				inputProducts.add(inputProduct);
 			}
 			
@@ -499,7 +694,7 @@ public class InputOrderController {
     		String productCode = inputProduct.getProduct().getProductCode();
     		String productDesc = inputProduct.getProduct().getProductName();
     		String uom = inputProduct.getCustProd().getPriceUom();
-    		Long unitPrice = inputProduct.getCustProd().getPrice();
+    		Double unitPrice = inputProduct.getCustProd().getPrice();
     		Long orderQty1 = unFormatText(inputProduct.getOrderQty1());
     		Long orderQty2 = unFormatText(inputProduct.getOrderQty2());
     		Long orderQty3 = unFormatText(inputProduct.getOrderQty3());
@@ -679,8 +874,10 @@ public class InputOrderController {
 	                    			orderDetail5.setUom(uom);
 	                    			orderDetail5.setJumlah(orderQty5);
 	                    			orderDetail5.setUnitPrice(unitPrice);
-	                    			orderDetail5.setTotalPrice(orderQty5*unitPrice);
-	                        		orderDetailService.updateOrderDetail(orderDetail5);
+	                    			orderDetail5.setTotalPrice(
+	                    					orderQty5*unitPrice);
+	                        		orderDetailService.updateOrderDetail(
+	                        				orderDetail5);
                     			}
                     			else {
                     				if(orderDetail5!=null) {
@@ -805,6 +1002,23 @@ public class InputOrderController {
 		else if(m==10) {mName= "Oktober";}
 		else if(m==11) {mName= "November";}
 		else if(m==12) {mName= "Desember";}
+		return mName;
+	}
+	
+	private String getMonthNameOracle(int m) {
+		String mName = "";
+		if(m==1) {mName= "JAN";}
+		else if(m==2) {mName= "FEB";}
+		else if(m==3) {mName= "MAR";}
+		else if(m==4) {mName= "APR";}
+		else if(m==5) {mName= "MAY";}
+		else if(m==6) {mName= "JUN";}
+		else if(m==7) {mName= "JUL";}
+		else if(m==8) {mName= "AUG";}
+		else if(m==9) {mName= "SEP";}
+		else if(m==10) {mName= "OCT";}
+		else if(m==11) {mName= "NOV";}
+		else if(m==12) {mName= "DEC";}
 		return mName;
 	}
 	

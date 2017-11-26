@@ -75,7 +75,7 @@ public interface OrderDetailRepository extends CrudRepository<OrderDetail, Long>
     		@Param("productDesc") String productDesc,
     		@Param("uom") String uom,
 			@Param("jumlah") Long jumlah,
-    		@Param("unitPrice") Long unitPrice,
-			@Param("totalPrice") Long totalPrice
+    		@Param("unitPrice") Double unitPrice,
+			@Param("totalPrice") Double totalPrice
     	);
 }

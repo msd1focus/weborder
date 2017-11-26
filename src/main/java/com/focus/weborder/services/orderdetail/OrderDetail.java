@@ -26,9 +26,9 @@ public class OrderDetail {
 	@Column(name="JUMLAH")
 	private Long jumlah;
 	@Column(name="UNIT_PRICE")
-	private Long unitPrice;
+	private Double unitPrice;
 	@Column(name="TOTAL_PRICE")
-	private Long totalPrice;
+	private Double totalPrice;
 	
 	public OrderDetail() {
 		
@@ -36,7 +36,7 @@ public class OrderDetail {
 	
 	public OrderDetail(Long orderDetailId, Long orderId, String productCode, 
 			String productDesc, String uom, Long jumlah,
-			Long unitPrice, Long totalPrice) {
+			Double unitPrice, Double totalPrice) {
 		
 		super();
 		this.orderDetailId = orderDetailId;
@@ -97,19 +97,19 @@ public class OrderDetail {
 		this.jumlah = jumlah;
 	}
 
-	public Long getUnitPrice() {
+	public Double getUnitPrice() {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(Long unitPrice) {
+	public void setUnitPrice(Double unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 
-	public Long getTotalPrice() {
+	public Double getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(Long totalPrice) {
+	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 

@@ -18,7 +18,17 @@ public class CustInvoiceService {
 		return custInvoices;		
 	}
 
-	public List<CustInvoice> getBygetByCompanyCustidProductcodeTrxdate(
+	public List<CustInvoice> getByCompanyCustidProductcode(
+			String company, Long custId,
+			String productCode) {
+		List<CustInvoice> custInvoices = 
+				custInvoiceRepository.getByCompanyCustidProductcode(
+						company, custId, 
+						productCode);
+		return custInvoices;		
+	}
+
+	public List<CustInvoice> getByCompanyCustidProductcodeTrxdate(
 			String company, Long custId,
 			String productCode, Date trxDate) {
 		List<CustInvoice> custInvoices = 

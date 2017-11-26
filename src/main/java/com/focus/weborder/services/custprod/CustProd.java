@@ -23,24 +23,24 @@ public class CustProd {
 	@Column(name="CURRENCY")
 	private String currency;
 	@Column(name="PRICE")
-	private Long price;
+	private Double price;
 	@Column(name="PRICE_UOM")
 	private String priceUom;
 	@Column(name="LAST_UPDATE")
 	private Date lastUpdate;
 	@Column(name="OUTSTANDING_SO")
-	private Long outstandingSo;
+	private Double outstandingSo;
 	@Column(name="OUTSTANDING_QUOTE")
-	private Long outstandingQuote;
+	private Double outstandingQuote;
 	
 	public CustProd() {
 		
 	}
 	
 	public CustProd(String company, String productCode, Long custId,
-			String status, String currency, Long price,
+			String status, String currency, Double price,
 			String priceUom,
-			Date lastUpdate, Long outstandingSo, Long outstandingQuote) {
+			Date lastUpdate, Double outstandingSo, Double outstandingQuote) {
 		super();
 		this.company = company;
 		this.custId = custId;
@@ -94,11 +94,11 @@ public class CustProd {
 		this.currency = currency;
 	}
 
-	public Long getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Long price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -118,19 +118,19 @@ public class CustProd {
 		this.lastUpdate = lastUpdate;
 	}
 
-	public Long getOutstandingSo() {
+	public Double getOutstandingSo() {
 		return outstandingSo;
 	}
 
-	public void setOutstandingSo(Long outstandingSo) {
+	public void setOutstandingSo(Double outstandingSo) {
 		this.outstandingSo = outstandingSo;
 	}
 
-	public Long getOutstandingQuote() {
+	public Double getOutstandingQuote() {
 		return outstandingQuote;
 	}
 
-	public void setOutstandingQuote(Long outstandingQuote) {
+	public void setOutstandingQuote(Double outstandingQuote) {
 		this.outstandingQuote = outstandingQuote;
 	}
 

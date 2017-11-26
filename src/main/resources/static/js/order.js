@@ -217,7 +217,7 @@ function calcAmount1(obj){
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
-	for(var idxRow = 1, productQty;; idxRow++){	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
 		var qty1 =
 			unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
@@ -371,9 +371,6 @@ function calcAmount1(obj){
 			totAmount += totAmountPerLine;
 		}
 		
-		if(idxRow===productQty){
-			break;
-		}
 	}
 
 	dimensiOrder1.value = parseFloat(dimensiOrder);
@@ -515,7 +512,7 @@ function calcAmount2(obj){
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
-	for(var idxRow = 1, productQty;; idxRow++){	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
 		var qty2 =
 			unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
@@ -658,10 +655,7 @@ function calcAmount2(obj){
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
-		
-		if(idxRow===productQty){
-			break;
-		}
+	
 	}
 
 	dimensiOrder2.value = parseFloat(dimensiOrder);
@@ -805,7 +799,7 @@ function calcAmount3(obj){
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
-	for(var idxRow = 1, productQty;; idxRow++){	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 
 		var qty3 =
 			unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
@@ -925,9 +919,6 @@ function calcAmount3(obj){
 			totAmount += totAmountPerLine;
 		}
 		
-		if(idxRow===productQty){
-			break;
-		}
 	}
 
 	dimensiOrder3.value = parseFloat(dimensiOrder);
@@ -1070,7 +1061,7 @@ function calcAmount4(obj){
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
-	for(var idxRow = 1, productQty;; idxRow++){	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 
 		var qty4 =
 			unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
@@ -1163,9 +1154,6 @@ function calcAmount4(obj){
 			totAmount += totAmountPerLine;
 		}
 		
-		if(idxRow===productQty){
-			break;
-		}
 	}
 
 	dimensiOrder4.value = parseFloat(dimensiOrder);
@@ -1308,7 +1296,7 @@ function calcAmount5(obj){
 	var totAmount = 0;
 	var dimensiOrder = 0;
 	
-	for(var idxRow = 1, productQty;; idxRow++){	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 
 		var qty5 =
 			unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
@@ -1367,9 +1355,6 @@ function calcAmount5(obj){
 		totQty += totQtyPerLine;
 		totAmount += totAmountPerLine;
 		
-		if(idxRow===productQty){
-			break;
-		}
 	}
 
 	dimensiOrder5.value = parseFloat(dimensiOrder);
@@ -1473,9 +1458,17 @@ function calcAmount5(obj){
 }
 
 function generateCMOB(){
+
+	console.log("");
+	console.log("========================================================");
+	console.log("CMOB Calculation");
+	console.log("========================================================");
+	
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
 	var orderBySelected = document.getElementById("orderBySelected");
 	orderBySelected.value = "CMOB";
+	var leadTime = 
+		parseFloat(document.getElementById("leadTime").value);
 	var rowLeadTime = document.getElementById("rowLeadTime");
 	rowLeadTime.style.display = "table-row";
 	var tblOrder = document.getElementById("tblOrder");
@@ -1520,30 +1513,156 @@ function generateCMOB(){
     
 	var amtTotal = document.getElementById("amtTotal");
     var totAmount = 0;
-	
-	var cmobInitial = 5;
-	var cmobMultiplier = 0;
+    
 	var do1= 0;
 	var do2= 0;
 	var do3= 0;
 	var do4= 0;
 	var do5= 0;
 	
-	for(var idxRow = 1, productQty;; idxRow++){
+	var today = new Date();
+	var leadTimeDayBefore = new Date();
+	leadTimeDayBefore.
+		setDate(leadTimeDayBefore.getDate()-leadTime);
+	leadTimeDayBefore.setHours(0);
+	leadTimeDayBefore.setMinutes(0);
+	leadTimeDayBefore.setSeconds(0);
+	console.log("today = " + today);
+	console.log("leadTime = " + leadTime);
+	console.log("leadTimeDayBefore = " + leadTimeDayBefore);
+	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
-		cmobMultiplier += 1;
-		var qty = (cmobInitial * cmobMultiplier) / jumlahOrder;
+		var productName =
+			tblOrder.rows[idxRow].cells[0].children[3].value;
+		var averageSales3MonthBefore = 0;
+		averageSales3MonthBefore = 
+			parseFloat(tblOrder.rows[idxRow].cells[10].children[0].value);
+		var averageSales2MonthBefore = 0;
+		averageSales2MonthBefore = 
+			parseFloat(tblOrder.rows[idxRow].cells[10].children[1].value);
+		var averageSales1MonthBefore = 0;
+		averageSales1MonthBefore = 
+			parseFloat(tblOrder.rows[idxRow].cells[10].children[2].value);
+		var averageSalesCurrentMonth = 0;
+		averageSalesCurrentMonth = 
+			parseFloat(tblOrder.rows[idxRow].cells[10].children[3].value);
+		var targetCustomerCurrentMonth = 0;
+		targetCustomerCurrentMonth = 
+			parseFloat(tblOrder.rows[idxRow].cells[10].children[4].value);
+		var targetCustomerNextMonth = 0;
+		targetCustomerNextMonth = 
+			parseFloat(tblOrder.rows[idxRow].cells[10].children[5].value);
+		var qtyOnHand = 0;
+		qtyOnHand = 
+			parseFloat(tblOrder.rows[idxRow].cells[10].children[6].value);
+		var outstandingOrder = 0;
+		outstandingOrder = 
+			parseFloat(tblOrder.rows[idxRow].cells[0].children[8].value);
+		var outstandingQuotation = 0;
+		outstandingQuotation = 
+			parseFloat(tblOrder.rows[idxRow].cells[0].children[9].value);
+		
+		var averageSales = 0;
+		averageSales =
+			(averageSales3MonthBefore
+			+ averageSales2MonthBefore
+			+ averageSales1MonthBefore)
+			/3;
+		
+		var bufferStock = 0;
+		bufferStock =
+			(averageSales/2)
+			- (leadTime*averageSales/30)
+			
+		var invoiceByLeadTime = 0;
+		
+		var tblCustInvoice =
+			tblOrder.rows[idxRow].cells[11].children[0];
+		for (var i = 0; i < tblCustInvoice.rows.length; i++) {
+			
+			var trxDate =
+				new Date(tblCustInvoice.rows[i].cells[2].children[0].value);
+			
+			if(trxDate >= leadTimeDayBefore){
+				invoiceByLeadTime +=
+					parseFloat(
+							tblCustInvoice.rows[i].cells[4].children[0].value);
+			}
+			
+		}
+		
+		var cmob = 
+			targetCustomerCurrentMonth
+			+ bufferStock
+			- invoiceByLeadTime
+			- qtyOnHand
+			- outstandingQuotation
+			- outstandingOrder;
+		
+		if(cmob<0){
+			cmob = 0;
+		}
+			
+		var qty = cmob / jumlahOrder;
+		
+		console.log(
+				productName
+				+ " => "
+				+ "averageSales3MonthBefore = " 
+				+ averageSales3MonthBefore
+				+ ", "
+				+ "averageSales2MonthBefore = " 
+				+ averageSales2MonthBefore
+				+ ", "
+				+ "averageSales1MonthBefore = " 
+				+ averageSales1MonthBefore
+				+ ", "
+				+ "averageSalesCurrentMonth = " 
+				+ averageSalesCurrentMonth
+				+ ", "
+				+ "averageSales = "
+				+ averageSales
+				+ ", "
+				+ "bufferStock = "
+				+ bufferStock
+				+ ", "
+				+ "targetCustomerCurrentMonth = " 
+				+ targetCustomerCurrentMonth
+				+ ", "
+				+ "targetCustomerNextMonth = " 
+				+ targetCustomerNextMonth
+				+ ", "
+				+ "qtyOnHand = "
+				+ qtyOnHand
+				+ ", "
+				+ "outstandingOrder = "
+				+ outstandingOrder
+				+ ", "
+				+ "outstandingQuotation = "
+				+ outstandingQuotation
+				+ ", "
+				+ "invoiceByLeadTime = "
+				+ invoiceByLeadTime
+				+ ", "
+				+ "CMOB = "
+				+ cmob
+				+ ", "
+				+ "qty = "
+				+ qty);		
 		
 		if(jumlahOrder === "1"){		
 			
-			tblOrder.rows[idxRow].cells[0].children[0].value = formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[0].children[0].value = 
+				formatTextValue(qty);
 			tblOrder.rows[idxRow].cells[1].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[5].children[0].value = formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[5].children[0].value = 
+				formatTextValue(cmob);
 			
-			totQty += qty;
+			totQty += cmob;
 			
 			do1 += 
 				tblOrder.rows[idxRow].cells[0].children[0].value
@@ -1562,14 +1681,17 @@ function generateCMOB(){
 		}
 		else if(jumlahOrder === "2"){
 			
-			tblOrder.rows[idxRow].cells[0].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[1].children[0].value = formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[0].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[1].children[0].value = 
+				formatTextValue(qty);
 			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[5].children[0].value = formatTextValue(qty*2);
+			tblOrder.rows[idxRow].cells[5].children[0].value = 
+				formatTextValue(cmob);
 			
-			totQty += (qty*2);
+			totQty += cmob;
 			
 			do1 += 
 				tblOrder.rows[idxRow].cells[0].children[0].value
@@ -1596,14 +1718,18 @@ function generateCMOB(){
 		}
 		else if(jumlahOrder === "3"){
 			
-			tblOrder.rows[idxRow].cells[0].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[1].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[2].children[0].value = formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[0].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[1].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[2].children[0].value = 
+				formatTextValue(qty);
 			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[5].children[0].value = formatTextValue(qty*3);
+			tblOrder.rows[idxRow].cells[5].children[0].value = 
+				formatTextValue(cmob);
 			
-			totQty += (qty*3);
+			totQty += cmob;
 
 			do1 += 
 				tblOrder.rows[idxRow].cells[0].children[0].value
@@ -1637,14 +1763,19 @@ function generateCMOB(){
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "4"){
-			tblOrder.rows[idxRow].cells[0].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[1].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[2].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[3].children[0].value = formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[0].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[1].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[2].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[3].children[0].value = 
+				formatTextValue(qty);
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[5].children[0].value = formatTextValue(qty*4);	
+			tblOrder.rows[idxRow].cells[5].children[0].value = 
+				formatTextValue(comb);	
 			
-			totQty += (qty*4);
+			totQty += cmob;
 
 			do1 += 
 				tblOrder.rows[idxRow].cells[0].children[0].value
@@ -1686,14 +1817,20 @@ function generateCMOB(){
 			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "5"){
-			tblOrder.rows[idxRow].cells[0].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[1].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[2].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[3].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[4].children[0].value = formatTextValue(qty);
-			tblOrder.rows[idxRow].cells[5].children[0].value = formatTextValue(qty*5);
+			tblOrder.rows[idxRow].cells[0].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[1].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[2].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[3].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[4].children[0].value = 
+				formatTextValue(qty);
+			tblOrder.rows[idxRow].cells[5].children[0].value = 
+				formatTextValue(cmob);
 			
-			totQty += (qty*5);
+			totQty += (cmob);
 
 			do1 += 
 				tblOrder.rows[idxRow].cells[0].children[0].value
@@ -1758,10 +1895,7 @@ function generateCMOB(){
 		totAmount5 += 
 			(parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
 				*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
-		
-		if(idxRow===productQty){
-			break;
-		}
+
 	}
 
 	if(jumlahOrder>0){
@@ -1913,6 +2047,9 @@ function generateCMOB(){
 	else{
 		sisaLimit.style.backgroundColor = "white";
 	}
+	
+	console.log("========================================================");
+	console.log("");
 }
 
 function resetOrder(){
@@ -1989,7 +2126,7 @@ function resetOrder(){
 	sisaLimit4.style.backgroundColor = "white";
 	sisaLimit5.style.backgroundColor = "white";
 	
-	for(var idxRow = 1, productQty;; idxRow++){
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
 		tblOrder.rows[idxRow].cells[0].children[0].value = 0;
 		tblOrder.rows[idxRow].cells[1].children[0].value = 0;
@@ -1998,10 +2135,7 @@ function resetOrder(){
 		tblOrder.rows[idxRow].cells[4].children[0].value = 0;
 		tblOrder.rows[idxRow].cells[5].children[0].value = 0;
 		tblOrder.rows[idxRow].cells[6].children[0].value = 0;
-		
-		if(idxRow===productQty){
-			break;
-		}
+
 	}
 	
 }
@@ -2216,7 +2350,7 @@ function changeOrderType(obj){
 		sisaLimitDP.style.display = "block";
 	}
 	
-	for(var idxRow = 1, productQty;; idxRow++){
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
 		if(orderType === "SO Lokal Non Food With CO - DP"
 			|| orderType === "SO Lokal Non Food With CO"){
@@ -2226,10 +2360,6 @@ function changeOrderType(obj){
 		else{
 			tblOrder.rows[idxRow].style.display = "table-row";
 			tblOrderItemFixed.rows[idxRow].style.display = "table-row";
-		}
-		
-		if(idxRow===productQty){
-			break;
 		}
 	}
 	
@@ -2456,7 +2586,7 @@ function changeJumlahOrder(obj) {
     		
     	}
     	
-    	for(var idxRow = 0, productQty;; idxRow++){
+    	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "none";
     		tblOrder.rows[idxRow].cells[2].style.display = "none";
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
@@ -2496,9 +2626,6 @@ function changeJumlahOrder(obj) {
     					*parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
     		}
 			
-    		if(idxRow === productQty){
-   				break;
-   			}
     	}
     }
     else if(jumlahOrder === "2"){
@@ -2529,7 +2656,7 @@ function changeJumlahOrder(obj) {
     		
     	}
     	
-    	for(var idxRow = 0, productQty;; idxRow++){
+    	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "none";
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
@@ -2584,9 +2711,6 @@ function changeJumlahOrder(obj) {
     			
     		}
     		
-    		if(idxRow === productQty){
-   				break;
-   			}
     	}
     }
     else if(jumlahOrder === "3"){
@@ -2617,7 +2741,7 @@ function changeJumlahOrder(obj) {
     		
     	}
     	
-    	for(var idxRow = 0, productQty;; idxRow++){
+    	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
@@ -2686,9 +2810,6 @@ function changeJumlahOrder(obj) {
         		
     		}
 			
-    		if(idxRow === productQty){
-   				break;
-   			}
     	}
     }
     else if(jumlahOrder === "4"){
@@ -2719,7 +2840,7 @@ function changeJumlahOrder(obj) {
     		
     	}
     	
-    	for(var idxRow = 0, productQty;; idxRow++){
+    	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
@@ -2802,9 +2923,6 @@ function changeJumlahOrder(obj) {
         		
     		}
 			
-    		if(idxRow === productQty){
-   				break;
-   			}
     	}
     }
     else if(jumlahOrder === "5"){
@@ -2835,7 +2953,7 @@ function changeJumlahOrder(obj) {
     		
     	}
     	
-    	for(var idxRow = 0, productQty;; idxRow++){
+    	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
@@ -2932,9 +3050,6 @@ function changeJumlahOrder(obj) {
         		
     		}
     		
-    		if(idxRow === productQty){
-   				break;
-   			}
     	}
     }
 

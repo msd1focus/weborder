@@ -21,7 +21,7 @@ public class CustProdSales {
 	@Column(name="PERIODE")
 	private String periode;
 	@Column(name="AVG_SALES")
-	private Long avgSales;
+	private Double avgSales;
 	@Column(name="AVG_SALES_LAST_UPDATE")
 	private Date avgSalesLastUpdate;
 	
@@ -30,7 +30,7 @@ public class CustProdSales {
 	
 	public CustProdSales(
 			String company, String productCode, Long custId,
-			String periode, Long avgSales, Date avgSalesLastUpdate) {
+			String periode, Double avgSales, Date avgSalesLastUpdate) {
 		super();
 		this.company = company;
 		this.productCode = productCode;
@@ -72,11 +72,11 @@ public class CustProdSales {
 		this.periode = periode;
 	}
 
-	public Long getAvgSales() {
+	public Double getAvgSales() {
 		return avgSales;
 	}
 
-	public void setAvgSales(Long avgSales) {
+	public void setAvgSales(Double avgSales) {
 		this.avgSales = avgSales;
 	}
 

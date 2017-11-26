@@ -17,11 +17,14 @@ public class InputProduct {
 	private String orderQty3;
 	private String orderQty4;
 	private String orderQty5;
-	private Double averageSales; //cust_prod_sales.avg_sales
+	private Double averageSales3MonthBefore;
+	private Double averageSales2MonthBefore;
+	private Double averageSales1MonthBefore;
+	private Double averageSalesCurrentMonth; //cust_prod_sales.avg_sales
 	private Long targetCustomerCurrentMonth; //cust_prod_target.target_sales
 	private Long targetCustomerNextMonth; //cust_prod_target.target_sales
 	private Long qtyOnHand; //cust_prod_target.end_stock
-	private List<CustInvoice> custInvoice; //cust_invoice
+	private List<CustInvoice> custInvoices; //cust_invoice
 
 	public InputProduct() {
 		
@@ -32,9 +35,14 @@ public class InputProduct {
 			List<ProdUom> prodUoms,
 			String orderQty1, String orderQty2, 
 			String orderQty3, String orderQty4,
-			String orderQty5, Double averageSales,
-			Long targetCustomerCurrentMonth, Long targetCustomerNextMonth,
-			Long qtyOnHand, List<CustInvoice> custInvoice
+			String orderQty5,
+			Double averageSales3MonthBefore,
+			Double averageSales2MonthBefore,
+			Double averageSales1MonthBefore,
+			Double averageSalesCurrentMonth,
+			Long targetCustomerCurrentMonth,
+			Long targetCustomerNextMonth,
+			Long qtyOnHand, List<CustInvoice> custInvoices
 			) {
 		super();
 		this.custProd = custProd;
@@ -45,11 +53,14 @@ public class InputProduct {
 		this.orderQty3 = orderQty3;
 		this.orderQty4 = orderQty4;
 		this.orderQty5 = orderQty5;
-		this.averageSales = averageSales;
+		this.averageSales3MonthBefore = averageSales3MonthBefore;
+		this.averageSales2MonthBefore = averageSales2MonthBefore;
+		this.averageSales1MonthBefore = averageSales1MonthBefore;
+		this.averageSalesCurrentMonth = averageSalesCurrentMonth;
 		this.targetCustomerCurrentMonth = targetCustomerCurrentMonth;
 		this.targetCustomerNextMonth = targetCustomerNextMonth;
 		this.qtyOnHand = qtyOnHand;
-		this.custInvoice = custInvoice;
+		this.custInvoices = custInvoices;
 	}
 
 	public CustProd getCustProd() {
@@ -115,13 +126,37 @@ public class InputProduct {
 	public void setOrderQty5(String orderQty5) {
 		this.orderQty5 = orderQty5;
 	}
-
-	public Double getAverageSales() {
-		return averageSales;
+	
+	public Double getAverageSales3MonthBefore() {
+		return averageSales3MonthBefore;
 	}
 
-	public void setAverageSales(Double averageSales) {
-		this.averageSales = averageSales;
+	public void setAverageSales3MonthBefore(Double averageSales3MonthBefore) {
+		this.averageSales3MonthBefore = averageSales3MonthBefore;
+	}
+
+	public Double getAverageSales2MonthBefore() {
+		return averageSales2MonthBefore;
+	}
+
+	public void setAverageSales2MonthBefore(Double averageSales2MonthBefore) {
+		this.averageSales2MonthBefore = averageSales2MonthBefore;
+	}
+
+	public Double getAverageSales1MonthBefore() {
+		return averageSales1MonthBefore;
+	}
+
+	public void setAverageSales1MonthBefore(Double averageSales1MonthBefore) {
+		this.averageSales1MonthBefore = averageSales1MonthBefore;
+	}
+
+	public Double getAverageSalesCurrentMonth() {
+		return averageSalesCurrentMonth;
+	}
+
+	public void setAverageSalesCurrentMonth(Double averageSalesCurrentMonth) {
+		this.averageSalesCurrentMonth = averageSalesCurrentMonth;
 	}
 
 	public Long getTargetCustomerCurrentMonth() {
@@ -148,11 +183,11 @@ public class InputProduct {
 		this.qtyOnHand = qtyOnHand;
 	}
 
-	public List<CustInvoice> getCustInvoice() {
-		return custInvoice;
+	public List<CustInvoice> getCustInvoices() {
+		return custInvoices;
 	}
 
-	public void setCustInvoice(List<CustInvoice> custInvoice) {
-		this.custInvoice = custInvoice;
+	public void setCustInvoices(List<CustInvoice> custInvoices) {
+		this.custInvoices = custInvoices;
 	}
 }

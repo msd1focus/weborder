@@ -20,13 +20,22 @@ public class CustInvoiceController {
 		return custInvoiceService.getAllCustInvoices();
 	}
 	
+	@RequestMapping("/custinvoices/productcode")
+	public List<CustInvoice> getByCompanyCustidProductcode(
+		@RequestParam String company, 
+		@RequestParam Long custid,
+		@RequestParam String productcode) {
+		return custInvoiceService.getByCompanyCustidProductcode(
+				company, custid, productcode);
+	}
+	
 	@RequestMapping("/custinvoices/trxdate")
 	public List<CustInvoice> getByCompanyCustidProductcodeTrxdate(
 		@RequestParam String company, 
 		@RequestParam Long custid,
 		@RequestParam String productcode, 
 		@RequestParam Date trxdate) {
-		return custInvoiceService.getBygetByCompanyCustidProductcodeTrxdate(
+		return custInvoiceService.getByCompanyCustidProductcodeTrxdate(
 				company, custid, productcode, trxdate);
 	}
 
