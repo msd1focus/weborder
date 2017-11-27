@@ -27,7 +27,6 @@ import com.focus.weborder.services.custprod.CustProdService;
 import com.focus.weborder.services.custprodsales.CustProdSales;
 import com.focus.weborder.services.custprodsales.CustProdSalesService;
 import com.focus.weborder.services.custprodtarget.CustProdTarget;
-import com.focus.weborder.services.custprodtarget.CustProdTargetRepository;
 import com.focus.weborder.services.custprodtarget.CustProdTargetService;
 import com.focus.weborder.services.custshipto.CustShipTo;
 import com.focus.weborder.services.custshipto.CustShipToService;

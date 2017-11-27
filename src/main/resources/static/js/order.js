@@ -5,8 +5,24 @@ window.onload = function(){
 	var manual = document.getElementById("manual");
 	var cmob = document.getElementById("cmob");
 	var orderType = document.getElementById("orderType");
-	changeOrderType(orderType);
+	var dimensiMobil1 = document.getElementById("dimensiMobil1").value;
+	var dimensiMobil2 = document.getElementById("dimensiMobil2").value;
+	var dimensiMobil3 = document.getElementById("dimensiMobil3").value;
+	var dimensiMobil4 = document.getElementById("dimensiMobil4").value;
+	var dimensiMobil5 = document.getElementById("dimensiMobil5").value;
+	var dimensiMobil1Text = document.getElementById("dimensiMobil1Text");
+	var dimensiMobil2Text = document.getElementById("dimensiMobil2Text");
+	var dimensiMobil3Text = document.getElementById("dimensiMobil3Text");
+	var dimensiMobil4Text = document.getElementById("dimensiMobil4Text");
+	var dimensiMobil5Text = document.getElementById("dimensiMobil5Text");
 	
+	dimensiMobil1Text.value = formatTextValue(dimensiMobil1);
+	dimensiMobil2Text.value = formatTextValue(dimensiMobil2);
+	dimensiMobil3Text.value = formatTextValue(dimensiMobil3);
+	dimensiMobil4Text.value = formatTextValue(dimensiMobil4);
+	dimensiMobil5Text.value = formatTextValue(dimensiMobil5);
+	
+	changeOrderType(orderType);
 	
 	if(orderBySelected=="CMOB"){
 		cmob.checked = "checked";
@@ -48,6 +64,9 @@ function formatText(obj){
 		if(text===""){
 			text = "0";
 		}
+		if(text<0){
+			text = "-" + text;
+		}
 		obj.value = text;
 		//obj.value = text.toFixed(2);
 	//}
@@ -56,15 +75,12 @@ function formatText(obj){
 function formatTextValue(obj){
 	
 	text = obj;
-	text = text.toString().replace(/[\D\s\._\-]+/g, "");
-	text = text ? parseFloat( text, 10 ) : 0;
+	//text = text.toString().replace(/[\D\s\._\-]+/g, "");
+	//text = text ? parseFloat( text, 10 ) : 0;
 	text = ( text === 0 ) ? "" : text.toLocaleString( "en-US" )
 	if(text===""){
 		text = "0";
 	}
-	/*if(obj<0){
-		text = "-" + obj;
-	}*/
 	return text;
 }
 
@@ -101,7 +117,7 @@ function focus1(obj){
 	var up1 = document.getElementById("up1");
 	var amt1 = document.getElementById("amt1");
 	
-	up1.value = formatTextValue(untPrice);
+	up1.value = formatTextValue(parseFloat(untPrice));
 	amt1.value = formatTextValue(untPrice*unformatText(dtl1));
 	obj.select();
 	
@@ -118,7 +134,7 @@ function focus2(obj){
 	var up2 = document.getElementById("up2");
 	var amt2 = document.getElementById("amt2");
 	
-	up2.value = formatTextValue(untPrice);
+	up2.value = formatTextValue(parseFloat(untPrice));
 	amt2.value = formatTextValue(untPrice*unformatText(dtl2));
 	obj.select();
 	
@@ -135,7 +151,7 @@ function focus3(obj){
 	var up3 = document.getElementById("up3");
 	var amt3 = document.getElementById("amt3");
 	
-	up3.value = formatTextValue(untPrice);
+	up3.value = formatTextValue(parseFloat(untPrice));
 	amt3.value = formatTextValue(untPrice*unformatText(dtl3));
 	obj.select();
 	
@@ -153,7 +169,7 @@ function focus4(obj){
 	var up4 = document.getElementById("up4");
 	var amt4 = document.getElementById("amt4");
 	
-	up4.value = formatTextValue(untPrice);
+	up4.value = formatTextValue(parseFloat(untPrice));
 	amt4.value = formatTextValue(untPrice*unformatText(dtl4));
 	obj.select();
 	
@@ -171,7 +187,7 @@ function focus5(obj){
 	var up5 = document.getElementById("up5");
 	var amt5 = document.getElementById("amt5");
 	
-	up5.value = formatTextValue(untPrice);
+	up5.value = formatTextValue(parseFloat(untPrice));
 	amt5.value = formatTextValue(untPrice*unformatText(dtl5));
 	obj.select();
 	
@@ -188,6 +204,7 @@ function calcAmount1(obj){
 	var totalAmount3 = document.getElementById("totalAmount3");
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
+    var totalAmount1Text = document.getElementById("totalAmount1Text");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
@@ -195,8 +212,11 @@ function calcAmount1(obj){
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil1 = document.getElementById("dimensiMobil1");
 	var dimensiOrder1 = document.getElementById("dimensiOrder1");
+	var dimensiOrder1Text = document.getElementById("dimensiOrder1Text");
 	var selisihDimensi1 = document.getElementById("selisihDimensi1");
+	var selisihDimensi1Text = document.getElementById("selisihDimensi1Text");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimitText = document.getElementById("sisaLimitText");
     var sisaLimit1 = document.getElementById("sisaLimit1");
     var sisaLimit2 = document.getElementById("sisaLimit2");
     var sisaLimit3 = document.getElementById("sisaLimit3");
@@ -373,18 +393,22 @@ function calcAmount1(obj){
 		
 	}
 
-	dimensiOrder1.value = parseFloat(dimensiOrder);
+	dimensiOrder1.value = dimensiOrder;
+	dimensiOrder1Text.value = formatTextValue(dimensiOrder);
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil1.value - dimensiOrder);
 	selisihDimensi1.value = selisihDimensi;
+	selisihDimensi1Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi1.style.backgroundColor = "yellow";
+		selisihDimensi1Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi1.style.backgroundColor = "white";
+		selisihDimensi1Text.style.backgroundColor = "white";
 	}
+	
 	totalAmount1.value = totAmount1;
+	totalAmount1Text.value = formatTextValue(totAmount1);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 	
@@ -463,14 +487,14 @@ function calcAmount1(obj){
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
+	sisaLimitText.value = formatTextValue(sl);
 	if(sl<0){
-		sisaLimit.style.backgroundColor = "yellow";
+		sisaLimitText.style.backgroundColor = "yellow";
 		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		sisaLimit.style.backgroundColor = "white";
+		sisaLimitText.style.backgroundColor = "white";
 	}
-	return;
 }
 
 function calcAmount2(obj){
@@ -483,6 +507,7 @@ function calcAmount2(obj){
 	var totalAmount3 = document.getElementById("totalAmount3");
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
+    var totalAmount2Text = document.getElementById("totalAmount2Text");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
@@ -490,8 +515,11 @@ function calcAmount2(obj){
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil2 = document.getElementById("dimensiMobil2");
 	var dimensiOrder2 = document.getElementById("dimensiOrder2");
+	var dimensiOrder2Text = document.getElementById("dimensiOrder2Text");
 	var selisihDimensi2 = document.getElementById("selisihDimensi2");
+	var selisihDimensi2Text = document.getElementById("selisihDimensi2Text");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimitText = document.getElementById("sisaLimitText");
     var sisaLimit1 = document.getElementById("sisaLimit1");
     var sisaLimit2 = document.getElementById("sisaLimit2");
     var sisaLimit3 = document.getElementById("sisaLimit3");
@@ -658,19 +686,22 @@ function calcAmount2(obj){
 	
 	}
 
-	dimensiOrder2.value = parseFloat(dimensiOrder);
+	dimensiOrder2.value = dimensiOrder;
+	dimensiOrder2Text.value = formatTextValue(dimensiOrder);
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil2.value - dimensiOrder);
 	selisihDimensi2.value = selisihDimensi;
+	selisihDimensi2Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi2.style.backgroundColor = "yellow";
+		selisihDimensi2Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi2.style.backgroundColor = "white";
+		selisihDimensi2Text.style.backgroundColor = "white";
 	}
 	
 	totalAmount2.value = totAmount2;
+	totalAmount2Text.value = formatTextValue(totAmount2);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 
@@ -749,12 +780,13 @@ function calcAmount2(obj){
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
+	sisaLimitText.value = formatTextValue(sl);
 	if(sl<0){
-		sisaLimit.style.backgroundColor = "yellow";
+		sisaLimitText.style.backgroundColor = "yellow";
 		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		sisaLimit.style.backgroundColor = "white";
+		sisaLimitText.style.backgroundColor = "white";
 	}
 	return;
 }
@@ -769,6 +801,7 @@ function calcAmount3(obj){
 	var totalAmount3 = document.getElementById("totalAmount3");
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
+    var totalAmount3Text = document.getElementById("totalAmount3Text");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
@@ -776,8 +809,11 @@ function calcAmount3(obj){
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil3 = document.getElementById("dimensiMobil3");
 	var dimensiOrder3 = document.getElementById("dimensiOrder3");
+	var dimensiOrder3Text = document.getElementById("dimensiOrder3Text");
 	var selisihDimensi3 = document.getElementById("selisihDimensi3");
+	var selisihDimensi3Text = document.getElementById("selisihDimensi3Text");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimitText = document.getElementById("sisaLimitText");
     var sisaLimit1 = document.getElementById("sisaLimit1");
     var sisaLimit2 = document.getElementById("sisaLimit2");
     var sisaLimit3 = document.getElementById("sisaLimit3");
@@ -901,13 +937,13 @@ function calcAmount3(obj){
 			var totAmountPerLine = 0;
 			totAmountPerLine = 
 				amountCurrentLine
-				+ (parseFloat(tblOrder.rows[idxRow].cells[0].children[0].value)
+				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)) 
-				+ (parseFloat(tblOrder.rows[idxRow].cells[1].children[0].value)
+				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+				+ (qty5
 				* parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value));
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
@@ -921,19 +957,22 @@ function calcAmount3(obj){
 		
 	}
 
-	dimensiOrder3.value = parseFloat(dimensiOrder);
+	dimensiOrder3.value = dimensiOrder;
+	dimensiOrder3Text.value = formatTextValue(dimensiOrder);
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil3.value - dimensiOrder);
 	selisihDimensi3.value = selisihDimensi;
+	selisihDimensi3Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi3.style.backgroundColor = "yellow";
+		selisihDimensi3Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi3.style.backgroundColor = "white";
+		selisihDimensi3Text.style.backgroundColor = "white";
 	}
 	
 	totalAmount3.value = totAmount3;
+	totalAmount3Text.value = formatTextValue(totAmount3);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 
@@ -1012,12 +1051,13 @@ function calcAmount3(obj){
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
+	sisaLimitText.value = formatTextValue(sl);
 	if(sl<0){
-		sisaLimit.style.backgroundColor = "yellow";
+		sisaLimitText.style.backgroundColor = "yellow";
 		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		sisaLimit.style.backgroundColor = "white";
+		sisaLimitText.style.backgroundColor = "white";
 	}
 	return;
 }
@@ -1032,6 +1072,7 @@ function calcAmount4(obj){
 	var totalAmount3 = document.getElementById("totalAmount3");
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
+    var totalAmount4Text = document.getElementById("totalAmount4Text");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
@@ -1039,8 +1080,11 @@ function calcAmount4(obj){
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil4 = document.getElementById("dimensiMobil4");
 	var dimensiOrder4 = document.getElementById("dimensiOrder4");
+	var dimensiOrder4Text = document.getElementById("dimensiOrder4Text");
 	var selisihDimensi4 = document.getElementById("selisihDimensi4");
+	var selisihDimensi4Text = document.getElementById("selisihDimensi4Text");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimitText = document.getElementById("sisaLimitText");
     var sisaLimit1 = document.getElementById("sisaLimit1");
     var sisaLimit2 = document.getElementById("sisaLimit2");
     var sisaLimit3 = document.getElementById("sisaLimit3");
@@ -1156,19 +1200,22 @@ function calcAmount4(obj){
 		
 	}
 
-	dimensiOrder4.value = parseFloat(dimensiOrder);
+	dimensiOrder4.value = dimensiOrder;
+	dimensiOrder4Text.value = formatTextValue(dimensiOrder);
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil4.value - dimensiOrder);
 	selisihDimensi4.value = selisihDimensi;
+	selisihDimensi4Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi4.style.backgroundColor = "yellow";
+		selisihDimensi4Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi4.style.backgroundColor = "white";
+		selisihDimensi4Text.style.backgroundColor = "white";
 	}
 	
 	totalAmount4.value = totAmount4;
+	totalAmount4Text.value = formatTextValue(totAmount4);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 
@@ -1246,13 +1293,14 @@ function calcAmount4(obj){
 	
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
-	sisaLimit.value = formatTextValue(sl);
+	sisaLimit.value = sl;
+	sisaLimitText.value = formatTextValue(sl);
 	if(sl<0){
-		sisaLimit.style.backgroundColor = "yellow";
+		sisaLimitText.style.backgroundColor = "yellow";
 		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		sisaLimit.style.backgroundColor = "white";
+		sisaLimitText.style.backgroundColor = "white";
 	}
 	return;
 }
@@ -1267,6 +1315,7 @@ function calcAmount5(obj){
 	var totalAmount3 = document.getElementById("totalAmount3");
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
+    var totalAmount5Text = document.getElementById("totalAmount5Text");
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
@@ -1274,8 +1323,11 @@ function calcAmount5(obj){
 	var amtTotal = document.getElementById("amtTotal");
 	var dimensiMobil5 = document.getElementById("dimensiMobil5");
 	var dimensiOrder5 = document.getElementById("dimensiOrder5");
+	var dimensiOrder5Text = document.getElementById("dimensiOrder5Text");
 	var selisihDimensi5 = document.getElementById("selisihDimensi5");
+	var selisihDimensi5Text = document.getElementById("selisihDimensi5Text");
     var sisaLimit = document.getElementById("sisaLimit");
+    var sisaLimitText = document.getElementById("sisaLimitText");
     var sisaLimit1 = document.getElementById("sisaLimit1");
     var sisaLimit2 = document.getElementById("sisaLimit2");
     var sisaLimit3 = document.getElementById("sisaLimit3");
@@ -1357,18 +1409,21 @@ function calcAmount5(obj){
 		
 	}
 
-	dimensiOrder5.value = parseFloat(dimensiOrder);
+	dimensiOrder5.value = dimensiOrder;
+	dimensiOrder5Text.value = formatTextValue(dimensiOrder);
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil5.value - dimensiOrder);
 	selisihDimensi5.value = selisihDimensi;
+	selisihDimensi5Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi5.style.backgroundColor = "yellow";
+		selisihDimensi5Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi5.style.backgroundColor = "white";
+		selisihDimensi5Text.style.backgroundColor = "white";
 	}
 	totalAmount5.value = totAmount5;
+	totalAmount5Text.value = formatTextValue(totAmount5);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 
@@ -1447,12 +1502,13 @@ function calcAmount5(obj){
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
+	sisaLimitText.value = formatTextValue(sl);
 	if(sl<0){
-		sisaLimit.style.backgroundColor = "yellow";
+		sisaLimitText.style.backgroundColor = "yellow";
 		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		sisaLimit.style.backgroundColor = "white";
+		sisaLimitText.style.backgroundColor = "white";
 	}
 	return;
 }
@@ -1480,6 +1536,7 @@ function generateCMOB(){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
 	var sisaLimit = document.getElementById("sisaLimit");
+	var sisaLimitText = document.getElementById("sisaLimitText");
 	var sisaLimit = document.getElementById("sisaLimit1");
 	var sisaLimit = document.getElementById("sisaLimit2");
 	var sisaLimit = document.getElementById("sisaLimit3");
@@ -1496,11 +1553,21 @@ function generateCMOB(){
 	var dimensiOrder3 = document.getElementById("dimensiOrder3");
 	var dimensiOrder4 = document.getElementById("dimensiOrder4");
 	var dimensiOrder5 = document.getElementById("dimensiOrder5");
+	var dimensiOrder1Text = document.getElementById("dimensiOrder1Text");
+	var dimensiOrder2Text = document.getElementById("dimensiOrder2Text");
+	var dimensiOrder3Text = document.getElementById("dimensiOrder3Text");
+	var dimensiOrder4Text = document.getElementById("dimensiOrder4Text");
+	var dimensiOrder5Text = document.getElementById("dimensiOrder5Text");
 	var selisihDimensi1 = document.getElementById("selisihDimensi1");
 	var selisihDimensi2 = document.getElementById("selisihDimensi2");
 	var selisihDimensi3 = document.getElementById("selisihDimensi3");
 	var selisihDimensi4 = document.getElementById("selisihDimensi4");
 	var selisihDimensi5 = document.getElementById("selisihDimensi5");
+	var selisihDimensi1Text = document.getElementById("selisihDimensi1Text");
+	var selisihDimensi2Text = document.getElementById("selisihDimensi2Text");
+	var selisihDimensi3Text = document.getElementById("selisihDimensi3Text");
+	var selisihDimensi4Text = document.getElementById("selisihDimensi4Text");
+	var selisihDimensi5Text = document.getElementById("selisihDimensi5Text");
 	
 	var totAmount1 = 0;
 	var totAmount2 = 0;
@@ -1900,21 +1967,23 @@ function generateCMOB(){
 
 	if(jumlahOrder>0){
 		
-		dimensiOrder1.value = parseFloat(do1);
+		dimensiOrder1.value = do1;
+		dimensiOrder1Text.value = formatTextValue(do1);
 		var sd1 = 0;
 		sd1 =  parseFloat(dimensiMobil1.value - do1);
 		selisihDimensi1.value = sd1;
+		selisihDimensi1Text.value = formatTextValue(sd1);
 		if(sd1<0){
-			selisihDimensi1.style.backgroundColor = "yellow";
+			selisihDimensi1Text.style.backgroundColor = "yellow";
 			alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
 		}
 		else{
-			selisihDimensi1.style.backgroundColor = "white";
+			selisihDimensi1Text.style.backgroundColor = "white";
 		}
 		
 		var sl1 = 0;
     	sl1 = sisaLimitInit - totAmount1;
-    	sisaLimit1.value = sl1;
+    	sisaLimit1.value = formatTextValue(sl1);
     	if(sl1<0){
     		sisaLimit1.style.backgroundColor = "yellow";
     		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -1924,22 +1993,24 @@ function generateCMOB(){
     	}
 		
 		if(jumlahOrder>1){
-			
-			dimensiOrder2.value = parseFloat(do2);
-			var sd1 = 0;
+
+			dimensiOrder2.value = do2;
+			dimensiOrder2Text.value = formatTextValue(do2);
+			var sd2 = 0;
 			sd2 =  parseFloat(dimensiMobil2.value - do2);
 			selisihDimensi2.value = sd2;
+			selisihDimensi2Text.value = formatTextValue(sd2);
 			if(sd2<0){
-				selisihDimensi2.style.backgroundColor = "yellow";
+				selisihDimensi2Text.style.backgroundColor = "yellow";
 				alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
 			}
 			else{
-				selisihDimensi2.style.backgroundColor = "white";
+				selisihDimensi2Text.style.backgroundColor = "white";
 			}
 
     		var sl2 = 0;
         	sl2 = sl1 - totAmount2;
-        	sisaLimit2.value = sl2;
+        	sisaLimit2.value = formatTextValue(sl2);
         	if(sl2<0){
         		sisaLimit2.style.backgroundColor = "yellow";
         		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -1949,22 +2020,24 @@ function generateCMOB(){
         	}
 			
 			if(jumlahOrder>2){
-				
-				dimensiOrder3.value = parseFloat(do3);
+
+				dimensiOrder3.value = do3;
+				dimensiOrder3Text.value = formatTextValue(do3);
 				var sd3 = 0;
 				sd3 =  parseFloat(dimensiMobil3.value - do3);
 				selisihDimensi3.value = sd3;
+				selisihDimensi3Text.value = formatTextValue(sd3);
 				if(sd3<0){
-					selisihDimensi3.style.backgroundColor = "yellow";
+					selisihDimensi3Text.style.backgroundColor = "yellow";
 					alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
 				}
 				else{
-					selisihDimensi3.style.backgroundColor = "white";
+					selisihDimensi3Text.style.backgroundColor = "white";
 				}
 
         		var sl3 = 0;
             	sl3 = sl2 - totAmount3;
-            	sisaLimit3.value = sl3;
+            	sisaLimit3.value = formatTextValue(sl3);
             	if(sl3<0){
             		sisaLimit3.style.backgroundColor = "yellow";
             		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -1974,22 +2047,24 @@ function generateCMOB(){
             	}
 				
 				if(jumlahOrder>3){
-					
-					dimensiOrder4.value = parseFloat(do4);
+
+					dimensiOrder4.value = do4;
+					dimensiOrder4Text.value = formatTextValue(do4);
 					var sd4 = 0;
 					sd4 =  parseFloat(dimensiMobil4.value - do4);
 					selisihDimensi4.value = sd4;
+					selisihDimensi4Text.value = formatTextValue(sd4);
 					if(sd4<0){
-						selisihDimensi4.style.backgroundColor = "yellow";
+						selisihDimensi4Text.style.backgroundColor = "yellow";
 						alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
 					}
 					else{
-						selisihDimensi4.style.backgroundColor = "white";
+						selisihDimensi4Text.style.backgroundColor = "white";
 					}
 
 	        		var sl4 = 0;
 	            	sl4 = sl3 - totAmount4;
-	            	sisaLimit4.value = sl4;
+	            	sisaLimit4.value = formatTextValue(sl4);
 	            	if(sl4<0){
 	            		sisaLimit4.style.backgroundColor = "yellow";
 	            		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -1999,15 +2074,24 @@ function generateCMOB(){
 	            	}
 					
 					if(jumlahOrder>4){
-						
-						dimensiOrder5.value = parseFloat(do5);
+
+						dimensiOrder5.value = do5;
+						dimensiOrder5Text.value = formatTextValue(do5);
 						var sd5 = 0;
 						sd5 =  parseFloat(dimensiMobil5.value - do5);
 						selisihDimensi5.value = sd5;
+						selisihDimensi5Text.value = formatTextValue(sd5);
+						if(sd5<0){
+							selisihDimensi5Text.style.backgroundColor = "yellow";
+							alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+						}
+						else{
+							selisihDimensi5Text.style.backgroundColor = "white";
+						}
 
 		        		var sl5 = 0;
 		            	sl5 = sl4 - totAmount5;
-		            	sisaLimit5.value = sl5;
+		            	sisaLimit5.value = formatTextValue(sl5);
 		            	if(sl5<0){
 		            		sisaLimit5.style.backgroundColor = "yellow";
 		            		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -2015,14 +2099,6 @@ function generateCMOB(){
 		            	else{
 		            		sisaLimit5.style.backgroundColor = "white";
 		            	}
-		            	
-						if(sd5<0){
-							selisihDimensi5.style.backgroundColor = "yellow";
-							alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
-						}
-						else{
-							selisihDimensi5.style.backgroundColor = "white";
-						}
 						
 					}
 				}
@@ -2035,17 +2111,23 @@ function generateCMOB(){
 	totalAmount3.value = totAmount3;
 	totalAmount4.value = totAmount4;
 	totalAmount5.value = totAmount5;
+	totalAmount1Text.value = formatTextValue(totAmount1);
+	totalAmount2Text.value = formatTextValue(totAmount2);
+	totalAmount3Text.value = formatTextValue(totAmount3);
+	totalAmount4Text.value = formatTextValue(totAmount4);
+	totalAmount5Text.value = formatTextValue(totAmount5);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
+	sisaLimitText.value = formatTextValue(sl);
 	if(sl<0){
-		sisaLimit.style.backgroundColor = "yellow";
+		sisaLimitText.style.backgroundColor = "yellow";
 		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		sisaLimit.style.backgroundColor = "white";
+		sisaLimitText.style.backgroundColor = "white";
 	}
 	
 	console.log("========================================================");
@@ -2067,7 +2149,13 @@ function resetOrder(){
 	var totalAmount3 = document.getElementById("totalAmount3");
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
+	var totalAmount1Text = document.getElementById("totalAmount1Text");
+	var totalAmount2Text = document.getElementById("totalAmount2Text");
+	var totalAmount3Text = document.getElementById("totalAmount3Text");
+	var totalAmount4Text = document.getElementById("totalAmount4Text");
+	var totalAmount5Text = document.getElementById("totalAmount5Text");
 	var sisaLimit = document.getElementById("sisaLimit");
+	var sisaLimitText = document.getElementById("sisaLimitText");
 	var sisaLimit1 = document.getElementById("sisaLimit1");
 	var sisaLimit2 = document.getElementById("sisaLimit2");
 	var sisaLimit3 = document.getElementById("sisaLimit3");
@@ -2086,45 +2174,56 @@ function resetOrder(){
 	var dimensiOrder3 = document.getElementById("dimensiOrder3");
 	var dimensiOrder4 = document.getElementById("dimensiOrder4");
 	var dimensiOrder5 = document.getElementById("dimensiOrder5");
+	var dimensiOrder1Text = document.getElementById("dimensiOrder1Text");
+	var dimensiOrder2Text = document.getElementById("dimensiOrder2Text");
+	var dimensiOrder3Text = document.getElementById("dimensiOrder3Text");
+	var dimensiOrder4Text = document.getElementById("dimensiOrder4Text");
+	var dimensiOrder5Text = document.getElementById("dimensiOrder5Text");
 	var selisihDimensi1 = document.getElementById("selisihDimensi1");
 	var selisihDimensi2 = document.getElementById("selisihDimensi2");
 	var selisihDimensi3 = document.getElementById("selisihDimensi3");
 	var selisihDimensi4 = document.getElementById("selisihDimensi4");
 	var selisihDimensi5 = document.getElementById("selisihDimensi5");
+	var selisihDimensi1Text = document.getElementById("selisihDimensi1Text");
+	var selisihDimensi2Text = document.getElementById("selisihDimensi2Text");
+	var selisihDimensi3Text = document.getElementById("selisihDimensi3Text");
+	var selisihDimensi4Text = document.getElementById("selisihDimensi4Text");
+	var selisihDimensi5Text = document.getElementById("selisihDimensi5Text");
 	
-	sisaLimit.value = sisaLimitInit;
-	totalAmount1.value = 0;
-	totalAmount2.value = 0;
-	totalAmount3.value = 0;
-	totalAmount4.value = 0;
-	totalAmount5.value = 0;
+	sisaLimitText.value = formatTextValue(sisaLimitInit);
+	totalAmount1Text.value = "0";
+	totalAmount2Text.value = "0";
+	totalAmount3Text.value = "0";
+	totalAmount4Text.value = "0";
+	totalAmount5Text.value = "0";
 	qtyTotal.value = 0;
 	amtTotal.value = 0;
-	dimensiOrder1.value = 0;
-	dimensiOrder2.value = 0;
-	dimensiOrder3.value = 0;
-	dimensiOrder4.value = 0;
-	dimensiOrder5.value = 0;
-	selisihDimensi1.value = dimensiMobil1;
-	selisihDimensi2.value = dimensiMobil2;
-	selisihDimensi3.value = dimensiMobil3;
-	selisihDimensi4.value = dimensiMobil4;
-	selisihDimensi5.value = dimensiMobil5;
-	selisihDimensi1.style.backgroundColor = "white";
-	selisihDimensi2.style.backgroundColor = "white";
-	selisihDimensi3.style.backgroundColor = "white";
-	selisihDimensi4.style.backgroundColor = "white";
-	selisihDimensi5.style.backgroundColor = "white";
-	sisaLimit1.value = 0;
-	sisaLimit2.value = 0;
-	sisaLimit3.value = 0;
-	sisaLimit4.value = 0;
-	sisaLimit5.value = 0;
+	dimensiOrder1Text.value = "0";
+	dimensiOrder2Text.value = "0";
+	dimensiOrder3Text.value = "0";
+	dimensiOrder4Text.value = "0";
+	dimensiOrder5Text.value = "0";
+	selisihDimensi1Text.value = formatTextValue(dimensiMobil1);
+	selisihDimensi2Text.value = formatTextValue(dimensiMobil2);
+	selisihDimensi3Text.value = formatTextValue(dimensiMobil3);
+	selisihDimensi4Text.value = formatTextValue(dimensiMobil4);
+	selisihDimensi5Text.value = formatTextValue(dimensiMobil5);
+	selisihDimensi1Text.style.backgroundColor = "white";
+	selisihDimensi2Text.style.backgroundColor = "white";
+	selisihDimensi3Text.style.backgroundColor = "white";
+	selisihDimensi4Text.style.backgroundColor = "white";
+	selisihDimensi5Text.style.backgroundColor = "white";
+	sisaLimit1.value = formatTextValue(sisaLimitInit);
+	sisaLimit2.value = formatTextValue(sisaLimitInit);
+	sisaLimit3.value = formatTextValue(sisaLimitInit);
+	sisaLimit4.value = formatTextValue(sisaLimitInit);
+	sisaLimit5.value = formatTextValue(sisaLimitInit);
 	sisaLimit1.style.backgroundColor = "white";
 	sisaLimit2.style.backgroundColor = "white";
 	sisaLimit3.style.backgroundColor = "white";
 	sisaLimit4.style.backgroundColor = "white";
 	sisaLimit5.style.backgroundColor = "white";
+	sisaLimitText.style.backgroundColor = "white";
 	
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
@@ -2148,18 +2247,22 @@ function changeMobil1(obj){
     var jenisMobilSelected = document.getElementById("mobil1Selected");
     jenisMobilSelected.value = jenisMobil;
     var dimensiMobil1 = document.getElementById("dimensiMobil1");
+    var dimensiMobil1Text = document.getElementById("dimensiMobil1Text");
 	var selisihDimensi1 = document.getElementById("selisihDimensi1");
+	var selisihDimensi1Text = document.getElementById("selisihDimensi1Text");
     dimensiMobil1.value = obj.value;
+    dimensiMobil1Text.value = formatTextValue(obj.value);
 	var dimensiOrder = document.getElementById("dimensiOrder1").value;
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil1.value - dimensiOrder);
 	selisihDimensi1.value = selisihDimensi;
+	selisihDimensi1Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi1.style.backgroundColor = "yellow";
+		selisihDimensi1Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi1.style.backgroundColor = "white";
+		selisihDimensi1Text.style.backgroundColor = "white";
 	}
 }
 
@@ -2171,18 +2274,22 @@ function changeMobil2(obj){
     var jenisMobilSelected = document.getElementById("mobil2Selected");
     jenisMobilSelected.value = jenisMobil;
     var dimensiMobil2 = document.getElementById("dimensiMobil2");
+    var dimensiMobil2Text = document.getElementById("dimensiMobil2Text");
 	var selisihDimensi2 = document.getElementById("selisihDimensi2");
+	var selisihDimensi2Text = document.getElementById("selisihDimensi2Text");
     dimensiMobil2.value = obj.value;
+    dimensiMobil2Text.value = formatTextValue(obj.value);
 	var dimensiOrder = document.getElementById("dimensiOrder2").value;
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil2.value - dimensiOrder);
 	selisihDimensi2.value = selisihDimensi;
+	selisihDimensi2Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi2.style.backgroundColor = "yellow";
+		selisihDimensi2Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi2.style.backgroundColor = "white";
+		selisihDimensi2Text.style.backgroundColor = "white";
 	}
 }
 
@@ -2194,18 +2301,22 @@ function changeMobil3(obj){
     var jenisMobilSelected = document.getElementById("mobil3Selected");
     jenisMobilSelected.value = jenisMobil;
     var dimensiMobil3 = document.getElementById("dimensiMobil3");
+    var dimensiMobil3Text = document.getElementById("dimensiMobil3Text");
 	var selisihDimensi3 = document.getElementById("selisihDimensi3");
+	var selisihDimensi3Text = document.getElementById("selisihDimensi3Text");
     dimensiMobil3.value = obj.value;
+    dimensiMobil3Text.value = formatTextValue(obj.value);
 	var dimensiOrder = document.getElementById("dimensiOrder3").value;
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil3.value - dimensiOrder);
 	selisihDimensi3.value = selisihDimensi;
+	selisihDimensi3Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi3.style.backgroundColor = "yellow";
+		selisihDimensi3Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi3.style.backgroundColor = "white";
+		selisihDimensi3Text.style.backgroundColor = "white";
 	}
 }
 
@@ -2217,18 +2328,22 @@ function changeMobil4(obj){
     var jenisMobilSelected = document.getElementById("mobil4Selected");
     jenisMobilSelected.value = jenisMobil;
     var dimensiMobil4 = document.getElementById("dimensiMobil4");
+    var dimensiMobil4Text = document.getElementById("dimensiMobil4Text");
 	var selisihDimensi4 = document.getElementById("selisihDimensi4");
+	var selisihDimensi4Text = document.getElementById("selisihDimensi4Text");
     dimensiMobil4.value = obj.value;
+    dimensiMobil4Text.value = formatTextValue(obj.value);
 	var dimensiOrder = document.getElementById("dimensiOrder4").value;
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil4.value - dimensiOrder);
 	selisihDimensi4.value = selisihDimensi;
+	selisihDimensi4Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi4.style.backgroundColor = "yellow";
+		selisihDimensi4Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi4.style.backgroundColor = "white";
+		selisihDimensi4Text.style.backgroundColor = "white";
 	}
 }
 
@@ -2240,18 +2355,22 @@ function changeMobil5(obj){
     var jenisMobilSelected = document.getElementById("mobil5Selected");
     jenisMobilSelected.value = jenisMobil;
     var dimensiMobil5 = document.getElementById("dimensiMobil5");
+    var dimensiMobil5Text = document.getElementById("dimensiMobil5Text");
 	var selisihDimensi5 = document.getElementById("selisihDimensi5");
+	var selisihDimensi5Text = document.getElementById("selisihDimensi5Text");
     dimensiMobil5.value = obj.value;
+    dimensiMobil5Text.value = formatTextValue(obj.value);
 	var dimensiOrder = document.getElementById("dimensiOrder5").value;
 	var selisihDimensi = 0;
 	selisihDimensi =  parseFloat(dimensiMobil5.value - dimensiOrder);
 	selisihDimensi5.value = selisihDimensi;
+	selisihDimensi5Text.value = formatTextValue(selisihDimensi);
 	if(selisihDimensi<0){
-		selisihDimensi5.style.backgroundColor = "yellow";
+		selisihDimensi5Text.style.backgroundColor = "yellow";
 		alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
 	}
 	else{
-		selisihDimensi5.style.backgroundColor = "white";
+		selisihDimensi5Text.style.backgroundColor = "white";
 	}
 }
 
@@ -2505,17 +2624,23 @@ function changeJumlahOrder(obj) {
     var amount4 = document.getElementById("amount4");
     var amount5 = document.getElementById("amount5");
     var sisaLimit = document.getElementById("sisaLimit");
-    var sisaLimit = document.getElementById("sisaLimit1");
-    var sisaLimit = document.getElementById("sisaLimit2");
-    var sisaLimit = document.getElementById("sisaLimit3");
-    var sisaLimit = document.getElementById("sisaLimit4");
-    var sisaLimit = document.getElementById("sisaLimit5");
+    var sisaLimitText = document.getElementById("sisaLimitText");
+    var sisaLimit1 = document.getElementById("sisaLimit1");
+    var sisaLimit2 = document.getElementById("sisaLimit2");
+    var sisaLimit3 = document.getElementById("sisaLimit3");
+    var sisaLimit4 = document.getElementById("sisaLimit4");
+    var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
     var totalAmount1 = document.getElementById("totalAmount1");
     var totalAmount2 = document.getElementById("totalAmount2");
     var totalAmount3 = document.getElementById("totalAmount3");
     var totalAmount4 = document.getElementById("totalAmount4");
     var totalAmount5 = document.getElementById("totalAmount5");
+    var totalAmount1Text = document.getElementById("totalAmount1Text");
+    var totalAmount2Text = document.getElementById("totalAmount2Text");
+    var totalAmount3Text = document.getElementById("totalAmount3Text");
+    var totalAmount4Text = document.getElementById("totalAmount4Text");
+    var totalAmount5Text = document.getElementById("totalAmount5Text");
 	var dimensiMobil1 = document.getElementById("dimensiMobil1");
 	var dimensiMobil2 = document.getElementById("dimensiMobil2");
 	var dimensiMobil3 = document.getElementById("dimensiMobil3");
@@ -2526,6 +2651,11 @@ function changeJumlahOrder(obj) {
 	var dimensiOrder3 = document.getElementById("dimensiOrder3");
 	var dimensiOrder4 = document.getElementById("dimensiOrder4");
 	var dimensiOrder5 = document.getElementById("dimensiOrder5");
+	var dimensiOrder1Text = document.getElementById("dimensiOrder1Text");
+	var dimensiOrder2Text = document.getElementById("dimensiOrder2Text");
+	var dimensiOrder3Text = document.getElementById("dimensiOrder3Text");
+	var dimensiOrder4Text = document.getElementById("dimensiOrder4Text");
+	var dimensiOrder5Text = document.getElementById("dimensiOrder5Text");
 	var selisihDimensi1 = document.getElementById("selisihDimensi1");
 	var selisihDimensi2 = document.getElementById("selisihDimensi2");
 	var selisihDimensi3 = document.getElementById("selisihDimensi3");
@@ -3060,21 +3190,23 @@ function changeJumlahOrder(obj) {
     	
     	if(jumlahOrder>0){
     		
-    		dimensiOrder1.value = parseFloat(do1);
+    		dimensiOrder1.value = do1;
+    		dimensiOrder1Text.value = formatTextValue(do1);
     		var sd1 = 0;
     		sd1 =  parseFloat(dimensiMobil1.value - do1);
     		selisihDimensi1.value = sd1;
+    		selisihDimensi1Text.value = formatTextValue(sd1);
     		if(sd1<0){
-    			selisihDimensi1.style.backgroundColor = "yellow";
+    			selisihDimensi1Text.style.backgroundColor = "yellow";
     			alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
     		}
     		else{
-    			selisihDimensi1.style.backgroundColor = "white";
+    			selisihDimensi1Text.style.backgroundColor = "white";
     		}
     		
     		var sl1 = 0;
         	sl1 = sisaLimitInit - totAmount1;
-        	sisaLimit1.value = sl1;
+        	sisaLimit1.value = formatTextValue(sl1);
         	if(sl1<0){
         		sisaLimit1.style.backgroundColor = "yellow";
         		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3084,22 +3216,24 @@ function changeJumlahOrder(obj) {
         	}
     		
     		if(jumlahOrder>1){
-    			
-    			dimensiOrder2.value = parseFloat(do2);
+
+        		dimensiOrder2.value = do2;
+        		dimensiOrder2Text.value = formatTextValue(do2);
     			var sd1 = 0;
     			sd2 =  parseFloat(dimensiMobil2.value - do2);
     			selisihDimensi2.value = sd2;
-    			if(sd2<0){
-    				selisihDimensi2.style.backgroundColor = "yellow";
-    				alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
-    			}
-    			else{
-    				selisihDimensi2.style.backgroundColor = "white";
-    			}
+        		selisihDimensi2Text.value = formatTextValue(sd2);
+        		if(sd2<0){
+        			selisihDimensi2Text.style.backgroundColor = "yellow";
+        			alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+        		}
+        		else{
+        			selisihDimensi2Text.style.backgroundColor = "white";
+        		}
 
         		var sl2 = 0;
             	sl2 = sl1 - totAmount2;
-            	sisaLimit2.value = sl2;
+            	sisaLimit2.value = formatTextValue(sl2);
             	if(sl2<0){
             		sisaLimit2.style.backgroundColor = "yellow";
             		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3109,22 +3243,24 @@ function changeJumlahOrder(obj) {
             	}
     			
     			if(jumlahOrder>2){
-    				
-    				dimensiOrder3.value = parseFloat(do3);
+
+    	    		dimensiOrder3.value = do3;
+    	    		dimensiOrder3Text.value = formatTextValue(do3);
     				var sd3 = 0;
     				sd3 =  parseFloat(dimensiMobil3.value - do3);
     				selisihDimensi3.value = sd3;
-    				if(sd3<0){
-    					selisihDimensi3.style.backgroundColor = "yellow";
-    					alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
-    				}
-    				else{
-    					selisihDimensi3.style.backgroundColor = "white";
-    				}
+    	    		selisihDimensi3Text.value = formatTextValue(sd3);
+    	    		if(sd3<0){
+    	    			selisihDimensi3Text.style.backgroundColor = "yellow";
+    	    			alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+    	    		}
+    	    		else{
+    	    			selisihDimensi3Text.style.backgroundColor = "white";
+    	    		}
 
             		var sl3 = 0;
                 	sl3 = sl2 - totAmount3;
-                	sisaLimit3.value = sl3;
+                	sisaLimit3.value = formatTextValue(sl3);
                 	if(sl3<0){
                 		sisaLimit3.style.backgroundColor = "yellow";
                 		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3134,22 +3270,24 @@ function changeJumlahOrder(obj) {
                 	}
     				
     				if(jumlahOrder>3){
-    					
-    					dimensiOrder4.value = parseFloat(do4);
+
+    		    		dimensiOrder4.value = do4;
+    		    		dimensiOrder4Text.value = formatTextValue(do4);
     					var sd4 = 0;
     					sd4 =  parseFloat(dimensiMobil4.value - do4);
     					selisihDimensi4.value = sd4;
-    					if(sd4<0){
-    						selisihDimensi4.style.backgroundColor = "yellow";
-    						alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
-    					}
-    					else{
-    						selisihDimensi4.style.backgroundColor = "white";
-    					}
+    		    		selisihDimensi4Text.value = formatTextValue(sd4);
+    		    		if(sd4<0){
+    		    			selisihDimensi4Text.style.backgroundColor = "yellow";
+    		    			alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+    		    		}
+    		    		else{
+    		    			selisihDimensi4Text.style.backgroundColor = "white";
+    		    		}
 
     	        		var sl4 = 0;
     	            	sl4 = sl3 - totAmount4;
-    	            	sisaLimit4.value = sl4;
+    	            	sisaLimit4.value = formatTextValue(sl4);
     	            	if(sl4<0){
     	            		sisaLimit4.style.backgroundColor = "yellow";
     	            		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3159,15 +3297,24 @@ function changeJumlahOrder(obj) {
     	            	}
     					
     					if(jumlahOrder>4){
-    						
-    						dimensiOrder5.value = parseFloat(do5);
+
+    			    		dimensiOrder5.value = do5;
+    			    		dimensiOrder5Text.value = formatTextValue(do5);
     						var sd5 = 0;
     						sd5 =  parseFloat(dimensiMobil5.value - do5);
     						selisihDimensi5.value = sd5;
+    		        		selisihDimensi5Text.value = formatTextValue(sd5);
+    		        		if(sd5<0){
+    		        			selisihDimensi5Text.style.backgroundColor = "yellow";
+    		        			alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+    		        		}
+    		        		else{
+    		        			selisihDimensi5Text.style.backgroundColor = "white";
+    		        		}
 
     		        		var sl5 = 0;
     		            	sl5 = sl4 - totAmount5;
-    		            	sisaLimit5.value = sl5;
+    		            	sisaLimit5.value = formatTextValue(sl5);
     		            	if(sl5<0){
     		            		sisaLimit5.style.backgroundColor = "yellow";
     		            		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3175,14 +3322,6 @@ function changeJumlahOrder(obj) {
     		            	else{
     		            		sisaLimit5.style.backgroundColor = "white";
     		            	}
-    		            	
-    						if(sd5<0){
-    							selisihDimensi5.style.backgroundColor = "yellow";
-    							alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
-    						}
-    						else{
-    							selisihDimensi5.style.backgroundColor = "white";
-    						}
     						
     					}
     				}
@@ -3195,18 +3334,24 @@ function changeJumlahOrder(obj) {
     	totalAmount3.value = totAmount3;
     	totalAmount4.value = totAmount4;
     	totalAmount5.value = totAmount5;
+    	totalAmount1Text.value = formatTextValue(totAmount1);
+    	totalAmount2Text.value = formatTextValue(totAmount2);
+    	totalAmount3Text.value = formatTextValue(totAmount3);
+    	totalAmount4Text.value = formatTextValue(totAmount4);
+    	totalAmount5Text.value = formatTextValue(totAmount5);
     	qtyTotal.value = formatTextValue(totQty);
     	amtTotal.value = formatTextValue(totAmount);
     	
     	var sl = 0;
     	sl = sisaLimitInit - totAmount;
     	sisaLimit.value = sl;
+    	sisaLimitText.value = formatTextValue(sl);
     	if(sl<0){
-    		sisaLimit.style.backgroundColor = "yellow";
+    		sisaLimitText.style.backgroundColor = "yellow";
     		alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
     	}
     	else{
-    		sisaLimit.style.backgroundColor = "white";
+    		sisaLimitText.style.backgroundColor = "white";
     	}
 	}
 }

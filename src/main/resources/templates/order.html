@@ -193,9 +193,12 @@
 			Sisa Limit:&nbsp;
 		</th>
 		<td> 
-			<input id="sisaLimit" type="text" 
-				th:field="*{inputOrder.orderGrp.sisaLimit}" 
-				readonly="readonly"/>
+			<input id="sisaLimitText"
+					readonly="readonly"
+					style="text-align: right;"
+				type="text"/>
+			<input id="sisaLimit" type="hidden" 
+				th:field="*{inputOrder.orderGrp.sisaLimit}"/>
 			<input id="sisaLimitInit" type="hidden" 
 				th:field="*{customer.creditLimit}" />
 			<label id="sisaLimitDP"
@@ -568,130 +571,150 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="totalAmount1" type="number" 
-					th:field="*{inputOrder.order1.totalPrice}"
+				<input id="totalAmount1Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="totalAmount1" type="hidden" 
+					th:field="*{inputOrder.order1.totalPrice}"/>
 			</td>
 			<td class="order2" style="display: none;">
-				<input id="totalAmount2" type="number" 
-					th:field="*{inputOrder.order2.totalPrice}"
+				<input id="totalAmount2Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="totalAmount2" type="hidden" 
+					th:field="*{inputOrder.order2.totalPrice}"/>
 			</td>
 			<td class="order3" style="display: none;">
-				<input id="totalAmount3" type="number" 
-					th:field="*{inputOrder.order3.totalPrice}"
+				<input id="totalAmount3Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="totalAmount3" type="hidden" 
+					th:field="*{inputOrder.order3.totalPrice}"/>
 			</td>
 			<td class="order4" style="display: none;">
-				<input id="totalAmount4" type="number" 
-					th:field="*{inputOrder.order4.totalPrice}"
+				<input id="totalAmount4Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="totalAmount4" type="hidden" 
+					th:field="*{inputOrder.order4.totalPrice}"/>
 			</td>
 			<td class="order5" style="display: none;">
-				<input id="totalAmount5" type="number" 
-					th:field="*{inputOrder.order5.totalPrice}"
+				<input id="totalAmount5Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="totalAmount5" type="hidden" 
+					th:field="*{inputOrder.order5.totalPrice}"/>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<input id="dimensiMobil1" type="number" 
-					th:field="*{inputOrder.order1.tonaseMobil}"
+				<input id="dimensiMobil1Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiMobil1" type="hidden" 
+					th:field="*{inputOrder.order1.tonaseMobil}"/>
 			</td>
 			<td class="order2" style="display: none;">
-				<input id="dimensiMobil2" type="number" 
-					th:field="*{inputOrder.order2.tonaseMobil}"
+				<input id="dimensiMobil2Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiMobil2" type="hidden" 
+					th:field="*{inputOrder.order2.tonaseMobil}"/>
 			</td>
 			<td class="order3" style="display: none;">
-				<input id="dimensiMobil3" type="number" 
-					th:field="*{inputOrder.order3.tonaseMobil}"
+				<input id="dimensiMobil3Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiMobil3" type="hidden" 
+					th:field="*{inputOrder.order3.tonaseMobil}"/>
 			</td>
 			<td class="order4" style="display: none;">
-				<input id="dimensiMobil4" type="number" 
-					th:field="*{inputOrder.order4.tonaseMobil}"
+				<input id="dimensiMobil4Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiMobil4" type="hidden" 
+					th:field="*{inputOrder.order4.tonaseMobil}"/>
 			</td>
 			<td class="order5" style="display: none;">
-				<input id="dimensiMobil5" type="number" 
-					th:field="*{inputOrder.order5.tonaseMobil}"
+				<input id="dimensiMobil5Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiMobil5" type="hidden" 
+					th:field="*{inputOrder.order5.tonaseMobil}"/>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<input id="dimensiOrder1" type="number" 
-					th:field="*{inputOrder.order1.tonaseOrder}"
+				<input id="dimensiOrder1Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiOrder1" type="hidden" 
+					th:field="*{inputOrder.order1.tonaseOrder}"/>
 			</td>
 			<td class="order2" style="display: none;">
-				<input id="dimensiOrder2" type="number" 
-					th:field="*{inputOrder.order2.tonaseOrder}"
+				<input id="dimensiOrder2Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiOrder2" type="hidden" 
+					th:field="*{inputOrder.order2.tonaseOrder}"/>
 			</td>
 			<td class="order3" style="display: none;">
-				<input id="dimensiOrder3" type="number" 
-					th:field="*{inputOrder.order3.tonaseOrder}"
+				<input id="dimensiOrder3Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiOrder3" type="hidden" 
+					th:field="*{inputOrder.order3.tonaseOrder}"/>
 			</td>
 			<td class="order4" style="display: none;">
-				<input id="dimensiOrder4" type="number" 
-					th:field="*{inputOrder.order4.tonaseOrder}"
+				<input id="dimensiOrder4Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiOrder4" type="hidden" 
+					th:field="*{inputOrder.order4.tonaseOrder}"/>
 			</td>
 			<td class="order5" style="display: none;">
-				<input id="dimensiOrder5" type="number" 
-					th:field="*{inputOrder.order5.tonaseOrder}"
+				<input id="dimensiOrder5Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;"/>
+				<input id="dimensiOrder5" type="hidden" 
+					th:field="*{inputOrder.order5.tonaseOrder}"/>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<input id="selisihDimensi1" type="number" 
-					th:field="*{inputOrder.order1.selisihTonase}"
+				<input id="selisihDimensi1Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;" />
+				<input id="selisihDimensi1" type="hidden" 
+					th:field="*{inputOrder.order1.selisihTonase}"/>
 			</td>
 			<td class="order2" style="display: none;">
-				<input id="selisihDimensi2" type="number" 
-					th:field="*{inputOrder.order2.selisihTonase}"
+				<input id="selisihDimensi2Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;" />
+				<input id="selisihDimensi2" type="hidden" 
+					th:field="*{inputOrder.order2.selisihTonase}"/>
 			</td>
-			<td class="order3" style="display: none;">
-				<input id="selisihDimensi3" type="number" 
-					th:field="*{inputOrder.order3.selisihTonase}"
+			<td class="order3" style="display: none;">	
+				<input id="selisihDimensi3Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;" />
+				<input id="selisihDimensi3" type="hidden" 
+					th:field="*{inputOrder.order3.selisihTonase}"/>
 			</td>
-			<td class="order4" style="display: none;">
-				<input id="selisihDimensi4" type="number" 
-					th:field="*{inputOrder.order4.selisihTonase}"
+			<td class="order4" style="display: none;">	
+				<input id="selisihDimensi4Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;" />
+				<input id="selisihDimensi4" type="hidden" 
+					th:field="*{inputOrder.order4.selisihTonase}"/>
 			</td>
 			<td class="order5" style="display: none;">
-				<input id="selisihDimensi5" type="number" 
-					th:field="*{inputOrder.order5.selisihTonase}"
+				<input id="selisihDimensi5Text" type="text" 
 					readonly="readonly"
 					style="text-align: right;" />
+				<input id="selisihDimensi5" type="hidden" 
+					th:field="*{inputOrder.order5.selisihTonase}"/>
 			</td>
 		</tr>
 		<tr>
