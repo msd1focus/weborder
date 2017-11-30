@@ -3,6 +3,7 @@ package com.focus.weborder.controller;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +43,10 @@ import com.focus.weborder.services.product.Product;
 import com.focus.weborder.services.product.ProductService;
 import com.focus.weborder.services.produom.ProdUom;
 import com.focus.weborder.services.produom.ProdUomService;
+import com.focus.weborder.services.uploadstock.UploadStock;
+import com.focus.weborder.services.uploadstock.UploadStockService;
+import com.focus.weborder.services.uploadtarget.UploadTarget;
+import com.focus.weborder.services.uploadtarget.UploadTargetService;
 import com.focus.weborder.types.InputWebOrder;
 import com.focus.weborder.types.InputOrder;
 import com.focus.weborder.types.InputProduct;
@@ -84,9 +89,17 @@ public class InputOrderController {
 	
 	@Autowired
 	private CustProdTargetService custProdTargetService;
+
+	@Autowired
+	private UploadTargetService uploadTargetService;
+	
+	@Autowired
+	private UploadStockService uploadStockService;
 	
 	@RequestMapping(value="/order", method=RequestMethod.GET)
     public String order(Model model){
+		
+		//System.out.println(Calendar.getInstance());
 		
 		String company = "FDI";
 		Long custId = (long)4112;
@@ -102,11 +115,18 @@ public class InputOrderController {
 		Integer monthNext = month;
 		Integer month1Before = month-1;
 		Integer month2Before = month-2;
-		Integer month3Before = month;
-		Integer yearNext = year;
+		Integer month3Before = month-3;
+		Integer yearNext = year;		
 		Integer year1MonthBefore = year;
 		Integer year2MonthBefore = year;
 		Integer year3MonthBefore = year;
+		
+
+		String yearOracle = getYearOracle(year);
+		String yearNextOracle = getYearOracle(year);
+		String year1MonthBeforeOracle = getYearOracle(year);
+		String year2MonthBeforeOracle = getYearOracle(year);
+		String year3MonthBeforeOracle = getYearOracle(year);
 
 		if(month==1) {
 			month1Before = 12;
@@ -159,6 +179,7 @@ public class InputOrderController {
 		
 		Customer customer =
 				customerService.getCustomer(company, custId);
+		String custNumber = customer.getCustomerNumber();
 		OrderGrp orderGrp =
 				orderGrpService.getOrderGrpDraft(company, custId);
 		List<CustShipTo> custShipTo =
@@ -497,26 +518,117 @@ public class InputOrderController {
 				inputProduct.setAverageSales3MonthBefore(
 						averageSales3MonthBefore);
 				
-				Long targetCustomerCurrentMonth = (long)0;
+
 				Long qtyOnHand = (long)0;
+				/*List<UploadStock> uploadStockCurrent =
+						uploadStockService
+							.getByCompanyOutletidItemidTransactiondate(
+									company, custNumber,
+									productCode, getMinDateUtil(periodes.get(0)), 
+									getMaxDateUtil(periodes.get(0)));
+				if(uploadStockCurrent!=null) {
+					for(Integer i=0; i<uploadStockCurrent.size(); i++) {
+						if(uploadStockCurrent.get(i).getSalesQty()!=null) {
+							qtyOnHand +=
+									Long.parseLong(uploadStockCurrent.get(i).getSalesQty());
+						}
+					}
+				}*/
+				CustProdTarget custProdTargetStock =
+						custProdTargetService.
+							getBygetByCompanyCustidProductcode(
+									company, custId,
+									productCode);
+				/*List<UploadTarget> custProdTargetCurrent =
+						uploadTargetService
+							.getByCompanyOutletidItemidTransactiondate(
+									company, custNumber,
+									productCode, getMinDateUtil(periodes.get(0)), 
+									getMaxDateUtil(periodes.get(0)));*/
+				if(custProdTargetStock!=null) {
+					//for(Integer i=0; i<custProdTargetCurrent.size(); i++) {
+						if(custProdTargetStock.getEndStock()!=null) {
+							qtyOnHand =
+									custProdTargetStock.getEndStock();
+							String primaryUom = product.getProdUom1();
+							Double primaryUomRate=0.0;
+							Double priceUomRate=0.0;
+							for(Integer i=0; i<prodUoms.size(); i++) {
+								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
+									primaryUomRate = prodUoms.get(i).getConversionRate();
+								}
+								if(custProd.getPriceUom().trim().equals(
+										prodUoms.get(i).getUomCode())) {
+									priceUomRate = prodUoms.get(i).getConversionRate();
+								}
+							}
+							
+							qtyOnHand =
+									(long)((double)qtyOnHand
+									* primaryUomRate
+									/ priceUomRate);
+							
+						}
+					//}
+				}
+				inputProduct.setQtyOnHand(qtyOnHand);
+				
+				long targetCustomerCurrentMonth = (long)0;
 				CustProdTarget custProdTargetCurrent =
 						custProdTargetService.
 							getBygetByCompanyCustidProductcodePeriodetarget(
 									company, custId,
 									productCode, periodeCurrentOracle);
+				/*List<UploadTarget> custProdTargetCurrent =
+						uploadTargetService
+							.getByCompanyOutletidItemidTransactiondate(
+									company, custNumber,
+									productCode, getMinDateUtil(periodes.get(0)), 
+									getMaxDateUtil(periodes.get(0)));*/
+
 				if(custProdTargetCurrent!=null) {
-					if(custProdTargetCurrent.getTargetSales()!=null) {
-						targetCustomerCurrentMonth =
-								custProdTargetCurrent.getTargetSales();						
-					}
-					if(custProdTargetCurrent.getEndStock()!=null) {
-						qtyOnHand =
-								custProdTargetCurrent.getEndStock();
-					}
+					//for(Integer i=0; i<custProdTargetCurrent.size(); i++) {
+						if(custProdTargetCurrent.getTargetSales()!=null) {
+							targetCustomerCurrentMonth =
+									custProdTargetCurrent.getTargetSales();
+
+							//System.out.println("targetCustomerCurrentMonth: " + targetCustomerCurrentMonth);
+							/*Product p = productService.getProduct(
+									company, custProdTargetCurrent.getProductCode());*/
+							String primaryUom = product.getProdUom1();
+							/*List<ProdUom> pu = prodUomService.getProdUom(
+									company, custProdTargetCurrent.getProductCode());*/
+							Double primaryUomRate=0.0;
+							Double priceUomRate=0.0;
+							//System.out.println("primaryUom: " + primaryUom);
+							for(Integer i=0; i<prodUoms.size(); i++) {
+								//System.out.println("prodUoms.get(i).getUomCode(): " + prodUoms.get(i).getUomCode());
+								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode().trim())) {
+									primaryUomRate = prodUoms.get(i).getConversionRate();
+								}
+								if(custProd.getPriceUom().trim().equals(prodUoms.get(i).getUomCode())) {
+									priceUomRate = prodUoms.get(i).getConversionRate();
+								}
+							}
+
+
+							/*System.out.println(product.getProductCode() + " primaryUomRate: " + primaryUomRate);
+							System.out.println(product.getProductCode() + " priceUomRate: " + priceUomRate);
+							*/
+							targetCustomerCurrentMonth =
+									(long)((double)targetCustomerCurrentMonth
+									* primaryUomRate
+									/ priceUomRate);
+							
+						}
+						/*if(custProdTargetCurrent.getEndStock()!=null) {
+							qtyOnHand =
+									custProdTargetCurrent.getEndStock();
+						}*/
+					//}
 				}
 				inputProduct.setTargetCustomerCurrentMonth(
 						targetCustomerCurrentMonth);
-				inputProduct.setQtyOnHand(qtyOnHand);
 				
 				Long targetCustomerNextMonth = (long)0;
 				CustProdTarget custProdTargetNextMonth =
@@ -524,26 +636,41 @@ public class InputOrderController {
 							getBygetByCompanyCustidProductcodePeriodetarget(
 									company, custId,
 									productCode, periodeNextOracle);
+				/*List<UploadTarget> custProdTargetNextMonth =
+						uploadTargetService
+							.getByCompanyOutletidItemidTransactiondate(
+									company, custNumber,
+									productCode, getMinDateUtil(periodes.get(1)), 
+									getMaxDateUtil(periodes.get(1)));*/
 				if(custProdTargetNextMonth!=null) {
-					if(custProdTargetNextMonth.getTargetSales()!=null) {
-						targetCustomerNextMonth =
-								custProdTargetNextMonth.getTargetSales();
-					}
+					//for(Integer i=0; i<custProdTargetNextMonth.size(); i++) {
+						if(custProdTargetNextMonth.getTargetSales()!=null) {
+							targetCustomerNextMonth =
+									custProdTargetNextMonth.getTargetSales();
+							
+							String primaryUom = product.getProdUom1();
+							Double primaryUomRate=0.0;
+							Double priceUomRate=0.0;
+							for(Integer i=0; i<prodUoms.size(); i++) {
+								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
+									primaryUomRate = prodUoms.get(i).getConversionRate();
+								}
+								if(custProd.getPriceUom().trim().equals(
+										prodUoms.get(i).getUomCode())) {
+									priceUomRate = prodUoms.get(i).getConversionRate();
+								}
+							}
+							
+							targetCustomerNextMonth =
+									(long)((double)targetCustomerNextMonth
+									* primaryUomRate
+									/ priceUomRate);
+						}						
+					//}
 				}
+				//System.out.println(targetCustomerNextMonth);
 				inputProduct.setTargetCustomerNextMonth(
 						targetCustomerNextMonth);
-				
-				/*CustInvoice ci = new CustInvoice();
-				ci.setTrxNumber("001");
-				ci.setTrxId((long) 1);
-				ci.setTrxDate(
-						Date.valueOf("2017-11-20"));
-				ci.setUomCode("dus");
-				ci.setQty((long) 10);
-				
-				List<CustInvoice> custInvoices = 
-						new ArrayList<>();
-				custInvoices.add(ci);*/
 				
 				List<CustInvoice> custInvoices =
 						custInvoiceService.
@@ -967,7 +1094,7 @@ public class InputOrderController {
 		order.setCustId(orderGrp.getCustId());
 		order.setPoNumber("PO" + year + month 
 				+ po + "/" 
-				+ customer.getCustCompanyId());
+				+ customer.getCustomerNumber());
 		order.setOrderDate(
 				Date.valueOf(
 					getMinDate(orderGrp.getPeriodeOrder())));
@@ -1100,6 +1227,61 @@ public class InputOrderController {
 		return minDate;
 	}
 	
+	private java.util.Date getMinDateUtil(String periodeOrder) {
+		
+		java.util.Date date = null;
+		String minDate = "2000/01/01";
+		
+		String[] p = periodeOrder.split(" ");
+	    String monthName = p[0];
+	    String year = p[1];
+		if(monthName.equals("Januari")){
+			minDate = year + "/01/01";
+	    }
+	    else if(monthName.equals("Pebruari")){
+	    	minDate = year + "/02/01";
+	    }
+	    else if(monthName.equals("Maret")){
+	    	minDate = year + "/03/01";
+	    }
+	    else if(monthName.equals("April")){
+	    	minDate = year + "/04/01";
+	    }
+	    else if(monthName.equals("Mei")){
+	    	minDate = year + "/05/01";
+	    }
+	    else if(monthName.equals("Juni")){
+	    	minDate = year + "/06/01";
+	    }
+	    else if(monthName.equals("Juli")){
+	    	minDate = year + "/07/01";
+	    }
+	    else if(monthName.equals("Agustus")){
+	    	minDate = year + "/08/01";
+	    }
+	    else if(monthName.equals("September")){
+	    	minDate = year + "/09/01";
+	    }
+	    else if(monthName.equals("Oktober")){
+	    	minDate = year + "/10/01";
+	    }
+	    else if(monthName.equals("November")){
+	    	minDate = year + "/11/01";
+	    }
+	    else if(monthName.equals("Desember")){
+	    	minDate = year + "/12/01";
+	    } 
+		
+	    SimpleDateFormat df = new SimpleDateFormat("yyyy/mm/dd");
+	    try {
+			date = df.parse(minDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	    
+		return date;
+	}
+	
 	private String getMaxDate(String periodeOrder) {
 		String maxDate = "2100-01-01";
 		
@@ -1145,6 +1327,71 @@ public class InputOrderController {
 	    } 
 		
 		return maxDate;
+	}
+	
+	private java.util.Date getMaxDateUtil(String periodeOrder) {
+		
+		java.util.Date date = null;
+		String maxDate = "2100/01/01";
+		
+		String[] p = periodeOrder.split(" ");
+	    String monthName = p[0];
+	    String year = p[1];
+	    
+		if(monthName.equals("Januari")){
+	    	maxDate = year + "/01/31";
+	    }
+	    else if(monthName.equals("Pebruari")){
+	    	maxDate = year + "/02/28";
+	    }
+	    else if(monthName.equals("Maret")){
+	    	maxDate = year + "/03/31";
+	    }
+	    else if(monthName.equals("April")){
+	    	maxDate = year + "/04/30";
+	    }
+	    else if(monthName.equals("Mei")){
+	    	maxDate = year + "/05/31";
+	    }
+	    else if(monthName.equals("Juni")){
+	    	maxDate = year + "/06/30";
+	    }
+	    else if(monthName.equals("Juli")){
+	    	maxDate = year + "/07/31";
+	    }
+	    else if(monthName.equals("Agustus")){
+	    	maxDate = year + "/08/31";
+	    }
+	    else if(monthName.equals("September")){
+	    	maxDate = year + "/09/30";
+	    }
+	    else if(monthName.equals("Oktober")){
+	    	maxDate = year + "/10/31";
+	    }
+	    else if(monthName.equals("November")){
+	    	maxDate = year + "/11/30";
+	    }
+	    else if(monthName.equals("Desember")){
+	    	maxDate = year + "/12/31";
+	    } 
+		
+
+	    SimpleDateFormat df = new SimpleDateFormat("yyyy/mm/dd");
+	    try {
+			date = df.parse(maxDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	    
+		return date;
+	}
+	
+	private String getYearOracle(Integer year) {
+		String s = year.toString();
+		String yearOracle = 
+				String.valueOf(s.charAt(2)) 
+				+ String.valueOf(s.charAt(3));
+		return yearOracle;
 	}
 
 }

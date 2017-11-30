@@ -168,6 +168,24 @@ th {text-align: right}
     padding: 1px;
 }
 
+#readonly color - amin
+input:-moz-read-only { For Firefox
+    background-color: #D3D3D3;
+}
+
+input:read-only { 
+    background-color: #D3D3D3;
+}
+
+#disabled color - amin
+input:-moz-disabled { For Firefox
+    background-color: #D3D3D3;
+}
+
+input:disabled { 
+    background-color: #D3D3D3;
+}
+
 /*
 #tblOrder tr td:nth-child(n+3), 
 #tblOrderItem tr th:nth-child(n+2),

@@ -37,6 +37,16 @@ public class CustProdTargetService {
 		return custProdTarget;		
 	}
 	
+	public CustProdTarget getBygetByCompanyCustidProductcode(
+			String company, Long custId,
+			String productCode) {
+		CustProdTarget custProdTarget = 
+				custProdTargetRepository.getByCompanyCustidProductcode(
+						company, custId, 
+						productCode);
+		return custProdTarget;		
+	}
+	
 	public void addCustTarget(CustProdTarget custProdTarget) {
 		//custTargetRepository.save(custTarget);
 	}

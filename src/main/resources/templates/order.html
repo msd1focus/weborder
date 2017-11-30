@@ -41,7 +41,7 @@
 		   		type="submit" name="action" value="Save"/>
 		   	<input 
 		   		style="align: right"
-		   		onclick="submit(this)"
+		   		onclick="return submit(this);"
 		   		type="submit" name="action" value="Submit"/>
 	   	</td>  
 	</tr>  
@@ -94,7 +94,7 @@
 					</td>
 					<td style="border-bottom: none">
 						<input type="text" 
-							th:value="*{customer.custAddress}" 
+							th:value="*{customer.custArea}" 
 						 	readonly="readonly"/>
 					</td>
 					<td style="border-bottom: none">
@@ -788,6 +788,8 @@
 					th:field="*{inputProducts[__${stat.index}__].custProd.outstandingSo}"/>
 				<input type="hidden"
 					th:field="*{inputProducts[__${stat.index}__].custProd.outstandingQuote}"/>
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].product.productCat1}" />
 			</td>
 			<td class="order2"
 				width="150px" id="detail2" style="display: none;">
@@ -930,11 +932,11 @@
 				<input id="up5" type="text" value="0" disabled="disabled"
 					style="text-align: right;"/>
 			</td>
-			<td style="border: none;" width="150px">	
+			<td style="border: none; display: none;" width="150px">	
 				<input id="qtyTotal1" type="text" value="0" disabled="disabled"
 					style="text-align: right;"/>
 			</td>
-			<td style="border: none;" width="150px">	
+			<td style="border: none; display: none;" width="150px">	
 				<input id="upTotal" type="text" value="0" disabled="disabled"
 					style="text-align: right;"/>
 			</td>
@@ -960,11 +962,11 @@
 				<input id="amt5" type="text" value="0" disabled="disabled"
 					style="text-align: right;"/>
 			</td>
-			<td style="border: none;" width="150px">	
+			<td style="border: none; display: none;" width="150px">	
 				<input id="qtyTotal" type="text" value="0" disabled="disabled"
 					style="text-align: right;"/>
 			</td>
-			<td style="border: none;" width="150px">	
+			<td style="border: none; display:none;" width="150px">	
 				<input id="amtTotal" type="text" value="0" disabled="disabled"
 					style="text-align: right;"/>
 			</td>

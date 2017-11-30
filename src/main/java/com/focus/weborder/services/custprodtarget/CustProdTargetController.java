@@ -42,6 +42,16 @@ public class CustProdTargetController {
 					company, custid, productcode, periodestock);
 		}
 	
+
+	@RequestMapping("/custprodtarget/productcode")
+	public CustProdTarget getByCompanyCustidProductcode(
+			@RequestParam String company, 
+			@RequestParam Long custid,
+			@RequestParam String productcode) {
+			return custProdTargetService.getBygetByCompanyCustidProductcode(
+					company, custid, productcode);
+		}
+	
 	@RequestMapping(method=RequestMethod.POST, value="/custtargets")
 	public void addCustTarget(@RequestBody CustProdTarget custProdTarget){
 		custProdTargetService.addCustTarget(custProdTarget);

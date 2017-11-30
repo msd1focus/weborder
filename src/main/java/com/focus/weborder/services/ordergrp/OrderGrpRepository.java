@@ -21,7 +21,7 @@ public interface OrderGrpRepository extends CrudRepository<OrderGrp, Long> {
 	@Query("SELECT og FROM OrderGrp og WHERE " +
             "og.company = :company AND " +
             "og.custId = :custId AND " +
-            "og.submitStatus = 'SUBMITTED'"
+            "og.submitStatus in ('SUBMITTED', 'PROCESSED') "
             + "ORDER BY og.orderGrpId DESC")
 	List<OrderGrp> getOrderGrpSubmitted(@Param("company") String company,
     		@Param("custId") Long custId);

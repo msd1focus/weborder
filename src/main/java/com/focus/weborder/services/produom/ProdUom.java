@@ -9,13 +9,15 @@ import javax.persistence.Table;
 @Table(name = "PROD_UOM")
 public class ProdUom {
 
+	@Id
+	@Column(name="PROD_UOM_ID")
+	private String prodUomId;
 	@Column(name="PROD_CODE")
 	private String prodCode;
-	@Id
 	@Column(name="UOM_CODE")
 	private String uomCode;
 	@Column(name="CONVERSION_RATE")
-	private Long conversionRate;
+	private Double conversionRate;
 	@Column(name="COMPANY")
 	private String company;
 	
@@ -24,7 +26,7 @@ public class ProdUom {
 	}
 	
 	public ProdUom(String prodCode, String uomCode, 
-			Long conversionRate, String company) {
+			Double conversionRate, String company) {
 		super();
 		this.prodCode = prodCode;
 		this.uomCode = uomCode;
@@ -48,11 +50,11 @@ public class ProdUom {
 		this.uomCode = uomCode;
 	}
 
-	public Long getConversionRate() {
+	public Double getConversionRate() {
 		return conversionRate;
 	}
 
-	public void setConversionRate(Long conversionRate) {
+	public void setConversionRate(Double conversionRate) {
 		this.conversionRate = conversionRate;
 	}
 

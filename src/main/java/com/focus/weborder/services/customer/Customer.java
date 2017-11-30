@@ -24,6 +24,8 @@ public class Customer {
 	private String customerName;
 	@Column(name="EMAIL_ADDR")
 	private String emailAddr;
+	@Column(name="CUST_AREA")
+	private String custArea;
 	@Column(name="CUST_ADDRESS")
 	private String custAddress;
 	@Column(name="CUST_LOCATION")
@@ -39,9 +41,11 @@ public class Customer {
 		
 	}
 	
-	public Customer(String company, Long custId, String custCompanyId,
+	public Customer(
+			String company, Long custId, String custCompanyId,
 			String customerNumber,
-			String customerName, String emailAddr, String custAddress, 
+			String customerName, String emailAddr, 
+			String custArea, String custAddress, 
 			String locationName, String custLocation, String custRegion,
 			Date updateTime, Long creditLimit) {
 		super();
@@ -51,6 +55,7 @@ public class Customer {
 		this.customerNumber = customerNumber;
 		this.customerName = customerName;
 		this.emailAddr = emailAddr;
+		this.custArea = custArea;
 		this.custAddress = custAddress;
 		this.custLocation = custLocation;
 		this.custRegion = custRegion;
@@ -96,6 +101,14 @@ public class Customer {
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
+	}
+
+	public String getCustArea() {
+		return custArea;
+	}
+
+	public void setCustArea(String custArea) {
+		this.custArea = custArea;
 	}
 
 	public String getEmailAddr() {

@@ -10,7 +10,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "CUST_INVOICE")
 public class CustInvoice {
-	
+
+	@Id
+	@Column(name="CUST_INVOICE_ID")
+	private Long custInvoiceId;
 	@Column(name="COMPANY")
 	private String company;
 	@Column(name="CUST_ID")
@@ -19,7 +22,6 @@ public class CustInvoice {
 	private Long ShipToId;
 	@Column(name="TRX_NUMBER")
 	private String trxNumber;
-	@Id
 	@Column(name="TRX_ID")
 	private Long trxId;
 	@Column(name="TRX_DATE")
@@ -38,11 +40,13 @@ public class CustInvoice {
 	}
 	
 	public CustInvoice(
+			Long custInvoiceId,
 			String company, Long custId, Long ShipToId,
 			String trxNumber, Long trxId, Date trxDate,
 			String productCode, String uomCode, Long qty,
 			String invType) {
 		super();
+		this.custInvoiceId = custInvoiceId;
 		this.company = company;
 		this.custId = custId;
 		this.ShipToId = ShipToId;
@@ -53,6 +57,14 @@ public class CustInvoice {
 		this.uomCode = uomCode;
 		this.qty = qty;
 		this.invType = invType;
+	}
+
+	public Long getCustInvoiceId() {
+		return custInvoiceId;
+	}
+
+	public void setCustInvoiceId(Long custInvoiceId) {
+		this.custInvoiceId = custInvoiceId;
 	}
 
 	public String getCompany() {

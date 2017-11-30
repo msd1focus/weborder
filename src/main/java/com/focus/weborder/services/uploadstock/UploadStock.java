@@ -1,6 +1,6 @@
 package com.focus.weborder.services.uploadstock;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class UploadStock {
 
 	@Column(name="TRANSACTIONDATE")
-	private Date transctionDate;
+	private Date transactionDate;
 	@Column(name="COMPANY")
 	private String company;
 	@Column(name="OUTLET_ID")
@@ -30,7 +30,7 @@ public class UploadStock {
 			Date transactionDate, String company, String outletId,
 			String itemId, String salesQty) {
 		super();
-		this.transctionDate = transactionDate;
+		this.transactionDate = transactionDate;
 		this.company = company;
 		this.outletId = outletId;
 		this.itemId = itemId;
@@ -38,11 +38,11 @@ public class UploadStock {
 	}
 
 	public Date getTransctionDate() {
-		return transctionDate;
+		return transactionDate;
 	}
 
 	public void setTransctionDate(Date transctionDate) {
-		this.transctionDate = transctionDate;
+		this.transactionDate = transctionDate;
 	}
 
 	public String getCompany() {

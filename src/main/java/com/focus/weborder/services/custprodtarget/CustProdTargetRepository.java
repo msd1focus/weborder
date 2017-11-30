@@ -37,5 +37,16 @@ public interface CustProdTargetRepository extends CrudRepository<CustProdTarget,
 			@Param("productCode") String productCode,
 			@Param("periodeStock") String periodeStock
     	);
+	
+	@Query("SELECT cpt FROM CustProdTarget cpt WHERE "
+            + "cpt.company = :company AND "
+            + "cpt.custId = :custId AND "
+            + "cpt.productCode = :productCode"
+           )
+	CustProdTarget getByCompanyCustidProductcode(
+			@Param("company") String company,
+    		@Param("custId") Long custId,
+			@Param("productCode") String productCode
+    	);
 
 }
