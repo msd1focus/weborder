@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Web Order - Focus Distribusi Indonesia</title>
+	<div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header"/>
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<form autocomplete="off" action="#" th:action="@{/registration}"
+					th:object="${user}" method="post" class="form-horizontal"
+					role="form">
+					<h2>Registration Form</h2>
+					
+					
+					<div class="form-group">
+						<div class="col-sm-9">
+						<label th:if="${#fields.hasErrors('company')}" th:errors="*{company}"
+								class="validation-message"></label>
+						<input type="text" th:field="*{company}" placeholder="Company"
+								class="form-control" /> 
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-9">
+						<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+								class="validation-message"></label>
+						<input type="text" th:field="*{name}" placeholder="Name"
+								class="form-control" /> 
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-9">
+						<label	th:if="${#fields.hasErrors('custId')}" th:errors="*{custId}"
+								class="validation-message"></label>
+							<input type="text" th:field="*{custId}"
+								placeholder="Customer Id" class="form-control" /> 
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="text" th:field="*{email}" placeholder="Email"
+								class="form-control" /> <label
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+								class="validation-message"></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9">
+							<input type="password" th:field="*{password}"
+								placeholder="Password" class="form-control" /> <label
+								th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+								class="validation-message"></label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-9">
+							<button type="submit" class="btn btn-primary btn-block">Register User</button>
+						</div>
+					</div>
+					
+					<span th:utext="${successMessage}"></span>
+					
+					
+				</form>
+			</div>
+		</div>
+	</div>
+
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

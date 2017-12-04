@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Form Input Order</title>
+	<meta charset="UTF-8">
+	</meta>
+	<link rel="stylesheet" href="style.css"/>
+	<script src="js/data.js"></script>
+	<script src="js/getdata.js"></script>
+	<script src="js/history.js"></script>
+	<link rel="stylesheet" href="css/history.css"/>
+
+	<div th:replace="fragments/header :: header-css"/>
+
+</head>
+
+<body>
+
+	<div th:replace="fragments/header :: header"/>
+	
+	<!-- <div class="bagianlogo" id="logo">
+		<img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" src="images/logo.png" alt="" width="200" height="85px" />
+	</div> -->
+
+
+	<div id="hist">
+		<h2>Histori Transaksi</h2>
+		<p/>
+		<table id="conftab">
+			<tr>
+				<th>Tgl Submit</th>
+				<th>No PO</th>
+				<th>Tgl PO</th>
+				<th>Ship to</th>
+				<th>Total</th>
+				<th/>
+			</tr>
+		</table>
+		<script>populate_history()</script>
+	</div> <!-- div hist -->
+
+
+	<!-- The Modal -->
+	<div id="myModal" class="modal">
+
+	  <div class="modal-content">
+			<div id="poinfo">
+				<table>
+					 <tr>
+						   <th>Nomor PO:</th>
+							 <td id="cell_ponumber"></td>
+					 </tr>
+					 <tr>
+						   <th>Tanggal PO:</th>
+							 <td id="cell_podate"></td>
+					 </tr>
+					 <tr>
+						   <th>Dikirim ke:</th>
+							 <td id="cell_ship"></td>
+					 </tr>
+					 <tr>
+						   <th>Invoice Status:</th>
+							 <td id="cell_invoiceStatus"></td>
+					 </tr>
+				</table>
+			</div>
+			<div id="rincian">
+				<span class="close">&times;</span>
+				<table style="text-align:left">
+          <thead>
+					  <tr>
+							  <th>Code</th>
+								<th>Product Name</th>
+								<th>Unit</th>
+								<th>Unit Price</th>
+								<th>Quantity</th>
+								<th>Total</th>
+						</tr>
+					</thead>
+					<tbody id="rincianorder"></tbody>
+				</table>
+			</div>
+
+	  </div>
+	</div>
+
+	<!-- <script>
+		// When the user clicks on <span> (x), close the modal
+		var modal = document.getElementById('myModal');
+		var span = document.getElementsByClassName("close")[0];
+		span.onclick = function() {
+		    modal.style.display = "none";
+		}
+
+	</script> -->
+	
+	
+	<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

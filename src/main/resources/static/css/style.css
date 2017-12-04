@@ -186,6 +186,10 @@ input:disabled {
     background-color: #D3D3D3;
 }
 
+#header {
+  position: fixed;
+}
+
 /*
 #tblOrder tr td:nth-child(n+3), 
 #tblOrderItem tr th:nth-child(n+2),

@@ -11,10 +11,15 @@
 	th:src="@{js/order.js}">
 </script>
 
-<title>Input Order - Focus Distribusi Indonesia</title>
+<div th:replace="fragments/header :: header-css"/>
+
+<title>Web Order - Focus Distribusi Indonesia</title>
 </head>
 
 <body>
+
+<div th:replace="fragments/header :: header"/>
+
 <div class="bagianlogo" id="logo">
     <img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" 
     	src="../static/images/logo.png" 
@@ -23,7 +28,7 @@
 </div>
  
 <form action="#" 
-	th:action="@{/order}" th:object="${inputWebOrder}" method="post">
+	th:action="@{/}" th:object="${inputWebOrder}" method="post">
 
 <div id="framesetting">
 <table> 
@@ -985,5 +990,7 @@
 </div> <!-- div ordercontainer -->
 
 </form>
+
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

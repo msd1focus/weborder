@@ -10,15 +10,23 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.focus.weborder.security.model.User;
+import com.focus.weborder.security.service.UserService;
 import com.focus.weborder.services.custinvoice.CustInvoice;
 import com.focus.weborder.services.custinvoice.CustInvoiceService;
 import com.focus.weborder.services.customer.Customer;
@@ -96,613 +104,689 @@ public class InputOrderController {
 	@Autowired
 	private UploadStockService uploadStockService;
 	
-	@RequestMapping(value="/order", method=RequestMethod.GET)
-    public String order(Model model){
-		
-		//System.out.println(Calendar.getInstance());
-		
-		String company = "FDI";
-		Long custId = (long)4112;
-		
-		Calendar c = Calendar.getInstance();
-		Integer year = c.get(Calendar.YEAR);
-		Integer month = c.get(Calendar.MONTH) + 1;
-		String monthName = getMonthName(month);
-		
-		List<String> periodes = new ArrayList<>();
-		periodes.add(monthName + " " + year);
-		
-		Integer monthNext = month;
-		Integer month1Before = month-1;
-		Integer month2Before = month-2;
-		Integer month3Before = month-3;
-		Integer yearNext = year;		
-		Integer year1MonthBefore = year;
-		Integer year2MonthBefore = year;
-		Integer year3MonthBefore = year;
-		
+	@Autowired
+	private UserService userService;
 
-		String yearOracle = getYearOracle(year);
-		String yearNextOracle = getYearOracle(year);
-		String year1MonthBeforeOracle = getYearOracle(year);
-		String year2MonthBeforeOracle = getYearOracle(year);
-		String year3MonthBeforeOracle = getYearOracle(year);
-
-		if(month==1) {
-			month1Before = 12;
-			month2Before = 11;
-			month3Before = 10;
-			year1MonthBefore -= 1;
-			year2MonthBefore -= 1;
-			year3MonthBefore -= 1;
-		}
-		else if(month==2) {
-			month2Before = 12;
-			month3Before = 11;
-			year2MonthBefore -= 1;
-			year3MonthBefore -= 1;
-		}
-		else if(month==3) {
-			month3Before = 12;
-			year3MonthBefore = year-1;
-		}
-		else if(month==12) {
-			monthNext = 1;
-			yearNext += 1;
-		}
-		else {
-			monthNext += 1;
-		}
-		String monthNameNext = getMonthName(monthNext);
-		periodes.add(monthNameNext + " " + yearNext);
-		
-		String periodeCurrentOracle =
-				getMonthNameOracle(month)
-				+ "-"
-				+ year;
-		String periodeNextOracle =
-				getMonthNameOracle(monthNext)
-				+ "-"
-				+ yearNext;
-		String periode1BeforeOracle =
-				getMonthNameOracle(month1Before)
-				+ "-"
-				+ year1MonthBefore;
-		String periode2BeforeOracle =
-				getMonthNameOracle(month2Before)
-				+ "-"
-				+ year2MonthBefore;
-		String periode3BeforeOracle =
-				getMonthNameOracle(month3Before)
-				+ "-"
-				+ year3MonthBefore;
-		
-		Customer customer =
-				customerService.getCustomer(company, custId);
-		String custNumber = customer.getCustomerNumber();
-		OrderGrp orderGrp =
-				orderGrpService.getOrderGrpDraft(company, custId);
-		List<CustShipTo> custShipTo =
-				custShipToService.getCustShipTo(company, custId);
-		List<ListMobil> listMobils =
-				listMobilService.getListMobils();
-		List<String> expedisis =
-				orderService.getExpedisiByCompanyCustid(company, custId);
-		
-		List<Order> orders = new ArrayList<>();
-		Order order1 = null;
-		Order order2 = null;
-		Order order3 = null;
-		Order order4 = null;
-		Order order5 = null;
-		
-		Long poNumber1 = (long)1;
-		Long poNumber2 = (long)2;
-		Long poNumber3 = (long)3;
-		Long poNumber4 = (long)4;
-		Long poNumber5 = (long)5;
-		
-		if(orderGrp==null) {		
-			
-			List<OrderGrp> orderGrpSubmitteds = 
-					orderGrpService.getOrderGrpSubmitted(company, custId);
-			
-			if(orderGrpSubmitteds!=null) {
-				if(orderGrpSubmitteds.size()>0) {
-					OrderGrp orderGrpSubmittedLast = 
-							orderGrpSubmitteds.get(0);
-					List<Order> orderSubmittedLasts = 
-							orderService.getByCompanyCustidGrpid(
-									orderGrpSubmittedLast.getOrderGrpId(),
-									custId, company); 
-					if(orderSubmittedLasts!=null) {
-						Order orderSubmittedLast = 
-								orderSubmittedLasts.get(
-										orderSubmittedLasts.size()-1);
-						String poNumberLast =
-								orderSubmittedLast.getPoNumber();
-						String sPoNumberLast = poNumberLast.substring(8,11);
-						Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-						poNumber1 = lPoNumberLast + 1;
-						poNumber2 = lPoNumberLast + 2;
-						poNumber3 = lPoNumberLast + 3;
-						poNumber4 = lPoNumberLast + 4;
-						poNumber5 = lPoNumberLast + 5;
-					}
-				}
-						
-			}
-			
-			orderGrp = new OrderGrp();
-			orderGrp.setCompany(company);
-			orderGrp.setCustId(custId);
-			orderGrp.setOrderType("SO Lokal Non Food With CO");
-			orderGrp.setOrderBy("Manual");
-			orderGrp.setPeriodeOrder(monthName + " " + year);
-			orderGrp.setJumlahOrder((long)0);
-			orderGrp.setLeadTime((long) 0);
-			orderGrp.setSisaLimit(customer.getCreditLimit());	
-		}
-		else {
-			orders = orderService.getByCompanyCustidGrpid(
-					orderGrp.getOrderGrpId(), custId, company);
-		}
-		
-		if(orders.size()==0) {
-			
-			order1 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					poNumber1, year, month);
-			order2 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					poNumber2, year, month);
-			order3 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					poNumber3, year, month);
-			order4 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					poNumber4, year, month);
-			order5 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					poNumber5, year, month);
-		}
-		else if(orders.size()==1) {
-			
-			order1 = orders.get(0);
-			order2 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)002, year, month);
-			order3 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)003, year, month);
-			order4 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)004, year, month);
-			order5 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)005, year, month);
-		}
-		else if(orders.size()==2) {
-			
-			order1 = orders.get(0);
-			order2 = orders.get(1);
-			order3 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)003, year, month);
-			order4 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)004, year, month);
-			order5 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)005, year, month);
-		}
-		else if(orders.size()==3) {
-			
-			order1 = orders.get(0);
-			order2 = orders.get(1);
-			order3 = orders.get(2);
-			order4 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)004, year, month);
-			order5 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)005, year, month);
-		}
-		else if(orders.size()==4) {
-			
-			order1 = orders.get(0);
-			order2 = orders.get(1);
-			order3 = orders.get(2);
-			order4 = orders.get(3);
-			order5 = setDefaultOrder(
-					customer, orderGrp, custShipTo,
-					listMobils,
-					(long)005, year, month);
-		}
-		else if(orders.size()==5) {
-			order1 = orders.get(0);
-			order2 = orders.get(1);
-			order3 = orders.get(2);
-			order4 = orders.get(3);
-			order5 = orders.get(4);
-		}
-		
-		InputOrder inputOrder = new InputOrder();
-		inputOrder.setOrderGrp(orderGrp);
-		inputOrder.setOrder1(order1);
-		inputOrder.setOrder2(order2);
-		inputOrder.setOrder3(order3);
-		inputOrder.setOrder4(order4);
-		inputOrder.setOrder5(order5);
-		
-		String minOrderDate = getMinDate(orderGrp.getPeriodeOrder());
-		String maxOrderDate = getMaxDate(orderGrp.getPeriodeOrder());
-		
-		List<Integer> jumlahOrders = new ArrayList<>();
-		jumlahOrders.add(1);
-		jumlahOrders.add(2);
-		jumlahOrders.add(3);
-		jumlahOrders.add(4);
-		jumlahOrders.add(5);
-		
-		List<String> orderTypes = new ArrayList<>();
-		orderTypes.add("SO Lokal Food With CO");
-		orderTypes.add("SO Lokal Non Food With CO");
-		orderTypes.add("SO Lokal Food With CO - DP");
-		orderTypes.add("SO Lokal Non Food With CO - DP");
-		
-		List<InputProduct> inputProducts = new ArrayList<>();
-		List<CustProd> custProds = custProdService.getCustProd(
-				company, custId);
-		for(CustProd custProd: custProds) {
-			
-			String productCode = custProd.getProductCode();
-			InputProduct inputProduct = new InputProduct();
-
-			List<ProdUom> prodUoms = prodUomService.getProdUom(
-					company, productCode);
-			
-			Boolean isProductOumExist = false;
-			for(ProdUom prodUom: prodUoms) {
-				if(prodUom.getUomCode().equals(
-						custProd.getPriceUom())) {
-					isProductOumExist = true;
-					break;
-				}
-			}
-			
-			if(isProductOumExist) {
-				
-				inputProduct.setProdUoms(prodUoms);	
-				inputProduct.setCustProd(custProd);
-				Product product = productService.getProduct(
-						company, productCode);
-				inputProduct.setProduct(product);
-				
-				OrderDetail orderDetail1 = 
-						orderDetailService.getByOrderidProductcode(
-								order1.getOrderId(),
-								custProd.getProductCode());
-				if(orderDetail1!=null) {
-					inputProduct.setOrderQty1(
-							formatText(orderDetail1.getJumlah()));
-				}
-				else {
-
-					inputProduct.setOrderQty1("0");
-				}
-				
-				OrderDetail orderDetail2 = 
-						orderDetailService.getByOrderidProductcode(
-								order2.getOrderId(),
-								custProd.getProductCode());
-				if(orderDetail2!=null) {
-					inputProduct.setOrderQty2(
-							formatText(orderDetail2.getJumlah()));
-				}
-				else {
-
-					inputProduct.setOrderQty2("0");
-				}
-				
-				OrderDetail orderDetail3 = 
-						orderDetailService.getByOrderidProductcode(
-								order3.getOrderId(),
-								custProd.getProductCode());
-				if(orderDetail3!=null) {
-					inputProduct.setOrderQty3(
-							formatText(orderDetail3.getJumlah()));
-				}
-				else {
-
-					inputProduct.setOrderQty3("0");
-				}
-				
-				OrderDetail orderDetail4 = 
-						orderDetailService.getByOrderidProductcode(
-								order4.getOrderId(),
-								custProd.getProductCode());
-				if(orderDetail4!=null) {
-					inputProduct.setOrderQty4(
-							formatText(orderDetail4.getJumlah()));
-				}
-				else {
-
-					inputProduct.setOrderQty4("0");
-				}
-				
-				OrderDetail orderDetail5 = 
-						orderDetailService.getByOrderidProductcode(
-								order5.getOrderId(),
-								custProd.getProductCode());
-				if(orderDetail5!=null) {
-					inputProduct.setOrderQty5(
-							formatText(orderDetail5.getJumlah()));
-				}
-				else {
-
-					inputProduct.setOrderQty5("0");
-				}
-				
-				Double averageSalesCurrentMonth = (double) 0;
-				CustProdSales custProdSalesCurrent = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periodeCurrentOracle);
-				if(custProdSalesCurrent!=null) {
-					if(custProdSalesCurrent.getAvgSales()!=null) {
-						averageSalesCurrentMonth =
-								custProdSalesCurrent.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSalesCurrentMonth(
-						averageSalesCurrentMonth);
-				
-				Double averageSales1MonthBefore = (double) 0;
-				CustProdSales custProdSales1MonthBefore = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periode1BeforeOracle);
-				if(custProdSales1MonthBefore!=null) {
-					if(custProdSales1MonthBefore.getAvgSales()!=null) {
-						averageSales1MonthBefore =
-								custProdSales1MonthBefore.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSales1MonthBefore(
-						averageSales1MonthBefore);
-				
-				Double averageSales2MonthBefore = (double) 0;
-				CustProdSales custProdSales2MonthBefore = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periode2BeforeOracle);
-				if(custProdSales2MonthBefore!=null) {
-					if(custProdSales2MonthBefore.getAvgSales()!=null) {
-						averageSales2MonthBefore =
-								custProdSales2MonthBefore.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSales2MonthBefore(
-						averageSales2MonthBefore);
-				
-				Double averageSales3MonthBefore = (double) 0;
-				CustProdSales custProdSales3MonthBefore = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periode3BeforeOracle);
-				if(custProdSales3MonthBefore!=null) {
-					if(custProdSales3MonthBefore.getAvgSales()!=null) {
-						averageSales3MonthBefore =
-								custProdSales3MonthBefore.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSales3MonthBefore(
-						averageSales3MonthBefore);
-				
-
-				Long qtyOnHand = (long)0;
-				/*List<UploadStock> uploadStockCurrent =
-						uploadStockService
-							.getByCompanyOutletidItemidTransactiondate(
-									company, custNumber,
-									productCode, getMinDateUtil(periodes.get(0)), 
-									getMaxDateUtil(periodes.get(0)));
-				if(uploadStockCurrent!=null) {
-					for(Integer i=0; i<uploadStockCurrent.size(); i++) {
-						if(uploadStockCurrent.get(i).getSalesQty()!=null) {
-							qtyOnHand +=
-									Long.parseLong(uploadStockCurrent.get(i).getSalesQty());
-						}
-					}
-				}*/
-				CustProdTarget custProdTargetStock =
-						custProdTargetService.
-							getBygetByCompanyCustidProductcode(
-									company, custId,
-									productCode);
-				/*List<UploadTarget> custProdTargetCurrent =
-						uploadTargetService
-							.getByCompanyOutletidItemidTransactiondate(
-									company, custNumber,
-									productCode, getMinDateUtil(periodes.get(0)), 
-									getMaxDateUtil(periodes.get(0)));*/
-				if(custProdTargetStock!=null) {
-					//for(Integer i=0; i<custProdTargetCurrent.size(); i++) {
-						if(custProdTargetStock.getEndStock()!=null) {
-							qtyOnHand =
-									custProdTargetStock.getEndStock();
-							String primaryUom = product.getProdUom1();
-							Double primaryUomRate=0.0;
-							Double priceUomRate=0.0;
-							for(Integer i=0; i<prodUoms.size(); i++) {
-								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
-									primaryUomRate = prodUoms.get(i).getConversionRate();
-								}
-								if(custProd.getPriceUom().trim().equals(
-										prodUoms.get(i).getUomCode())) {
-									priceUomRate = prodUoms.get(i).getConversionRate();
-								}
-							}
-							
-							qtyOnHand =
-									(long)((double)qtyOnHand
-									* primaryUomRate
-									/ priceUomRate);
-							
-						}
-					//}
-				}
-				inputProduct.setQtyOnHand(qtyOnHand);
-				
-				long targetCustomerCurrentMonth = (long)0;
-				CustProdTarget custProdTargetCurrent =
-						custProdTargetService.
-							getBygetByCompanyCustidProductcodePeriodetarget(
-									company, custId,
-									productCode, periodeCurrentOracle);
-				/*List<UploadTarget> custProdTargetCurrent =
-						uploadTargetService
-							.getByCompanyOutletidItemidTransactiondate(
-									company, custNumber,
-									productCode, getMinDateUtil(periodes.get(0)), 
-									getMaxDateUtil(periodes.get(0)));*/
-
-				if(custProdTargetCurrent!=null) {
-					//for(Integer i=0; i<custProdTargetCurrent.size(); i++) {
-						if(custProdTargetCurrent.getTargetSales()!=null) {
-							targetCustomerCurrentMonth =
-									custProdTargetCurrent.getTargetSales();
-
-							//System.out.println("targetCustomerCurrentMonth: " + targetCustomerCurrentMonth);
-							/*Product p = productService.getProduct(
-									company, custProdTargetCurrent.getProductCode());*/
-							String primaryUom = product.getProdUom1();
-							/*List<ProdUom> pu = prodUomService.getProdUom(
-									company, custProdTargetCurrent.getProductCode());*/
-							Double primaryUomRate=0.0;
-							Double priceUomRate=0.0;
-							//System.out.println("primaryUom: " + primaryUom);
-							for(Integer i=0; i<prodUoms.size(); i++) {
-								//System.out.println("prodUoms.get(i).getUomCode(): " + prodUoms.get(i).getUomCode());
-								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode().trim())) {
-									primaryUomRate = prodUoms.get(i).getConversionRate();
-								}
-								if(custProd.getPriceUom().trim().equals(prodUoms.get(i).getUomCode())) {
-									priceUomRate = prodUoms.get(i).getConversionRate();
-								}
-							}
-
-
-							/*System.out.println(product.getProductCode() + " primaryUomRate: " + primaryUomRate);
-							System.out.println(product.getProductCode() + " priceUomRate: " + priceUomRate);
-							*/
-							targetCustomerCurrentMonth =
-									(long)((double)targetCustomerCurrentMonth
-									* primaryUomRate
-									/ priceUomRate);
-							
-						}
-						/*if(custProdTargetCurrent.getEndStock()!=null) {
-							qtyOnHand =
-									custProdTargetCurrent.getEndStock();
-						}*/
-					//}
-				}
-				inputProduct.setTargetCustomerCurrentMonth(
-						targetCustomerCurrentMonth);
-				
-				Long targetCustomerNextMonth = (long)0;
-				CustProdTarget custProdTargetNextMonth =
-						custProdTargetService.
-							getBygetByCompanyCustidProductcodePeriodetarget(
-									company, custId,
-									productCode, periodeNextOracle);
-				/*List<UploadTarget> custProdTargetNextMonth =
-						uploadTargetService
-							.getByCompanyOutletidItemidTransactiondate(
-									company, custNumber,
-									productCode, getMinDateUtil(periodes.get(1)), 
-									getMaxDateUtil(periodes.get(1)));*/
-				if(custProdTargetNextMonth!=null) {
-					//for(Integer i=0; i<custProdTargetNextMonth.size(); i++) {
-						if(custProdTargetNextMonth.getTargetSales()!=null) {
-							targetCustomerNextMonth =
-									custProdTargetNextMonth.getTargetSales();
-							
-							String primaryUom = product.getProdUom1();
-							Double primaryUomRate=0.0;
-							Double priceUomRate=0.0;
-							for(Integer i=0; i<prodUoms.size(); i++) {
-								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
-									primaryUomRate = prodUoms.get(i).getConversionRate();
-								}
-								if(custProd.getPriceUom().trim().equals(
-										prodUoms.get(i).getUomCode())) {
-									priceUomRate = prodUoms.get(i).getConversionRate();
-								}
-							}
-							
-							targetCustomerNextMonth =
-									(long)((double)targetCustomerNextMonth
-									* primaryUomRate
-									/ priceUomRate);
-						}						
-					//}
-				}
-				//System.out.println(targetCustomerNextMonth);
-				inputProduct.setTargetCustomerNextMonth(
-						targetCustomerNextMonth);
-				
-				List<CustInvoice> custInvoices =
-						custInvoiceService.
-							getByCompanyCustidProductcode(
-									company, custId,
-									productCode);
-				inputProduct.setCustInvoices(custInvoices);
-				
-				inputProducts.add(inputProduct);
-			}
-			
-		}
-		
-		InputWebOrder inputWebOrder = new InputWebOrder();
-		inputWebOrder.setCustomer(customer);
-		inputWebOrder.setInputOrder(inputOrder);
-		inputWebOrder.setInputProducts(inputProducts);
-
-		model.addAttribute("minOrderDate", minOrderDate);
-		model.addAttribute("maxOrderDate", maxOrderDate);
-		model.addAttribute("orderTypes", orderTypes);
-		model.addAttribute("periodes", periodes);
-		model.addAttribute("productQty", inputProducts.size());
-		model.addAttribute("custShipTo", custShipTo);
-		model.addAttribute("jumlahOrders", jumlahOrders);
-		model.addAttribute("listMobils", listMobils);
-		model.addAttribute("expedisis", expedisis);
-		model.addAttribute("inputWebOrder", inputWebOrder);
-        return "order";
+	@GetMapping("/history")
+    public String history() {
+        return "/history";
     }
 	
-	@RequestMapping(value="/order", method=RequestMethod.POST)
+	@GetMapping("/login")
+    public String login() {
+        return "/login";
+    }
+
+    @GetMapping("/403")
+    public String error403() {
+        return "/error/403";
+    }
+    
+    @RequestMapping(value="/registration", method = RequestMethod.GET)
+	public ModelAndView registration(){
+		ModelAndView modelAndView = new ModelAndView();
+		User user = new User();
+		modelAndView.addObject("user", user);
+		modelAndView.setViewName("registration");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+		ModelAndView modelAndView = new ModelAndView();
+		User userExists = userService.findUserByName(user.getName());
+		if (userExists != null) {
+			bindingResult
+					.rejectValue("name", "error.user",
+							"There is already a user registered with the name provided");
+		}
+		if (bindingResult.hasErrors()) {
+			modelAndView.setViewName("registration");
+		} else {
+			userService.saveUser(user);
+			modelAndView.addObject("successMessage", "User has been registered successfully");
+			modelAndView.addObject("user", new User());
+			modelAndView.setViewName("registration");
+			
+		}
+		return modelAndView;
+	}
+    
+	@RequestMapping(value="/", method=RequestMethod.GET)
+    public ModelAndView order(
+    		Model model){
+		
+
+		ModelAndView modelAndView = new ModelAndView();
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (auth != null) {
+
+			User user = userService.findUserByName(auth.getName());
+			
+			System.out.println(user.getName());
+			
+			if(!(auth.getName().trim().equals("admin"))) {
+				
+				String company = user.getCompany();
+				Long custId = user.getCustId();
+				
+				Calendar c = Calendar.getInstance();
+				Integer year = c.get(Calendar.YEAR);
+				Integer month = c.get(Calendar.MONTH) + 1;
+				String monthName = getMonthName(month);
+				
+				List<String> periodes = new ArrayList<>();
+				periodes.add(monthName + " " + year);
+				
+				Integer monthNext = month;
+				Integer month1Before = month-1;
+				Integer month2Before = month-2;
+				Integer month3Before = month-3;
+				Integer yearNext = year;		
+				Integer year1MonthBefore = year;
+				Integer year2MonthBefore = year;
+				Integer year3MonthBefore = year;
+				
+		
+				String yearOracle = getYearOracle(year);
+				String yearNextOracle = getYearOracle(year);
+				String year1MonthBeforeOracle = getYearOracle(year);
+				String year2MonthBeforeOracle = getYearOracle(year);
+				String year3MonthBeforeOracle = getYearOracle(year);
+		
+				if(month==1) {
+					month1Before = 12;
+					month2Before = 11;
+					month3Before = 10;
+					year1MonthBefore -= 1;
+					year2MonthBefore -= 1;
+					year3MonthBefore -= 1;
+				}
+				else if(month==2) {
+					month2Before = 12;
+					month3Before = 11;
+					year2MonthBefore -= 1;
+					year3MonthBefore -= 1;
+				}
+				else if(month==3) {
+					month3Before = 12;
+					year3MonthBefore = year-1;
+				}
+				else if(month==12) {
+					monthNext = 1;
+					yearNext += 1;
+				}
+				else {
+					monthNext += 1;
+				}
+				String monthNameNext = getMonthName(monthNext);
+				periodes.add(monthNameNext + " " + yearNext);
+				
+				String periodeCurrentOracle =
+						getMonthNameOracle(month)
+						+ "-"
+						+ year;
+				String periodeNextOracle =
+						getMonthNameOracle(monthNext)
+						+ "-"
+						+ yearNext;
+				String periode1BeforeOracle =
+						getMonthNameOracle(month1Before)
+						+ "-"
+						+ year1MonthBefore;
+				String periode2BeforeOracle =
+						getMonthNameOracle(month2Before)
+						+ "-"
+						+ year2MonthBefore;
+				String periode3BeforeOracle =
+						getMonthNameOracle(month3Before)
+						+ "-"
+						+ year3MonthBefore;
+				
+				Customer customer =
+						customerService.getCustomer(company, custId);
+				String custNumber = customer.getCustomerNumber();
+				OrderGrp orderGrp =
+						orderGrpService.getOrderGrpDraft(company, custId);
+				List<CustShipTo> custShipTo =
+						custShipToService.getCustShipTo(company, custId);
+				List<ListMobil> listMobils =
+						listMobilService.getListMobils();
+				List<String> expedisis =
+						orderService.getExpedisiByCompanyCustid(company, custId);
+				
+				List<Order> orders = new ArrayList<>();
+				Order order1 = null;
+				Order order2 = null;
+				Order order3 = null;
+				Order order4 = null;
+				Order order5 = null;
+				
+				Long poNumber1 = (long)1;
+				Long poNumber2 = (long)2;
+				Long poNumber3 = (long)3;
+				Long poNumber4 = (long)4;
+				Long poNumber5 = (long)5;
+				
+				if(orderGrp==null) {		
+					
+					List<OrderGrp> orderGrpSubmitteds = 
+							orderGrpService.getOrderGrpSubmitted(company, custId);
+					
+					if(orderGrpSubmitteds!=null) {
+						if(orderGrpSubmitteds.size()>0) {
+							OrderGrp orderGrpSubmittedLast = 
+									orderGrpSubmitteds.get(0);
+							List<Order> orderSubmittedLasts = 
+									orderService.getByCompanyCustidGrpid(
+											orderGrpSubmittedLast.getOrderGrpId(),
+											custId, company); 
+							if(orderSubmittedLasts!=null) {
+								Order orderSubmittedLast = 
+										orderSubmittedLasts.get(
+												orderSubmittedLasts.size()-1);
+								String poNumberLast =
+										orderSubmittedLast.getPoNumber();
+								String sPoNumberLast = poNumberLast.substring(8,11);
+								Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+								poNumber1 = lPoNumberLast + 1;
+								poNumber2 = lPoNumberLast + 2;
+								poNumber3 = lPoNumberLast + 3;
+								poNumber4 = lPoNumberLast + 4;
+								poNumber5 = lPoNumberLast + 5;
+							}
+						}
+								
+					}
+					
+					orderGrp = new OrderGrp();
+					orderGrp.setCompany(company);
+					orderGrp.setCustId(custId);
+					orderGrp.setOrderType("SO Lokal Non Food With CO");
+					orderGrp.setOrderBy("Manual");
+					orderGrp.setPeriodeOrder(monthName + " " + year);
+					orderGrp.setJumlahOrder((long)0);
+					orderGrp.setLeadTime((long) 0);
+					orderGrp.setSisaLimit(customer.getCreditLimit());	
+				}
+				else {
+					orders = orderService.getByCompanyCustidGrpid(
+							orderGrp.getOrderGrpId(), custId, company);
+				}
+				
+				if(orders.size()==0) {
+					
+					order1 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							poNumber1, year, month);
+					order2 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							poNumber2, year, month);
+					order3 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							poNumber3, year, month);
+					order4 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							poNumber4, year, month);
+					order5 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							poNumber5, year, month);
+				}
+				else if(orders.size()==1) {
+					
+					order1 = orders.get(0);
+					order2 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)002, year, month);
+					order3 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)003, year, month);
+					order4 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)004, year, month);
+					order5 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)005, year, month);
+				}
+				else if(orders.size()==2) {
+					
+					order1 = orders.get(0);
+					order2 = orders.get(1);
+					order3 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)003, year, month);
+					order4 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)004, year, month);
+					order5 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)005, year, month);
+				}
+				else if(orders.size()==3) {
+					
+					order1 = orders.get(0);
+					order2 = orders.get(1);
+					order3 = orders.get(2);
+					order4 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)004, year, month);
+					order5 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)005, year, month);
+				}
+				else if(orders.size()==4) {
+					
+					order1 = orders.get(0);
+					order2 = orders.get(1);
+					order3 = orders.get(2);
+					order4 = orders.get(3);
+					order5 = setDefaultOrder(
+							customer, orderGrp, custShipTo,
+							listMobils,
+							(long)005, year, month);
+				}
+				else if(orders.size()==5) {
+					order1 = orders.get(0);
+					order2 = orders.get(1);
+					order3 = orders.get(2);
+					order4 = orders.get(3);
+					order5 = orders.get(4);
+				}
+				
+				InputOrder inputOrder = new InputOrder();
+				inputOrder.setOrderGrp(orderGrp);
+				inputOrder.setOrder1(order1);
+				inputOrder.setOrder2(order2);
+				inputOrder.setOrder3(order3);
+				inputOrder.setOrder4(order4);
+				inputOrder.setOrder5(order5);
+				
+				String minOrderDate = getMinDate(orderGrp.getPeriodeOrder());
+				String maxOrderDate = getMaxDate(orderGrp.getPeriodeOrder());
+				
+				List<Integer> jumlahOrders = new ArrayList<>();
+				jumlahOrders.add(1);
+				jumlahOrders.add(2);
+				jumlahOrders.add(3);
+				jumlahOrders.add(4);
+				jumlahOrders.add(5);
+				
+				List<String> orderTypes = new ArrayList<>();
+				orderTypes.add("SO Lokal Food With CO");
+				orderTypes.add("SO Lokal Non Food With CO");
+				orderTypes.add("SO Lokal Food With CO - DP");
+				orderTypes.add("SO Lokal Non Food With CO - DP");
+				
+				List<InputProduct> inputProducts = new ArrayList<>();
+				List<CustProd> custProds = custProdService.getCustProd(
+						company, custId);
+				for(CustProd custProd: custProds) {
+					
+					String productCode = custProd.getProductCode();
+					InputProduct inputProduct = new InputProduct();
+		
+					List<ProdUom> prodUoms = prodUomService.getProdUom(
+							company, productCode);
+					
+					Boolean isProductOumExist = false;
+					for(ProdUom prodUom: prodUoms) {
+						if(prodUom.getUomCode().equals(
+								custProd.getPriceUom())) {
+							isProductOumExist = true;
+							break;
+						}
+					}
+					
+					if(isProductOumExist) {
+						
+						inputProduct.setProdUoms(prodUoms);	
+						inputProduct.setCustProd(custProd);
+						Product product = productService.getProduct(
+								company, productCode);
+						inputProduct.setProduct(product);
+						
+						OrderDetail orderDetail1 = 
+								orderDetailService.getByOrderidProductcode(
+										order1.getOrderId(),
+										custProd.getProductCode());
+						if(orderDetail1!=null) {
+							inputProduct.setOrderQty1(
+									formatText(orderDetail1.getJumlah()));
+						}
+						else {
+		
+							inputProduct.setOrderQty1("0");
+						}
+						
+						OrderDetail orderDetail2 = 
+								orderDetailService.getByOrderidProductcode(
+										order2.getOrderId(),
+										custProd.getProductCode());
+						if(orderDetail2!=null) {
+							inputProduct.setOrderQty2(
+									formatText(orderDetail2.getJumlah()));
+						}
+						else {
+		
+							inputProduct.setOrderQty2("0");
+						}
+						
+						OrderDetail orderDetail3 = 
+								orderDetailService.getByOrderidProductcode(
+										order3.getOrderId(),
+										custProd.getProductCode());
+						if(orderDetail3!=null) {
+							inputProduct.setOrderQty3(
+									formatText(orderDetail3.getJumlah()));
+						}
+						else {
+		
+							inputProduct.setOrderQty3("0");
+						}
+						
+						OrderDetail orderDetail4 = 
+								orderDetailService.getByOrderidProductcode(
+										order4.getOrderId(),
+										custProd.getProductCode());
+						if(orderDetail4!=null) {
+							inputProduct.setOrderQty4(
+									formatText(orderDetail4.getJumlah()));
+						}
+						else {
+		
+							inputProduct.setOrderQty4("0");
+						}
+						
+						OrderDetail orderDetail5 = 
+								orderDetailService.getByOrderidProductcode(
+										order5.getOrderId(),
+										custProd.getProductCode());
+						if(orderDetail5!=null) {
+							inputProduct.setOrderQty5(
+									formatText(orderDetail5.getJumlah()));
+						}
+						else {
+		
+							inputProduct.setOrderQty5("0");
+						}
+						
+						Double averageSalesCurrentMonth = (double) 0;
+						CustProdSales custProdSalesCurrent = 
+								custProdSalesService.
+									getBygetByCompanyCustidProductcodePeriode(
+											company, custId,
+											productCode, periodeCurrentOracle);
+						if(custProdSalesCurrent!=null) {
+							if(custProdSalesCurrent.getAvgSales()!=null) {
+								averageSalesCurrentMonth =
+										custProdSalesCurrent.getAvgSales();
+							}
+						}
+						inputProduct.setAverageSalesCurrentMonth(
+								averageSalesCurrentMonth);
+						
+						Double averageSales1MonthBefore = (double) 0;
+						CustProdSales custProdSales1MonthBefore = 
+								custProdSalesService.
+									getBygetByCompanyCustidProductcodePeriode(
+											company, custId,
+											productCode, periode1BeforeOracle);
+						if(custProdSales1MonthBefore!=null) {
+							if(custProdSales1MonthBefore.getAvgSales()!=null) {
+								averageSales1MonthBefore =
+										custProdSales1MonthBefore.getAvgSales();
+							}
+						}
+						inputProduct.setAverageSales1MonthBefore(
+								averageSales1MonthBefore);
+						
+						Double averageSales2MonthBefore = (double) 0;
+						CustProdSales custProdSales2MonthBefore = 
+								custProdSalesService.
+									getBygetByCompanyCustidProductcodePeriode(
+											company, custId,
+											productCode, periode2BeforeOracle);
+						if(custProdSales2MonthBefore!=null) {
+							if(custProdSales2MonthBefore.getAvgSales()!=null) {
+								averageSales2MonthBefore =
+										custProdSales2MonthBefore.getAvgSales();
+							}
+						}
+						inputProduct.setAverageSales2MonthBefore(
+								averageSales2MonthBefore);
+						
+						Double averageSales3MonthBefore = (double) 0;
+						CustProdSales custProdSales3MonthBefore = 
+								custProdSalesService.
+									getBygetByCompanyCustidProductcodePeriode(
+											company, custId,
+											productCode, periode3BeforeOracle);
+						if(custProdSales3MonthBefore!=null) {
+							if(custProdSales3MonthBefore.getAvgSales()!=null) {
+								averageSales3MonthBefore =
+										custProdSales3MonthBefore.getAvgSales();
+							}
+						}
+						inputProduct.setAverageSales3MonthBefore(
+								averageSales3MonthBefore);
+						
+		
+						Long qtyOnHand = (long)0;
+						/*List<UploadStock> uploadStockCurrent =
+								uploadStockService
+									.getByCompanyOutletidItemidTransactiondate(
+											company, custNumber,
+											productCode, getMinDateUtil(periodes.get(0)), 
+											getMaxDateUtil(periodes.get(0)));
+						if(uploadStockCurrent!=null) {
+							for(Integer i=0; i<uploadStockCurrent.size(); i++) {
+								if(uploadStockCurrent.get(i).getSalesQty()!=null) {
+									qtyOnHand +=
+											Long.parseLong(uploadStockCurrent.get(i).getSalesQty());
+								}
+							}
+						}*/
+						CustProdTarget custProdTargetStock =
+								custProdTargetService.
+									getBygetByCompanyCustidProductcode(
+											company, custId,
+											productCode);
+						/*List<UploadTarget> custProdTargetCurrent =
+								uploadTargetService
+									.getByCompanyOutletidItemidTransactiondate(
+											company, custNumber,
+											productCode, getMinDateUtil(periodes.get(0)), 
+											getMaxDateUtil(periodes.get(0)));*/
+						if(custProdTargetStock!=null) {
+							//for(Integer i=0; i<custProdTargetCurrent.size(); i++) {
+								if(custProdTargetStock.getEndStock()!=null) {
+									qtyOnHand =
+											custProdTargetStock.getEndStock();
+									String primaryUom = product.getProdUom1();
+									Double primaryUomRate=0.0;
+									Double priceUomRate=0.0;
+									for(Integer i=0; i<prodUoms.size(); i++) {
+										if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
+											primaryUomRate = prodUoms.get(i).getConversionRate();
+										}
+										if(custProd.getPriceUom().trim().equals(
+												prodUoms.get(i).getUomCode())) {
+											priceUomRate = prodUoms.get(i).getConversionRate();
+										}
+									}
+									
+									qtyOnHand =
+											(long)((double)qtyOnHand
+											* primaryUomRate
+											/ priceUomRate);
+									
+								}
+							//}
+						}
+						inputProduct.setQtyOnHand(qtyOnHand);
+						
+						long targetCustomerCurrentMonth = (long)0;
+						CustProdTarget custProdTargetCurrent =
+								custProdTargetService.
+									getBygetByCompanyCustidProductcodePeriodetarget(
+											company, custId,
+											productCode, periodeCurrentOracle);
+						/*List<UploadTarget> custProdTargetCurrent =
+								uploadTargetService
+									.getByCompanyOutletidItemidTransactiondate(
+											company, custNumber,
+											productCode, getMinDateUtil(periodes.get(0)), 
+											getMaxDateUtil(periodes.get(0)));*/
+		
+						if(custProdTargetCurrent!=null) {
+							//for(Integer i=0; i<custProdTargetCurrent.size(); i++) {
+								if(custProdTargetCurrent.getTargetSales()!=null) {
+									targetCustomerCurrentMonth =
+											custProdTargetCurrent.getTargetSales();
+		
+									//System.out.println("targetCustomerCurrentMonth: " + targetCustomerCurrentMonth);
+									/*Product p = productService.getProduct(
+											company, custProdTargetCurrent.getProductCode());*/
+									String primaryUom = product.getProdUom1();
+									/*List<ProdUom> pu = prodUomService.getProdUom(
+											company, custProdTargetCurrent.getProductCode());*/
+									Double primaryUomRate=0.0;
+									Double priceUomRate=0.0;
+									//System.out.println("primaryUom: " + primaryUom);
+									for(Integer i=0; i<prodUoms.size(); i++) {
+										//System.out.println("prodUoms.get(i).getUomCode(): " + prodUoms.get(i).getUomCode());
+										if(primaryUom.trim().equals(prodUoms.get(i).getUomCode().trim())) {
+											primaryUomRate = prodUoms.get(i).getConversionRate();
+										}
+										if(custProd.getPriceUom().trim().equals(prodUoms.get(i).getUomCode())) {
+											priceUomRate = prodUoms.get(i).getConversionRate();
+										}
+									}
+		
+		
+									/*System.out.println(product.getProductCode() + " primaryUomRate: " + primaryUomRate);
+									System.out.println(product.getProductCode() + " priceUomRate: " + priceUomRate);
+									*/
+									targetCustomerCurrentMonth =
+											(long)((double)targetCustomerCurrentMonth
+											* primaryUomRate
+											/ priceUomRate);
+									
+								}
+								/*if(custProdTargetCurrent.getEndStock()!=null) {
+									qtyOnHand =
+											custProdTargetCurrent.getEndStock();
+								}*/
+							//}
+						}
+						inputProduct.setTargetCustomerCurrentMonth(
+								targetCustomerCurrentMonth);
+						
+						Long targetCustomerNextMonth = (long)0;
+						CustProdTarget custProdTargetNextMonth =
+								custProdTargetService.
+									getBygetByCompanyCustidProductcodePeriodetarget(
+											company, custId,
+											productCode, periodeNextOracle);
+						/*List<UploadTarget> custProdTargetNextMonth =
+								uploadTargetService
+									.getByCompanyOutletidItemidTransactiondate(
+											company, custNumber,
+											productCode, getMinDateUtil(periodes.get(1)), 
+											getMaxDateUtil(periodes.get(1)));*/
+						if(custProdTargetNextMonth!=null) {
+							//for(Integer i=0; i<custProdTargetNextMonth.size(); i++) {
+								if(custProdTargetNextMonth.getTargetSales()!=null) {
+									targetCustomerNextMonth =
+											custProdTargetNextMonth.getTargetSales();
+									
+									String primaryUom = product.getProdUom1();
+									Double primaryUomRate=0.0;
+									Double priceUomRate=0.0;
+									for(Integer i=0; i<prodUoms.size(); i++) {
+										if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
+											primaryUomRate = prodUoms.get(i).getConversionRate();
+										}
+										if(custProd.getPriceUom().trim().equals(
+												prodUoms.get(i).getUomCode())) {
+											priceUomRate = prodUoms.get(i).getConversionRate();
+										}
+									}
+									
+									targetCustomerNextMonth =
+											(long)((double)targetCustomerNextMonth
+											* primaryUomRate
+											/ priceUomRate);
+								}						
+							//}
+						}
+						//System.out.println(targetCustomerNextMonth);
+						inputProduct.setTargetCustomerNextMonth(
+								targetCustomerNextMonth);
+						
+						List<CustInvoice> custInvoices =
+								custInvoiceService.
+									getByCompanyCustidProductcode(
+											company, custId,
+											productCode);
+						inputProduct.setCustInvoices(custInvoices);
+						
+						inputProducts.add(inputProduct);
+					}
+					
+				}
+				
+				InputWebOrder inputWebOrder = new InputWebOrder();
+				inputWebOrder.setCustomer(customer);
+				inputWebOrder.setInputOrder(inputOrder);
+				inputWebOrder.setInputProducts(inputProducts);
+		
+				model.addAttribute("minOrderDate", minOrderDate);
+				model.addAttribute("maxOrderDate", maxOrderDate);
+				model.addAttribute("orderTypes", orderTypes);
+				model.addAttribute("periodes", periodes);
+				model.addAttribute("productQty", inputProducts.size());
+				model.addAttribute("custShipTo", custShipTo);
+				model.addAttribute("jumlahOrders", jumlahOrders);
+				model.addAttribute("listMobils", listMobils);
+				model.addAttribute("expedisis", expedisis);
+				model.addAttribute("inputWebOrder", inputWebOrder);
+
+				modelAndView.setViewName("order");
+				return modelAndView;
+	        
+			}
+			else {
+				user = new User();
+				modelAndView.addObject("user", user);
+				modelAndView.setViewName("registration");
+				return modelAndView;
+			}
+	        
+		}
+		else {
+			modelAndView.setViewName("login");
+			return modelAndView;
+		}
+    }
+	
+	@RequestMapping(value="/", method=RequestMethod.POST)
 	public String inputOrderRequest(
 			@ModelAttribute InputWebOrder inputWebOrder, 
 			BindingResult bindingResult,

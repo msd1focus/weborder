@@ -16,7 +16,7 @@ public class IndexController {
 	@Autowired
 	private OrderService orderService;
 	
-	@RequestMapping("/")
+	@RequestMapping("/index")
     public String index(Model model){
 		Order order = new Order();
 		model.addAttribute("order", order);  
@@ -24,7 +24,7 @@ public class IndexController {
         return "index";
     }
 	
-	@PostMapping("/")
+	@PostMapping("/index")
     public String greetingSubmit(@ModelAttribute Order order, Model model) {
 		orderService.addOrder(order);
 		model.addAttribute("orders", orderService.getAllOrders());

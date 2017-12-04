@@ -1,38 +1,57 @@
-<html>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
 <head>
-<title>Login</title>
+    <title>Web Order - Focus Distribusi Indonesia</title>
+    <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-<script>
-function clicking() {
-    document.getElementById("loginbtn").click(); 
-}
-</script>
-<!--<form action="/action_page.php">-->
-  <div class="imgcontainer" align="center">
-    <img src="file:///C:\xampp\htdocs\form\images\metrodata.png" width="176" height="158"/>
-  </div>
-<br><br><br>
-  <div class="container" align="center">
-    <label><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="username" required>
-<br>
-   <br>
-    <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" required>
-    <br>
-    <br>
-<button input type="submit" name="loginbtn" id="loginbtn" value="Login">Login
-	</button>
-<br><br><br>
-  <div class="container" style="background-color:#f1f1f1">
-    <span class="psw">Forgot <a href="file:///C|/Users/andresu/Desktop/forgotpass.php">password?</a></span>
-  </div>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form th:action="@{/login}" method="post">
+                <fieldset>
+                    <h1>Please Sign In</h1>
+
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            Invalid username and password.
+                        </div>
+                    </div>
+                    <div th:if="${param.logout}">
+                        <div class="alert alert-info">
+                            You have been logged out.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="username" id="username" class="form-control input-lg"
+                               placeholder="UserName" required="true" autofocus="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control input-lg"
+                               placeholder="Password" required="true"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
-</form>
-        <div class="column3" align="center">
-        <h3>Click here to register now</h3>
-        <button name="register" id="register"><a href=register.html>Register</a></button>
-        </div>
+    </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
 </body>
 </html>
