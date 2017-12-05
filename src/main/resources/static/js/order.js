@@ -171,19 +171,77 @@ function unformatText(obj){
 	return value;
 }
 
+/*function changeSearch(obj){
+	var productCode = obj.text;
+    var searchSelected = document.getElementById("searchSelected");
+	console.log("productCodeSelected: " + productCode);
+    searchSelected.value = productCode;
+}*/
+
+function searchProduct(obj){
+	
+	console.log("===============================================================");
+	console.log("Search");
+	console.log("===============================================================");
+	
+	var tblOrderItemFixed = document.getElementById("tblOrderItemFixed");
+	var tblOrder = document.getElementById("tblOrder");
+	var searchInput = document.getElementById("searchInput");
+	var productQty = 
+		parseFloat(document.getElementById("productQty").value);
+	
+	var productCodeSelected =
+		searchInput.value;
+	console.log("productCodeSelected: " + productCodeSelected);
+	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
+		
+		var productCodeCurrent =
+			tblOrderItemFixed.rows[idxRow].cells[1].children[0].value;
+		if(productCodeSelected===productCodeCurrent){
+			tblOrder.rows[idxRow].cells[0].children[0].focus();
+			break;
+		}
+	}
+	
+
+	console.log("===============================================================");
+	return;
+}
+
 function changeUom(obj){
-	var uom = obj.value;
+
+	console.log("===============================================================");
+	console.log("Change UOM");
+	console.log("===============================================================");
+	
+	var uomSelectedRate = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	var uomSelected = document.getElementById("uomSelected");
-	uomSelected.value = uom;
+	console.log("idxRowCurrent: " + idxRowCurrent);
+	//uomSelected.value = uomSelectedRate;
 	var jumlahOrder = document.getElementById("jumlahOrder");
 	var tblOrder = document.getElementById("tblOrder");
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[6].children[0];
-	var untPriceInit = tblOrder.rows[idxRowCurrent].cells[7].children[0].value;
+	//var untPrice = tblOrder.rows[idxRowCurrent].cells[6].children[0];
+	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0];
+	var untPriceInit = tblOrder.rows[idxRowCurrent].cells[7].children[1];
+	var uomInit = tblOrder.rows[idxRowCurrent].cells[7].children[2];
+	var uomSelected = tblOrder.rows[idxRowCurrent].cells[7].children[3];
+	
 	var up = 0;
-	up = parseFloat(uom)*parseFloat(untPriceInit);
+	/*up =
+		parseFloat(untPriceInit)
+		* (0.06)
+		/ uomSelectedRate;
+*/
+	console.log("uomSelectedRate: " + uomSelectedRate);
+	console.log("untPriceInit: " + untPriceInit);
+	console.log("uomInit: " + uomInit);
+	console.log("untPrice: " + untPrice);
+	
+	//up = parseFloat(uom)*parseFloat(untPriceInit);
 	untPrice.value = formatTextValue(up);
 	changeJumlahOrder(jumlahOrder);	
+	console.log("===============================================================");
 }
 
 function focus1(obj){

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8"/>
-<link rel="stylesheet" 
-	href="../static/css/style.css"
-	th:href="@{css/style.css}"/>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" 
+		href="../static/css/style.css"
+		th:href="@{css/style.css}"/>
+	
+	<script th:inline="javascript"
+		src="../static/js/order.js"
+		th:src="@{js/order.js}">
+	</script>
 
-<script th:inline="javascript"
-	src="../static/js/order.js"
-	th:src="@{js/order.js}">
-</script>
-
-<div th:replace="fragments/header :: header-css"/>
-
-<title>Web Order - Focus Distribusi Indonesia</title>
+	<div th:replace="fragments/header :: header-css"/>
+	
+	<title>Web Order - Focus Distribusi Indonesia</title>
 </head>
 
 <body>
@@ -230,6 +230,39 @@
 		<tr><th style="text-align: right">Dimensi Order (m3):</th></tr>
 		<tr><th style="text-align: right">Selisih Dimensi (m3):</th></tr>
 		<tr><th style="text-align: right">Sisa Limit:</th></tr>
+		<tr>
+			<th style="text-align: right">
+				<table>
+					<tr>
+						<th style="width: 90px; text-align: right">
+							Search:
+						</th>
+						<td style="width: 240px">
+							<input id="searchInput"
+								list="searchList"
+								name="search"
+								onchange="changeSearch(this)"
+								style="width: 230px"/>
+							<datalist id="searchList">
+								<select name="search">
+									<option th:each="inputProduct: *{inputProducts}"
+						               th:value="${inputProduct.product.productName}"
+						               th:text="${inputProduct.product.productCode}"/>
+								</select>
+							</datalist>
+							<input type="hidden"
+								id="searchSelected"/>
+						</td>
+						<td style="width: 60px">
+							<button type="button"
+								onclick="searchProduct(this)">
+								Go
+							</button>
+						</td>
+					</tr>
+				</table>		
+			</th>
+		</tr>
 	</table>
 	<p/>
 	<table id="tblOrderItemFixed" style="font-align: center">
@@ -243,12 +276,17 @@
 		</tr> 
 		<th:block th:each="inputProduct,stat : *{inputProducts}">
 			<tr>
-				<td width="100px" 
-					th:text="${inputProduct.custProd.productCode}">
-				</td>
-				<td width="230px" 
-					th:text="${inputProduct.product.productName}">
-				</td>
+	          <td>
+		          	<input 
+		          		th:field="*{inputProducts[__${stat.index}__].product.productCode}" 
+		          		style="width: 100px"/>
+	          </td>
+	          	<td style="width: 240px">
+	          		<input th:field="*{inputProducts[__${stat.index}__].product.productName}"
+	          		readonly="readonly"
+	          		style="width: 230px"/>
+	          	</td>
+				
 				<td>
 					<select id="uom" 
 						style="width: 60px"
@@ -358,27 +396,27 @@
 		</tr>
         <tr>
 			<td height="60" >
-			  <textarea name="remark1" maxlength="100" rows="3" cols="23"
+			  <textarea name="remark1" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order1.notes}"></textarea>
 			</td>
 			<td height="60" class="order2" style="display: none;">
-			  <textarea name="remark2" maxlength="100" rows="3" cols="23"
+			  <textarea name="remark2" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order2.notes}"></textarea>
 			</td>
 			<td height="60" class="order3" style="display: none;">
-			  <textarea name="remark3" maxlength="100" rows="3" cols="23"
+			  <textarea name="remark3" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order3.notes}"></textarea>
 			</td>
 			<td height="60" class="order4" style="display: none;">
-			  <textarea name="remark4" maxlength="100" rows="3" cols="23"
+			  <textarea name="remark4" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order4.notes}"></textarea>
 			</td>
 			<td height="60" class="order5" style="display: none;">
-			  <textarea name="remark5" maxlength="100" rows="3" cols="23"
+			  <textarea name="remark5" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order5.notes}"></textarea>
 			</td>
@@ -749,6 +787,11 @@
 					style="text-align: right;" />
 			</td>
 		</tr>
+		<tr>
+			<td>
+				
+			</td>
+		</tr>
 	</table>
 	<p/>
     <table id="tblOrder">
@@ -776,11 +819,11 @@
 					onkeyup="formatText(this)"
 					style="text-align: right;"/>
 				<input type="hidden" 
-					th:field="*{inputProducts[__${stat.index}__].product.company}" />
-				<input type="hidden" 
-					th:field="*{inputProducts[__${stat.index}__].product.productCode}" />
-				<input type="hidden" 
-					th:field="*{inputProducts[__${stat.index}__].product.productName}" />
+					th:field="*{inputProducts[__${stat.index}__].product.company}" /> 
+				<input type="hidden" />
+					<!-- th:field="*{inputProducts[__${stat.index}__].product.productCode}" /> -->
+				<input type="hidden" />
+					<!-- th:field="*{inputProducts[__${stat.index}__].product.productName}" /> -->
 				<input type="hidden"
 					th:field="*{inputProducts[__${stat.index}__].custProd.company}"/>
 				<input type="hidden"
@@ -849,16 +892,19 @@
 					style="text-align: right;" disabled="disabled"/>
 			</td>
 			<td style="display: none;">
-				<input id="untPrice" type="number" 
+				<input id="untPrice1" type="number" 
 					th:value="${inputProduct.custProd.price}"
 				style="text-align: right;"/>
-				<input id="uomSelected" type="hidden" 
-					th:field="*{inputProducts[__${stat.index}__].custProd.priceUom}"/>
 			</td>
 			<td style="display: none;">
-				<input id="untPriceInit" type="number" 
-					th:value="${inputProduct.custProd.price}"
-				style="text-align: right;"/>
+				<input id="untPrice" type="hidden" 
+					th:value="${inputProduct.custProd.price}"/>
+				<input id="untPriceInit" type="hidden" 
+					th:value="${inputProduct.custProd.price}"/>
+				<input id="uomInit" type="hidden" 
+					th:value="${inputProduct.custProd.priceUom}"/>
+				<input id="uomSelected" type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].custProd.priceUom}"/>
 			</td>
 			<td style="display: none;">
 				<input id="prodWidth" type="number" 

@@ -18,7 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -107,6 +109,11 @@ public class InputOrderController {
 	@Autowired
 	private UserService userService;
 
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    binder.setAutoGrowCollectionLimit(100000);
+	}
+	
 	@GetMapping("/history")
     public String history() {
         return "/history";
@@ -166,6 +173,7 @@ public class InputOrderController {
 			User user = userService.findUserByName(auth.getName());
 			
 			System.out.println(user.getName());
+			System.out.println(user.getCustId());
 			
 			if(!(auth.getName().trim().equals("admin"))) {
 				
@@ -268,7 +276,9 @@ public class InputOrderController {
 				Long poNumber2 = (long)2;
 				Long poNumber3 = (long)3;
 				Long poNumber4 = (long)4;
-				Long poNumber5 = (long)5;
+				Long poNumber5 = (long)5;		
+
+				System.out.println("orderGrp: " + orderGrp);
 				
 				if(orderGrp==null) {		
 					
@@ -312,6 +322,9 @@ public class InputOrderController {
 					orderGrp.setSisaLimit(customer.getCreditLimit());	
 				}
 				else {
+					
+					System.out.println("getOrderGrpId: " + orderGrp.getOrderGrpId());
+					
 					orders = orderService.getByCompanyCustidGrpid(
 							orderGrp.getOrderGrpId(), custId, company);
 				}
@@ -901,15 +914,47 @@ public class InputOrderController {
     	
     	for(InputProduct inputProduct: inputWebOrder.getInputProducts()) {
     		
+
+			System.out.println("inputProduct.getProduct().getProductCode(): "
+					+ inputProduct.getProduct().getProductCode());
+			System.out.println("inputProduct.getProduct().getProductName(): "
+					+ inputProduct.getProduct().getProductName());
+			
     		String productCode = inputProduct.getProduct().getProductCode();
     		String productDesc = inputProduct.getProduct().getProductName();
-    		String uom = inputProduct.getCustProd().getPriceUom();
-    		Double unitPrice = inputProduct.getCustProd().getPrice();
-    		Long orderQty1 = unFormatText(inputProduct.getOrderQty1());
-    		Long orderQty2 = unFormatText(inputProduct.getOrderQty2());
-    		Long orderQty3 = unFormatText(inputProduct.getOrderQty3());
-    		Long orderQty4 = unFormatText(inputProduct.getOrderQty4());
-    		Long orderQty5 = unFormatText(inputProduct.getOrderQty5());
+    		String uom = "";
+    		Double unitPrice = 0.0;
+    		if(inputProduct.getCustProd()!=null) {
+        		if(inputProduct.getCustProd().getPriceUom()!=null) {
+        			uom = inputProduct.getCustProd().getPriceUom();
+        		}
+        		
+        		if(inputProduct.getCustProd().getPrice()!=null) {
+            		unitPrice = inputProduct.getCustProd().getPrice();
+        		}
+    		}
+    		
+    		Long orderQty1 = (long)0;
+    		Long orderQty2 = (long)0;
+    		Long orderQty3 = (long)0;
+    		Long orderQty4 = (long)0;
+    		Long orderQty5 = (long)0;
+    		
+    		if(inputProduct.getOrderQty1()!=null) {
+    			orderQty1 = unFormatText(inputProduct.getOrderQty1());
+    		}
+    		if(inputProduct.getOrderQty2()!=null) {
+    			orderQty2 = unFormatText(inputProduct.getOrderQty2());
+    		}
+    		if(inputProduct.getOrderQty3()!=null) {
+    			orderQty3 = unFormatText(inputProduct.getOrderQty3());
+    		}
+    		if(inputProduct.getOrderQty4()!=null) {
+    			orderQty4 = unFormatText(inputProduct.getOrderQty4());
+    		}
+    		if(inputProduct.getOrderQty5()!=null) {
+    			orderQty5 = unFormatText(inputProduct.getOrderQty5());
+    		}
     		
     		OrderDetail orderDetail1 = null;
     		OrderDetail orderDetail2 = null;
