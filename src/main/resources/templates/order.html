@@ -363,28 +363,32 @@
 					data-date-inline-picker="true"
 					th:field="*{inputOrder.order1.orderDate}"
 					th:min="${minOrderDate}"
-					th:max="${maxOrderDate}"/>
+					th:max="${maxOrderDate}"
+					onchange="poDate1Change(this)"/>
 			</td>
 			<td class="order2" style="display: none;">
 				<input id="poDate2" type="date" 
 					data-date-inline-picker="true" 
 					th:field="*{inputOrder.order2.orderDate}"
 					th:min="${minOrderDate}"
-					th:max="${maxOrderDate}"/>
+					th:max="${maxOrderDate}"
+					onchange="poDate2Change(this)"/>
 			</td>
 			<td class="order3" style="display: none;">
 				<input id="poDate3" type="date" 
 					data-date-inline-picker="true"
 					th:field="*{inputOrder.order3.orderDate}"
 					th:min="${minOrderDate}"
-					th:max="${maxOrderDate}"/>
+					th:max="${maxOrderDate}"
+					onchange="poDate3Change(this)"/>
 			</td>
 			<td class="order4" style="display: none;">
 				<input id="poDate4" type="date" 
 					data-date-inline-picker="true"
 					th:field="*{inputOrder.order4.orderDate}"
 					th:min="${minOrderDate}"
-					th:max="${maxOrderDate}"/>
+					th:max="${maxOrderDate}"
+					onchange="poDate4Change(this)"/>
 			</td>
 			<td class="order5" style="display: none;">
 				<input id="poDate5" type="date" 

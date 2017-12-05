@@ -430,7 +430,7 @@ public class InputOrderController {
 				inputOrder.setOrder4(order4);
 				inputOrder.setOrder5(order5);
 				
-				String minOrderDate = getMinDate(orderGrp.getPeriodeOrder());
+				String minOrderDate = getMinDate();
 				String maxOrderDate = getMaxDate(orderGrp.getPeriodeOrder());
 				
 				List<Integer> jumlahOrders = new ArrayList<>();
@@ -1225,8 +1225,7 @@ public class InputOrderController {
 				+ po + "/" 
 				+ customer.getCustomerNumber());
 		order.setOrderDate(
-				Date.valueOf(
-					getMinDate(orderGrp.getPeriodeOrder())));
+				Date.valueOf(getMinDate()));
 		order.setShipTo(
 				custShipTo.get(0).getShipToId().toString());
 		order.setJenisMobil(

@@ -5,22 +5,9 @@ window.onload = function(){
 	var manual = document.getElementById("manual");
 	var cmob = document.getElementById("cmob");
 	var orderType = document.getElementById("orderType");
-	var dimensiMobil1 = document.getElementById("dimensiMobil1").value;
-	var dimensiMobil2 = document.getElementById("dimensiMobil2").value;
-	var dimensiMobil3 = document.getElementById("dimensiMobil3").value;
-	var dimensiMobil4 = document.getElementById("dimensiMobil4").value;
-	var dimensiMobil5 = document.getElementById("dimensiMobil5").value;
-	var dimensiMobil1Text = document.getElementById("dimensiMobil1Text");
-	var dimensiMobil2Text = document.getElementById("dimensiMobil2Text");
-	var dimensiMobil3Text = document.getElementById("dimensiMobil3Text");
-	var dimensiMobil4Text = document.getElementById("dimensiMobil4Text");
-	var dimensiMobil5Text = document.getElementById("dimensiMobil5Text");
 	
-	dimensiMobil1Text.value = formatTextValue(dimensiMobil1);
-	dimensiMobil2Text.value = formatTextValue(dimensiMobil2);
-	dimensiMobil3Text.value = formatTextValue(dimensiMobil3);
-	dimensiMobil4Text.value = formatTextValue(dimensiMobil4);
-	dimensiMobil5Text.value = formatTextValue(dimensiMobil5);
+	dimensiMobilInit();
+	poDateInit();
 	
 	changeOrderType(orderType);
 	
@@ -169,6 +156,193 @@ function unformatText(obj){
 	text = text.replace(/,/g, "");
 	value = parseFloat(text);
 	return value;
+}
+
+function dimensiMobilInit(){
+	
+	var dimensiMobil1 = document.getElementById("dimensiMobil1").value;
+	var dimensiMobil2 = document.getElementById("dimensiMobil2").value;
+	var dimensiMobil3 = document.getElementById("dimensiMobil3").value;
+	var dimensiMobil4 = document.getElementById("dimensiMobil4").value;
+	var dimensiMobil5 = document.getElementById("dimensiMobil5").value;
+	var dimensiMobil1Text = document.getElementById("dimensiMobil1Text");
+	var dimensiMobil2Text = document.getElementById("dimensiMobil2Text");
+	var dimensiMobil3Text = document.getElementById("dimensiMobil3Text");
+	var dimensiMobil4Text = document.getElementById("dimensiMobil4Text");
+	var dimensiMobil5Text = document.getElementById("dimensiMobil5Text");
+	
+	dimensiMobil1Text.value = formatTextValue(dimensiMobil1);
+	dimensiMobil2Text.value = formatTextValue(dimensiMobil2);
+	dimensiMobil3Text.value = formatTextValue(dimensiMobil3);
+	dimensiMobil4Text.value = formatTextValue(dimensiMobil4);
+	dimensiMobil5Text.value = formatTextValue(dimensiMobil5);
+}
+
+function poDateInit(){
+	   
+	var poDate1 = document.getElementById("poDate1");;
+	var poDate2 = document.getElementById("poDate2");
+	var poDate3 = document.getElementById("poDate3");
+	var poDate4 = document.getElementById("poDate4");
+	var poDate5 = document.getElementById("poDate5");
+	
+	var pd1 = getDate(poDate1.value);
+	var pd2 = getDate(poDate2.value);
+	var pd3 = getDate(poDate3.value);
+	var pd4 = getDate(poDate4.value);
+	var pd5 = getDate(poDate5.value);
+	
+	if(pd2<pd1){
+		poDate2.value = poDate1.value;
+		pd2 = getDate(poDate2.value);
+	}
+	
+	if(pd3<pd2){
+		poDate3.value = poDate2.value;
+		pd3 = getDate(poDate3.value);
+	}
+	
+	if(pd4<pd3){
+		poDate4.value = poDate3.value;
+		pd4 = getDate(poDate4.value);
+	}
+	
+	if(pd5<pd5){
+		poDate5.value = poDate4.value;
+		pd5 = getDate(poDate5.value);
+	}
+	
+	poDate2.min = poDate1.value;
+	poDate3.min = poDate2.value;
+	poDate4.min = poDate3.value;
+	poDate5.min = poDate4.value;
+	
+}
+
+function poDate1Change(obj){
+   
+	var poDate1 = obj;
+	var poDate2 = document.getElementById("poDate2");
+	var poDate3 = document.getElementById("poDate3");
+	var poDate4 = document.getElementById("poDate4");
+	var poDate5 = document.getElementById("poDate5");
+	
+	pd1 = getDate(poDate1.value);
+	pd2 = getDate(poDate2.value);
+	pd3 = getDate(poDate3.value);
+	pd4 = getDate(poDate4.value);
+	pd5 = getDate(poDate5.value);
+	
+	if(pd2<pd1){
+		poDate2.value = poDate1.value;
+	}
+	
+	if(pd3<pd1){
+		poDate3.value = poDate1.value;
+	}
+	
+	if(pd4<pd1){
+		poDate4.value = poDate1.value;
+	}
+	
+	if(pd5<pd1){
+		poDate5.value = poDate1.value;
+	}
+	
+	poDate2.min = poDate1.value;
+	poDate3.min = poDate1.value;
+	poDate4.min = poDate1.value;
+	poDate5.min = poDate1.value;
+	
+}
+
+function poDate2Change(obj){
+	   
+	var poDate2 = obj;
+	var poDate3 = document.getElementById("poDate3");
+	var poDate4 = document.getElementById("poDate4");
+	var poDate5 = document.getElementById("poDate5");
+	
+	pd2 = getDate(poDate2.value);
+	pd3 = getDate(poDate3.value);
+	pd4 = getDate(poDate4.value);
+	pd5 = getDate(poDate5.value);
+	
+	if(pd3<pd2){
+		poDate3.value = poDate2.value;
+	}
+	
+	if(pd4<pd2){
+		poDate4.value = poDate2.value;
+	}
+	
+	if(pd5<pd2){
+		poDate5.value = poDate2.value;
+	}
+	
+	poDate3.min = poDate2.value;
+	poDate4.min = poDate2.value;
+	poDate5.min = poDate2.value;
+	
+}
+
+function poDate3Change(obj){
+	   
+	var poDate3 = obj;
+	var poDate4 = document.getElementById("poDate4");
+	var poDate5 = document.getElementById("poDate5");
+	
+	pd3 = getDate(poDate3.value);
+	pd4 = getDate(poDate4.value);
+	pd5 = getDate(poDate5.value);
+	
+	if(pd4<pd3){
+		poDate4.value = poDate3.value;
+	}
+	
+	if(pd5<pd3){
+		poDate5.value = poDate3.value;
+	}
+	
+	poDate4.min = poDate3.value;
+	poDate5.min = poDate3.value;
+	
+}
+
+
+function poDate4Change(obj){
+	   
+	var poDate4 = obj;
+	var poDate5 = document.getElementById("poDate5");
+	
+	pd4 = getDate(poDate4.value);
+	pd5 = getDate(poDate5.value);
+	
+	if(pd5<pd4){
+		poDate5.value = poDate4.value;
+	}
+	
+	poDate5.min = poDate4.value;
+	
+}
+
+function getDate(obj){
+	
+	var date = new Date();
+	
+	var d = obj.split("-");
+    var year = d[0];
+    var month = d[1];
+    var day = d[2];
+	
+    date.
+		setDate(day);
+    date.
+		setMonth(month);
+    date.
+		setFullYear(year);
+	
+	return date;
 }
 
 /*function changeSearch(obj){
