@@ -42,6 +42,9 @@ public class User {
 	@Column(name = "name")
 	@NotEmpty(message = "*Please provide name")
 	private String name;
+	@Column(name = "username")
+	@NotEmpty(message = "*Please provide username")
+	private String username;
 	@Column(name = "cust_id")
 	@NotNull(message = "*Please provide customer id")
 	private Long custId;
@@ -83,6 +86,14 @@ public class User {
 		this.name = name;
 	}
 	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public Long getCustId() {
 		return custId;
 	}

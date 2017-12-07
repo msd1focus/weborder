@@ -136,6 +136,58 @@ public class InputOrderController
         return "/error/405";
     }
     
+    @RequestMapping(value="/resetpassword", method = RequestMethod.GET)
+	public ModelAndView resetpassword(){
+		ModelAndView modelAndView = new ModelAndView();
+		User user = new User();
+		modelAndView.addObject("user", user);
+		modelAndView.setViewName("resetpassword");
+		return modelAndView;
+	}
+    
+    @RequestMapping(value = "/resetpassword", method = RequestMethod.POST)
+	public ModelAndView resetpassword(
+			Model model) {
+    	
+
+		ModelAndView modelAndView = new ModelAndView();
+		
+       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (auth != null) {
+			
+			if(auth.getName().trim().equals("FDIadmin")
+				|| auth.getName().trim().equals("FDNadmin")) {
+
+				List<User> users = userService.getAll();
+				
+				for(User u: users) {
+					u.setPassword("password");
+					userService.saveUser(u);
+				}
+				
+				User user = new User();
+				modelAndView.addObject("user", user);
+				modelAndView.addObject("successMessage", "Success");
+				modelAndView.setViewName("resetpassword");
+			}
+			else {
+				User user = new User();
+				modelAndView.addObject("user", user);
+				modelAndView.addObject("successMessage", "Failed");
+				modelAndView.setViewName("resetpassword");;
+			}
+		}
+		else {
+			User user = new User();
+			modelAndView.addObject("user", user);
+			modelAndView.addObject("successMessage", "Failed");
+			modelAndView.setViewName("resetpassword");
+		}
+		
+		return modelAndView;
+	}
+    
     @RequestMapping(value="/registration", method = RequestMethod.GET)
 	public ModelAndView registration(){
 		ModelAndView modelAndView = new ModelAndView();
@@ -148,7 +200,7 @@ public class InputOrderController
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
-		User userExists = userService.findUserByName(user.getName());
+		User userExists = userService.findUserByUsername(user.getUsername());
 		if (userExists != null) {
 			bindingResult
 					.rejectValue("name", "error.user",
@@ -177,12 +229,15 @@ public class InputOrderController
 		
 		if (auth != null) {
 
-			User user = userService.findUserByName(auth.getName());
+			User user = userService.findUserByUsername(auth.getName());
 			
-			System.out.println(user.getName());
-			System.out.println(user.getCustId());
+			System.out.println("auth.getName(): " + auth.getName());
 			
-			if(!(auth.getName().trim().equals("admin"))) {
+			if(!(auth.getName().trim().equals("FDIadmin"))
+				&& !(auth.getName().trim().equals("FDNadmin"))) {
+				
+				System.out.println(user.getName());
+				System.out.println(user.getCustId());
 				
 				String company = user.getCompany();
 				Long custId = user.getCustId();

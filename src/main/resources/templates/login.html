@@ -3,7 +3,11 @@
 >
 <head>
     <title>Web Order - Focus Distribusi Indonesia</title>
-    <div th:replace="fragments/header :: header-css"/>
+    <div th:replace="fragments/header :: header-css"/>  
+	<script th:inline="javascript"
+		src="../static/js/login.js"
+		th:src="@{js/login.js}">
+	</script>
 </head>
 <body>
 
@@ -28,16 +32,19 @@
                         </div>
                     </div>
 					<div class="form-group">
-                        <select name="company"
-                        	class="form-control input-lg"
-							onchange="">			    		
+                        <select 
+                        	id="company"
+                        	name="company"
+                        	class="form-control input-lg">			    		
 					          <option value="FDI">FDI</option>
 					          <option value="FDN">FDN</option>
 						</select>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="username" id="username" class="form-control input-lg"
-                               placeholder="UserName" required="true" autofocus="true"/>
+                        <input type="text" name="name" id="name" class="form-control input-lg"
+                               placeholder="Name" required="true" autofocus="true"/>
+                        <input type="hidden" name="username" id="username" class="form-control input-lg"
+                               placeholder="UserName"/>
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" id="password" class="form-control input-lg"
@@ -46,7 +53,10 @@
 
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In"/>
+                            <input type="submit" 
+                            	class="btn btn-lg btn-primary btn-block"
+                            	onclick="submitLogin(this)"
+                            	value="Sign In"/>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6">
                         </div>

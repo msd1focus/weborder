@@ -2,6 +2,7 @@ package com.focus.weborder.security.service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,10 +27,20 @@ public class UserServiceImpl implements UserService{
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}*/
-	
-	@Override
+    
+    @Override
+	public List<User> getAll() {
+		return userRepository.getAll();
+	}
+    
+    @Override
 	public User findUserByName(String name) {
 		return userRepository.findByName(name);
+	}
+    
+	@Override
+	public User findUserByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 
 	@Override

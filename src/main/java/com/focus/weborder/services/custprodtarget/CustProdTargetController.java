@@ -52,17 +52,17 @@ public class CustProdTargetController {
 					company, custid, productcode);
 		}
 	
-	@RequestMapping(method=RequestMethod.POST, value="/custtargets")
+	@RequestMapping(method=RequestMethod.POST, value="/custprodtargets")
 	public void addCustTarget(@RequestBody CustProdTarget custProdTarget){
 		custProdTargetService.addCustTarget(custProdTarget);
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/custtargets")
+	@RequestMapping(method=RequestMethod.PUT, value="/custprodtargets")
 	public void updateCustTarget(@RequestBody CustProdTarget custProdTarget){
 		custProdTargetService.updateCustTarget(custProdTarget);
 	}
 	
-	@RequestMapping(method=RequestMethod.DELETE, value="/custtargets/{custId}")
+	@RequestMapping(method=RequestMethod.DELETE, value="/custprodtargets/{custId}")
 	public void deleteCustTarget(@PathVariable String custId){
 		custProdTargetService.deleteCustTarget(custId);
 	}
