@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import com.focus.weborder.config.BasicAuthenticationPoint;
+
 @Configuration
 // http://docs.spring.io/spring-boot/docs/current/reference/html/howto-security.html
 // Switch off the Spring Boot security configuration
@@ -27,6 +29,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     
 	@Autowired
 	private DataSource dataSource;
+
+    @Autowired
+    private BasicAuthenticationPoint basicAuthenticationPoint;
     
     @Value("${spring.queries.users-query}")
 	private String usersQuery;
@@ -49,6 +54,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/weborder/404").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder/500").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder").hasAnyRole("USER","ADMIN")
+                .antMatchers("/weborder/rest/ordergrp").hasAnyRole("USER","ADMIN")              
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -59,6 +65,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+
+        http.httpBasic().authenticationEntryPoint(basicAuthenticationPoint);
     }
 
 
