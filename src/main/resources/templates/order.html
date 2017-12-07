@@ -27,8 +27,12 @@
     	alt="" width="200" height="85px" />
 </div>
  
-<form action="#" 
-	th:action="@{/}" th:object="${inputWebOrder}" method="post">
+<form 
+	name="formOrder"
+	action="#" 
+	th:action="@{/}"
+	th:object="${inputWebOrder}"
+	method="post">
 
 <div id="framesetting">
 <table> 
@@ -41,17 +45,29 @@
 		</td>
 	   	<td style="padding-left: 10px">
 		   	<input 
+		   		id="btnSave"
 		   		style="align: right" 	
-		   		onclick="save(this)"
+		   		onclick="return saveForm(document.formOrder, this)"
 		   		type="submit" name="action" value="Save"/>
-		   	<input 
+		   <input 
+		   		id="btnSubmit"
 		   		style="align: right"
-		   		onclick="return submit(this);"
+		   		onclick="return submitForm(document.formOrder, this)"
 		   		type="submit" name="action" value="Submit"/>
+		   <input 
+		   		id="submitStatus"
+		   		type="hidden" value="false"/>
 	   	</td>  
 	</tr>  
 </table>
 
+<input id="orderGrpId" type="hidden" 
+	th:field="*{inputOrder.orderGrp.orderGrpId}" />
+<input id="company" type="hidden" 
+	th:field="*{inputOrder.orderGrp.company}" />
+<input id="custId" type="hidden" 
+	th:field="*{inputOrder.orderGrp.custId}" />	
+		
 <table id="table1">
 	<tr>
 		<th style="width: 130px">
@@ -1030,12 +1046,6 @@
     <input id="productQty" type="text" th:value="${productQty}" 
 		disabled="disabled"
 		style="display: none;" />
-	<input id="orderGrpId" type="hidden" 
-		th:field="*{inputOrder.orderGrp.orderGrpId}" />
-	<input id="company" type="hidden" 
-		th:field="*{inputOrder.orderGrp.company}" />
-	<input id="custId" type="hidden" 
-		th:field="*{inputOrder.orderGrp.custId}" />	
 </div> <!-- div dataordercontainer -->
 </div> <!-- div ordercontainer -->
 

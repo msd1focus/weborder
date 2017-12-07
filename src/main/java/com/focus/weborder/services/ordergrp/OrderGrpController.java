@@ -24,7 +24,7 @@ public class OrderGrpController {
 	}
 	
 	@RequestMapping("/ordergrp")
-	public OrderGrp getOrderGroupDraft(@RequestParam String company,
+	public List<OrderGrp> getOrderGroupDraft(@RequestParam String company,
 			@RequestParam Long custid){
 		return orderGrpService.getOrderGrpDraft(company, custid);
 	}

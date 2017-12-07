@@ -36,11 +36,11 @@ public class Order {
 	@Column(name="TONASE_MOBIL")
 	private Double tonaseMobil;
 	@Column(name="TONASE_ORDER")
-	private Long tonaseOrder;
+	private Double tonaseOrder;
 	@Column(name="SELISIH_TONASE")
 	private Double selisihTonase;
 	@Column(name="TOTAL_PRICE")
-	private Long totalPrice;
+	private Double totalPrice;
 	@Column(name="PERIODE")
 	private String periode;
 	@Column(name="EBS_SUBMIT_STATUS")
@@ -69,7 +69,7 @@ public class Order {
 			Long orderId, Long orderGrpId, String company, 
 			Long custId, String poNumber, Date orderDate, String shipTo,
 			String expedisi, String jenisMobil, Double tonaseMobil,
-			Long tonaseOrder, Double selisihTonase, Long totalPrice,
+			Double tonaseOrder, Double selisihTonase, Double totalPrice,
 			String periode, String ebsSubmitStatus, Date ebsSubmitDate, 
 			String soNumber, String soStatus, Date soDate, String invoiceStatus,
 			Date invoiceDate, String notes) {
@@ -179,11 +179,11 @@ public class Order {
 		this.tonaseMobil = tonaseMobil;
 	}
 
-	public Long getTonaseOrder() {
+	public Double getTonaseOrder() {
 		return tonaseOrder;
 	}
 
-	public void setTonaseOrder(Long tonaseOrder) {
+	public void setTonaseOrder(Double tonaseOrder) {
 		this.tonaseOrder = tonaseOrder;
 	}
 
@@ -195,11 +195,11 @@ public class Order {
 		this.selisihTonase = selisihTonase;
 	}
 
-	public Long getTotalPrice() {
+	public Double getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(Long totalPrice) {
+	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 

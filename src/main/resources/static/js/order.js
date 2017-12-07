@@ -30,91 +30,149 @@ window.onload = function(){
 
 });*/
 
-function save(obj){
+
+function saveForm(myForm, obj){
+
+    var submitStatus = 
+		document.getElementById("submitStatus");
+    var btnSubmit = 
+		document.getElementById("btnSubmit");
+    console.log("submitStatus.value: " 
+    			+ submitStatus.value);
+    
+	if(submitStatus.value==="false"){
+
+        console.log("save!");
+	    console.log("obj.name: " 
+	    			+ obj.name);
+	    console.log("btnSubmit.name: " 
+    			+ btnSubmit.name );
+        submitStatus.value = "true";
+        obj.name = "action";
+        btnSubmit.name = "action";
 	
-	var selisihDimensi1Text = 
-		document.getElementById("selisihDimensi1Text");
-	var selisihDimensi2Text = 
-		document.getElementById("selisihDimensi2Text");
-	var selisihDimensi3Text = 
-		document.getElementById("selisihDimensi3Text");
-	var selisihDimensi4Text = 
-		document.getElementById("selisihDimensi4Text");
-	var selisihDimensi5Text = 
-		document.getElementById("selisihDimensi5Text");
+		var selisihDimensi1Text = 
+			document.getElementById("selisihDimensi1Text");
+		var selisihDimensi2Text = 
+			document.getElementById("selisihDimensi2Text");
+		var selisihDimensi3Text = 
+			document.getElementById("selisihDimensi3Text");
+		var selisihDimensi4Text = 
+			document.getElementById("selisihDimensi4Text");
+		var selisihDimensi5Text = 
+			document.getElementById("selisihDimensi5Text");
+		
+		var isWarning = "false";
+		
+		var alertText = "Dimensi Order pada : \n";
+		
+		if(selisihDimensi1Text.style.backgroundColor === "yellow"){
+			alertText += "- Order 1\n";
+			isWarning = "true";
+		}
+		if(selisihDimensi2Text.style.backgroundColor === "yellow"){
+			alertText += "- Order 2\n";
+			isWarning = "true";
+		}
+		if(selisihDimensi3Text.style.backgroundColor === "yellow"){
+			alertText += "- Order 3\n";
+			isWarning = "true";
+		}
+		if(selisihDimensi4Text.style.backgroundColor === "yellow"){
+			alertText += "- Order 4\n";
+			isWarning = "true";
+		}
+		if(selisihDimensi5Text.style.backgroundColor === "yellow"){
+			alertText+= "- Order 5\n";
+			isWarning = "true";
+		}
+		
+		if(isWarning==="true"){
+			alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
+			alert(alertText);
+		}
+
+        //myForm.submit();
+	}
+	else{
+
+		alert ("Already saved, please wait!");
+        obj.name = "action1";
+        btnSubmit.name = "action1";
+	}
 	
-	var isWarning = "false";
-	
-	var alertText = "Dimensi Order pada : \n";
-	
-	if(selisihDimensi1Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 1\n";
-		isWarning = "true";
-	}
-	if(selisihDimensi2Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 2\n";
-		isWarning = "true";
-	}
-	if(selisihDimensi3Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 3\n";
-		isWarning = "true";
-	}
-	if(selisihDimensi4Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 4\n";
-		isWarning = "true";
-	}
-	if(selisihDimensi5Text.style.backgroundColor === "yellow"){
-		alertText+= "- Order 5\n";
-		isWarning = "true";
-	}
-	
-	if(isWarning==="true"){
-		alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
-		alert(alertText);
-	}
+	return true;
 }
 
-function submit(obj){
-	console.log("submit");
-	var selisihDimensi1Text = 
-		document.getElementById("selisihDimensi1Text");
-	var selisihDimensi2Text = 
-		document.getElementById("selisihDimensi2Text");
-	var selisihDimensi3Text = 
-		document.getElementById("selisihDimensi3Text");
-	var selisihDimensi4Text = 
-		document.getElementById("selisihDimensi4Text");
-	var selisihDimensi5Text = 
-		document.getElementById("selisihDimensi5Text");
-	
-	var isWarning = "false";
-	
-	var alertText = "Dimensi Order pada : \n";
-	
-	if(selisihDimensi1Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 1\n";
-		isWarning = "true";
+function submitForm(myForm, obj){
+
+    var submitStatus = 
+		document.getElementById("submitStatus");    
+    var btnSave = 
+		document.getElementById("btnSave");
+    console.log("submitStatus.value: " 
+    			+ submitStatus.value);
+    
+    if(submitStatus.value==="false"){
+
+        console.log("submit!");
+	    console.log("obj.name: " 
+	    			+ obj.name);
+	    console.log("btnSave.name: " 
+    			+ btnSave.name );
+	    
+    	submitStatus.value = "true";
+        obj.name = "action";
+        btnSave.name = "action";
+        
+        var selisihDimensi1Text = 
+    		document.getElementById("selisihDimensi1Text");
+    	var selisihDimensi2Text = 
+    		document.getElementById("selisihDimensi2Text");
+    	var selisihDimensi3Text = 
+    		document.getElementById("selisihDimensi3Text");
+    	var selisihDimensi4Text = 
+    		document.getElementById("selisihDimensi4Text");
+    	var selisihDimensi5Text = 
+    		document.getElementById("selisihDimensi5Text");
+    	
+    	var isWarning = "false";
+    	
+    	var alertText = "Dimensi Order pada : \n";
+    	
+    	if(selisihDimensi1Text.style.backgroundColor === "yellow"){
+    		alertText += "- Order 1\n";
+    		isWarning = "true";
+    	}
+    	if(selisihDimensi2Text.style.backgroundColor === "yellow"){
+    		alertText += "- Order 2\n";
+    		isWarning = "true";
+    	}
+    	if(selisihDimensi3Text.style.backgroundColor === "yellow"){
+    		alertText += "- Order 3\n";
+    		isWarning = "true";
+    	}
+    	if(selisihDimensi4Text.style.backgroundColor === "yellow"){
+    		alertText += "- Order 4\n";
+    		isWarning = "true";
+    	}
+    	if(selisihDimensi5Text.style.backgroundColor === "yellow"){
+    		alertText+= "- Order 5\n";
+    		isWarning = "true";
+    	}
+    	
+    	if(isWarning==="true"){
+    		alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
+    		alert(alertText);
+    	}
+    	
+        //myForm.submit();
 	}
-	if(selisihDimensi2Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 2\n";
-		isWarning = "true";
-	}
-	if(selisihDimensi3Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 3\n";
-		isWarning = "true";
-	}
-	if(selisihDimensi4Text.style.backgroundColor === "yellow"){
-		alertText += "- Order 4\n";
-		isWarning = "true";
-	}
-	if(selisihDimensi5Text.style.backgroundColor === "yellow"){
-		alertText+= "- Order 5\n";
-		isWarning = "true";
-	}
-	
-	if(isWarning==="true"){
-		alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
-		alert(alertText);
+	else{
+        
+		alert ("Already submitted, please wait!");
+        obj.name = "action1";
+        btnSave.name = "action1";
 	}
 	
 	return true;
@@ -220,18 +278,27 @@ function poDateInit(){
 }
 
 function poDate1Change(obj){
-   
-	var poDate1 = obj;
+	
+	var poDate1 = document.getElementById("poDate1");
 	var poDate2 = document.getElementById("poDate2");
 	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
 	
+	if(obj.value===""){
+		poDate1.value = poDate1.min;
+	}
+
 	pd1 = getDate(poDate1.value);
 	pd2 = getDate(poDate2.value);
 	pd3 = getDate(poDate3.value);
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
+	
+	pd1min = getDate(poDate1.min);
+	if(pd1<pd1min){
+		poDate1.value = poDate1.min;
+	}
 	
 	if(pd2<pd1){
 		poDate2.value = poDate1.value;
@@ -257,16 +324,25 @@ function poDate1Change(obj){
 }
 
 function poDate2Change(obj){
-	   
-	var poDate2 = obj;
+	
+	var poDate2 = document.getElementById("poDate2");
 	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
+	
+	if(obj.value===""){
+		poDate2.value = poDate2.min;
+	}
 	
 	pd2 = getDate(poDate2.value);
 	pd3 = getDate(poDate3.value);
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
+	
+	pd2min = getDate(poDate2.min);
+	if(pd2<pd2min){
+		poDate2.value = poDate2.min;
+	}
 	
 	if(pd3<pd2){
 		poDate3.value = poDate2.value;
@@ -288,13 +364,22 @@ function poDate2Change(obj){
 
 function poDate3Change(obj){
 	   
-	var poDate3 = obj;
+	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
+	
+	if(obj.value===""){
+		poDate3.value = poDate3.min;
+	}
 	
 	pd3 = getDate(poDate3.value);
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
+	
+	pd3min = getDate(poDate3.min);
+	if(pd3<pd3min){
+		poDate3.value = poDate3.min;
+	}
 	
 	if(pd4<pd3){
 		poDate4.value = poDate3.value;
@@ -312,17 +397,43 @@ function poDate3Change(obj){
 
 function poDate4Change(obj){
 	   
-	var poDate4 = obj;
+	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
+	
+	if(obj.value===""){
+		poDate4.value = poDate4.min;
+	}
 	
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
+	
+	pd4min = getDate(poDate4.min);
+	if(pd4<pd4min){
+		poDate4.value = poDate4.min;
+	}
 	
 	if(pd5<pd4){
 		poDate5.value = poDate4.value;
 	}
 	
 	poDate5.min = poDate4.value;
+	
+}
+
+function poDate5Change(obj){
+	   
+	var poDate5 = document.getElementById("poDate5");
+
+	if(obj.value===""){
+		poDate5.value = poDate5.min;
+	}
+	
+	pd5 = getDate(poDate5.value);
+	
+	pd5min = getDate(poDate5.min);
+	if(pd5<pd5min){
+		poDate5.value = poDate5.min;
+	}
 	
 }
 
@@ -1866,6 +1977,163 @@ function calcAmount5(obj){
 }
 
 function generateCMOB(){
+	var jumlahOrder = document.getElementById("jumlahOrder").value;
+	var orderBySelected = document.getElementById("orderBySelected");
+	orderBySelected.value = "CMOB";
+	var tblOrder = document.getElementById("tblOrder");
+	var productQty = 
+		parseFloat(document.getElementById("productQty").value);
+	var totalAmount1 = document.getElementById("totalAmount1");
+	var totalAmount2 = document.getElementById("totalAmount2");
+	var totalAmount3 = document.getElementById("totalAmount3");
+	var totalAmount4 = document.getElementById("totalAmount4");
+	var totalAmount5 = document.getElementById("totalAmount5");
+	var sisaLimit = document.getElementById("sisaLimit");
+	var sisaLimitInit = document.getElementById("sisaLimitInit").value;
+	
+	var totAmount1 = 0;
+	var totAmount2 = 0;
+	var totAmount3 = 0;
+	var totAmount4 = 0;
+	var totAmount5 = 0;
+	
+	var amtTotal = document.getElementById("amtTotal");
+    var totAmount = 0;
+	
+	var cmobInitial = 1;
+	var cmobMultiplier = 0;
+	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
+		
+		cmobMultiplier += 1;
+		var qty = (cmobInitial * cmobMultiplier) / jumlahOrder;
+		
+		if(jumlahOrder === "1"){
+			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[1].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
+		} //
+	} //	
+	
+			/*var totAmountPerLine = 0;
+			totAmountPerLine = 
+				parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
+			tblOrder.rows[idxRow].cells[8].children[0].value =
+				totAmountPerLine;
+			totAmount += totAmountPerLine;
+		}
+		else if(jumlahOrder === "2"){
+			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[5].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[6].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[7].children[0].value = 0;
+			
+			var totAmountPerLine = 0;
+			totAmountPerLine = 
+				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+			tblOrder.rows[idxRow].cells[8].children[0].value =
+				totAmountPerLine;
+			totAmount += totAmountPerLine;
+		}
+		else if(jumlahOrder === "3"){
+			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[6].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[7].children[0].value = 0;
+			
+			var totAmountPerLine = 0;
+			totAmountPerLine = 
+				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
+	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+			tblOrder.rows[idxRow].cells[8].children[0].value =
+				totAmountPerLine;
+			totAmount += totAmountPerLine;
+		}
+		else if(jumlahOrder === "4"){
+			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[6].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[7].children[0].value = 0;
+			
+			var totAmountPerLine = 0;
+			totAmountPerLine = 
+				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+   				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
+   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
+   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+			tblOrder.rows[idxRow].cells[8].children[0].value =
+				totAmountPerLine;
+			totAmount += totAmountPerLine;
+		}
+		else if(jumlahOrder === "5"){
+			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[6].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[7].children[0].value = qty;
+			
+			var totAmountPerLine = 0;
+			totAmountPerLine = 
+				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
+   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
+   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
+   				+ (parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
+   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+			tblOrder.rows[idxRow].cells[8].children[0].value =
+				totAmountPerLine;
+			totAmount += totAmountPerLine;
+		}
+		
+		totAmount1 += 
+			(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+		totAmount2 += 
+			(parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+		totAmount3 += 
+			(parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+		totAmount4 += 
+			(parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+		totAmount5 += 
+			(parseFloat(tblOrder.rows[idxRow].cells[7].children[0].value)
+				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
+		
+	}
+	
+	totalAmount1.value = totAmount1;
+	totalAmount2.value = totAmount2;
+	totalAmount3.value = totAmount3;
+	totalAmount4.value = totAmount4;
+	totalAmount5.value = totAmount5;
+	amtTotal.value = totAmount;
+	sisaLimit.value = sisaLimitInit - totAmount;*/
+}
+
+/*function generateCMOB(){
 
 	console.log("");
 	console.log("========================================================");
@@ -2506,7 +2774,7 @@ function generateCMOB(){
 	
 	console.log("========================================================");
 	console.log("");
-}
+}*/
 
 function resetOrder(){
 	

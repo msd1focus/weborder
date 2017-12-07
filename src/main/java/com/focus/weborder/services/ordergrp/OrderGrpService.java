@@ -17,7 +17,7 @@ public class OrderGrpService {
 		return orderGrps;		
 	}
 	
-	public OrderGrp getOrderGrpDraft(String company, Long custId) {
+	public List<OrderGrp> getOrderGrpDraft(String company, Long custId) {
 		return orderGrpRepository.getByCompanyCustidDraft(company, custId);
 	}
 	
@@ -31,6 +31,22 @@ public class OrderGrpService {
 	
 	public void updateOrderGrp(OrderGrp orderGrp) {
 		orderGrpRepository.save(orderGrp);
+		/*orderGrpRepository.updateByCompanyCustidGrpid(
+				orderGrp.getOrderGrpId(), 
+				orderGrp.getCompany(),
+				orderGrp.getCustId(),
+				orderGrp.getPeriodeOrder(),
+				orderGrp.getOrderType(),
+				orderGrp.getOrderBy(),
+				orderGrp.getLeadTime(),
+				orderGrp.getTotalOrder(),
+				orderGrp.getJumlahOrder(),
+				orderGrp.getTotalPrice(),
+				orderGrp.getSisaLimit(),
+				orderGrp.getSubmitStatus(),
+				orderGrp.getCreateTime(),
+				orderGrp.getUpdateTime());*/
+		
 	}
 	
 	public void deleteOrderGrp(Long groupId) {

@@ -20,4 +20,5 @@ public class WebOrderApplication
     		SpringApplicationBuilder webOrderApplication) {
         return webOrderApplication.sources(WebOrderApplication.class);
     }
+	
 }
