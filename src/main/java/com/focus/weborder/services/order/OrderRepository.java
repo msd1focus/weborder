@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
+	
+	List<Order> findOrderByCompanyAndCustId (String company, Long custId);
+	Order	findOrderByOrderId (Long orderId);
 	
 	@Query("SELECT o FROM Order o "
             + "ORDER BY o.orderId ASC"

@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Form Input Order</title>
 	<meta charset="UTF-8">
 	</meta>
-	<link rel="stylesheet" href="style.css"/>
-	<script src="js/data.js"></script>
-	<script src="js/getdata.js"></script>
-	<script src="js/history.js"></script>
+	<link rel="stylesheet" href="css/style.css"/>
 	<link rel="stylesheet" href="css/history.css"/>
+  	<script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script src="js/history.js"></script>
 
 	<div th:replace="fragments/header :: header-css"/>
 
@@ -23,27 +22,48 @@
 	</div> -->
 
 
-	<div id="hist">
+	<div class="hist0">
 		<h2>Histori Transaksi</h2>
 		<p/>
-		<table id="conftab">
+		<table style="border: 1px solid black" id="conftab">
+			<thead>
 			<tr>
-				<th>Tgl Submit</th>
 				<th>No PO</th>
 				<th>Tgl PO</th>
-				<th>Ship to</th>
 				<th>Total</th>
 				<th/>
 			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="order : ${orders}" 
+				th:attr="data-orderid=${order.orderId},
+				         data-invoicestatus=${order.invoiceStatus},
+				         data-notes=${order.notes},
+				         data-tonasemobil=${order.tonaseMobil},
+				         data-expedisi=${order.expedisi}">
+				<td th:text="${order.poNumber}"></td>
+				<td th:text="${order.orderDate}">232323</td>
+				<td style="text-align:right" 
+				    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}">232323</td>
+				<td>
+				  <input type="button" value="Click untuk detail" style="width:10em; color:blue; border:none; background-color:white;"
+                           th:onclick="'javascript:showdetail(this);'"/>
+                 </td> 
+			</tr>
+			</tbody>
 		</table>
-		<script>populate_history()</script>
+
 	</div> <!-- div hist -->
 
 
 	<!-- The Modal -->
 	<div id="myModal" class="modal">
 
-	  <div class="modal-content">
+		<div class="modal-content">
+			<div id="closediv">
+				<h4 >Detail Order <span class="close">&times;</span></h4>
+				
+			</div>
 			<div id="poinfo">
 				<table>
 					 <tr>
@@ -55,25 +75,28 @@
 							 <td id="cell_podate"></td>
 					 </tr>
 					 <tr>
-						   <th>Dikirim ke:</th>
-							 <td id="cell_ship"></td>
+						   <th>Total Order:</th>
+							 <td id="cell_totalorder"></td>
 					 </tr>
 					 <tr>
-						   <th>Invoice Status:</th>
-							 <td id="cell_invoiceStatus"></td>
+						   <th>Status Invoice:</th>
+							 <td id="cell_invoicestatus"></td>
+					 </tr>
+					 <tr>
+						   <th>Notes:</th>
+							 <td id="cell_notes"></td>
 					 </tr>
 				</table>
 			</div>
 			<div id="rincian">
-				<span class="close">&times;</span>
 				<table style="text-align:left">
-          <thead>
+          			<thead>
 					  <tr>
-							  <th>Code</th>
+							  <th style="max-width:90px">Code</th>
 								<th>Product Name</th>
 								<th>Unit</th>
 								<th>Unit Price</th>
-								<th>Quantity</th>
+								<th style="max-width:60px">Quantity</th>
 								<th>Total</th>
 						</tr>
 					</thead>
@@ -81,20 +104,17 @@
 				</table>
 			</div>
 
-	  </div>
+	  	</div>
 	</div>
+	<div th:replace="fragments/footer :: footer"/>
 
-	<!-- <script>
-		// When the user clicks on <span> (x), close the modal
+ <script>
 		var modal = document.getElementById('myModal');
 		var span = document.getElementsByClassName("close")[0];
 		span.onclick = function() {
 		    modal.style.display = "none";
 		}
-
-	</script> -->
+</script>  
 	
-	
-	<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

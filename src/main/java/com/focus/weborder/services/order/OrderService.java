@@ -11,6 +11,12 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 	
+	public List<Order> getOrdersByCompanyAndCustid(String company, Long custId) {
+		List<Order> orders = 
+				orderRepository.findOrderByCompanyAndCustId(company, custId);
+		return orders;		
+	}
+	
 	public List<Order> getAllOrders() {
 		List<Order> orders = 
 				orderRepository.getAll();

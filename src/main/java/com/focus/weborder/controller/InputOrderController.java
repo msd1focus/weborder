@@ -59,7 +59,6 @@ import com.focus.weborder.types.InputProduct;
 
 @Controller
 public class InputOrderController 
-	//implements ErrorController
 	{
 
 	@Autowired
@@ -106,10 +105,26 @@ public class InputOrderController
 	    binder.setAutoGrowCollectionLimit(100000);
 	}
 	
-	@GetMapping("/history")
+	/*@GetMapping("/history")
     public String history() {
         return "/history";
-    }
+    }*/
+	
+	@GetMapping("/history")
+	public ModelAndView orderHistory(){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		ModelAndView modelAndView = new ModelAndView();
+		List<Order> orders = new ArrayList<Order>();
+		User user = new User();
+		if (auth != null) {
+			user = userService.findUserByUsername(auth.getName());
+			orders = orderService.getOrdersByCompanyAndCustid(user.getCompany(), user.getCustId());
+		}
+		modelAndView.addObject("orders", orders);
+		modelAndView.setViewName("history");
+		System.out.println(orders.size());
+		return modelAndView;
+	}
 	
 	@GetMapping("/login")
     public String login() {

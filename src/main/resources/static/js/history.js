@@ -1,38 +1,42 @@
 "use strict";
 
-function populate_history() {
-  var objpo = JSON.parse(datapo);
-  var jpo = objpo.length;
-  var tabobj = document.getElementById("conftab");
-  var i;
-  for (i=0; i<2; i++) {
-    tabobj.insertRow(1+i).outerHTML = '<tr><td>' +objpo[i].submit_date+ '</td>' +
-                                          '<td>' +objpo[i].po_number+ '</td>' +
-                                          '<td>' +objpo[i].po_date+ '</td>' +
-                                          '<td>' +objpo[i].ship_to+ '</td>' +
-                                          '<td>' +objpo[i].total+ '</td>' +
-                                          '<td><input type="button" value="Click untuk detail" style="width:10em; border:none; background-color:white;" '+
-                                                      'onclick="showdetail(this);"/>' +
-                                          '</tr>';
-  }
-}
-
 function showdetail(obj) {
-  document.getElementById("cell_ponumber").innerHTML = obj.parentElement.parentElement.children[1].innerHTML;
-  document.getElementById("cell_podate").innerHTML = obj.parentElement.parentElement.children[0].innerHTML;
+	var rowobj = obj.parentElement.parentElement;
+	var ordId = rowobj.getAttribute("data-orderid");
+	var poNumber = rowobj.children[0].innerHTML;
+	var poDate = rowobj.children[1].innerHTML;
+	var poTotalOrder = rowobj.children[2].innerHTML;
+	var tab = document.getElementById("rincianorder");
+	tab.innerHTML = "";
+	
+	document.getElementById("cell_ponumber").innerHTML = poNumber;
+	document.getElementById("cell_podate").innerHTML = poDate;
 
-  var objpo = JSON.parse(datapo);
-  var objitems = objpo[0].order_detail;
-  var tab = document.getElementById("rincianorder");
+	document.getElementById("cell_totalorder").innerHTML = rowobj.children[2].innerHTML;
+	document.getElementById("cell_invoicestatus").innerHTML = rowobj.getAttribute("data-invoicestatus");
+	document.getElementById("cell_notes").innerHTML = rowobj.getAttribute("data-notes");
 
-  for (var i=0; i<objitems.length; i++) {
-    tab.insertRow(i).outerHTML= '<tr><td>' + objitems[i].product_code + '</td>' +
-                              '<td>' +  objitems[i].product_name + '</td>' +
-                              '<td>' +  'Dus' + '</td>' +
-                              '<td>' + '20.000</td>' +
-                              '<td>' + '30</td>' +
-                              '<td>' + '600.000</td></tr>';
-    }
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var objitems;
+			var nf = Intl.NumberFormat();
+			objitems = JSON.parse(this.responseText);
 
-  document.getElementById("myModal").style.display = "block";
+			for (var i = 0; i < objitems.length; i++) {
+				tab.insertRow(i).outerHTML = '<tr><td>'
+						+ objitems[i].productCode + '</td><td>'
+						+ objitems[i].productDesc + '</td><td>' 
+						+ objitems[i].uom + '</td><td style="text-align:right">' 
+						+ nf.format(objitems[i].unitPrice) + '</td><td style="text-align:right">' 
+						+ objitems[i].jumlah + '</td><td style="text-align:right">' 
+						+ nf.format(objitems[i].totalPrice) + '</td></tr>';
+			}
+		}
+	};
+/*	setRequestHeader()	*/	
+	xhttp.open("GET", "rest/orderdetail?orderid=" +ordId, true);
+	xhttp.send();
+
+	document.getElementById("myModal").style.display = "block";
 }

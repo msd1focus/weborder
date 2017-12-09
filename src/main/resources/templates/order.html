@@ -10,7 +10,9 @@
 		src="../static/js/order.js"
 		th:src="@{js/order.js}">
 	</script>
-
+	
+	<script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
+	
 	<div th:replace="fragments/header :: header-css"/>
 	
 	<title>Web Order - Focus Distribusi Indonesia</title>
@@ -32,7 +34,7 @@
 	action="#" 
 	th:action="@{/}"
 	th:object="${inputWebOrder}"
-	method="post">
+	method="get">
 
 <div id="framesetting">
 <table> 
@@ -47,13 +49,17 @@
 		   	<input 
 		   		id="btnSave"
 		   		style="align: right" 	
-		   		onclick="return saveForm(document.formOrder, this)"
-		   		type="submit" name="action" value="Save"/>
+		   		onclick="return saveForm(this)"
+		   		type="submit"
+		   		name="action" 
+		   		value="Save"/>
 		   <input 
 		   		id="btnSubmit"
 		   		style="align: right"
-		   		onclick="return submitForm(document.formOrder, this)"
-		   		type="submit" name="action" value="Submit"/>
+		   		onclick="return submitForm(this)"
+			   	type="submit"
+		   		name="action" 
+		   		value="Submit"/>
 		   <input 
 		   		id="submitStatus"
 		   		type="hidden" value="false"/>

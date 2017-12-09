@@ -26,7 +26,7 @@ public class OrderDetailController {
 		return orderDetailService.getByOrderid(orderid);
 	}
 	
-	@RequestMapping("/orderdetail/produccode")
+	@RequestMapping("/orderdetail/productcode")
 	public OrderDetail getByOrderidProductcode(
 			@RequestParam Long orderid,
 			@RequestParam String productcode){
@@ -39,8 +39,10 @@ public class OrderDetailController {
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/orderdetail")
-	public void updateOrderDetail(@RequestBody OrderDetail orderdetail){
-		orderDetailService.updateOrderDetail(orderdetail);
+	public void updateOrderDetail(@RequestBody List<OrderDetail> orderdetails){
+		for(OrderDetail orderdetail: orderdetails) {
+			orderDetailService.updateOrderDetail(orderdetail);
+		}
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/orderdetail")

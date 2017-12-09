@@ -31,7 +31,7 @@ window.onload = function(){
 });*/
 
 
-function saveForm(myForm, obj){
+function saveForm(obj){
 
     var submitStatus = 
 		document.getElementById("submitStatus");
@@ -92,7 +92,74 @@ function saveForm(myForm, obj){
 			alert(alertText);
 		}
 
-        //myForm.submit();
+		var orderDetails = 
+			[{
+			   "orderDetailId": 2769,
+			   "orderId": 1,
+			   "productCode": "010601100",
+			   "productDesc": "FRW Jrg 4x5000Ml",
+			   "uom": "Jrg",
+			   "jumlah": 12,
+			   "unitPrice": 269473,
+			   "totalPrice": 2694730
+			}];
+		
+		$.ajax({
+		    type: "PUT",
+		    url: "/weborder/rest/orderdetail",
+		    // The key needs to match your method's input parameter (case-sensitive).
+		    data: JSON.stringify(orderDetails),
+		    contentType: "application/json; charset=utf-8",
+		    dataType: "json",
+		    success: function(data){
+		    	console.log("success");
+		    },
+		    error: function( xhr, textStatus, errorThrown ) {
+				console.log( "XMLHttpRequest.status:  " + xhr.status);
+				console.log( 
+						"XMLHttpRequest.responseText:  " 
+						+ xhr.responseText);
+				responseText = JSON.parse(xhr.responseText);
+				console.log( 
+						"XMLHttpRequest.responseText.Error:  " 
+						+ responseText.error);
+				console.log( 
+						"XMLHttpRequest.responseText.Message:  " 
+						+ responseText.message);
+			}
+		});
+		
+	    /*$.ajax({
+	    	type: "GET",
+            dataType: "application/json",
+            contentType: "json",
+	    	url: "/weborder/rest/orderdetails",
+	    	success: function(result, textStatus, xhr){
+	    		console.log(xhr.status);
+	    		$.each(result, function(i, field){
+			        console.log(
+			        		"ajax_success: " 
+			        		+ field.orderDetailId 
+			        		+ " - "
+			        		+ field.orderId 
+			        		+ " - "
+			        		+ field.jumlah);
+			     });
+	    	},
+			error: function( xhr, textStatus, errorThrown ) {
+				console.log( "XMLHttpRequest.status:  " + xhr.status);
+				console.log( 
+						"XMLHttpRequest.responseText:  " 
+						+ xhr.responseText);
+				responseText = JSON.parse(xhr.responseText);
+				console.log( 
+						"XMLHttpRequest.responseText.Error:  " 
+						+ responseText.error);
+				console.log( 
+						"XMLHttpRequest.responseText.Message:  " 
+						+ responseText.message);
+			}
+	    });*/
 	}
 	else{
 
@@ -101,10 +168,11 @@ function saveForm(myForm, obj){
         btnSubmit.name = "action1";
 	}
 	
-	return true;
+	
+	return false;
 }
 
-function submitForm(myForm, obj){
+function submitForm(obj){
 
     var submitStatus = 
 		document.getElementById("submitStatus");    
@@ -165,8 +233,6 @@ function submitForm(myForm, obj){
     		alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
     		alert(alertText);
     	}
-    	
-        //myForm.submit();
 	}
 	else{
         
@@ -175,7 +241,7 @@ function submitForm(myForm, obj){
         btnSave.name = "action1";
 	}
 	
-	return true;
+	return false;
 }
 
 function formatText(obj){

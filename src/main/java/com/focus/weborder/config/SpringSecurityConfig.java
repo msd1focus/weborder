@@ -47,7 +47,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                //.antMatchers("/weborder/registration").permitAll()
                 .antMatchers("/weborder/registration").hasAnyRole("ADMIN")
                 .antMatchers("/weborder/resetpassword").hasAnyRole("ADMIN")
                 .antMatchers("/weborder/order").hasAnyRole("USER","ADMIN")
@@ -55,7 +54,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/weborder/404").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder/500").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder").hasAnyRole("USER","ADMIN")
-                .antMatchers("/weborder/rest/**").hasAnyRole("USER","ADMIN")  
+                .antMatchers("/weborder/rest/**").permitAll()
                 //.antMatchers("/weborder/rest/listmobil").hasAnyRole("USER","ADMIN")               
                 .anyRequest().authenticated()
                 .and()
