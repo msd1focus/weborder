@@ -23,7 +23,7 @@ public class OrderGrpController {
 		return orderGrpService.getAllOrderGrps();
 	}
 	
-	@RequestMapping("/ordergrp")
+	@RequestMapping("/ordergrp/draft")
 	public List<OrderGrp> getOrderGroupDraft(@RequestParam String company,
 			@RequestParam Long custid){
 		return orderGrpService.getOrderGrpDraft(company, custid);
@@ -35,8 +35,8 @@ public class OrderGrpController {
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/ordergrp")
-	public void updateOrderGrp(@RequestBody OrderGrp orderGrp){
-		orderGrpService.updateOrderGrp(orderGrp);
+	public Long updateOrderGrp(@RequestBody OrderGrp orderGrp){
+		return orderGrpService.updateOrderGrp(orderGrp);
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/ordergrps/{groupId}")

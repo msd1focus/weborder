@@ -12,6 +12,11 @@ public class InputProduct {
 	private CustProd custProd;
 	private Product product;
 	private List<ProdUom> prodUoms;
+	private Long orderDetailId1;
+	private Long orderDetailId2;
+	private Long orderDetailId3;
+	private Long orderDetailId4;
+	private Long orderDetailId5;
 	private String orderQty1;
 	private String orderQty2;
 	private String orderQty3;
@@ -33,6 +38,11 @@ public class InputProduct {
 	public InputProduct(
 			CustProd custProd, Product product, 
 			List<ProdUom> prodUoms,
+			Long orderDetailId1,
+			Long orderDetailId2,
+			Long orderDetailId3,
+			Long orderDetailId4,
+			Long orderDetailId5,
 			String orderQty1, String orderQty2, 
 			String orderQty3, String orderQty4,
 			String orderQty5,
@@ -42,12 +52,19 @@ public class InputProduct {
 			Double averageSalesCurrentMonth,
 			Long targetCustomerCurrentMonth,
 			Long targetCustomerNextMonth,
-			Long qtyOnHand, List<CustInvoice> custInvoices
-			) {
+			Long qtyOnHand,
+			List<CustInvoice> custInvoices
+		) {
+		
 		super();
 		this.custProd = custProd;
 		this.product = product;
 		this.prodUoms = prodUoms;
+		this.orderDetailId1 = orderDetailId1;
+		this.orderDetailId2 = orderDetailId2;
+		this.orderDetailId3 = orderDetailId3;
+		this.orderDetailId4 = orderDetailId4;
+		this.orderDetailId5 = orderDetailId5;
 		this.orderQty1 = orderQty1;
 		this.orderQty2 = orderQty2;
 		this.orderQty3 = orderQty3;
@@ -89,6 +106,46 @@ public class InputProduct {
 
 	public String getOrderQty1() {
 		return orderQty1;
+	}
+
+	public Long getOrderDetailId1() {
+		return orderDetailId1;
+	}
+
+	public void setOrderDetailId1(Long orderDetailId1) {
+		this.orderDetailId1 = orderDetailId1;
+	}
+
+	public Long getOrderDetailId2() {
+		return orderDetailId2;
+	}
+
+	public void setOrderDetailId2(Long orderDetailId2) {
+		this.orderDetailId2 = orderDetailId2;
+	}
+
+	public Long getOrderDetailId3() {
+		return orderDetailId3;
+	}
+
+	public void setOrderDetailId3(Long orderDetailId3) {
+		this.orderDetailId3 = orderDetailId3;
+	}
+
+	public Long getOrderDetailId4() {
+		return orderDetailId4;
+	}
+
+	public void setOrderDetailId4(Long orderDetailId4) {
+		this.orderDetailId4 = orderDetailId4;
+	}
+
+	public Long getOrderDetailId5() {
+		return orderDetailId5;
+	}
+
+	public void setOrderDetailId5(Long orderDetailId5) {
+		this.orderDetailId5 = orderDetailId5;
 	}
 
 	public void setOrderQty1(String orderQty1) {

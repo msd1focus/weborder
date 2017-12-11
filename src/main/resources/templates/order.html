@@ -73,6 +73,8 @@
 	th:field="*{inputOrder.orderGrp.company}" />
 <input id="custId" type="hidden" 
 	th:field="*{inputOrder.orderGrp.custId}" />	
+<input id="createTime" type="hidden" 
+	th:field="*{inputOrder.orderGrp.createTime}" />	
 		
 <table id="table1">
 	<tr>
@@ -345,7 +347,9 @@
 				<input id="poNumber1" type="text" 
 						th:field="*{inputOrder.order1.poNumber}"
 						readonly="readonly"/>
-				<input type="hidden" th:field="*{inputOrder.order1.orderId}" />
+				<input type="hidden" 
+					id="orderId1"
+					th:field="*{inputOrder.order1.orderId}" />
 				<input type="hidden" th:field="*{inputOrder.order1.company}" />
 				<input type="hidden" th:field="*{inputOrder.order1.custId}" />
 			</td>
@@ -353,7 +357,9 @@
 				<input id="poNumber2" type="text" 
 					th:field="*{inputOrder.order2.poNumber}"
 					readonly="readonly"/>
-				<input type="hidden" th:field="*{inputOrder.order2.orderId}" />
+				<input type="hidden" 
+					id="orderId2"
+					th:field="*{inputOrder.order2.orderId}" />
 				<input type="hidden" th:field="*{inputOrder.order2.company}" />
 				<input type="hidden" th:field="*{inputOrder.order2.custId}" />
 			</td>
@@ -361,7 +367,9 @@
 				<input id="poNumber3" type="text" 
 					th:field="*{inputOrder.order3.poNumber}"
 					readonly="readonly"/>
-				<input type="hidden" th:field="*{inputOrder.order3.orderId}" />
+				<input type="hidden" 
+					id="orderId3"
+					th:field="*{inputOrder.order3.orderId}" />
 				<input type="hidden" th:field="*{inputOrder.order3.company}" />
 				<input type="hidden" th:field="*{inputOrder.order3.custId}" />
 			</td>
@@ -369,7 +377,9 @@
 				<input id="poNumber4" type="text" 
 					th:field="*{inputOrder.order4.poNumber}"
 					readonly="readonly"/>
-				<input type="hidden" th:field="*{inputOrder.order4.orderId}" />
+				<input type="hidden" 
+					id="orderId4"
+					th:field="*{inputOrder.order4.orderId}" />
 				<input type="hidden" th:field="*{inputOrder.order4.company}" />
 				<input type="hidden" th:field="*{inputOrder.order4.custId}" />
 			</td>
@@ -377,7 +387,9 @@
 				<input id="poNumber5" type="text" 
 					th:field="*{inputOrder.order5.poNumber}"
 					readonly="readonly"/>
-				<input type="hidden" th:field="*{inputOrder.order5.orderId}" />
+				<input type="hidden" 
+					id="orderId5"
+					th:field="*{inputOrder.order5.orderId}" />
 				<input type="hidden" th:field="*{inputOrder.order5.company}" />
 				<input type="hidden" th:field="*{inputOrder.order5.custId}" />
 			</td>
@@ -425,27 +437,32 @@
 		</tr>
         <tr>
 			<td height="60" >
-			  <textarea name="remark1" maxlength="65" rows="2" cols="23"
+			  <textarea id="notes1"
+			  	name="remark1" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order1.notes}"></textarea>
 			</td>
 			<td height="60" class="order2" style="display: none;">
-			  <textarea name="remark2" maxlength="65" rows="2" cols="23"
+			  <textarea id="notes2"
+			  	name="remark2" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order2.notes}"></textarea>
 			</td>
 			<td height="60" class="order3" style="display: none;">
-			  <textarea name="remark3" maxlength="65" rows="2" cols="23"
+			  <textarea id="notes3"
+			  	name="remark3" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order3.notes}"></textarea>
 			</td>
 			<td height="60" class="order4" style="display: none;">
-			  <textarea name="remark4" maxlength="65" rows="2" cols="23"
+			  <textarea id="notes4"
+			  	name="remark4" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order4.notes}"></textarea>
 			</td>
 			<td height="60" class="order5" style="display: none;">
-			  <textarea name="remark5" maxlength="65" rows="2" cols="23"
+			  <textarea id="notes5"
+			  	name="remark5" maxlength="65" rows="2" cols="23"
 			  	style="resize: none"		  	
 				th:field="*{inputOrder.order5.notes}"></textarea>
 			</td>
@@ -848,8 +865,9 @@
 					onkeyup="formatText(this)"
 					style="text-align: right;"/>
 				<input type="hidden" 
-					th:field="*{inputProducts[__${stat.index}__].product.company}" /> 
-				<input type="hidden" />
+					th:field="*{inputProducts[__${stat.index}__].orderDetailId1}" />
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].product.company}" />
 					<!-- th:field="*{inputProducts[__${stat.index}__].product.productCode}" /> -->
 				<input type="hidden" />
 					<!-- th:field="*{inputProducts[__${stat.index}__].product.productName}" /> -->
@@ -878,6 +896,8 @@
 					onfocus="focus2(this)"
 					onkeyup="formatText(this)"
 					style="text-align: right;"/>
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].orderDetailId2}" />
 			</td>
 			<td class="order3"
 				width="150px" id="detail3" style="display: none;">
@@ -889,6 +909,8 @@
 					onfocus="focus3(this)"
 					onkeyup="formatText(this)"
 					style="text-align: right;"/>
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].orderDetailId3}" />
 			</td>
 			<td class="order4"
 				width="150px" id="detail4" style="display: none;">
@@ -900,6 +922,8 @@
 					onfocus="focus4(this)"
 					onkeyup="formatText(this)"
 					style="text-align: right;"/>
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].orderDetailId4}" />
 			</td>
 			<td class="order5"
 				width="150px" id="detail5" style="display: none;">
@@ -911,6 +935,8 @@
 					onfocus="focus5(this)"
 					onkeyup="formatText(this)"
 					style="text-align: right;"/>
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].orderDetailId5}" />
 			</td>
 			<td>
 				<input id="dtlTotalQty" type="text" value="0"

@@ -553,6 +553,8 @@ public class InputOrderController
 										order1.getOrderId(),
 										custProd.getProductCode());
 						if(orderDetail1!=null) {
+							inputProduct.setOrderDetailId1(
+									orderDetail1.getOrderDetailId());
 							inputProduct.setOrderQty1(
 									formatText(orderDetail1.getJumlah()));
 						}
@@ -566,6 +568,8 @@ public class InputOrderController
 										order2.getOrderId(),
 										custProd.getProductCode());
 						if(orderDetail2!=null) {
+							inputProduct.setOrderDetailId2(
+									orderDetail2.getOrderDetailId());
 							inputProduct.setOrderQty2(
 									formatText(orderDetail2.getJumlah()));
 						}
@@ -579,6 +583,8 @@ public class InputOrderController
 										order3.getOrderId(),
 										custProd.getProductCode());
 						if(orderDetail3!=null) {
+							inputProduct.setOrderDetailId3(
+									orderDetail3.getOrderDetailId());
 							inputProduct.setOrderQty3(
 									formatText(orderDetail3.getJumlah()));
 						}
@@ -592,6 +598,8 @@ public class InputOrderController
 										order4.getOrderId(),
 										custProd.getProductCode());
 						if(orderDetail4!=null) {
+							inputProduct.setOrderDetailId4(
+									orderDetail4.getOrderDetailId());
 							inputProduct.setOrderQty4(
 									formatText(orderDetail4.getJumlah()));
 						}
@@ -605,6 +613,8 @@ public class InputOrderController
 										order5.getOrderId(),
 										custProd.getProductCode());
 						if(orderDetail5!=null) {
+							inputProduct.setOrderDetailId5(
+									orderDetail5.getOrderDetailId());
 							inputProduct.setOrderQty5(
 									formatText(orderDetail5.getJumlah()));
 						}
@@ -850,8 +860,6 @@ public class InputOrderController
 		    }
 			
 			OrderGrp orderGrp = inputWebOrder.getInputOrder().getOrderGrp();
-			//orderGrp.setCompany(company);
-			//orderGrp.setCustId(custId);
 	    	orderGrp.setSubmitStatus(status);
 	    	System.out.println("orderGrp.getOrderGrpId(): " + orderGrp.getOrderGrpId());
 	    	System.out.println("orderGrp.getCustId(): " + orderGrp.getCustId());

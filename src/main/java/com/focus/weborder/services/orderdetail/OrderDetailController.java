@@ -39,10 +39,11 @@ public class OrderDetailController {
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/orderdetail")
-	public void updateOrderDetail(@RequestBody List<OrderDetail> orderdetails){
+	public Integer updateOrderDetail(@RequestBody List<OrderDetail> orderdetails){
 		for(OrderDetail orderdetail: orderdetails) {
 			orderDetailService.updateOrderDetail(orderdetail);
 		}
+		return orderdetails.size();
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/orderdetail")

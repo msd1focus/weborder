@@ -47,8 +47,9 @@ public class OrderService {
 		return null;
 	}
 	
-	public void addOrder(Order order) {
+	public Long addOrder(Order order) {
 		orderRepository.save(order);
+		return order.getOrderId();
 		/*orderRepository.insert(
 				order.getOrderId(), order.getOrderGrpId(), 
 				order.getCompany(), order.getCustId(),
@@ -64,8 +65,10 @@ public class OrderService {
 				order.getInvoiceDate());*/
 	}
 	
-	public void updateOrder(Order order) {
-		orderRepository.updateByCompanyCustidGrpidOrderid(
+	public Long updateOrder(Order order) {
+		orderRepository.save(order);
+		return order.getOrderId();
+		/*orderRepository.updateByCompanyCustidGrpidOrderid(
 				order.getOrderId(), order.getOrderGrpId(), 
 				order.getCompany(), order.getCustId(), 
 				order.getPoNumber(),
@@ -77,7 +80,7 @@ public class OrderService {
 				order.getEbsSubmitDate(), 
 				order.getSoNumber(), order.getSoStatus(),
 				order.getSoDate(), order.getInvoiceStatus(), 
-				order.getInvoiceDate(), order.getNotes());
+				order.getInvoiceDate(), order.getNotes());*/
 	}
 	
 	public void deleteOrder(Long orderId) {

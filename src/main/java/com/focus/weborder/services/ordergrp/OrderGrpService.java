@@ -29,8 +29,9 @@ public class OrderGrpService {
 		//orderGrpRepository.save(orderGrp);
 	}
 	
-	public void updateOrderGrp(OrderGrp orderGrp) {
+	public Long updateOrderGrp(OrderGrp orderGrp) {
 		orderGrpRepository.save(orderGrp);
+		return orderGrp.getOrderGrpId();
 		/*orderGrpRepository.updateByCompanyCustidGrpid(
 				orderGrp.getOrderGrpId(), 
 				orderGrp.getCompany(),

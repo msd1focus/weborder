@@ -53,8 +53,8 @@ public class OrderController {
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/order")
-	public void updateOrder(@RequestBody Order order){
-		orderService.updateOrder(order);
+	public Long updateOrder(@RequestBody Order order){
+		return orderService.updateOrder(order);
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/order")

@@ -91,43 +91,8 @@ function saveForm(obj){
 			alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
 			alert(alertText);
 		}
-
-		var orderDetails = 
-			[{
-			   "orderDetailId": 2769,
-			   "orderId": 1,
-			   "productCode": "010601100",
-			   "productDesc": "FRW Jrg 4x5000Ml",
-			   "uom": "Jrg",
-			   "jumlah": 12,
-			   "unitPrice": 269473,
-			   "totalPrice": 2694730
-			}];
 		
-		$.ajax({
-		    type: "PUT",
-		    url: "/weborder/rest/orderdetail",
-		    // The key needs to match your method's input parameter (case-sensitive).
-		    data: JSON.stringify(orderDetails),
-		    contentType: "application/json; charset=utf-8",
-		    dataType: "json",
-		    success: function(data){
-		    	console.log("success");
-		    },
-		    error: function( xhr, textStatus, errorThrown ) {
-				console.log( "XMLHttpRequest.status:  " + xhr.status);
-				console.log( 
-						"XMLHttpRequest.responseText:  " 
-						+ xhr.responseText);
-				responseText = JSON.parse(xhr.responseText);
-				console.log( 
-						"XMLHttpRequest.responseText.Error:  " 
-						+ responseText.error);
-				console.log( 
-						"XMLHttpRequest.responseText.Message:  " 
-						+ responseText.message);
-			}
-		});
+		saveOrderGrp("DRAFT");
 		
 	    /*$.ajax({
 	    	type: "GET",
@@ -166,9 +131,10 @@ function saveForm(obj){
 		alert ("Already saved, please wait!");
         obj.name = "action1";
         btnSubmit.name = "action1";
-	}
-	
-	
+	}	
+
+	//window.location.replace("/weborder/home");
+		
 	return false;
 }
 
@@ -232,7 +198,9 @@ function submitForm(obj){
     	if(isWarning==="true"){
     		alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
     		alert(alertText);
-    	}
+    	}	
+
+		saveOrderGrp("SUBMITTED");
 	}
 	else{
         
@@ -241,7 +209,283 @@ function submitForm(obj){
         btnSave.name = "action1";
 	}
 	
+	//window.location.replace("/weborder/home");
+	
 	return false;
+}
+
+function saveOrderGrp(ss){
+	
+	var orderGrpId = 
+		document.getElementById("orderGrpId").value;
+	var company = 
+		document.getElementById("company").value;
+	var custId = 
+		document.getElementById("custId").value;
+	var periodeSelected = 
+		document.getElementById("periodeSelected").value;
+	var orderTypeSelected = 
+		document.getElementById("orderTypeSelected").value;
+	var orderBySelected = 
+		document.getElementById("orderBySelected").value;
+	var leadTime = 
+		document.getElementById("leadTime").value;
+	var jumlahOrderSelected = 
+		document.getElementById("jumlahOrderSelected").value;
+	var sisaLimit = 
+		unformatText(document.getElementById("sisaLimit").value);
+	var qtyTotal = 
+		unformatText(document.getElementById("qtyTotal").value);
+	var amtTotal = 
+		unformatText(document.getElementById("amtTotal").value);
+	var createTime = 
+		document.getElementById("createTime").value;
+	var currentdate = new Date();
+	updateTime = currentdate.getTime();
+	if(createTime=="" || createTime == null){
+		createTime = currentdate.getTime();
+	}
+
+	var ordergrp = 
+		{
+		   "orderGrpId": orderGrpId,
+		   "company": company,
+		   "custId": custId,
+		   "periodeOrder": periodeSelected,
+		   "orderType": orderTypeSelected,
+		   "orderBy": orderBySelected,
+		   "leadTime": leadTime,
+		   "totalOrder": qtyTotal,
+		   "jumlahOrder": jumlahOrderSelected,
+		   "totalPrice": amtTotal,
+		   "sisaLimit": sisaLimit,
+		   "submitStatus": ss,
+		   "createTime": createTime,
+		   "updateTime": updateTime
+		};
+
+	console.log(ordergrp);
+	
+	$.ajax({
+	    type: "PUT",
+	    url: "/weborder/rest/ordergrp",
+	    // The key needs to match your method's input parameter (case-sensitive).
+	    data: JSON.stringify(ordergrp),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    success: function(result){
+	    	console.log("ordergrp >> success: " + result);
+	    	orderGrpId = result;
+	    },
+	    complete: function( xhr, status ) {
+            console.log( "ordergrp >> complete for " + orderGrpId );
+            if(jumlahOrderSelected>0){
+            	saveOrder(1, company, custId, orderGrpId, periodeSelected);
+            }
+	    },
+	    error: function( xhr, textStatus, errorThrown ) {
+			console.log( "XMLHttpRequest.status:  " + xhr.status);
+			if(xhr.status!==200){
+				console.log( 
+						"ordergrp >> XMLHttpRequest.responseText:  " 
+						+ xhr.responseText);
+				responseText = JSON.parse(xhr.responseText);
+				console.log( 
+						"ordergrp >> XMLHttpRequest.responseText.Error:  " 
+						+ responseText.error);
+				console.log( 
+						"ordergrp >> XMLHttpRequest.responseText.Message:  " 
+						+ responseText.message);
+			}
+		}
+	});
+}
+
+function saveOrder(o, c, ci, ogi, ps){
+	
+	var orderId = 
+		document.getElementById("orderId"+o).value;
+	var poNumber = 
+		document.getElementById("poNumber"+o).value;
+	var poDate = 
+		document.getElementById("poDate"+o).value;
+	var notes = 
+		document.getElementById("notes"+o).value;
+	var shipToSelected = 
+		document.getElementById("shipTo"+o+"Selected").value;
+	var expedisiSelected = 
+		document.getElementById("expedisi"+o+"Selected").value;
+	var mobilSelected = 
+		document.getElementById("mobil"+o+"Selected").value;
+	var dimensiMobil = 
+		document.getElementById("dimensiMobil"+o).value;
+	var dimensiOrder = 
+		document.getElementById("dimensiOrder"+o).value;
+	var selisihDimensi = 
+		document.getElementById("selisihDimensi"+o).value;
+	var totalAmount = 
+		document.getElementById("totalAmount"+o).value;
+	
+	var order = 
+		{
+		   "orderId": orderId,
+		   "orderGrpId": ogi,
+		   "company": c,
+		   "custId": ci,
+		   "poNumber": poNumber,
+		   "orderDate": poDate,
+		   "notes": notes,
+		   "shipTo": shipToSelected,
+		   "expedisi": expedisiSelected,
+		   "jenisMobil": mobilSelected,
+		   "tonaseMobil": dimensiMobil,
+		   "tonaseOrder": dimensiOrder,
+		   "selisihTonase": selisihDimensi,
+		   "totalPrice": totalAmount,
+		   "periode": ps,
+		   "ebsSubmitStatus": "R",
+		   "ebsSubmitDate": null,
+		   "soNumber": null,
+		   "soStatus": null,
+		   "soDate": null,
+		   "invoiceStatus": null,
+		   "invoiceDate": null,
+		   "processFlag": "R"
+		};
+
+	console.log(order);
+	
+	$.ajax({
+	    type: "PUT",
+	    url: "/weborder/rest/order",
+	    // The key needs to match your method's input parameter (case-sensitive).
+	    data: JSON.stringify(order),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    success: function(result){
+	    	console.log("order >> success: " + result);
+	    	orderId = result;
+	    },
+	    complete: function( xhr, status ) {
+            console.log( "order >> complete for " + orderId );
+            saveOrderDetail(o, orderId, c, ci, ogi, ps);
+	    },
+	    error: function( xhr, textStatus, errorThrown ) {
+			console.log( "order >> XMLHttpRequest.status:  " + xhr.status);
+			if(xhr.status!==200){
+				console.log( 
+						"order >> XMLHttpRequest.responseText:  " 
+						+ xhr.responseText);
+				responseText = JSON.parse(xhr.responseText);
+				console.log( 
+						"order >> XMLHttpRequest.responseText.Error:  " 
+						+ responseText.error);
+				console.log( 
+						"order >> XMLHttpRequest.responseText.Message:  " 
+						+ responseText.message);
+			}
+		}
+	});
+}
+
+var orderSavedCount = 0;
+
+function saveOrderDetail(o, odi, c, ci, ogi, ps){
+	
+	var orderdetail = [];
+	
+	var tblOrderItemFixed = 
+		document.getElementById("tblOrderItemFixed");
+	var tblOrder = 
+		document.getElementById("tblOrder");
+	var productQty = 
+		parseFloat(document.getElementById("productQty").value);
+	var jumlahOrderSelected = 
+		document.getElementById("jumlahOrderSelected").value;
+	var item = 0;
+	
+	for(var idxRow = 1; idxRow<=productQty; idxRow++){
+
+		var qty =
+			unformatText(tblOrder.rows[idxRow].cells[o-1].children[0].value);
+		
+		if(qty>0){
+			item += 1;
+			var productCode=
+				tblOrderItemFixed.rows[idxRow].cells[0].children[0].value;
+			var productDesc=
+				tblOrderItemFixed.rows[idxRow].cells[1].children[0].value;
+			var orderDetailId =
+				tblOrder.rows[idxRow].cells[o-1].children[1].value;
+			var uomSelected = 
+				tblOrder.rows[idxRow].cells[8].children[3].value;
+			var unitPrice = 
+				unformatText(tblOrder.rows[idxRow].cells[8].children[0].value);
+			var totalPrice = 
+				unformatText(tblOrder.rows[idxRow].cells[6].children[0].value);
+			orderdetail.push({ 
+		        "orderDetailId" : orderDetailId,
+				"orderId": odi,
+				"productCode": productCode,
+				"productDesc": productDesc,
+				"uom": uomSelected,
+		        "jumlah"  : qty,
+				"unitPrice": unitPrice,
+				"totalPrice": totalPrice
+		    });
+		}
+	}
+	
+	console.log(orderdetail);
+	
+	$.ajax({
+	    type: "PUT",
+	    url: "/weborder/rest/orderdetail",
+	    // The key needs to match your method's input parameter (case-sensitive).
+	    data: JSON.stringify(orderdetail),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    success: function(result){
+	    	console.log("orderdetail >> success: " 
+	    			+ result + " rows from " + item + " rows");
+	    },
+	    complete: function( xhr, status ) {
+            orderSavedCount += 1;
+            console.log( "orderdetail >> orderSavedCount " + orderSavedCount );
+            console.log( "jumlahOrderSelected: " + jumlahOrderSelected);
+        	if(jumlahOrderSelected>1 && orderSavedCount==1){
+        		saveOrder(2, c, ci, ogi, ps);
+        	}
+    		if(jumlahOrderSelected>2 && orderSavedCount==2){
+    			saveOrder(3, c, ci, ogi, ps);
+    		}
+			if(jumlahOrderSelected>3 && orderSavedCount==3){
+				saveOrder(4, c, ci, ogi, ps);
+			}
+			if(jumlahOrderSelected>4 && orderSavedCount==4){
+				saveOrder(5, c, ci, ogi, ps);
+			}          
+            if(orderSavedCount==jumlahOrderSelected){
+    	    	window.location.replace("/weborder/home");
+            }
+	    },
+	    error: function( xhr, textStatus, errorThrown ) {
+			console.log( "XMLHttpRequest.status:  " + xhr.status);
+			if(xhr.status!==200){
+				console.log( 
+						"XMLHttpRequest.responseText:  " 
+						+ xhr.responseText);
+				responseText = JSON.parse(xhr.responseText);
+				console.log( 
+						"XMLHttpRequest.responseText.Error:  " 
+						+ responseText.error);
+				console.log( 
+						"XMLHttpRequest.responseText.Message:  " 
+						+ responseText.message);
+			}
+		}
+	});
+	
 }
 
 function formatText(obj){
@@ -573,10 +817,10 @@ function changeUom(obj){
 	var jumlahOrder = document.getElementById("jumlahOrder");
 	var tblOrder = document.getElementById("tblOrder");
 	//var untPrice = tblOrder.rows[idxRowCurrent].cells[6].children[0];
-	var untPrice = tblOrder.rows[idxRowCurrent].cells[7].children[0];
-	var untPriceInit = tblOrder.rows[idxRowCurrent].cells[7].children[1];
-	var uomInit = tblOrder.rows[idxRowCurrent].cells[7].children[2];
-	var uomSelected = tblOrder.rows[idxRowCurrent].cells[7].children[3];
+	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0];
+	var untPriceInit = tblOrder.rows[idxRowCurrent].cells[8].children[1];
+	var uomInit = tblOrder.rows[idxRowCurrent].cells[8].children[2];
+	var uomSelected = tblOrder.rows[idxRowCurrent].cells[8].children[3];
 	
 	var up = 0;
 	/*up =
@@ -2080,7 +2324,35 @@ function generateCMOB(){
 			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
 			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-		} //
+		} 
+		else if(jumlahOrder === "2"){
+			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
+		}
+		else if(jumlahOrder === "3"){
+			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
+			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
+		}
+		else if(jumlahOrder === "4"){
+			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
+		}
+		else if(jumlahOrder === "5"){
+			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
+			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
+		}//
 	} //	
 	
 			/*var totAmountPerLine = 0;
