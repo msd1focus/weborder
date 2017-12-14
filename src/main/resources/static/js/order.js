@@ -1,11 +1,11 @@
 window.onload = function(){
-	
-	
+
 	var orderBySelected = document.getElementById("orderBySelected").value;
 	var manual = document.getElementById("manual");
 	var cmob = document.getElementById("cmob");
 	var orderType = document.getElementById("orderType");
 	
+	inputProductInit();
 	dimensiMobilInit();
 	poDateInit();
 	
@@ -18,10 +18,11 @@ window.onload = function(){
 		manual.checked = "checked";
 	}
 	
-	changeJumlahOrder(jumlahOrder);	
+	//var jumlahOrder = document.getElementById("jumlahOrder");
+    //changeJumlahOrder(jumlahOrder);
 }
 
-/*$(document).keypress(
+/* $(document).keypress(
 	    function(event){
 	     if (event.which == '13') {
 	    	 console.log("enter");
@@ -30,6 +31,336 @@ window.onload = function(){
 
 });*/
 
+function inputProductInit(){
+	var company = 
+		document.getElementById("company").value;
+	var custId = 
+		document.getElementById("custId").value;
+	var orderId1 = 
+		document.getElementById("orderId1").value;
+	var orderId2 = 
+		document.getElementById("orderId2").value;
+	var orderId3 = 
+		document.getElementById("orderId3").value;
+	var orderId4 = 
+		document.getElementById("orderId4").value;
+	var orderId5 = 
+		document.getElementById("orderId5").value;
+	
+	var data = {}
+	data["company"] = company;
+	data["custid"] = custId;
+	data["orderid1"] = orderId1;
+	data["orderid2"] = orderId2;
+	data["orderid3"] = orderId3;
+	data["orderid4"] = orderId4;
+	data["orderid5"] = orderId5;
+	data["periodecurrent"] = null;
+	
+	$.ajax({
+		type: "GET",
+		url: "/weborder/rest/inputproduct",
+		contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    data: data,
+		success: function(result, textStatus, xhr){
+			console.log("inputproduct >> status: " + xhr.status);
+			
+			var tblOrderItemFixed = 
+				document.getElementById("tblOrderItemFixed");
+			var tblOrder = 
+				document.getElementById("tblOrder");
+			var productQty = 
+				document.getElementById("productQty");
+			var searchSelect = document.getElementById("searchSelect");
+			productQty.value = Object.keys(result).length;
+			
+			
+			$.each(result, function(i, field){
+				
+				var toif = 
+					'<tr><td>'
+					+ '<input readonly="readonly" style="width: 100px" value="'
+					+ field.product.productCode +'">'
+					+ '</td><td>'
+					+ '<input readonly="readonly" style="width: 320px" value="'
+					+ field.product.productName +'">'
+					+ '</td><td>'
+					+ '<select id="uom" style="width: 60px" onchange="changeUom(this)">'
+				
+				$.each(field.prodUoms, function(j, pu){				
+					toif += '<option'
+						
+					if(pu.uomCode==field.custProd.priceUom){
+						toif += ' selected';
+					}
+					
+					toif += ' value="'+ pu.conversionRate 
+						+ '">' 
+						+ pu.uomCode
+						+ '</option>'
+				});
+				
+				toif += '</select>'
+					+ '</td></tr>';
+				tblOrderItemFixed.insertRow(i+1).outerHTML = toif;
+				
+				var option = document.createElement("option");
+				option.value = field.product.productName;
+				option.text = field.product.productCode;
+				searchSelect.add(option);
+				
+				var to =
+					'<tr><td>'
+					+ '<input id="dtl1" type="text" value="'
+					+ field.orderQty1
+					+ '" onchange="calcAmount1(this)"'
+					+ 'onfocus="focus1(this)"'
+					+ 'onkeyup="formatText(this)"'
+					+ 'style="text-align: right;"/>'
+					+ '<input type="hidden" value="'
+					+ field.orderDetailId1
+					+ '"/>'
+					+ '<input type="hidden" value="'
+					+ field.product.company
+					+ '"/>'
+					+ '<input type="hidden"/>'
+					+ '<input type="hidden" value="'
+					+ field.custProd.company
+					+ '"/>'
+					+ '<input type="hidden" value="'
+					+ field.custProd.productCode
+					+ '"/>'
+					+ '<input type="hidden" value="'
+					+ field.custProd.custId
+					+ '"/>'
+					+ '<input type="hidden" value="'
+					+ field.custProd.price
+					+ '"/>'
+					+ '<input type="hidden" value="'
+					+ field.custProd.outstandingSo
+					+ '"/>'
+					+ '<input type="hidden" value="'
+					+ field.custProd.outstandingQuote
+					+ '"/>'
+					+ '<input type="hidden" value="'
+					+ field.product.productCat1
+					+ '"/>'
+					+ '</td><td>'
+					+ '<input id="dtl2" type="text" value="'
+					+ field.orderQty2
+					+ '" onchange="calcAmount2(this)"'
+					+ 'onfocus="focus2(this)"'
+					+ 'onkeyup="formatText(this)"'
+					+ 'style="text-align: right;"/>'
+					+ '<input type="hidden" value="'
+					+ field.orderDetailId2
+					+ '"/>'
+					+ '</td><td>'
+					+ '<input id="dtl3" type="text" value="'
+					+ field.orderQty3
+					+ '" onchange="calcAmount3(this)"'
+					+ 'onfocus="focus3(this)"'
+					+ 'onkeyup="formatText(this)"'
+					+ 'style="text-align: right;"/>'
+					+ '<input type="hidden" value="'
+					+ field.orderDetailId3
+					+ '"/>'
+					+ '</td><td>'
+					+ '<input id="dtl4" type="text" value="'
+					+ field.orderQty4
+					+ '" onchange="calcAmount4(this)"'
+					+ 'onfocus="focus4(this)"'
+					+ 'onkeyup="formatText(this)"'
+					+ 'style="text-align: right;"/>'
+					+ '<input type="hidden" value="'
+					+ field.orderDetailId4
+					+ '"/>'
+					+ '</td><td>'
+					+ '<input id="dtl5" type="text" value="'
+					+ field.orderQty5
+					+ '" onchange="calcAmount5(this)"'
+					+ 'onfocus="focus5(this)"'
+					+ 'onkeyup="formatText(this)"'
+					+ 'style="text-align: right;"/>'
+					+ '<input type="hidden" value="'
+					+ field.orderDetailId5
+					+ '"/>'
+					+ '</td><td>'
+					+ '<input id="dtlTotalQty" type="text" value="0"'
+					+ 'disabled="disabled"'
+					+ 'style="text-align: right;"/>'
+					+ '</td><td>'
+					+ '<input id="dtlTotal" type="text" value="0"'
+					+ 'disabled="disabled"'
+					+ 'style="text-align: right;"/>'
+					+ '</td><td style="display: none;">'
+					+ '<input type="hidden" id="untPrice1" value="'
+					+ field.custProd.price
+					+ '"/>'
+					+ '</td><td style="display: none;">'
+					+ '<input type="hidden" id="untPrice" value="'
+					+ field.custProd.price
+					+ '"/>'
+					+ '<input type="hidden" id="untPriceInit" value="'
+					+ field.custProd.price
+					+ '"/>'
+					+ '<input type="hidden" id="uomInit" value="'
+					+ field.custProd.priceUom
+					+ '"/>'
+					+ '<input type="hidden" id="uomSelected" value="'
+					+ field.custProd.priceUom
+					+ '"/>'
+					+ '</td><td style="display: none;">'
+					+ '<input type="hidden" id="prodWidth" value="'
+					+ field.product.prodWidth
+					+ '"/>'
+					+ '<input type="hidden" id="prodLength" value="'
+					+ field.product.prodLength
+					+ '"/>'
+					+ '<input type="hidden" id="prodHeight" value="'
+					+ field.product.prodHeight
+					+ '"/>'
+					+ '<input type="hidden" id="productCat1" value="'
+					+ field.product.productCat1
+					+ '"/>'
+					+ '</td><td style="display: none;">'
+					+ '<input type="hidden" id="averageSales3MonthBefore" value="'
+					+ field.averageSales3MonthBefore
+					+ '"/>'
+					+ '<input type="hidden" id="averageSales2MonthBefore" value="'
+					+ field.averageSales2MonthBefore
+					+ '"/>'
+					+ '<input type="hidden" id="averageSales1MonthBefore" value="'
+					+ field.averageSales1MonthBefore
+					+ '"/>'
+					+ '<input type="hidden" id="averageSalesCurrentMonth" value="'
+					+ field.averageSalesCurrentMonth
+					+ '"/>'
+					+ '<input type="hidden" id="targetCustomerCurrentMonth" value="'
+					+ field.targetCustomerCurrentMonth
+					+ '"/>'
+					+ '<input type="hidden" id="targetCustomerNextMonth" value="'
+					+ field.targetCustomerNextMonth
+					+ '"/>'
+					+ '<input type="hidden" id="qtyOnHand" value="'
+					+ field.qtyOnHand
+					+ '"/>'
+					+ '</td></tr>';
+				
+				tblOrder.insertRow(i+1).outerHTML = to;
+		     });
+		},
+	    complete: function( xhr, status ) {
+
+	    	if(orderId1!=null){
+		    	initOrderDetail(1, orderId1);
+	    	}
+	    	
+	    	if(orderId2!=null){
+		    	initOrderDetail(2, orderId2);
+	    	}
+	    	
+	    	if(orderId3!=null){
+		    	initOrderDetail(3, orderId3);
+	    	}
+	    	
+	    	if(orderId4!=null){
+		    	initOrderDetail(4, orderId4);
+	    	}
+
+	    	if(orderId5!=null){
+		    	initOrderDetail(5, orderId5);
+	    	}
+	    	
+	    },
+		error: function( xhr, textStatus, errorThrown ) {
+			console.log( "XMLHttpRequest.status:  " + xhr.status);
+			console.log( 
+					"XMLHttpRequest.responseText:  " 
+					+ xhr.responseText);
+			responseText = JSON.parse(xhr.responseText);
+			console.log( 
+					"XMLHttpRequest.responseText.Error:  " 
+					+ responseText.error);
+			console.log( 
+					"XMLHttpRequest.responseText.Message:  " 
+					+ responseText.message);
+		}
+	});
+}
+
+var initOrderCount = 0;
+function initOrderDetail(o, oi){
+	
+	var data = {}
+	data["orderid"] = oi;
+	$.ajax({
+		type: "GET",
+		url: "/weborder/rest/orderdetail",
+		contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    data: data,
+		success: function(result, textStatus, xhr){
+		
+			console.log("orderdetail"+ o + " >> status: " + xhr.status + " - " + oi);
+			if(Object.keys(result).length>0){	
+
+				var tblOrder = 
+					document.getElementById("tblOrder");
+				var productQty = 
+					document.getElementById("productQty").value;
+				
+				$.each(result, function(i, field){
+					
+					for(var idxRow = 1; idxRow<=productQty; idxRow++){
+						
+						var productCode = 
+							tblOrder.rows[idxRow].cells[0].children[5];
+						
+						if(productCode!=null){
+							
+							if(productCode.value==field.productCode){
+								
+								tblOrder.rows[idxRow].cells[o-1].children[0].value =
+									field.jumlah;
+								tblOrder.rows[idxRow].cells[o-1].children[1].value =
+									field.orderDetailId;
+							}
+							
+						}
+						
+					}
+					
+				});
+				
+			}
+	    	
+		},
+	    complete: function( xhr, status ) {
+	    	initOrderCount += 1;
+	    	var jumlahOrder = document.getElementById("jumlahOrder");
+	    	if(initOrderCount==jumlahOrder.value){
+		    	changeJumlahOrder(jumlahOrder);	
+	    	}
+	    	
+	    },
+		error: function( xhr, textStatus, errorThrown ) {
+			console.log( "XMLHttpRequest.status:  " + xhr.status);
+			console.log( 
+					"XMLHttpRequest.responseText:  " 
+					+ xhr.responseText);
+			responseText = JSON.parse(xhr.responseText);
+			console.log( 
+					"XMLHttpRequest.responseText.Error:  " 
+					+ responseText.error);
+			console.log( 
+					"XMLHttpRequest.responseText.Message:  " 
+					+ responseText.message);
+		}
+	});
+			
+}
 
 function saveForm(obj){
 
@@ -93,38 +424,7 @@ function saveForm(obj){
 		}
 		
 		saveOrderGrp("DRAFT");
-		
-	    /*$.ajax({
-	    	type: "GET",
-            dataType: "application/json",
-            contentType: "json",
-	    	url: "/weborder/rest/orderdetails",
-	    	success: function(result, textStatus, xhr){
-	    		console.log(xhr.status);
-	    		$.each(result, function(i, field){
-			        console.log(
-			        		"ajax_success: " 
-			        		+ field.orderDetailId 
-			        		+ " - "
-			        		+ field.orderId 
-			        		+ " - "
-			        		+ field.jumlah);
-			     });
-	    	},
-			error: function( xhr, textStatus, errorThrown ) {
-				console.log( "XMLHttpRequest.status:  " + xhr.status);
-				console.log( 
-						"XMLHttpRequest.responseText:  " 
-						+ xhr.responseText);
-				responseText = JSON.parse(xhr.responseText);
-				console.log( 
-						"XMLHttpRequest.responseText.Error:  " 
-						+ responseText.error);
-				console.log( 
-						"XMLHttpRequest.responseText.Message:  " 
-						+ responseText.message);
-			}
-	    });*/
+
 	}
 	else{
 
@@ -132,8 +432,6 @@ function saveForm(obj){
         obj.name = "action1";
         btnSubmit.name = "action1";
 	}	
-
-	//window.location.replace("/weborder/home");
 		
 	return false;
 }
@@ -208,8 +506,6 @@ function submitForm(obj){
         obj.name = "action1";
         btnSave.name = "action1";
 	}
-	
-	//window.location.replace("/weborder/home");
 	
 	return false;
 }
@@ -393,6 +689,7 @@ var orderSavedCount = 0;
 function saveOrderDetail(o, odi, c, ci, ogi, ps){
 	
 	var orderdetail = [];
+	var orderdetailids = [];
 	
 	var tblOrderItemFixed = 
 		document.getElementById("tblOrderItemFixed");
@@ -408,6 +705,8 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 
 		var qty =
 			unformatText(tblOrder.rows[idxRow].cells[o-1].children[0].value);
+		var orderDetailId =
+			tblOrder.rows[idxRow].cells[o-1].children[1].value;
 		
 		if(qty>0){
 			item += 1;
@@ -415,14 +714,12 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				tblOrderItemFixed.rows[idxRow].cells[0].children[0].value;
 			var productDesc=
 				tblOrderItemFixed.rows[idxRow].cells[1].children[0].value;
-			var orderDetailId =
-				tblOrder.rows[idxRow].cells[o-1].children[1].value;
 			var uomSelected = 
 				tblOrder.rows[idxRow].cells[8].children[3].value;
 			var unitPrice = 
 				unformatText(tblOrder.rows[idxRow].cells[8].children[0].value);
 			var totalPrice = 
-				unformatText(tblOrder.rows[idxRow].cells[6].children[0].value);
+				qty*unitPrice;
 			orderdetail.push({ 
 		        "orderDetailId" : orderDetailId,
 				"orderId": odi,
@@ -434,9 +731,40 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				"totalPrice": totalPrice
 		    });
 		}
+		else{
+			if(orderDetailId!= null){
+				orderdetailids.push(orderDetailId);
+			}
+		}
 	}
 	
 	console.log(orderdetail);
+	
+	$.ajax({
+        type: "DELETE",
+        url: "/weborder/rest/orderdetail",
+        data: JSON.stringify(orderdetailids),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(result){
+	    	console.log("orderdetail >> delete");
+        },
+        error: function( xhr, textStatus, errorThrown ) {
+			console.log( "XMLHttpRequest.status:  " + xhr.status);
+			if(xhr.status!==200){
+				console.log( 
+						"XMLHttpRequest.responseText:  " 
+						+ xhr.responseText);
+				responseText = JSON.parse(xhr.responseText);
+				console.log( 
+						"XMLHttpRequest.responseText.Error:  " 
+						+ responseText.error);
+				console.log( 
+						"XMLHttpRequest.responseText.Message:  " 
+						+ responseText.message);
+			}
+		}
+    });
 	
 	$.ajax({
 	    type: "PUT",
@@ -446,7 +774,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 	    contentType: "application/json; charset=utf-8",
 	    dataType: "json",
 	    success: function(result){
-	    	console.log("orderdetail >> success: " 
+	    	console.log("orderdetail >> put: " 
 	    			+ result + " rows from " + item + " rows");
 	    },
 	    complete: function( xhr, status ) {
@@ -795,6 +1123,7 @@ function searchProduct(obj){
 			tblOrderItemFixed.rows[idxRow].cells[1].children[0].value;
 		if(productCodeSelected===productCodeCurrent){
 			tblOrder.rows[idxRow].cells[0].children[0].focus();
+			tblOrder.rows[idxRow].cells[0].children[0].select();
 			break;
 		}
 	}
@@ -968,6 +1297,13 @@ function focus5(obj){
 }
 
 function calcAmount1(obj){
+	
+	console.log("===============================================================");
+	console.log("calcAmount1");
+	console.log("===============================================================");
+	
+	console.log("obj.value: " + obj.value);
+	
 	var dtl1 = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
@@ -2310,6 +2646,7 @@ function generateCMOB(){
 	var amtTotal = document.getElementById("amtTotal");
     var totAmount = 0;
 	
+    //dummy
 	var cmobInitial = 1;
 	var cmobMultiplier = 0;
 	
@@ -2353,7 +2690,8 @@ function generateCMOB(){
 			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
 			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
 		}//
-	} //	
+	} //
+	// end dummy
 	
 			/*var totAmountPerLine = 0;
 			totAmountPerLine = 
@@ -3496,6 +3834,16 @@ function changePeriode(obj){
     var poNumber3 = document.getElementById("poNumber3");
     var poNumber4 = document.getElementById("poNumber4");
     var poNumber5 = document.getElementById("poNumber5");
+    var poNumber1CurrentMonth = document.getElementById("poNumber1CurrentMonth").value;
+    var poNumber2CurrentMonth = document.getElementById("poNumber2CurrentMonth").value;
+    var poNumber3CurrentMonth = document.getElementById("poNumber3CurrentMonth").value;
+    var poNumber4CurrentMonth = document.getElementById("poNumber4CurrentMonth").value;
+    var poNumber5CurrentMonth = document.getElementById("poNumber5CurrentMonth").value;
+    var poNumber1NextMonth = document.getElementById("poNumber1NextMonth").value;
+    var poNumber2NextMonth = document.getElementById("poNumber2NextMonth").value;
+    var poNumber3NextMonth = document.getElementById("poNumber3NextMonth").value;
+    var poNumber4NextMonth = document.getElementById("poNumber4NextMonth").value;
+    var poNumber5NextMonth = document.getElementById("poNumber5NextMonth").value;
     
     var p = periode.split(" ");
     var month = p[0];
@@ -3576,21 +3924,52 @@ function changePeriode(obj){
     poDate5.min = minDate;
     poDate5.max = maxDate;
     
-    po1 = poNumber1.value;
-    po1 = po1.replaceAt(6, monthIndex);
-    poNumber1.value = po1;
-    po2 = poNumber2.value;
-    po2 = po2.replaceAt(6, monthIndex);
-    poNumber2.value = po2;
-    po3 = poNumber3.value;
-    po3 = po3.replaceAt(6, monthIndex);
-    poNumber3.value = po3;
-    po4 = poNumber4.value;
-    po4 = po4.replaceAt(6, monthIndex);
-    poNumber4.value = po4;
-    po5 = poNumber5.value;
-    po5 = po5.replaceAt(6, monthIndex);
-    poNumber5.value = po5;
+    //PO201801009/AN00201
+    console.log("poNumber1CurrentMonth: " + poNumber1CurrentMonth.substring(6, 8));
+    console.log("poNumber1NextMonth: " + poNumber1NextMonth.substring(6, 8));
+    console.log("monthIndex: " + monthIndex);
+    if(poNumber1CurrentMonth.substring(6, 8)==monthIndex){
+        poNumber1.value = poNumber1CurrentMonth;
+        poNumber2.value = poNumber2CurrentMonth;
+        poNumber3.value = poNumber3CurrentMonth;
+        poNumber4.value = poNumber4CurrentMonth;
+        poNumber5.value = poNumber5CurrentMonth;
+    }
+    else if(poNumber1NextMonth.substring(6, 8)==monthIndex){
+        poNumber1.value = poNumber1NextMonth;
+        poNumber2.value = poNumber2NextMonth;
+        poNumber3.value = poNumber3NextMonth;
+        poNumber4.value = poNumber4NextMonth;
+        poNumber5.value = poNumber5NextMonth;
+    }
+    else{
+    	po1 = poNumber1.value;
+    	po1 = po1.replaceAt(2, "---------");
+        //po1 = po1.replaceAt(6, monthIndex);
+        //po1 = po1.replaceAt(2, year);
+        poNumber1.value = po1;
+        po2 = poNumber2.value;
+    	po2 = po2.replaceAt(2, "---------");
+        //po2 = po2.replaceAt(6, monthIndex);
+        //po2 = po2.replaceAt(2, year);
+        poNumber2.value = po2;
+        po3 = poNumber3.value;
+    	po3 = po3.replaceAt(2, "---------");
+        //po3 = po3.replaceAt(6, monthIndex);
+        //po3 = po3.replaceAt(2, year);
+        poNumber3.value = po3;
+        po4 = poNumber4.value;
+    	po4 = po4.replaceAt(2, "---------");
+        //po4 = po4.replaceAt(6, monthIndex);
+        //po4 = po4.replaceAt(2, year);
+        poNumber4.value = po4;
+        po5 = poNumber5.value;
+    	po5 = po5.replaceAt(2, "---------");
+        //po5 = po5.replaceAt(6, monthIndex);
+        //po5 = po5.replaceAt(2, year);
+        poNumber5.value = po5;
+    }
+    
 }
 
 function changeJumlahOrder(obj) {

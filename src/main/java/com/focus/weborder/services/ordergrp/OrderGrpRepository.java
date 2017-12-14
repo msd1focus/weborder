@@ -21,13 +21,15 @@ public interface OrderGrpRepository extends CrudRepository<OrderGrp, Long> {
 	List<OrderGrp> getByCompanyCustidDraft(@Param("company") String company,
     		@Param("custId") Long custId);
 	
-	@Query("SELECT og FROM OrderGrp og WHERE " +
-            "og.company = :company AND " +
-            "og.custId = :custId AND " +
-            "og.submitStatus in ('SUBMITTED', 'PROCESSED') "
+	@Query("SELECT og FROM OrderGrp og WHERE "
+            + "og.company = :company AND "
+            + "og.custId = :custId AND "
+            + "og.periodeOrder= :periodeOrder AND "
+            + "og.submitStatus in ('SUBMITTED', 'PROCESSED') "
             + "ORDER BY og.orderGrpId DESC")
 	List<OrderGrp> getOrderGrpSubmitted(@Param("company") String company,
-    		@Param("custId") Long custId);
+    		@Param("custId") Long custId,
+    		@Param("periodeOrder") String periodeOrder);
 	
 	@Modifying
 	@Query("UPDATE OrderGrp o SET "

@@ -151,6 +151,12 @@ public class InputOrderController
         return "/error/405";
     }
     
+
+    @GetMapping("/500")
+    public String error500() {
+        return "/error/500";
+    }
+    
     @RequestMapping(value="/resetpassword", method = RequestMethod.GET)
 	public ModelAndView resetpassword(){
 		ModelAndView modelAndView = new ModelAndView();
@@ -346,6 +352,13 @@ public class InputOrderController
 				Long poNumber3 = (long)3;
 				Long poNumber4 = (long)4;
 				Long poNumber5 = (long)5;		
+				
+
+				Long poNumber1NextMonth = (long)1;
+				Long poNumber2NextMonth = (long)2;
+				Long poNumber3NextMonth = (long)3;
+				Long poNumber4NextMonth = (long)4;
+				Long poNumber5NextMonth = (long)5;
 
 				OrderGrp orderGrp = null;
 				if(orderGrps!=null) {
@@ -356,13 +369,13 @@ public class InputOrderController
 				
 				if(orderGrp==null) {		
 					
-					List<OrderGrp> orderGrpSubmitteds = 
-							orderGrpService.getOrderGrpSubmitted(company, custId);
+					List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
+							orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
 					
-					if(orderGrpSubmitteds!=null) {
-						if(orderGrpSubmitteds.size()>0) {
+					if(orderGrpSubmittedsCurrentMonth!=null) {
+						if(orderGrpSubmittedsCurrentMonth.size()>0) {
 							OrderGrp orderGrpSubmittedLast = 
-									orderGrpSubmitteds.get(0);
+									orderGrpSubmittedsCurrentMonth.get(0);
 							List<Order> orderSubmittedLasts = 
 									orderService.getByCompanyCustidGrpid(
 											orderGrpSubmittedLast.getOrderGrpId(),
@@ -381,8 +394,35 @@ public class InputOrderController
 								poNumber4 = lPoNumberLast + 4;
 								poNumber5 = lPoNumberLast + 5;
 							}
-						}
-								
+						}						
+					}
+					
+					List<OrderGrp> orderGrpSubmittedsNextMonth = 
+							orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+					
+					if(orderGrpSubmittedsNextMonth!=null) {
+						if(orderGrpSubmittedsNextMonth.size()>0) {
+							OrderGrp orderGrpSubmittedLast = 
+									orderGrpSubmittedsNextMonth.get(0);
+							List<Order> orderSubmittedLasts = 
+									orderService.getByCompanyCustidGrpid(
+											orderGrpSubmittedLast.getOrderGrpId(),
+											custId, company); 
+							if(orderSubmittedLasts!=null) {
+								Order orderSubmittedLast = 
+										orderSubmittedLasts.get(
+												orderSubmittedLasts.size()-1);
+								String poNumberLast =
+										orderSubmittedLast.getPoNumber();
+								String sPoNumberLast = poNumberLast.substring(8,11);
+								Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+								poNumber1NextMonth = lPoNumberLast + 1;
+								poNumber2NextMonth = lPoNumberLast + 2;
+								poNumber3NextMonth = lPoNumberLast + 3;
+								poNumber4NextMonth = lPoNumberLast + 4;
+								poNumber5NextMonth = lPoNumberLast + 5;
+							}
+						}						
 					}
 					
 					orderGrp = new OrderGrp();
@@ -403,6 +443,7 @@ public class InputOrderController
 							orderGrp.getOrderGrpId(), custId, company);
 				}
 				
+				System.out.println("orders.size(): " + orders.size());
 				if(orders.size()==0) {
 					
 					order1 = setDefaultOrder(
@@ -504,6 +545,28 @@ public class InputOrderController
 				inputOrder.setOrder4(order4);
 				inputOrder.setOrder5(order5);
 				
+				inputOrder.setPoNumber1CurrentMonth(
+						createPoNumber(year, month, poNumber1, customer.getCustomerNumber()));
+				inputOrder.setPoNumber2CurrentMonth(
+						createPoNumber(year, month, poNumber2, customer.getCustomerNumber()));
+				inputOrder.setPoNumber3CurrentMonth(
+						createPoNumber(year, month, poNumber3, customer.getCustomerNumber()));
+				inputOrder.setPoNumber4CurrentMonth(
+						createPoNumber(year, month, poNumber4, customer.getCustomerNumber()));
+				inputOrder.setPoNumber5CurrentMonth(
+						createPoNumber(year, month, poNumber5, customer.getCustomerNumber()));
+				
+				inputOrder.setPoNumber1NextMonth(
+						createPoNumber(yearNext, monthNext, poNumber1NextMonth, customer.getCustomerNumber()));
+				inputOrder.setPoNumber2NextMonth(
+						createPoNumber(yearNext, monthNext, poNumber2NextMonth, customer.getCustomerNumber()));
+				inputOrder.setPoNumber3NextMonth(
+						createPoNumber(yearNext, monthNext, poNumber3NextMonth, customer.getCustomerNumber()));
+				inputOrder.setPoNumber4NextMonth(
+						createPoNumber(yearNext, monthNext, poNumber4NextMonth, customer.getCustomerNumber()));
+				inputOrder.setPoNumber5NextMonth(
+						createPoNumber(yearNext, monthNext, poNumber5NextMonth, customer.getCustomerNumber()));
+				
 				String minOrderDate = getMinDate();
 				String maxOrderDate = getMaxDate(orderGrp.getPeriodeOrder());
 				
@@ -521,6 +584,7 @@ public class InputOrderController
 				orderTypes.add("SO Lokal Non Food With CO - DP");
 				
 				List<InputProduct> inputProducts = new ArrayList<>();
+				/*//start comment for ajax
 				List<CustProd> custProds = custProdService.getCustProd(
 						company, custId);
 				for(CustProd custProd: custProds) {
@@ -622,7 +686,8 @@ public class InputOrderController
 		
 							inputProduct.setOrderQty5("0");
 						}
-						/*//cmob required data
+						
+						//cmob required data
 						Double averageSalesCurrentMonth = (double) 0;
 						CustProdSales custProdSalesCurrent = 
 								custProdSalesService.
@@ -787,13 +852,15 @@ public class InputOrderController
 									getByCompanyCustidProductcode(
 											company, custId,
 											productCode);
-						inputProduct.setCustInvoices(custInvoices);*/
+						inputProduct.setCustInvoices(custInvoices);
+						//end of cmob required data
 						
 						inputProducts.add(inputProduct);
+						
 					}
 					
-				}
-				
+				}//start comment for ajax
+*/				
 				InputWebOrder inputWebOrder = new InputWebOrder();
 				inputWebOrder.setCustomer(customer);
 				inputWebOrder.setInputOrder(inputOrder);
@@ -1266,8 +1333,13 @@ public class InputOrderController
 				+ customer.getCustomerNumber());
 		order.setOrderDate(
 				Date.valueOf(getMinDate()));
-		order.setShipTo(
-				custShipTo.get(0).getShipToId().toString());
+		if(custShipTo!=null) {
+			if(custShipTo.size()>0) {
+				order.setShipTo(
+						custShipTo.get(0).getShipToId().toString());
+			}
+		}
+		
 		order.setJenisMobil(
 				listMobils.get(0).getMobilDesc().toString());
 		order.setTotalPrice(0.0);
@@ -1560,6 +1632,36 @@ public class InputOrderController
 				String.valueOf(s.charAt(2)) 
 				+ String.valueOf(s.charAt(3));
 		return yearOracle;
+	}
+	
+	private String createPoNumber(
+			Integer year, Integer month, Long poNumber,
+			String customerName) {
+		
+		String pn = "PO";
+		
+		String po = "000";
+		if(poNumber<10) {
+			po = "00" + poNumber;
+		}
+		else if(poNumber>=10 && poNumber<100) {
+			po = "0" + poNumber;
+		}
+		else if(poNumber>=100 && poNumber<1000){
+			po = poNumber.toString();
+		}
+		else {
+			po = "---";
+		}
+		
+		String m = month.toString();
+		if(month<10) {
+			m = "0" + month;		
+		}
+		
+		pn += year + m + po + "/" + customerName;
+				
+		return pn;
 	}
 
 }

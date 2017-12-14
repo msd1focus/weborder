@@ -21,8 +21,11 @@ public class OrderGrpService {
 		return orderGrpRepository.getByCompanyCustidDraft(company, custId);
 	}
 	
-	public List<OrderGrp> getOrderGrpSubmitted(String company, Long custId) {
-		return orderGrpRepository.getOrderGrpSubmitted(company, custId);
+	public List<OrderGrp> getOrderGrpSubmitted(
+			String company, Long custId,
+			String periodeOrder) {
+		return orderGrpRepository.getOrderGrpSubmitted(
+				company, custId, periodeOrder);
 	}
 	
 	public void addOrderGrp(OrderGrp orderGrp) {

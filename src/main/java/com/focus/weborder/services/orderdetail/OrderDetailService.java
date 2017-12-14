@@ -39,6 +39,7 @@ public class OrderDetailService {
 	}
 	
 	public void updateOrderDetail(OrderDetail orderDetail) {
+		//System.out.println("orderDetail.getJumlah(): " + orderDetail.getJumlah());
 		orderDetailRepository.save(orderDetail);
 		/*orderDetailRepository.update(
 				orderDetail.getOrderDetailId(), orderDetail.getOrderId(), 

@@ -66,6 +66,9 @@ public class OrderService {
 	}
 	
 	public Long updateOrder(Order order) {
+		//Double totalPrice = order.getTotalPrice();
+		//Double tonaseOrder = order.getTonaseOrder();
+		//System.out.println("tonaseOrder: " + tonaseOrder);
 		orderRepository.save(order);
 		return order.getOrderId();
 		/*orderRepository.updateByCompanyCustidGrpidOrderid(

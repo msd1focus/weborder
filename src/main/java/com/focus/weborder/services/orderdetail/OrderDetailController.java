@@ -47,8 +47,10 @@ public class OrderDetailController {
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/orderdetail")
-	public void deleteOrderDetail(@RequestParam Long orderdetailid){
-		orderDetailService.deleteOrderDetail(orderdetailid);
+	public void deleteOrderDetail(@RequestBody List<Long> orderdetailids){
+		for(Long orderdetailid: orderdetailids) {
+			orderDetailService.deleteOrderDetail(orderdetailid);
+		}
 	}
 
 }
