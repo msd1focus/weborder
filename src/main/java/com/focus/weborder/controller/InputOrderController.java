@@ -433,7 +433,13 @@ public class InputOrderController
 					orderGrp.setPeriodeOrder(monthName + " " + year);
 					orderGrp.setJumlahOrder((long)0);
 					orderGrp.setLeadTime((long) 0);
-					orderGrp.setSisaLimit(customer.getCreditLimit());	
+					Long creditLimit = (long) 0;
+					if(customer!=null) {
+						if(customer.getCreditLimit()!=null) {
+							creditLimit = customer.getCreditLimit();	
+						}
+					}
+					orderGrp.setSisaLimit(creditLimit);
 				}
 				else {
 					
@@ -545,27 +551,34 @@ public class InputOrderController
 				inputOrder.setOrder4(order4);
 				inputOrder.setOrder5(order5);
 				
+				String customerNumber = "-------";
+				if(customer!=null) {
+					if(customer.getCustomerNumber()!=null) {
+						customerNumber = customer.getCustomerNumber();
+					}
+				}
+				
 				inputOrder.setPoNumber1CurrentMonth(
-						createPoNumber(year, month, poNumber1, customer.getCustomerNumber()));
+						createPoNumber(year, month, poNumber1, customerNumber));
 				inputOrder.setPoNumber2CurrentMonth(
-						createPoNumber(year, month, poNumber2, customer.getCustomerNumber()));
+						createPoNumber(year, month, poNumber2, customerNumber));
 				inputOrder.setPoNumber3CurrentMonth(
-						createPoNumber(year, month, poNumber3, customer.getCustomerNumber()));
+						createPoNumber(year, month, poNumber3, customerNumber));
 				inputOrder.setPoNumber4CurrentMonth(
-						createPoNumber(year, month, poNumber4, customer.getCustomerNumber()));
+						createPoNumber(year, month, poNumber4, customerNumber));
 				inputOrder.setPoNumber5CurrentMonth(
-						createPoNumber(year, month, poNumber5, customer.getCustomerNumber()));
+						createPoNumber(year, month, poNumber5, customerNumber));
 				
 				inputOrder.setPoNumber1NextMonth(
-						createPoNumber(yearNext, monthNext, poNumber1NextMonth, customer.getCustomerNumber()));
+						createPoNumber(yearNext, monthNext, poNumber1NextMonth, customerNumber));
 				inputOrder.setPoNumber2NextMonth(
-						createPoNumber(yearNext, monthNext, poNumber2NextMonth, customer.getCustomerNumber()));
+						createPoNumber(yearNext, monthNext, poNumber2NextMonth, customerNumber));
 				inputOrder.setPoNumber3NextMonth(
-						createPoNumber(yearNext, monthNext, poNumber3NextMonth, customer.getCustomerNumber()));
+						createPoNumber(yearNext, monthNext, poNumber3NextMonth, customerNumber));
 				inputOrder.setPoNumber4NextMonth(
-						createPoNumber(yearNext, monthNext, poNumber4NextMonth, customer.getCustomerNumber()));
+						createPoNumber(yearNext, monthNext, poNumber4NextMonth, customerNumber));
 				inputOrder.setPoNumber5NextMonth(
-						createPoNumber(yearNext, monthNext, poNumber5NextMonth, customer.getCustomerNumber()));
+						createPoNumber(yearNext, monthNext, poNumber5NextMonth, customerNumber));
 				
 				String minOrderDate = getMinDate();
 				String maxOrderDate = getMaxDate(orderGrp.getPeriodeOrder());
@@ -1325,12 +1338,18 @@ public class InputOrderController
 		else {
 			po = "---";
 		}
+		String customerNumber = "-------";
+		if(customer!=null) {
+			if(customer.getCustomerNumber()!=null) {
+				customerNumber = customer.getCustomerNumber();
+			}
+		}
 		Order order = new Order();
 		order.setCompany(orderGrp.getCompany());
 		order.setCustId(orderGrp.getCustId());
 		order.setPoNumber("PO" + year + month 
 				+ po + "/" 
-				+ customer.getCustomerNumber());
+				+ customerNumber);
 		order.setOrderDate(
 				Date.valueOf(getMinDate()));
 		if(custShipTo!=null) {
