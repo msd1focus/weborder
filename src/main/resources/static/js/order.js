@@ -1,21 +1,23 @@
+var firstLoad = true;
+
 window.onload = function(){
 
 	var orderBySelected = document.getElementById("orderBySelected").value;
 	var manual = document.getElementById("manual");
 	var cmob = document.getElementById("cmob");
-	var orderType = document.getElementById("orderType");
+	var rowLeadTime = document.getElementById("rowLeadTime");
 	
 	inputProductInit();
 	dimensiMobilInit();
 	poDateInit();
 	
-	changeOrderType(orderType);
-	
 	if(orderBySelected=="CMOB"){
 		cmob.checked = "checked";
+		rowLeadTime.style.display = "table-row";
 	}
 	else if(orderBySelected="Manual"){
 		manual.checked = "checked";
+		rowLeadTime.style.display = "none";
 	}
 	
 	//var jumlahOrder = document.getElementById("jumlahOrder");
@@ -34,6 +36,8 @@ window.onload = function(){
 function inputProductInit(){
 	var company = 
 		document.getElementById("company").value;
+	var custLocation = 
+		document.getElementById("custLocation").value;
 	var custId = 
 		document.getElementById("custId").value;
 	var orderId1 = 
@@ -78,15 +82,20 @@ function inputProductInit(){
 			
 			$.each(result, function(i, field){
 				
+				var productName = field.product.productName;
+				if(custLocation=="BATAM"){
+					productName = field.product.productName2;
+				}
+				
 				var toif = 
 					'<tr><td>'
 					+ '<input readonly="readonly" style="width: 100px" value="'
-					+ field.product.productCode +'">'
+					+ field.product.productCode +'"/>'
 					+ '</td><td>'
 					+ '<input readonly="readonly" style="width: 320px" value="'
-					+ field.product.productName +'">'
+					+ productName +'"/>'
 					+ '</td><td>'
-					+ '<select id="uom" style="width: 60px" onchange="changeUom(this)">'
+					+ '<select id="uom" style="width: 60px" onchange="changeUom(this)"/>'
 				
 				$.each(field.prodUoms, function(j, pu){				
 					toif += '<option'
@@ -124,7 +133,9 @@ function inputProductInit(){
 					+ '<input type="hidden" value="'
 					+ field.product.company
 					+ '"/>'
-					+ '<input type="hidden"/>'
+					+ '<input type="hidden" value="'
+					+ field.product.prodUom1
+					+ '"/>'
 					+ '<input type="hidden" value="'
 					+ field.custProd.company
 					+ '"/>'
@@ -146,6 +157,7 @@ function inputProductInit(){
 					+ '<input type="hidden" value="'
 					+ field.product.productCat1
 					+ '"/>'
+					+ '<input type="hidden" id="cmobValue" value="0"/>'
 					+ '</td><td class="order2" width="150px" id="detail2" style="display: none;">'
 					+ '<input id="dtl2" type="text" value="'
 					+ field.orderQty2
@@ -291,6 +303,8 @@ function inputProductInit(){
 
 	    	if(isOrderNull){
 		    	var jumlahOrder = document.getElementById("jumlahOrder");
+	    		var orderType = document.getElementById("orderType");
+	    		changeOrderType(orderType);
 		    	changeJumlahOrder(jumlahOrder);	
 	    	}
 	    	
@@ -365,12 +379,6 @@ function initOrderDetail(o, oi){
 						}	
 					}
 					
-					initOrderCount += 1;
-			    	var jumlahOrder = document.getElementById("jumlahOrder");
-			    	if(initOrderCount==jumlahOrder.value){
-				    	changeJumlahOrder(jumlahOrder);	
-			    	}
-					
 				});
 				
 			}
@@ -378,6 +386,13 @@ function initOrderDetail(o, oi){
 		},
 	    complete: function( xhr, status ) {
 	    	
+	    	initOrderCount += 1;
+	    	var jumlahOrder = document.getElementById("jumlahOrder");
+	    	if(initOrderCount==jumlahOrder.value){
+	    		var orderType = document.getElementById("orderType");
+	    		changeOrderType(orderType);
+		    	changeJumlahOrder(jumlahOrder);	
+	    	}
 	    	
 	    },
 		error: function( xhr, textStatus, errorThrown ) {
@@ -829,7 +844,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				saveOrder(5, c, ci, ogi, ps);
 			}          
             if(orderSavedCount==jumlahOrderSelected){
-    	    	//window.location.replace("/weborder/home");
+    	    	window.location.replace("/weborder/home");
             }
 	    },
 	    error: function( xhr, textStatus, errorThrown ) {
@@ -1364,6 +1379,10 @@ function changeUom(obj){
 	uomSelected.value = uomCurrent;
 	changeJumlahOrder(jumlahOrder);	
 	console.log("===============================================================");
+}
+
+function focusSearch(obj){
+	obj.select();
 }
 
 function focus1(obj){
@@ -2820,8 +2839,21 @@ function calcAmount5(obj){
 	return;
 }
 
+function calcAmount(){
+	
+}
+
 function generateCMOB(){
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
+	
+	var company = document.getElementById("company").value;
+	var custId = document.getElementById("custId").value;
+	var periodeSelected = document.getElementById("periodeSelected").value;
+	var leadTime = document.getElementById("leadTime").value;
+	
+	var tblOrderItemFixed = 
+		document.getElementById("tblOrderItemFixed");
+	var jumlahOrderSelected = 
+		document.getElementById("jumlahOrderSelected").value;
 	var orderBySelected = document.getElementById("orderBySelected");
 	orderBySelected.value = "CMOB";
 	var tblOrder = document.getElementById("tblOrder");
@@ -2844,167 +2876,106 @@ function generateCMOB(){
 	var amtTotal = document.getElementById("amtTotal");
     var totAmount = 0;
 	
-    //dummy
-	var cmobInitial = 1;
-	var cmobMultiplier = 0;
-	
+    var orderdetail = [];
+    
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
-		cmobMultiplier += 1;
-		var qty = (cmobInitial * cmobMultiplier) / jumlahOrder;
-		
-		if(jumlahOrder === "1"){
-			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[1].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-		} 
-		else if(jumlahOrder === "2"){
-			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[2].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-		}
-		else if(jumlahOrder === "3"){
-			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[3].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-		}
-		else if(jumlahOrder === "4"){
-			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = 0;
-		}
-		else if(jumlahOrder === "5"){
-			tblOrder.rows[idxRow].cells[0].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[1].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[2].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-		}//
-	} //
-	// end dummy
+		var productCode =
+			tblOrderItemFixed.rows[idxRow].cells[0].children[0].value;
+		var primaryUom =
+			tblOrder.rows[idxRow].cells[0].children[3].value;
+		var selectedUom =
+			tblOrder.rows[idxRow].cells[8].children[3].value;
+		var outstandingSo =
+			tblOrder.rows[idxRow].cells[0].children[8].value;
+		var outstandingQuote =
+			tblOrder.rows[idxRow].cells[0].children[9].value;
+		var uom = 
+			tblOrderItemFixed.rows[idxRow].cells[2].children[0];
 	
-			/*var totAmountPerLine = 0;
-			totAmountPerLine = 
-				parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value);
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "2"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[6].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[8].children[0].value = 0;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "3"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[6].children[0].value = 0;
-			tblOrder.rows[idxRow].cells[8].children[0].value = 0;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "4"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[6].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[8].children[0].value = 0;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
-		}
-		else if(jumlahOrder === "5"){
-			tblOrder.rows[idxRow].cells[3].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[4].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[5].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[6].children[0].value = qty;
-			tblOrder.rows[idxRow].cells[8].children[0].value = qty;
-			
-			var totAmountPerLine = 0;
-			totAmountPerLine = 
-				(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-				+ (parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-   				* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value))
-   				+ (parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)
-   	    		* parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-			tblOrder.rows[idxRow].cells[8].children[0].value =
-				totAmountPerLine;
-			totAmount += totAmountPerLine;
+		var uomPrimaryRate = 0;
+		var uomSelectedRate = 0;
+		
+		for (var i=0; i<uom.length; i++){
+			if(primaryUom==uom.options[i].text){
+				primaryUomRate = uom.options[i].value;
+			}
+			if(selectedUom==uom.options[i].text){
+				selectedUomRate = uom.options[i].value;
+			}
 		}
 		
-		totAmount1 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[3].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount2 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[4].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount3 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[5].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount4 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[6].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		totAmount5 += 
-			(parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)
-				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value));
-		
+		orderdetail.push({ 
+	        "company" : company,
+			"custId": custId,
+			"productCode": productCode,
+			"periode": periodeSelected,
+			"leadTime": leadTime,
+	        "primaryUomRate"  : primaryUomRate,
+			"selectedUomRate": selectedUomRate,
+			"outstandingSo": outstandingSo,
+			"outstandingQuote": outstandingQuote
+	    });
+
 	}
 	
-	totalAmount1.value = totAmount1;
-	totalAmount2.value = totAmount2;
-	totalAmount3.value = totAmount3;
-	totalAmount4.value = totAmount4;
-	totalAmount5.value = totAmount5;
-	amtTotal.value = totAmount;
-	sisaLimit.value = sisaLimitInit - totAmount;*/
+	console.log(orderdetail);
+	
+	$.ajax({
+	    type: "POST",
+	    url: "/weborder/rest/inputproduct/cmob",
+	    // The key needs to match your method's input parameter (case-sensitive).
+	    data: JSON.stringify(orderdetail),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    success: function(result, textStatus, xhr){
+	    	console.log("cmob >> status: " + xhr.status);
+			if(Object.keys(result).length>0){	
+				
+				$.each(result, function(i, field){
+					
+					for(var idxRow = 1; idxRow<=productQty; idxRow++){
+						
+						var productCode = 
+							tblOrder.rows[idxRow].cells[0].children[5];
+						
+						if(productCode!=null){
+							if(productCode.value==field.productCode){
+								console.log(
+										field.productCode
+										+ " - "
+										+ field.quantity);
+								tblOrder.rows[idxRow].cells[0].children[11].value =
+									field.quantity;
+							}					
+						}	
+					}		
+				});	
+			}
+	    },
+	    complete: function( xhr, status ) {
+
+	    	var jumlahOrder = document.getElementById("jumlahOrder");
+		    changeJumlahOrder(jumlahOrder);	
+	    },
+	    error: function( xhr, textStatus, errorThrown ) {
+			console.log( "XMLHttpRequest.status:  " + xhr.status);
+			if(xhr.status!==200){
+				console.log( 
+						"XMLHttpRequest.responseText:  " 
+						+ xhr.responseText);
+				responseText = JSON.parse(xhr.responseText);
+				console.log( 
+						"XMLHttpRequest.responseText.Error:  " 
+						+ responseText.error);
+				console.log( 
+						"XMLHttpRequest.responseText.Message:  " 
+						+ responseText.message);
+			}
+		}
+	});
+	
+	return false;
 }
 
 /*function generateCMOB(){
@@ -3650,6 +3621,11 @@ function generateCMOB(){
 	console.log("");
 }*/
 
+function selectCMOB(){
+	var rowLeadTime = document.getElementById("rowLeadTime");
+	rowLeadTime.style.display = "table-row";
+}
+
 function resetOrder(){
 	
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
@@ -4256,6 +4232,62 @@ function changeJumlahOrder(obj) {
 	var do3= 0;
 	var do4= 0;
 	var do5= 0;
+	
+	if(cmob.checked){
+    	if(firstLoad){
+    		firstLoad = false;
+    		generateCMOB();
+    	}
+    	else{
+    		for(var idxRow = 1; idxRow<=productQty; idxRow++){
+            	var cmob = parseFloat(tblOrder.rows[idxRow].cells[0].children[11].value);
+            	if(jumlahOrder==1){
+                	tblOrder.rows[idxRow].cells[0].children[0].value =
+                		cmob;
+                }
+        		else if(jumlahOrder==2){
+        			var qty = Math.ceil(cmob/2);
+                	tblOrder.rows[idxRow].cells[0].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[1].children[0].value =
+                		qty;
+        		}
+        		else if(jumlahOrder==3){
+        			var qty = Math.ceil(cmob/3);
+                	tblOrder.rows[idxRow].cells[0].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[1].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[2].children[0].value =
+                		qty;
+        		}
+        		else if(jumlahOrder==4){
+        			var qty = Math.ceil(cmob/4);
+                	tblOrder.rows[idxRow].cells[0].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[1].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[2].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[3].children[0].value =
+                		qty;
+        		}
+        		else if(jumlahOrder==5){
+        			var qty = Math.ceil(cmob/5);
+                	tblOrder.rows[idxRow].cells[0].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[1].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[2].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[3].children[0].value =
+                		qty;
+                	tblOrder.rows[idxRow].cells[4].children[0].value =
+                		qty;
+        		}
+        	}
+    	}
+    }
 
     if(jumlahOrder === "1"){
     	
@@ -4291,7 +4323,7 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
 
-			if((idxRow !== 0)&&!cmob.checked){
+			if(idxRow!==0){
 
 				var qty1 =
 					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
@@ -4361,7 +4393,7 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
     		
-			if((idxRow !== 0)&&!cmob.checked){
+			if(idxRow!==0){
 
 				var qty1 =
 					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
@@ -4446,7 +4478,7 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
 			
-			if((idxRow !== 0)&&!cmob.checked){
+			if(idxRow!==0){
 
 				var qty1 =
 					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
@@ -4545,7 +4577,7 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
 			
-			if((idxRow !== 0)&&!cmob.checked){
+			if(idxRow!==0){
 
 				var qty1 =
 					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
@@ -4658,7 +4690,7 @@ function changeJumlahOrder(obj) {
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
    			
-    		if((idxRow !== 0)&&!cmob.checked){
+    		if(idxRow!==0){
 
 				var qty1 =
 					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
@@ -4751,176 +4783,171 @@ function changeJumlahOrder(obj) {
     		
     	}
     }
-
-    if(cmob.checked){
-    	generateCMOB();
-    }
-    else{
     	
-    	if(jumlahOrder>0){
-    		
-    		dimensiOrder1.value = do1;
-    		dimensiOrder1Text.value = formatTextValue(do1);
-    		var sd1 = 0;
-    		sd1 =  parseFloat(dimensiMobil1.value - do1);
-    		selisihDimensi1.value = sd1;
-    		selisihDimensi1Text.value = formatTextValue(sd1);
-    		if(sd1<0){
-    			selisihDimensi1Text.style.backgroundColor = "yellow";
-    			//alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
-    		}
-    		else{
-    			selisihDimensi1Text.style.backgroundColor = "#D3D3D3";
-    		}
-    		
-    		var sl1 = 0;
-        	sl1 = sisaLimitInit - totAmount1;
-        	sisaLimit1.value = formatTextValue(sl1);
-        	if(sl1<0){
-        		sisaLimit1.style.backgroundColor = "yellow";
-        		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
-        	}
-        	else{
-        		sisaLimit1.style.backgroundColor = "#D3D3D3";
-        	}
-    		
-    		if(jumlahOrder>1){
-
-        		dimensiOrder2.value = do2;
-        		dimensiOrder2Text.value = formatTextValue(do2);
-    			var sd1 = 0;
-    			sd2 =  parseFloat(dimensiMobil2.value - do2);
-    			selisihDimensi2.value = sd2;
-        		selisihDimensi2Text.value = formatTextValue(sd2);
-        		if(sd2<0){
-        			selisihDimensi2Text.style.backgroundColor = "yellow";
-        			//alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
-        		}
-        		else{
-        			selisihDimensi2Text.style.backgroundColor = "#D3D3D3";
-        		}
-
-        		var sl2 = 0;
-            	sl2 = sl1 - totAmount2;
-            	sisaLimit2.value = formatTextValue(sl2);
-            	if(sl2<0){
-            		sisaLimit2.style.backgroundColor = "yellow";
-            		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
-            	}
-            	else{
-            		sisaLimit2.style.backgroundColor = "#D3D3D3";
-            	}
-    			
-    			if(jumlahOrder>2){
-
-    	    		dimensiOrder3.value = do3;
-    	    		dimensiOrder3Text.value = formatTextValue(do3);
-    				var sd3 = 0;
-    				sd3 =  parseFloat(dimensiMobil3.value - do3);
-    				selisihDimensi3.value = sd3;
-    	    		selisihDimensi3Text.value = formatTextValue(sd3);
-    	    		if(sd3<0){
-    	    			selisihDimensi3Text.style.backgroundColor = "yellow";
-    	    			//alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
-    	    		}
-    	    		else{
-    	    			selisihDimensi3Text.style.backgroundColor = "#D3D3D3";
-    	    		}
-
-            		var sl3 = 0;
-                	sl3 = sl2 - totAmount3;
-                	sisaLimit3.value = formatTextValue(sl3);
-                	if(sl3<0){
-                		sisaLimit3.style.backgroundColor = "yellow";
-                		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
-                	}
-                	else{
-                		sisaLimit3.style.backgroundColor = "#D3D3D3";
-                	}
-    				
-    				if(jumlahOrder>3){
-
-    		    		dimensiOrder4.value = do4;
-    		    		dimensiOrder4Text.value = formatTextValue(do4);
-    					var sd4 = 0;
-    					sd4 =  parseFloat(dimensiMobil4.value - do4);
-    					selisihDimensi4.value = sd4;
-    		    		selisihDimensi4Text.value = formatTextValue(sd4);
-    		    		if(sd4<0){
-    		    			selisihDimensi4Text.style.backgroundColor = "yellow";
-    		    			//alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
-    		    		}
-    		    		else{
-    		    			selisihDimensi4Text.style.backgroundColor = "#D3D3D3";
-    		    		}
-
-    	        		var sl4 = 0;
-    	            	sl4 = sl3 - totAmount4;
-    	            	sisaLimit4.value = formatTextValue(sl4);
-    	            	if(sl4<0){
-    	            		sisaLimit4.style.backgroundColor = "yellow";
-    	            		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
-    	            	}
-    	            	else{
-    	            		sisaLimit4.style.backgroundColor = "#D3D3D3";
-    	            	}
-    					
-    					if(jumlahOrder>4){
-
-    			    		dimensiOrder5.value = do5;
-    			    		dimensiOrder5Text.value = formatTextValue(do5);
-    						var sd5 = 0;
-    						sd5 =  parseFloat(dimensiMobil5.value - do5);
-    						selisihDimensi5.value = sd5;
-    		        		selisihDimensi5Text.value = formatTextValue(sd5);
-    		        		if(sd5<0){
-    		        			selisihDimensi5Text.style.backgroundColor = "yellow";
-    		        			//alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
-    		        		}
-    		        		else{
-    		        			selisihDimensi5Text.style.backgroundColor = "#D3D3D3";
-    		        		}
-
-    		        		var sl5 = 0;
-    		            	sl5 = sl4 - totAmount5;
-    		            	sisaLimit5.value = formatTextValue(sl5);
-    		            	if(sl5<0){
-    		            		sisaLimit5.style.backgroundColor = "yellow";
-    		            		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
-    		            	}
-    		            	else{
-    		            		sisaLimit5.style.backgroundColor = "#D3D3D3";
-    		            	}
-    						
-    					}
-    				}
-    			}
-    		}
-    	}
-    	
-    	totalAmount1.value = totAmount1;
-    	totalAmount2.value = totAmount2;
-    	totalAmount3.value = totAmount3;
-    	totalAmount4.value = totAmount4;
-    	totalAmount5.value = totAmount5;
-    	totalAmount1Text.value = formatTextValue(totAmount1);
-    	totalAmount2Text.value = formatTextValue(totAmount2);
-    	totalAmount3Text.value = formatTextValue(totAmount3);
-    	totalAmount4Text.value = formatTextValue(totAmount4);
-    	totalAmount5Text.value = formatTextValue(totAmount5);
-    	qtyTotal.value = formatTextValue(totQty);
-    	amtTotal.value = formatTextValue(totAmount);
-    	
-    	var sl = 0;
-    	sl = sisaLimitInit - totAmount;
-    	sisaLimit.value = sl;
-    	sisaLimitText.value = formatTextValue(sl);
-    	if(sl<0){
-    		sisaLimitText.style.backgroundColor = "yellow";
-    		//alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
+	if(jumlahOrder>0){
+		
+		dimensiOrder1.value = do1;
+		dimensiOrder1Text.value = formatTextValue(do1);
+		var sd1 = 0;
+		sd1 =  parseFloat(dimensiMobil1.value - do1);
+		selisihDimensi1.value = sd1;
+		selisihDimensi1Text.value = formatTextValue(sd1);
+		if(sd1<0){
+			selisihDimensi1Text.style.backgroundColor = "yellow";
+			//alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		}
+		else{
+			selisihDimensi1Text.style.backgroundColor = "#D3D3D3";
+		}
+		
+		var sl1 = 0;
+    	sl1 = sisaLimitInit - totAmount1;
+    	sisaLimit1.value = formatTextValue(sl1);
+    	if(sl1<0){
+    		sisaLimit1.style.backgroundColor = "yellow";
+    		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
     	}
     	else{
-    		sisaLimitText.style.backgroundColor = "#D3D3D3";
+    		sisaLimit1.style.backgroundColor = "#D3D3D3";
     	}
+		
+		if(jumlahOrder>1){
+
+    		dimensiOrder2.value = do2;
+    		dimensiOrder2Text.value = formatTextValue(do2);
+			var sd1 = 0;
+			sd2 =  parseFloat(dimensiMobil2.value - do2);
+			selisihDimensi2.value = sd2;
+    		selisihDimensi2Text.value = formatTextValue(sd2);
+    		if(sd2<0){
+    			selisihDimensi2Text.style.backgroundColor = "yellow";
+    			//alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+    		}
+    		else{
+    			selisihDimensi2Text.style.backgroundColor = "#D3D3D3";
+    		}
+
+    		var sl2 = 0;
+        	sl2 = sl1 - totAmount2;
+        	sisaLimit2.value = formatTextValue(sl2);
+        	if(sl2<0){
+        		sisaLimit2.style.backgroundColor = "yellow";
+        		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+        	}
+        	else{
+        		sisaLimit2.style.backgroundColor = "#D3D3D3";
+        	}
+			
+			if(jumlahOrder>2){
+
+	    		dimensiOrder3.value = do3;
+	    		dimensiOrder3Text.value = formatTextValue(do3);
+				var sd3 = 0;
+				sd3 =  parseFloat(dimensiMobil3.value - do3);
+				selisihDimensi3.value = sd3;
+	    		selisihDimensi3Text.value = formatTextValue(sd3);
+	    		if(sd3<0){
+	    			selisihDimensi3Text.style.backgroundColor = "yellow";
+	    			//alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+	    		}
+	    		else{
+	    			selisihDimensi3Text.style.backgroundColor = "#D3D3D3";
+	    		}
+
+        		var sl3 = 0;
+            	sl3 = sl2 - totAmount3;
+            	sisaLimit3.value = formatTextValue(sl3);
+            	if(sl3<0){
+            		sisaLimit3.style.backgroundColor = "yellow";
+            		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+            	}
+            	else{
+            		sisaLimit3.style.backgroundColor = "#D3D3D3";
+            	}
+				
+				if(jumlahOrder>3){
+
+		    		dimensiOrder4.value = do4;
+		    		dimensiOrder4Text.value = formatTextValue(do4);
+					var sd4 = 0;
+					sd4 =  parseFloat(dimensiMobil4.value - do4);
+					selisihDimensi4.value = sd4;
+		    		selisihDimensi4Text.value = formatTextValue(sd4);
+		    		if(sd4<0){
+		    			selisihDimensi4Text.style.backgroundColor = "yellow";
+		    			//alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+		    		}
+		    		else{
+		    			selisihDimensi4Text.style.backgroundColor = "#D3D3D3";
+		    		}
+
+	        		var sl4 = 0;
+	            	sl4 = sl3 - totAmount4;
+	            	sisaLimit4.value = formatTextValue(sl4);
+	            	if(sl4<0){
+	            		sisaLimit4.style.backgroundColor = "yellow";
+	            		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+	            	}
+	            	else{
+	            		sisaLimit4.style.backgroundColor = "#D3D3D3";
+	            	}
+					
+					if(jumlahOrder>4){
+
+			    		dimensiOrder5.value = do5;
+			    		dimensiOrder5Text.value = formatTextValue(do5);
+						var sd5 = 0;
+						sd5 =  parseFloat(dimensiMobil5.value - do5);
+						selisihDimensi5.value = sd5;
+		        		selisihDimensi5Text.value = formatTextValue(sd5);
+		        		if(sd5<0){
+		        			selisihDimensi5Text.style.backgroundColor = "yellow";
+		        			//alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+		        		}
+		        		else{
+		        			selisihDimensi5Text.style.backgroundColor = "#D3D3D3";
+		        		}
+
+		        		var sl5 = 0;
+		            	sl5 = sl4 - totAmount5;
+		            	sisaLimit5.value = formatTextValue(sl5);
+		            	if(sl5<0){
+		            		sisaLimit5.style.backgroundColor = "yellow";
+		            		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+		            	}
+		            	else{
+		            		sisaLimit5.style.backgroundColor = "#D3D3D3";
+		            	}
+						
+					}
+				}
+			}
+		}
 	}
+	
+	totalAmount1.value = totAmount1;
+	totalAmount2.value = totAmount2;
+	totalAmount3.value = totAmount3;
+	totalAmount4.value = totAmount4;
+	totalAmount5.value = totAmount5;
+	totalAmount1Text.value = formatTextValue(totAmount1);
+	totalAmount2Text.value = formatTextValue(totAmount2);
+	totalAmount3Text.value = formatTextValue(totAmount3);
+	totalAmount4Text.value = formatTextValue(totAmount4);
+	totalAmount5Text.value = formatTextValue(totAmount5);
+	qtyTotal.value = formatTextValue(totQty);
+	amtTotal.value = formatTextValue(totAmount);
+	
+	var sl = 0;
+	sl = sisaLimitInit - totAmount;
+	sisaLimit.value = sl;
+	sisaLimitText.value = formatTextValue(sl);
+	if(sl<0){
+		sisaLimitText.style.backgroundColor = "yellow";
+		//alert("Sisa Limit Tidak Mencukupi. Mohon Periksa Kembali");
+	}
+	else{
+		sisaLimitText.style.backgroundColor = "#D3D3D3";
+	}
+	
 }

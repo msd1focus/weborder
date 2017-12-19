@@ -128,6 +128,7 @@
 					</td>
 					<td style="border-bottom: none">
 						<input type="text" 
+							id="custLocation"
 							th:value="*{customer.custLocation}" 
 						 	readonly="readonly"/>
 					</td>
@@ -175,7 +176,7 @@
 				style="width: 20px"
 				id="cmob"
 				value="CMOB"
-				onclick="generateCMOB()"/>
+				onclick="selectCMOB()"/>
 				CMOB
 			<input type="radio" name="orderby"
 				style="width: 30px"
@@ -196,9 +197,14 @@
 			 	id="leadTime"
 			 	type="number" name="leadtime" 
 			 	th:field="*{inputOrder.orderGrp.leadTime}" 
-			 	onChange="generateCMOB()"
 			 	min="0"/>
 			 Days
+			<input 
+				id="btnCmob"
+				style="align: right"
+				onclick="return generateCMOB()"
+				type="submit"
+				value="Generate CMOB"/>
 		</td>
 	</tr>
 	<tr>
@@ -265,8 +271,8 @@
 							<input id="searchInput"
 								list="searchList"
 								name="search"
+								onfocus="focusSearch(this)"
 								style="width: 320px"/>
-								<!-- onchange="changeSearch(this)" -->
 							<datalist id="searchList">
 								<select id="searchSelect" name="search">
 									<option th:each="inputProduct: *{inputProducts}"
@@ -898,9 +904,8 @@
 					th:field="*{inputProducts[__${stat.index}__].orderDetailId1}" />
 				<input type="hidden" 
 					th:field="*{inputProducts[__${stat.index}__].product.company}" />
-					<!-- th:field="*{inputProducts[__${stat.index}__].product.productCode}" /> -->
-				<input type="hidden" />
-					<!-- th:field="*{inputProducts[__${stat.index}__].product.productName}" /> -->
+				<input type="hidden" 
+					th:field="*{inputProducts[__${stat.index}__].product.prodUom1}" />
 				<input type="hidden"
 					th:field="*{inputProducts[__${stat.index}__].custProd.company}"/>
 				<input type="hidden"
@@ -915,6 +920,8 @@
 					th:field="*{inputProducts[__${stat.index}__].custProd.outstandingQuote}"/>
 				<input type="hidden" 
 					th:field="*{inputProducts[__${stat.index}__].product.productCat1}" />
+				<input type="hidden" 
+					id="cmobValue" value="0"/>
 			</td>
 			<td class="order2"
 				width="150px" id="detail2" style="display: none;">

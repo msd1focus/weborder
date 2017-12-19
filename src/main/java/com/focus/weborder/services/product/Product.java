@@ -18,6 +18,8 @@ public class Product {
 	private String productCode;
 	@Column(name="PRODUCT_NAME")
 	private String productName;
+	@Column(name="PRODUCT_NAME2")
+	private String productName2;
 	@Column(name="PRODUCT_CAT1")
 	private String productCat1;
 	@Column(name="PRODUCT_CAT2")
@@ -41,7 +43,9 @@ public class Product {
 		
 	}
 	
-	public Product(String company, String productCode, String productName, 
+	public Product(
+			String company, String productCode, String productName,
+			String productName2,
 			String productCat1, String productCat2, String prodUom1, 
 			String prodUom2, String dimensionUomCode, Long prodWidth, 
 			Long prodLength, Long prodHeight, Date updateTime) {
@@ -49,6 +53,7 @@ public class Product {
 		this.company = company;
 		this.productCode = productCode;
 		this.productName = productName;
+		this.productName2 = productName2;
 		this.productCat1 = productCat1;
 		this.productCat2 = productCat2;
 		this.prodUom1 = prodUom1;
@@ -82,6 +87,14 @@ public class Product {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getProductName2() {
+		return productName2;
+	}
+
+	public void setProductName2(String productName2) {
+		this.productName2 = productName2;
 	}
 
 	public String getProductCat1() {
