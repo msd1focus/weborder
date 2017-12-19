@@ -1,4 +1,4 @@
-package com.focus.weborder.services.custprodtarget;
+package com.focus.weborder.services.custprodstock;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,9 +6,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CUST_PROD_TARGET")
-public class CustProdTarget {
-	
+@Table(name = "CUST_PROD_STOCK")
+public class CustProdStock {
+
 	@Column(name="COMPANY")
 	private String company;
 	@Id
@@ -18,26 +18,26 @@ public class CustProdTarget {
 	private String custNumber;
 	@Column(name="CUST_ID")
 	private Long custId;
-	@Column(name="PERIODE_TARGET")
-	private String periodeTarget;
-	@Column(name="TARGET_SALES")
-	private Double targetSales;
+	@Column(name="PERIODE_STOCK")
+	private String periodeStock;
+	@Column(name="END_STOCK")
+	private Double endStock;
 	
-	public CustProdTarget() {
+	public CustProdStock() {
 		
 	}
-	
-	public CustProdTarget(
+
+	public CustProdStock(
 			String company, String productCode, String custNumber,
-			Long custId, String periodeTarget,
-			Double targetSales) {
+			Long custId, String periodeStock,
+			Double endStock) {
 		super();
 		this.company = company;
 		this.productCode = productCode;
 		this.custNumber = custNumber;
 		this.custId = custId;
-		this.periodeTarget = periodeTarget;
-		this.targetSales = targetSales;
+		this.periodeStock = periodeStock;
+		this.endStock = endStock;
 	}
 
 	public String getCompany() {
@@ -72,20 +72,20 @@ public class CustProdTarget {
 		this.custId = custId;
 	}
 
-	public String getPeriodeTarget() {
-		return periodeTarget;
+	public String getPeriodeStock() {
+		return periodeStock;
 	}
 
-	public void setPeriodeTarget(String periodeTarget) {
-		this.periodeTarget = periodeTarget;
+	public void setPeriodeStock(String periodeStock) {
+		this.periodeStock = periodeStock;
 	}
 
-	public Double getTargetSales() {
-		return targetSales;
+	public Double getEndStock() {
+		return endStock;
 	}
 
-	public void setTargetSales(Double targetSales) {
-		this.targetSales = targetSales;
+	public void setEndStock(Double endStock) {
+		this.endStock = endStock;
 	}
 	
 }

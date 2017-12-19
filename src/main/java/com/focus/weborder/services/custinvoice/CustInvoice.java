@@ -31,7 +31,7 @@ public class CustInvoice {
 	@Column(name="UOM_CODE")
 	private String uomCode;
 	@Column(name="QTY")
-	private Long qty;
+	private Double qty;
 	@Column(name="INV_TYPE")
 	private String invType;
 	
@@ -43,7 +43,7 @@ public class CustInvoice {
 			Long custInvoiceId,
 			String company, Long custId, Long ShipToId,
 			String trxNumber, Long trxId, Date trxDate,
-			String productCode, String uomCode, Long qty,
+			String productCode, String uomCode, Double qty,
 			String invType) {
 		super();
 		this.custInvoiceId = custInvoiceId;
@@ -131,11 +131,11 @@ public class CustInvoice {
 		this.uomCode = uomCode;
 	}
 
-	public Long getQty() {
+	public Double getQty() {
 		return qty;
 	}
 
-	public void setQty(Long qty) {
+	public void setQty(Double qty) {
 		this.qty = qty;
 	}
 

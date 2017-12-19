@@ -30,18 +30,7 @@ public class CustProdTargetController {
 		@RequestParam String periodetarget) {
 		return custProdTargetService.getBygetByCompanyCustidProductcodePeriodetarget(
 				company, custid, productcode, periodetarget);
-	}
-	
-	@RequestMapping("/custprodtarget/periodestock")
-	public CustProdTarget getByCompanyCustidProductcodePeriodestock(
-			@RequestParam String company, 
-			@RequestParam Long custid,
-			@RequestParam String productcode, 
-			@RequestParam String periodestock) {
-			return custProdTargetService.getBygetByCompanyCustidProductcodePeriodestock(
-					company, custid, productcode, periodestock);
-		}
-	
+	}	
 
 	@RequestMapping("/custprodtarget/productcode")
 	public CustProdTarget getByCompanyCustidProductcode(
@@ -52,19 +41,19 @@ public class CustProdTargetController {
 					company, custid, productcode);
 		}
 	
-	@RequestMapping(method=RequestMethod.POST, value="/custprodtargets")
-	public void addCustTarget(@RequestBody CustProdTarget custProdTarget){
-		custProdTargetService.addCustTarget(custProdTarget);
+	@RequestMapping(method=RequestMethod.POST, value="/custprodtarget")
+	public void addCustProdTarget(@RequestBody CustProdTarget custProdTarget){
+		custProdTargetService.addCustProdTarget(custProdTarget);
 	}
 	
-	@RequestMapping(method=RequestMethod.PUT, value="/custprodtargets")
-	public void updateCustTarget(@RequestBody CustProdTarget custProdTarget){
-		custProdTargetService.updateCustTarget(custProdTarget);
+	@RequestMapping(method=RequestMethod.PUT, value="/custprodtarget")
+	public void updateCustProdTarget(@RequestBody CustProdTarget custProdTarget){
+		custProdTargetService.updateCustProdTarget(custProdTarget);
 	}
 	
-	@RequestMapping(method=RequestMethod.DELETE, value="/custprodtargets/{custId}")
-	public void deleteCustTarget(@PathVariable String custId){
-		custProdTargetService.deleteCustTarget(custId);
+	@RequestMapping(method=RequestMethod.DELETE, value="/custprodtarget/{custId}")
+	public void deleteCustProdTarget(@PathVariable String custId){
+		custProdTargetService.deleteCustProdTarget(custId);
 	}
 	
 }

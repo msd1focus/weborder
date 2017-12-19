@@ -26,16 +26,6 @@ public class CustProdTargetService {
 						productCode, periodeTarget);
 		return custProdTarget;		
 	}
-
-	public CustProdTarget getBygetByCompanyCustidProductcodePeriodestock(
-			String company, Long custId,
-			String productCode, String periodeStock) {
-		CustProdTarget custProdTarget = 
-				custProdTargetRepository.getByCompanyCustidProductcodePeriodestock(
-						company, custId, 
-						productCode, periodeStock);
-		return custProdTarget;		
-	}
 	
 	public CustProdTarget getBygetByCompanyCustidProductcode(
 			String company, Long custId,
@@ -47,15 +37,15 @@ public class CustProdTargetService {
 		return custProdTarget;		
 	}
 	
-	public void addCustTarget(CustProdTarget custProdTarget) {
+	public void addCustProdTarget(CustProdTarget custProdTarget) {
 		//custTargetRepository.save(custTarget);
 	}
 	
-	public void updateCustTarget(CustProdTarget custProdTarget) {
+	public void updateCustProdTarget(CustProdTarget custProdTarget) {
 		//custTargetRepository.save(custTarget);
 	}
 	
-	public void deleteCustTarget(String custId) {
+	public void deleteCustProdTarget(String custId) {
 		//custTargetRepository.delete(custId);
 	}
 	

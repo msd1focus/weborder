@@ -3,10 +3,15 @@ package com.focus.weborder.services.inputproduct;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.focus.weborder.types.InputCmob;
 import com.focus.weborder.types.InputProduct;
+import com.focus.weborder.types.OutputCmob;
 
 @RestController
 @RequestMapping("/rest")
@@ -14,6 +19,12 @@ public class InputProductController {
 
 	@Autowired
 	private InputProductService inputProductService;
+	
+	@RequestMapping(method=RequestMethod.POST, value="/inputproduct/cmob")
+	public List<OutputCmob> getCmobs(
+			@RequestBody List<InputCmob> inputCmobs){
+		return inputProductService.getCmobs(inputCmobs);			
+	}
 	
 	@RequestMapping("/inputproduct")
 	public List<InputProduct> getInputProduct(
