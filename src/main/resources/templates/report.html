@@ -1,17 +1,69 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
-<title>Report</title>
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+	<title>Web Order - Focus Distribusi Indonesia</title>
+	<div th:replace="fragments/header :: header-css"/>
+	<script th:inline="javascript"
+		src="../static/js/report.js"
+		th:src="@{js/report.js}">
+	</script>
 </head>
 <body>
-<script>
-debugger;
- var today = new Date;
-    document.getElementById('date').innerHTML= today.toDateString();
-	</script>
-<div align="center"><label style="font-size: 50px">Monthly Order Booking </label><label id ="Date"></label></div>
 
+	<div th:replace="fragments/header :: header"/>
+	<form 
+		name="formReport"
+		action="#" 
+		th:action="@{/report}"
+		th:object="${customer}"
+		method="get">					
+		<div>
+			<h4>Periode</h4>
+			<select 
+			  	id="month"
+			   	name="month">			    		
+			    <option value="1">Januari</option>
+			    <option value="2">Februari</option>		    		
+			    <option value="3">Maret</option>
+			    <option value="4">April</option>		    		
+			    <option value="5">Mei</option>
+			    <option value="6">Juni</option>		    		
+			    <option value="7">Juli</option>
+			    <option value="8">Agustus</option>		    		
+			    <option value="9">September</option>
+			    <option value="10">Oktober</option>	    		
+			    <option value="11">November</option>
+			    <option value="12">Desember</option>
+			</select>
+              <input type="number" name="year" id="year"
+                     placeholder="Year" 
+                     value="2000"
+                     min="2000" required="true"/>
+              <input
+              	id="company" 
+              	th:field="*{company}"
+              	type="hidden"/>
+              <input
+              	id="custId" 
+              	th:field="*{custId}"
+              	type="hidden"/>
+              <button type="submit"
+              	onclick="return viewReport()">
+              	View Report
+              	</button>
+        </div>
+        <div>
+        	<iframe
+        		id="reportFrame"
+        		frameborder="0" 
+        		style="overflow: hidden; height: 100%; width: 100%; position: absolute;" 
+        		height="100%" 
+        		width="100%"></iframe>
+        </div>
+	
+	</form>
+
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

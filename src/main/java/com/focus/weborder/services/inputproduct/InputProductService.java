@@ -174,11 +174,10 @@ public class InputProductService {
 		Double qtyOnHand = (double)0;
 		CustProdStock custProdStock =
 				custProdStockService.
-					getBygetByCompanyCustidProductcodePeriodestock(
+					getBygetByCompanyCustidProductcode(
 							inputCmob.getCompany(), 
 							inputCmob.getCustId(),
-							inputCmob.getProductCode(),
-							periodeCurrentOracle);
+							inputCmob.getProductCode());
 		if(custProdStock!=null) {
 				if(custProdStock.getEndStock()!=null) {
 					qtyOnHand =

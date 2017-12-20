@@ -197,7 +197,7 @@
 			 	id="leadTime"
 			 	type="number" name="leadtime" 
 			 	th:field="*{inputOrder.orderGrp.leadTime}" 
-			 	min="0"/>
+			 	min="1"/>
 			 Days
 			<input 
 				id="btnCmob"
@@ -506,6 +506,7 @@
 		<tr>
 			<td>
 				<select name="shipTo1"
+					id="shipTo1"
 					onchange="changeShipTo1(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
@@ -517,6 +518,7 @@
 			</td>
 			<td class="order2" style="display: none;">
 				<select name="shipTo2"
+					id="shipTo2"
 					onchange="changeShipTo2(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
@@ -528,6 +530,7 @@
 			</td>
 			<td class="order3" style="display: none;">
 				<select name="shipTo3"
+					id="shipTo3"
 					onchange="changeShipTo3(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
@@ -539,6 +542,7 @@
 			</td>
 			<td class="order4" style="display: none;">
 				<select name="shipTo4"
+					id="shipTo4"
 					onchange="changeShipTo4(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"
@@ -550,6 +554,7 @@
 			</td>
 			<td class="order5" style="display: none;">
 				<select name="shipTo5"
+					id="shipTo5"
 					onchange="changeShipTo5(this)">
 		    		<option th:each="cst : ${custShipTo}"
 			               th:value="${cst.shipToId}"

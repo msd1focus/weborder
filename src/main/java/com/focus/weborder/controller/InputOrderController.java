@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.focus.weborder.security.model.User;
+import com.focus.weborder.security.repository.UserRepository;
 import com.focus.weborder.security.service.UserService;
 import com.focus.weborder.services.custinvoice.CustInvoice;
 import com.focus.weborder.services.custinvoice.CustInvoiceService;
@@ -105,11 +106,6 @@ public class InputOrderController
 	    binder.setAutoGrowCollectionLimit(100000);
 	}
 	
-	/*@GetMapping("/history")
-    public String history() {
-        return "/history";
-    }*/
-	
 	@GetMapping("/history")
 	public ModelAndView orderHistory(){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -156,6 +152,51 @@ public class InputOrderController
     public String error500() {
         return "/error/500";
     }
+    
+    @GetMapping("/report")
+    public String report(Model model) {
+    	
+    	Customer customer = new Customer();
+    	
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			if(auth.getName() != null) {
+				User user = 
+						userService.findUserByUsername(auth.getName());
+				customer.setCompany(user.getCompany());
+		    	customer.setCustId(user.getCustId());	
+			}
+		}
+		model.addAttribute("customer", customer);
+        return "report";
+    }
+    
+    @RequestMapping(value="/changepassword", method = RequestMethod.GET)
+    public String changePassword() {
+        return "/changepassword";
+    }
+    
+    @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
+	public ModelAndView changePassword(
+	        @RequestParam(value="newpassword", required=true) String newpassword) {
+    	
+       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String message = "Failed";
+		if (auth != null) {
+			if(auth.getName() != null) {
+				User user = 
+						userService.findUserByUsername(auth.getName());
+				user.setPassword(newpassword);
+				userService.saveUser(user);
+				message = "Success";
+			}
+		}
+			
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("messageInfo", message);
+		modelAndView.setViewName("changepassword");
+		return modelAndView;
+	}
     
     @RequestMapping(value="/resetpassword", method = RequestMethod.GET)
 	public ModelAndView resetpassword(){
@@ -432,7 +473,7 @@ public class InputOrderController
 					orderGrp.setOrderBy("Manual");
 					orderGrp.setPeriodeOrder(monthName + " " + year);
 					orderGrp.setJumlahOrder((long)0);
-					orderGrp.setLeadTime((long) 0);
+					orderGrp.setLeadTime((long) 1);
 					Long creditLimit = (long) 0;
 					if(customer!=null) {
 						if(customer.getCreditLimit()!=null) {

@@ -1,15 +1,26 @@
-var firstLoad = true;
+var firstLoadCMOB = true;
 
 window.onload = function(){
 
+	inputProductInit();
+	dimensiMobilInit();
+	poDateInit();
+	
 	var orderBySelected = document.getElementById("orderBySelected").value;
 	var manual = document.getElementById("manual");
 	var cmob = document.getElementById("cmob");
 	var rowLeadTime = document.getElementById("rowLeadTime");
-	
-	inputProductInit();
-	dimensiMobilInit();
-	poDateInit();
+
+	var shipTo1 = document.getElementById("shipTo1");
+	var shipTo2 = document.getElementById("shipTo2");
+	var shipTo3 = document.getElementById("shipTo3");
+	var shipTo4 = document.getElementById("shipTo4");
+	var shipTo5 = document.getElementById("shipTo5");
+	var shipTo1Selected = document.getElementById("shipTo1Selected").value;
+	var shipTo2Selected = document.getElementById("shipTo2Selected").value;
+	var shipTo3Selected = document.getElementById("shipTo3Selected").value;
+	var shipTo4Selected = document.getElementById("shipTo4Selected").value;
+	var shipTo5Selected = document.getElementById("shipTo5Selected").value;
 	
 	if(orderBySelected=="CMOB"){
 		cmob.checked = "checked";
@@ -18,6 +29,22 @@ window.onload = function(){
 	else if(orderBySelected="Manual"){
 		manual.checked = "checked";
 		rowLeadTime.style.display = "none";
+	}
+	
+	if(shipTo1Selected!=null){
+		shipTo1.value = shipTo1Selected;
+	}
+	if(shipTo2Selected!=null){
+		shipTo2.value = shipTo2Selected;
+	}
+	if(shipTo3Selected!=null){
+		shipTo3.value = shipTo3Selected;
+	}
+	if(shipTo4Selected!=null){
+		shipTo4.value = shipTo4Selected;
+	}
+	if(shipTo5Selected!=null){
+		shipTo5.value = shipTo5Selected;
 	}
 	
 	//var jumlahOrder = document.getElementById("jumlahOrder");
@@ -115,7 +142,7 @@ function inputProductInit(){
 				tblOrderItemFixed.insertRow(i+1).outerHTML = toif;
 				
 				var option = document.createElement("option");
-				option.value = field.product.productName;
+				option.value = productName;
 				option.text = field.product.productCode;
 				searchSelect.add(option);
 				
@@ -2955,6 +2982,7 @@ function generateCMOB(){
 	    },
 	    complete: function( xhr, status ) {
 
+	    	firstLoadCMOB = false;
 	    	var jumlahOrder = document.getElementById("jumlahOrder");
 		    changeJumlahOrder(jumlahOrder);	
 	    },
@@ -4234,8 +4262,8 @@ function changeJumlahOrder(obj) {
 	var do5= 0;
 	
 	if(cmob.checked){
-    	if(firstLoad){
-    		firstLoad = false;
+    	if(firstLoadCMOB){
+    		firstLoadCMOB = false;
     		generateCMOB();
     	}
     	else{
