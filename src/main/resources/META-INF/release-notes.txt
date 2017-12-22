@@ -1,0 +1,7 @@
+Version 1.0.0 (Thursday, 21 December 2017)
+ - Initial deployment
+ 
+Version 1.0.1 (Friday, 22 December 2017)
+ - Bug Fixing
+ 	1. Prevent Submit when order quantity is zero
+ 	2. Minimum Order date for current month depends on current date.
