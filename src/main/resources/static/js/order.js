@@ -441,20 +441,14 @@ function initOrderDetail(o, oi){
 
 function saveForm(obj){
 
+	var loading = document.getElementById('loading');
     var submitStatus = 
 		document.getElementById("submitStatus");
     var btnSubmit = 
 		document.getElementById("btnSubmit");
-    /*console.log("submitStatus.value: " 
-    			+ submitStatus.value);*/
     
 	if(submitStatus.value==="false"){
-
-        /*console.log("save!");
-	    console.log("obj.name: " 
-	    			+ obj.name);
-	    console.log("btnSubmit.name: " 
-    			+ btnSubmit.name );*/
+		
         submitStatus.value = "true";
         obj.name = "action";
         btnSubmit.name = "action";
@@ -470,11 +464,11 @@ function saveForm(obj){
 		var selisihDimensi5 = 
 			unformatText(document.getElementById("selisihDimensi5Text").value);
 		
-		console.log("selisihDimensi1: " + selisihDimensi1);
+		/*console.log("selisihDimensi1: " + selisihDimensi1);
 		console.log("selisihDimensi2: " + selisihDimensi2);
 		console.log("selisihDimensi3: " + selisihDimensi3);
 		console.log("selisihDimensi4: " + selisihDimensi4);
-		console.log("selisihDimensi5: " + selisihDimensi5);
+		console.log("selisihDimensi5: " + selisihDimensi5);*/
 		
 		var isWarning = "false";
 		var alertText = "Dimensi Order pada : \n";
@@ -505,21 +499,25 @@ function saveForm(obj){
 			alert(alertText);
 		}
 		
+		loading.style.display = "block";
 		saveOrderGrp("DRAFT");
 
 	}
 	else{
 
-		alert ("Already saved, please wait!");
+		//alert ("Already saved, please wait!");
+		loading.style.display = "block";
         obj.name = "action1";
         btnSubmit.name = "action1";
-	}	
+	}
 		
 	return false;
 }
 
 function submitForm(obj){
 
+	var loading = document.getElementById('loading');
+	
 	var tblOrder = 
 		document.getElementById("tblOrder");
 	var jumlahOrderSelected = 
@@ -566,16 +564,8 @@ function submitForm(obj){
 			document.getElementById("submitStatus");    
 	    var btnSave = 
 			document.getElementById("btnSave");
-	    /*console.log("submitStatus.value: " 
-	    			+ submitStatus.value);*/
 	    
 	    if(submitStatus.value==="false"){
-
-	        /*console.log("submit!");
-		    console.log("obj.name: " 
-		    			+ obj.name);
-		    console.log("btnSave.name: " 
-	    			+ btnSave.name );*/
 		    
 	    	submitStatus.value = "true";
 	        obj.name = "action";
@@ -592,11 +582,11 @@ function submitForm(obj){
 			var selisihDimensi5 = 
 				unformatText(document.getElementById("selisihDimensi5Text").value);
 			
-			console.log("selisihDimensi1: " + selisihDimensi1);
+			/*console.log("selisihDimensi1: " + selisihDimensi1);
 			console.log("selisihDimensi2: " + selisihDimensi2);
 			console.log("selisihDimensi3: " + selisihDimensi3);
 			console.log("selisihDimensi4: " + selisihDimensi4);
-			console.log("selisihDimensi5: " + selisihDimensi5);
+			console.log("selisihDimensi5: " + selisihDimensi5);*/
 			
 			var isWarning = "false";
 			var alertText = "Dimensi Order pada : \n";
@@ -627,10 +617,13 @@ function submitForm(obj){
 	    		alert(alertText);
 	    	}	
 
+
+	    	loading.style.display = "block";
 			saveOrderGrp("SUBMITTED");
 		}
 		else{
-			alert("Already submitted, please wait!");
+			//alert("Already submitted, please wait!");
+			loading.style.display = "block";
 	        obj.name = "action1";
 	        btnSave.name = "action1";
 		}
@@ -955,7 +948,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				saveOrder(5, c, ci, ogi, ps);
 			}          
             if(orderSavedCount==jumlahOrderSelected){
-    	    	//window.location.replace("/weborder/home");
+    	    	window.location.replace("/weborder/home");
             }
 	    },
 	    error: function( xhr, textStatus, errorThrown ) {

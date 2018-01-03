@@ -111,14 +111,35 @@ public class InputOrderController
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		ModelAndView modelAndView = new ModelAndView();
 		List<Order> orders = new ArrayList<Order>();
+		OrderGrp orderGrp = null;
 		User user = new User();
 		if (auth != null) {
 			user = userService.findUserByUsername(auth.getName());
 			orders = orderService.getOrdersByCompanyAndCustid(user.getCompany(), user.getCustId());
+			for(Order order: orders) {
+
+				if(orderGrp!=null) {
+					if(orderGrp.getOrderGrpId()!=order.getOrderGrpId()) {
+						orderGrp = orderGrpService.getOrderGrpOrdergrpid(
+										order.getCompany(), 
+										order.getCustId(),
+										order.getOrderGrpId());
+					}
+				}
+				else {
+					orderGrp = orderGrpService.getOrderGrpOrdergrpid(
+									order.getCompany(), 
+									order.getCustId(),
+									order.getOrderGrpId());
+				}
+				
+				order.setInvoiceStatus(orderGrp.getSubmitStatus());
+				
+			}
 		}
 		modelAndView.addObject("orders", orders);
 		modelAndView.setViewName("history");
-		System.out.println(orders.size());
+		//System.out.println(orders.size());
 		return modelAndView;
 	}
 	
@@ -1379,6 +1400,15 @@ public class InputOrderController
 		else {
 			po = "---";
 		}
+		String monthPo = "00";
+		if(month<10){
+			monthPo = "0" + month;
+		}else if(month>=10 && month<100){
+			monthPo = month.toString();
+		}
+		else {
+			monthPo = "--";
+		}
 		String customerNumber = "-------";
 		if(customer!=null) {
 			if(customer.getCustomerNumber()!=null) {
@@ -1388,7 +1418,7 @@ public class InputOrderController
 		Order order = new Order();
 		order.setCompany(orderGrp.getCompany());
 		order.setCustId(orderGrp.getCustId());
-		order.setPoNumber("PO" + year + month 
+		order.setPoNumber("PO" + year + monthPo 
 				+ po + "/" 
 				+ customerNumber);
 		order.setOrderDate(

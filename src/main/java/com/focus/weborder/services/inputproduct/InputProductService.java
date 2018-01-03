@@ -270,39 +270,46 @@ public class InputProductService {
 		
 		outputCmob.setQuantity(cmob);
 		
-		System.out.println("=============================================");
-		System.out.println("CMOB Calculation >> " 
-				+ outputCmob.getProductCode());
-		System.out.println("=============================================");
-		System.out.println("inputCmob.getLeadTime(): "
-				+ inputCmob.getLeadTime());
-		System.out.println("inputCmob.getSelectedUomRate(): "
-				+ inputCmob.getSelectedUomRate());
-		System.out.println("inputCmob.getPrimaryUomRate(): "
-				+ inputCmob.getPrimaryUomRate());
-		System.out.println("targetCustomerCurrentMonth: "
-				+ targetCustomerCurrentMonth);
-		System.out.println("averageSales1MonthBefore: "
-				+ averageSales1MonthBefore);
-		System.out.println("averageSales2MonthBefore: "
-				+ averageSales2MonthBefore);
-		System.out.println("averageSales3MonthBefore: "
-				+ averageSales3MonthBefore);
-		System.out.println("averageSales: "
-				+ averageSales);
-		System.out.println("customerInvoice: "
-				+ ciq);
-		System.out.println("qtyOnHand: "
-				+ qtyOnHand);
-		System.out.println("bufferStock: "
-				+ bufferStock);
-		System.out.println("inputCmob.getOutstandingSo(): "
-				+ inputCmob.getOutstandingSo());
-		System.out.println("inputCmob.getOutstandingQuote(): "
-				+ inputCmob.getOutstandingQuote());
-		System.out.println("outputCmob.getQuantity(): "
-				+ outputCmob.getQuantity());
-		System.out.println("=============================================");
+/*
+		if(cmob>0) {
+		
+			System.out.println("=============================================");
+			System.out.println("CMOB Calculation >> " 
+					+ outputCmob.getProductCode());
+			System.out.println("=============================================");
+		
+			System.out.println("inputCmob.getLeadTime(): "
+					+ inputCmob.getLeadTime());
+			System.out.println("inputCmob.getSelectedUomRate(): "
+					+ inputCmob.getSelectedUomRate());
+			System.out.println("inputCmob.getPrimaryUomRate(): "
+					+ inputCmob.getPrimaryUomRate());
+			System.out.println("targetCustomerCurrentMonth: "
+					+ targetCustomerCurrentMonth);
+			System.out.println("averageSales1MonthBefore: "
+					+ averageSales1MonthBefore);
+			System.out.println("averageSales2MonthBefore: "
+					+ averageSales2MonthBefore);
+			System.out.println("averageSales3MonthBefore: "
+					+ averageSales3MonthBefore);
+			System.out.println("averageSales: "
+					+ averageSales);
+			System.out.println("customerInvoice: "
+					+ ciq);
+			System.out.println("qtyOnHand: "
+					+ qtyOnHand);
+			System.out.println("bufferStock: "
+					+ bufferStock);
+			System.out.println("inputCmob.getOutstandingSo(): "
+					+ inputCmob.getOutstandingSo());
+			System.out.println("inputCmob.getOutstandingQuote(): "
+					+ inputCmob.getOutstandingQuote());
+			System.out.println("outputCmob.getQuantity(): "
+					+ outputCmob.getQuantity());
+		
+			System.out.println("=============================================");
+			
+		}*/
 		
 		return outputCmob;
 	}
@@ -327,32 +334,7 @@ public class InputProductService {
 		
 		Integer monthNext = month;
 		Integer yearNext = year;
-		/*Integer month1Before = month-1;
-		Integer month2Before = month-2;
-		Integer month3Before = month-3;		
-		Integer year1MonthBefore = year;
-		Integer year2MonthBefore = year;
-		Integer year3MonthBefore = year;
 
-		if(month==1) {
-			month1Before = 12;
-			month2Before = 11;
-			month3Before = 10;
-			year1MonthBefore -= 1;
-			year2MonthBefore -= 1;
-			year3MonthBefore -= 1;
-		}
-		else if(month==2) {
-			month2Before = 12;
-			month3Before = 11;
-			year2MonthBefore -= 1;
-			year3MonthBefore -= 1;
-		}
-		else if(month==3) {
-			month3Before = 12;
-			year3MonthBefore = year-1;
-		}
-		else*/
 		if(month==12) {
 			monthNext = 1;
 			yearNext += 1;
@@ -362,27 +344,6 @@ public class InputProductService {
 		}
 		String monthNameNext = getMonthName(monthNext);
 		periodes.add(monthNameNext + " " + yearNext);
-		
-		/*String periodeCurrentOracle =
-				getMonthNameOracle(month)
-				+ "-"
-				+ year;
-		String periodeNextOracle =
-				getMonthNameOracle(monthNext)
-				+ "-"
-				+ yearNext;
-		String periode1BeforeOracle =
-				getMonthNameOracle(month1Before)
-				+ "-"
-				+ year1MonthBefore;
-		String periode2BeforeOracle =
-				getMonthNameOracle(month2Before)
-				+ "-"
-				+ year2MonthBefore;
-		String periode3BeforeOracle =
-				getMonthNameOracle(month3Before)
-				+ "-"
-				+ year3MonthBefore;*/
 		
 		List<InputProduct> inputProducts =
 				new ArrayList<>();
@@ -505,175 +466,6 @@ public class InputProductService {
 					inputProduct.setOrderQty5("0");
 				}
 				
-				/*//cmob required data
-				Double averageSalesCurrentMonth = (double) 0;
-				CustProdSales custProdSalesCurrent = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periodeCurrentOracle);
-				if(custProdSalesCurrent!=null) {
-					System.out.println();
-					if(custProdSalesCurrent.getAvgSales()!=null) {
-						averageSalesCurrentMonth =
-								custProdSalesCurrent.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSalesCurrentMonth(
-						averageSalesCurrentMonth);
-				
-				Double averageSales1MonthBefore = (double) 0;
-				CustProdSales custProdSales1MonthBefore = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periode1BeforeOracle);
-				if(custProdSales1MonthBefore!=null) {
-					if(custProdSales1MonthBefore.getAvgSales()!=null) {
-						averageSales1MonthBefore =
-								custProdSales1MonthBefore.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSales1MonthBefore(
-						averageSales1MonthBefore);
-				
-				Double averageSales2MonthBefore = (double) 0;
-				CustProdSales custProdSales2MonthBefore = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periode2BeforeOracle);
-				if(custProdSales2MonthBefore!=null) {
-					if(custProdSales2MonthBefore.getAvgSales()!=null) {
-						averageSales2MonthBefore =
-								custProdSales2MonthBefore.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSales2MonthBefore(
-						averageSales2MonthBefore);
-				
-				Double averageSales3MonthBefore = (double) 0;
-				CustProdSales custProdSales3MonthBefore = 
-						custProdSalesService.
-							getBygetByCompanyCustidProductcodePeriode(
-									company, custId,
-									productCode, periode3BeforeOracle);
-				if(custProdSales3MonthBefore!=null) {
-					if(custProdSales3MonthBefore.getAvgSales()!=null) {
-						averageSales3MonthBefore =
-								custProdSales3MonthBefore.getAvgSales();
-					}
-				}
-				inputProduct.setAverageSales3MonthBefore(
-						averageSales3MonthBefore);
-				
-
-				Long qtyOnHand = (long)0;
-				CustProdTarget custProdTargetStock =
-						custProdTargetService.
-							getBygetByCompanyCustidProductcode(
-									company, custId,
-									productCode);
-				if(custProdTargetStock!=null) {
-						if(custProdTargetStock.getEndStock()!=null) {
-							qtyOnHand =
-									custProdTargetStock.getEndStock();
-							String primaryUom = product.getProdUom1();
-							Double primaryUomRate=0.0;
-							Double priceUomRate=0.0;
-							for(Integer i=0; i<prodUoms.size(); i++) {
-								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
-									primaryUomRate = prodUoms.get(i).getConversionRate();
-								}
-								if(custProd.getPriceUom().trim().equals(
-										prodUoms.get(i).getUomCode())) {
-									priceUomRate = prodUoms.get(i).getConversionRate();
-								}
-							}
-							
-							qtyOnHand =
-									(long)((double)qtyOnHand
-									* primaryUomRate
-									/ priceUomRate);
-							
-						}
-				}
-				inputProduct.setQtyOnHand(qtyOnHand);
-				
-				long targetCustomerCurrentMonth = (long)0;
-				CustProdTarget custProdTargetCurrent =
-						custProdTargetService.
-							getBygetByCompanyCustidProductcodePeriodetarget(
-									company, custId,
-									productCode, periodeCurrentOracle);
-
-				if(custProdTargetCurrent!=null) {
-						if(custProdTargetCurrent.getTargetSales()!=null) {
-							targetCustomerCurrentMonth =
-									custProdTargetCurrent.getTargetSales();
-							String primaryUom = product.getProdUom1();
-							Double primaryUomRate=0.0;
-							Double priceUomRate=0.0;
-							for(Integer i=0; i<prodUoms.size(); i++) {
-								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode().trim())) {
-									primaryUomRate = prodUoms.get(i).getConversionRate();
-								}
-								if(custProd.getPriceUom().trim().equals(prodUoms.get(i).getUomCode())) {
-									priceUomRate = prodUoms.get(i).getConversionRate();
-								}
-							}
-
-							targetCustomerCurrentMonth =
-									(long)((double)targetCustomerCurrentMonth
-									* primaryUomRate
-									/ priceUomRate);
-							
-						}
-				}
-				inputProduct.setTargetCustomerCurrentMonth(
-						targetCustomerCurrentMonth);
-				
-				Long targetCustomerNextMonth = (long)0;
-				CustProdTarget custProdTargetNextMonth =
-						custProdTargetService.
-							getBygetByCompanyCustidProductcodePeriodetarget(
-									company, custId,
-									productCode, periodeNextOracle);
-				if(custProdTargetNextMonth!=null) {
-						if(custProdTargetNextMonth.getTargetSales()!=null) {
-							targetCustomerNextMonth =
-									custProdTargetNextMonth.getTargetSales();
-							
-							String primaryUom = product.getProdUom1();
-							Double primaryUomRate=0.0;
-							Double priceUomRate=0.0;
-							for(Integer i=0; i<prodUoms.size(); i++) {
-								if(primaryUom.trim().equals(prodUoms.get(i).getUomCode())) {
-									primaryUomRate = prodUoms.get(i).getConversionRate();
-								}
-								if(custProd.getPriceUom().trim().equals(
-										prodUoms.get(i).getUomCode())) {
-									priceUomRate = prodUoms.get(i).getConversionRate();
-								}
-							}
-							
-							targetCustomerNextMonth =
-									(long)((double)targetCustomerNextMonth
-									* primaryUomRate
-									/ priceUomRate);
-						}		
-				}
-				inputProduct.setTargetCustomerNextMonth(
-						targetCustomerNextMonth);
-				
-				List<CustInvoice> custInvoices =
-						custInvoiceService.
-							getByCompanyCustidProductcode(
-									company, custId,
-									productCode);
-				inputProduct.setCustInvoices(custInvoices);
-				//end of cmob required data
-*/				
 				inputProducts.add(inputProduct);
 			}
 			

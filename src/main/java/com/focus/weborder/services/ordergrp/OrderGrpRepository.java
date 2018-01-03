@@ -12,7 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 public interface OrderGrpRepository extends CrudRepository<OrderGrp, Long> {
 
 	@Query("SELECT og FROM OrderGrp og")
-	List<OrderGrp> getAll();
+	List<OrderGrp> getAll();	
+	
+	@Query("SELECT og FROM OrderGrp og WHERE " +
+            "og.company = :company AND " +
+            "og.custId = :custId AND " +
+            "og.orderGrpId = :orderGrpId")
+	OrderGrp getByCompanyCustidOrdergrpid(
+			@Param("company") String company,
+    		@Param("custId") Long custId,
+    		@Param("orderGrpId") Long orderGrpId);
 	
 	@Query("SELECT og FROM OrderGrp og WHERE " +
             "og.company = :company AND " +

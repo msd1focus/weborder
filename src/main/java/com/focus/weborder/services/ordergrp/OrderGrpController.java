@@ -23,6 +23,14 @@ public class OrderGrpController {
 		return orderGrpService.getAllOrderGrps();
 	}
 	
+	@RequestMapping("/ordergrp/ordergrpid")
+	public OrderGrp getOrderGroupOrdergrpid(
+			@RequestParam String company,
+			@RequestParam Long custid,
+			@RequestParam Long ordergrpid){
+		return orderGrpService.getOrderGrpOrdergrpid(company, custid, ordergrpid);
+	}
+	
 	@RequestMapping("/ordergrp/draft")
 	public List<OrderGrp> getOrderGroupDraft(@RequestParam String company,
 			@RequestParam Long custid){

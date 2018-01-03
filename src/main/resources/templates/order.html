@@ -11,7 +11,9 @@
 		th:src="@{js/order.js}">
 	</script>
 	
-	<script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="webjars/jquery/3.2.1/jquery.min.js">
+	</script>
 	
 	<div th:replace="fragments/header :: header-css"/>
 	
@@ -21,6 +23,19 @@
 <body>
 
 <div th:replace="fragments/header :: header"/>
+
+<!-- Loading -->
+<div id="loading" class="modal">
+
+  <div class="modal-content">
+    <!-- <span class="close">&times;</span> -->
+    <img src="../static/images/loading.gif" 
+    	th:src="@{images/loading.gif}"
+    	width="42" height="42"/>
+    Please Wait, Uploading Data...
+  </div>
+
+</div>
 
 <div class="bagianlogo" id="logo">
     <img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" 

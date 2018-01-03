@@ -17,6 +17,12 @@ public class OrderGrpService {
 		return orderGrps;		
 	}
 	
+	public OrderGrp getOrderGrpOrdergrpid(
+			String company, Long custId, Long orderGrpId) {
+		return orderGrpRepository.getByCompanyCustidOrdergrpid(
+				company, custId, orderGrpId);
+	}
+	
 	public List<OrderGrp> getOrderGrpDraft(String company, Long custId) {
 		return orderGrpRepository.getByCompanyCustidDraft(company, custId);
 	}
