@@ -24,19 +24,6 @@
 
 <div th:replace="fragments/header :: header"/>
 
-<!-- Loading -->
-<div id="loading" class="modal">
-
-  <div class="modal-content">
-    <!-- <span class="close">&times;</span> -->
-    <img src="../static/images/loading.gif" 
-    	th:src="@{images/loading.gif}"
-    	width="42" height="42"/>
-    Please Wait, Uploading Data...
-  </div>
-
-</div>
-
 <div class="bagianlogo" id="logo">
     <img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" 
     	src="../static/images/logo.png" 
@@ -654,62 +641,102 @@
 		</tr>
 		<tr>
 			<td>
-				<select id="mobil1" onchange="changeMobil1(this)">
-		       		<option th:each="mobil : ${listMobils}"
-			               th:value="${mobil.mobilPanjang
-			               		*mobil.mobilLebar
-			               		*mobil.mobilTinggi/1000000000}"
-			               th:text="${mobil.mobilDesc}"
-			               th:selected="${inputWebOrder.inputOrder.order1.jenisMobil==mobil.mobilDesc}"/>
-				</select>
+				<table>
+					<tr>
+						<td>
+							<input type="text"
+								id="jumlahMobil1"
+								style="vertical-align: middle; text-align: right; width: 125px"
+								readonly="readonly"
+								value="0"/>
+							<input type="image"
+								style="vertical-align: middle; width: 20px; height: 20px"
+								onclick="return addMobil1();"
+								src="../static/images/edit.png" 
+						    	th:src="@{images/edit.png}"/>
+						</td>
+					</tr>
+				</table>
 				<input id="mobil1Selected" type="hidden" 
 					th:field="*{inputOrder.order1.jenisMobil}" />
 			</td>
 			<td class="order2" style="display: none;">
-				<select id="mobil2" onchange="changeMobil2(this)">
-		       		<option th:each="mobil : ${listMobils}"
-			               th:value="${mobil.mobilPanjang
-			               		*mobil.mobilLebar
-			               		*mobil.mobilTinggi/1000000000}"
-			               th:text="${mobil.mobilDesc}"
-			               th:selected="${inputWebOrder.inputOrder.order2.jenisMobil==mobil.mobilDesc}"/>
-				</select>
+				<table>
+					<tr>
+						<td>
+							<input type="text"
+								id="jumlahMobil2"
+								style="vertical-align: middle; text-align: right; width: 125px"
+								readonly="readonly"
+								value="0"/>
+							<input type="image"
+								style="vertical-align: middle; width: 20px; height: 20px"
+								onclick="return addMobil2();"
+								src="../static/images/edit.png" 
+						    	th:src="@{images/edit.png}"/>
+						</td>
+					</tr>
+				</table>
 				<input id="mobil2Selected" type="hidden" 
 					th:field="*{inputOrder.order2.jenisMobil}" />
 			</td>
 			<td class="order3" style="display: none;">
-				<select name="mobil3" onchange="changeMobil3(this)">
-				    <option th:each="mobil : ${listMobils}"
-			               th:value="${mobil.mobilPanjang
-			               		*mobil.mobilLebar
-			               		*mobil.mobilTinggi/1000000000}"
-			               th:text="${mobil.mobilDesc}"
-			               th:selected="${inputWebOrder.inputOrder.order3.jenisMobil==mobil.mobilDesc}"/>
-				</select>
+				<table>
+					<tr>
+						<td>
+							<input type="text"
+								id="jumlahMobil3"
+								style="vertical-align: middle; text-align: right; width: 125px"
+								readonly="readonly"
+								value="0"/>
+							<input type="image"
+								style="vertical-align: middle; width: 20px; height: 20px"
+								onclick="return addMobil3();"
+								src="../static/images/edit.png" 
+						    	th:src="@{images/edit.png}"/>
+						</td>
+					</tr>
+				</table>
 				<input id="mobil3Selected" type="hidden" 
 					th:field="*{inputOrder.order3.jenisMobil}" />
 			</td>
 			<td class="order4" style="display: none;">
-				<select name="mobil4" onchange="changeMobil4(this)">
-				    <option th:each="mobil : ${listMobils}"
-			               th:value="${mobil.mobilPanjang
-			               		*mobil.mobilLebar
-			               		*mobil.mobilTinggi/1000000000}"
-			               th:text="${mobil.mobilDesc}"
-			               th:selected="${inputWebOrder.inputOrder.order4.jenisMobil==mobil.mobilDesc}"/>
-				</select>
+				<table>
+					<tr>
+						<td>
+							<input type="text"
+								id="jumlahMobil4"
+								style="vertical-align: middle; text-align: right; width: 125px"
+								readonly="readonly"
+								value="0"/>
+							<input type="image"
+								style="vertical-align: middle; width: 20px; height: 20px"
+								onclick="return addMobil4();"
+								src="../static/images/edit.png" 
+						    	th:src="@{images/edit.png}"/>
+						</td>
+					</tr>
+				</table>
 				<input id="mobil4Selected" type="hidden" 
 					th:field="*{inputOrder.order4.jenisMobil}" />
 			</td>
 			<td class="order5" style="display: none;">
-				<select name="mobil5" onchange="changeMobil5(this)">
-				    <option th:each="mobil : ${listMobils}"
-			               th:value="${mobil.mobilPanjang
-			               		*mobil.mobilLebar
-			               		*mobil.mobilTinggi/1000000000}"
-			               th:text="${mobil.mobilDesc}"
-			               th:selected="${inputWebOrder.inputOrder.order5.jenisMobil==mobil.mobilDesc}"/>
-				</select>
+				<table>
+					<tr>
+						<td>
+							<input type="text"
+								id="jumlahMobil5"
+								style="vertical-align: middle; text-align: right; width: 125px"
+								readonly="readonly"
+								value="0"/>
+							<input type="image"
+								style="vertical-align: middle; width: 20px; height: 20px"
+								onclick="return addMobil5();"
+								src="../static/images/edit.png" 
+						    	th:src="@{images/edit.png}"/>
+						</td>
+					</tr>
+				</table>
 				<input id="mobil5Selected" type="hidden" 
 					th:field="*{inputOrder.order5.jenisMobil}" />
 			</td>
@@ -1140,6 +1167,316 @@
 		style="display: none;" />
 </div> <!-- div dataordercontainer -->
 </div> <!-- div ordercontainer -->
+
+
+<!-- Loading -->
+<div id="loading" class="modal">
+
+  <div class="modal-content">
+    <!-- <span class="close">&times;</span> -->
+    <img src="../static/images/loading.gif" 
+    	th:src="@{images/loading.gif}"
+    	width="42" height="42"/>
+    Please Wait, Uploading Data...
+  </div>
+
+</div>
+
+<!-- Mobil -->
+<div id="mobil1Input" class="modal">
+  <div class="modal-content-mobil">
+  	<div align="center">
+	  	<h4>
+	  		Order 1
+	  	</h4>
+	</div>
+  	<p/>
+  	<table id="tblMobil1">
+	  	<tr>
+	  		<th style="text-align: center">Jenis Mobil</th>
+	  		<th style="text-align: center">Panjang (m)</th>
+	  		<th style="text-align: center">Lebar (m)</th>
+	  		<th style="text-align: center">Tinggi (m)</th>
+	  		<th style="text-align: center">Jumlah</th>
+	  	</tr>
+  		<th:block th:each="mobil, stat: *{listMobils}">
+  			<tr>
+  				<td>
+  					<input type="text"
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilDesc}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilPanjang}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilLebar}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
+  				</td>
+  				<td>
+  					<input type="number"
+						style="text-align: right; width: 100px"
+  						value="0"
+  						min="0"/>
+  				</td>
+  			</tr>
+  		</th:block>
+  	</table>
+  	<p/>
+  	<div align="right">
+	  	<input type="button"
+	  		onclick="return saveMobil1();"
+	  		value="OK"/>
+  	</div>
+  </div>
+</div>
+
+<div id="mobil2Input" class="modal">
+  <div class="modal-content-mobil">
+  	<div align="center">
+	  	<h4>
+	  		Order 2
+	  	</h4>
+	</div>
+  	<p/>
+  	<table id="tblMobil2">
+	  	<tr>
+	  		<th style="text-align: center">Jenis Mobil</th>
+	  		<th style="text-align: center">Panjang (m)</th>
+	  		<th style="text-align: center">Lebar (m)</th>
+	  		<th style="text-align: center">Tinggi (m)</th>
+	  		<th style="text-align: center">Jumlah</th>
+	  	</tr>
+  		<th:block th:each="mobil, stat: *{listMobils}">
+  			<tr>
+  				<td>
+  					<input type="text"
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilDesc}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilPanjang}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilLebar}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
+  				</td>
+  				<td>
+  					<input type="number"
+						style="text-align: right; width: 100px"
+  						value="0"
+  						min="0"/>
+  				</td>
+  			</tr>
+  		</th:block>
+  	</table>
+  	<p/>
+  	<div align="right">
+	  	<input type="button"
+	  		onclick="return saveMobil2();"
+	  		value="OK"/>
+  	</div>
+  </div>
+</div>
+
+<div id="mobil3Input" class="modal">
+  <div class="modal-content-mobil">
+  	<div align="center">
+	  	<h4>
+	  		Order 3
+	  	</h4>
+	</div>
+  	<p/>
+  	<table id="tblMobil3">
+	  	<tr>
+	  		<th style="text-align: center">Jenis Mobil</th>
+	  		<th style="text-align: center">Panjang (m)</th>
+	  		<th style="text-align: center">Lebar (m)</th>
+	  		<th style="text-align: center">Tinggi (m)</th>
+	  		<th style="text-align: center">Jumlah</th>
+	  	</tr>
+  		<th:block th:each="mobil, stat: *{listMobils}">
+  			<tr>
+  				<td>
+  					<input type="text"
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilDesc}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilPanjang}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilLebar}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
+  				</td>
+  				<td>
+  					<input type="number"
+						style="text-align: right; width: 100px"
+  						value="0"
+  						min="0"/>
+  				</td>
+  			</tr>
+  		</th:block>
+  	</table>
+  	<p/>
+  	<div align="right">
+	  	<input type="button"
+	  		onclick="return saveMobil3();"
+	  		value="OK"/>
+  	</div>
+  </div>
+</div>
+
+<div id="mobil4Input" class="modal">
+  <div class="modal-content-mobil">
+  	<div align="center">
+	  	<h4>
+	  		Order 4
+	  	</h4>
+	</div>
+  	<p/>
+  	<table id="tblMobil4">
+	  	<tr>
+	  		<th style="text-align: center">Jenis Mobil</th>
+	  		<th style="text-align: center">Panjang (m)</th>
+	  		<th style="text-align: center">Lebar (m)</th>
+	  		<th style="text-align: center">Tinggi (m)</th>
+	  		<th style="text-align: center">Jumlah</th>
+	  	</tr>
+  		<th:block th:each="mobil, stat: *{listMobils}">
+  			<tr>
+  				<td>
+  					<input type="text"
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilDesc}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilPanjang}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilLebar}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
+  				</td>
+  				<td>
+  					<input type="number"
+						style="text-align: right; width: 100px"
+  						value="0"
+  						min="0"/>
+  				</td>
+  			</tr>
+  		</th:block>
+  	</table>
+  	<p/>
+  	<div align="right">
+	  	<input type="button"
+	  		onclick="return saveMobil4();"
+	  		value="OK"/>
+  	</div>
+  </div>
+</div>
+
+<div id="mobil5Input" class="modal">
+  <div class="modal-content-mobil">
+  	<div align="center">
+	  	<h4>
+	  		Order 5
+	  	</h4>
+	</div>
+  	<p/>
+  	<table id="tblMobil5">
+	  	<tr>
+	  		<th style="text-align: center">Jenis Mobil</th>
+	  		<th style="text-align: center">Panjang (m)</th>
+	  		<th style="text-align: center">Lebar (m)</th>
+	  		<th style="text-align: center">Tinggi (m)</th>
+	  		<th style="text-align: center">Jumlah</th>
+	  	</tr>
+  		<th:block th:each="mobil, stat: *{listMobils}">
+  			<tr>
+  				<td>
+  					<input type="text"
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilDesc}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilPanjang}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilLebar}"/>
+  				</td>
+  				<td>
+  					<input type="text"
+						style="text-align: right; width: 100px"	
+  						readonly="readonly"
+  						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
+  				</td>
+  				<td>
+  					<input type="number"
+						style="text-align: right; width: 100px"
+  						value="0"
+  						min="0"/>
+  				</td>
+  			</tr>
+  		</th:block>
+  	</table>
+  	<p/>
+  	<div align="right">
+	  	<input type="button"
+	  		onclick="return saveMobil5();"
+	  		value="OK"/>
+  	</div>
+  </div>
+</div>
 
 </form>
 

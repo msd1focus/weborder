@@ -765,8 +765,8 @@ function saveOrder(o, c, ci, ogi, ps){
 		document.getElementById("shipTo"+o+"Selected").value;
 	var expedisiSelected = 
 		document.getElementById("expedisi"+o+"Selected").value;
-	var mobilSelected = 
-		document.getElementById("mobil"+o+"Selected").value;
+	var tblMobil = 
+		document.getElementById("tblMobil"+o);
 	var dimensiMobil = 
 		document.getElementById("dimensiMobil"+o).value;
 	var dimensiOrder = 
@@ -776,6 +776,20 @@ function saveOrder(o, c, ci, ogi, ps){
 	var totalAmount = 
 		document.getElementById("totalAmount"+o).value;
 	
+	var mobilSelected = "";
+
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        if(jumlah>0){
+        	var desc = tblMobil.rows[idxRow].cells[0].children[0].value;
+        	if(mobilSelected!=""){
+        		mobilSelected += "-/-";
+        	}
+    		mobilSelected += desc + ":" + jumlah;
+        }
+    }
 	var order = 
 		{
 		   "orderId": orderId,
@@ -1009,23 +1023,222 @@ function unformatText(obj){
 }
 
 function dimensiMobilInit(){
-	
-	var dimensiMobil1 = document.getElementById("dimensiMobil1").value;
-	var dimensiMobil2 = document.getElementById("dimensiMobil2").value;
-	var dimensiMobil3 = document.getElementById("dimensiMobil3").value;
-	var dimensiMobil4 = document.getElementById("dimensiMobil4").value;
-	var dimensiMobil5 = document.getElementById("dimensiMobil5").value;
-	var dimensiMobil1Text = document.getElementById("dimensiMobil1Text");
-	var dimensiMobil2Text = document.getElementById("dimensiMobil2Text");
-	var dimensiMobil3Text = document.getElementById("dimensiMobil3Text");
-	var dimensiMobil4Text = document.getElementById("dimensiMobil4Text");
-	var dimensiMobil5Text = document.getElementById("dimensiMobil5Text");
-	
-	dimensiMobil1Text.value = formatTextValue(dimensiMobil1);
-	dimensiMobil2Text.value = formatTextValue(dimensiMobil2);
-	dimensiMobil3Text.value = formatTextValue(dimensiMobil3);
-	dimensiMobil4Text.value = formatTextValue(dimensiMobil4);
-	dimensiMobil5Text.value = formatTextValue(dimensiMobil5);
+	var jumlahOrder = document.getElementById("jumlahOrder").value;
+	if(jumlahOrder>0){
+		dimensiMobilInit1();
+		if(jumlahOrder>1){
+			dimensiMobilInit2();
+			if(jumlahOrder>2){
+				dimensiMobilInit3();
+				if(jumlahOrder>3){
+					dimensiMobilInit4();
+					if(jumlahOrder>4){
+						dimensiMobilInit5();
+					}
+				}
+			}
+		}
+	}
+}
+
+function dimensiMobilInit1(){
+	var tblMobil = document.getElementById("tblMobil1");
+    var jumlahMobil = document.getElementById("jumlahMobil1");
+    var dimensiMobil = document.getElementById("dimensiMobil1");
+    var dimensiMobilText = document.getElementById("dimensiMobil1Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder1").value);
+    var selisihDimensi = document.getElementById("selisihDimensi1");
+    var selisihDimensiText = document.getElementById("selisihDimensi1Text");
+    var mobilSelected = document.getElementById("mobil1Selected").value;
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var desc = tblMobil.rows[idxRow].cells[0].children[0].value;
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var ms = mobilSelected.split("-/-");
+        for(var i=0; i<ms.length; i++){
+        	var d = ms[i].split(":");
+        	if(d[0]==desc){
+                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+        	}
+        }
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+}
+
+function dimensiMobilInit2(){
+	var tblMobil = document.getElementById("tblMobil2");
+    var jumlahMobil = document.getElementById("jumlahMobil2");
+    var dimensiMobil = document.getElementById("dimensiMobil2");
+    var dimensiMobilText = document.getElementById("dimensiMobil2Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder2").value);
+    var selisihDimensi = document.getElementById("selisihDimensi2");
+    var selisihDimensiText = document.getElementById("selisihDimensi2Text");
+    var mobilSelected = document.getElementById("mobil2Selected").value;
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var desc = tblMobil.rows[idxRow].cells[0].children[0].value;
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var ms = mobilSelected.split("-/-");
+        for(var i=0; i<ms.length; i++){
+        	var d = ms[i].split(":");
+        	if(d[0]==desc){
+                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+        	}
+        }
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+}
+
+function dimensiMobilInit3(){
+	var tblMobil = document.getElementById("tblMobil3");
+    var jumlahMobil = document.getElementById("jumlahMobil3");
+    var dimensiMobil = document.getElementById("dimensiMobil3");
+    var dimensiMobilText = document.getElementById("dimensiMobil3Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder3").value);
+    var selisihDimensi = document.getElementById("selisihDimensi3");
+    var selisihDimensiText = document.getElementById("selisihDimensi3Text");
+    var mobilSelected = document.getElementById("mobil3Selected").value;
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var desc = tblMobil.rows[idxRow].cells[0].children[0].value;
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var ms = mobilSelected.split("-/-");
+        for(var i=0; i<ms.length; i++){
+        	var d = ms[i].split(":");
+        	if(d[0]==desc){
+                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+        	}
+        }
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+}
+
+function dimensiMobilInit4(){
+	var tblMobil = document.getElementById("tblMobil4");
+    var jumlahMobil = document.getElementById("jumlahMobil4");
+    var dimensiMobil = document.getElementById("dimensiMobil4");
+    var dimensiMobilText = document.getElementById("dimensiMobil4Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder4").value);
+    var selisihDimensi = document.getElementById("selisihDimensi4");
+    var selisihDimensiText = document.getElementById("selisihDimensi4Text");
+    var mobilSelected = document.getElementById("mobil4Selected").value;
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var desc = tblMobil.rows[idxRow].cells[0].children[0].value;
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var ms = mobilSelected.split("-/-");
+        for(var i=0; i<ms.length; i++){
+        	var d = ms[i].split(":");
+        	if(d[0]==desc){
+                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+        	}
+        }
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+}
+
+function dimensiMobilInit5(){
+	var tblMobil = document.getElementById("tblMobil5");
+    var jumlahMobil = document.getElementById("jumlahMobil5");
+    var dimensiMobil = document.getElementById("dimensiMobil5");
+    var dimensiMobilText = document.getElementById("dimensiMobil5Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder5").value);
+    var selisihDimensi = document.getElementById("selisihDimensi5");
+    var selisihDimensiText = document.getElementById("selisihDimensi5Text");
+    var mobilSelected = document.getElementById("mobil5Selected").value;
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var desc = tblMobil.rows[idxRow].cells[0].children[0].value;
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var ms = mobilSelected.split("-/-");
+        for(var i=0; i<ms.length; i++){
+        	var d = ms[i].split(":");
+        	if(d[0]==desc){
+                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+        	}
+        }
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
 }
 
 function poDateInit(){
@@ -3797,6 +4010,11 @@ function changeJumlahOrder(obj) {
 	var selisihDimensi3 = document.getElementById("selisihDimensi3");
 	var selisihDimensi4 = document.getElementById("selisihDimensi4");
 	var selisihDimensi5 = document.getElementById("selisihDimensi5");
+	var selisihDimensi1Text = document.getElementById("selisihDimensi1Text");
+	var selisihDimensi2Text = document.getElementById("selisihDimensi2Text");
+	var selisihDimensi3Text = document.getElementById("selisihDimensi3Text");
+	var selisihDimensi4Text = document.getElementById("selisihDimensi4Text");
+	var selisihDimensi5Text = document.getElementById("selisihDimensi5Text");
 
 	var totAmount1 = 0;
 	var totAmount2 = 0;
@@ -4541,4 +4759,243 @@ function changeJumlahOrder(obj) {
 		sisaLimitText.style.backgroundColor = "#D3D3D3";
 	}*/
 	
+}
+
+function addMobil1(){
+	var mobilInput = document.getElementById("mobil1Input");
+	mobilInput.style.display = "block";
+	
+    return false;
+}
+
+function addMobil2(){
+	var mobilInput = document.getElementById("mobil2Input");
+	mobilInput.style.display = "block";
+	
+    return false;
+}
+
+function addMobil3(){
+	var mobilInput = document.getElementById("mobil3Input");
+	mobilInput.style.display = "block";
+	
+    return false;
+}
+
+function addMobil4(){
+	var mobilInput = document.getElementById("mobil4Input");
+	mobilInput.style.display = "block";
+	
+    return false;
+}
+
+function addMobil5(){
+	var mobilInput = document.getElementById("mobil5Input");
+	mobilInput.style.display = "block";
+	
+    return false;
+}
+
+function deleteMobil12(){
+    var rowMobil = document.getElementById("rowMobil12");
+    rowMobil.style.display = "none";
+    return;
+}
+
+
+function deleteMobil13(){
+    var rowMobil = document.getElementById("rowMobil13");
+    rowMobil.style.display = "none";
+    return;
+}
+
+
+function deleteMobil14(){
+    var rowMobil = document.getElementById("rowMobil14");
+    rowMobil.style.display = "none";
+    return;
+}
+
+
+function deleteMobil15(){
+    var rowMobil = document.getElementById("rowMobil15");
+    rowMobil.style.display = "none";
+    //deleteMobil.style.display = "table-row";
+    return;
+}
+
+function cancelMobil1(){
+    var mobil1Input = document.getElementById("mobil1Input");
+    mobil1Input.style.display = "none";
+    return false;
+}
+
+function saveMobil1(){
+    var mobilInput = document.getElementById("mobil1Input");
+    var tblMobil = document.getElementById("tblMobil1");
+    var jumlahMobil = document.getElementById("jumlahMobil1");
+    var dimensiMobil = document.getElementById("dimensiMobil1");
+    var dimensiMobilText = document.getElementById("dimensiMobil1Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder1").value);
+    var selisihDimensi = document.getElementById("selisihDimensi1");
+    var selisihDimensiText = document.getElementById("selisihDimensi1Text");
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    mobilInput.style.display = "none"; 
+    return false;
+}
+
+function saveMobil2(){
+    var mobilInput = document.getElementById("mobil2Input");
+    var tblMobil = document.getElementById("tblMobil2");
+    var jumlahMobil = document.getElementById("jumlahMobil2");
+    var dimensiMobil = document.getElementById("dimensiMobil2");
+    var dimensiMobilText = document.getElementById("dimensiMobil2Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder2").value);
+    var selisihDimensi = document.getElementById("selisihDimensi2");
+    var selisihDimensiText = document.getElementById("selisihDimensi2Text");
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    mobilInput.style.display = "none"; 
+    return false;
+}
+
+function saveMobil3(){
+    var mobilInput = document.getElementById("mobil3Input");
+    var tblMobil = document.getElementById("tblMobil3");
+    var jumlahMobil = document.getElementById("jumlahMobil3");
+    var dimensiMobil = document.getElementById("dimensiMobil3");
+    var dimensiMobilText = document.getElementById("dimensiMobil3Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder3").value);
+    var selisihDimensi = document.getElementById("selisihDimensi3");
+    var selisihDimensiText = document.getElementById("selisihDimensi3Text");
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    mobilInput.style.display = "none"; 
+    return false;
+}
+
+function saveMobil4(){
+    var mobilInput = document.getElementById("mobil4Input");
+    var tblMobil = document.getElementById("tblMobil4");
+    var jumlahMobil = document.getElementById("jumlahMobil4");
+    var dimensiMobil = document.getElementById("dimensiMobil4");
+    var dimensiMobilText = document.getElementById("dimensiMobil4Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder4").value);
+    var selisihDimensi = document.getElementById("selisihDimensi4");
+    var selisihDimensiText = document.getElementById("selisihDimensi4Text");
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    mobilInput.style.display = "none"; 
+    return false;
+}
+
+function saveMobil5(){
+    var mobilInput = document.getElementById("mobil5Input");
+    var tblMobil = document.getElementById("tblMobil5");
+    var jumlahMobil = document.getElementById("jumlahMobil5");
+    var dimensiMobil = document.getElementById("dimensiMobil5");
+    var dimensiMobilText = document.getElementById("dimensiMobil5Text");
+    var dimensiOrder = 0;
+    dimensiOrder = parseFloat(document.getElementById("dimensiOrder5").value);
+    var selisihDimensi = document.getElementById("selisihDimensi5");
+    var selisihDimensiText = document.getElementById("selisihDimensi5Text");
+    var dm = 0;
+    var jumlahMobilValue = 0;
+    var rowCount = tblMobil.rows.length - 1;
+    for(var idxRow=1; idxRow<=rowCount; idxRow++){
+    	var panjang = 0;
+    	panjang = parseFloat(tblMobil.rows[idxRow].cells[1].children[0].value);
+        var lebar = 0;
+        lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
+        var tinggi = 0;
+        tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
+        var jumlah = 0;
+        jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
+        jumlahMobilValue += jumlah;
+        dm += (panjang*lebar*tinggi*jumlah);
+    }
+    jumlahMobil.value = formatTextValue(jumlahMobilValue);
+    dimensiMobil.value = dm;
+    dimensiMobilText.value = formatTextValue(dm);
+    selisihDimensi.value = dm - dimensiOrder;
+    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    mobilInput.style.display = "none"; 
+    return false;
 }

@@ -225,6 +225,15 @@ input:disabled {
     width: 300px;
 }
 
+/* Modal Content */
+.modal-content-mobil {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 595px;
+}
+
 /* The Close Button */
 .close {
     color: #aaaaaa;
