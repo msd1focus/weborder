@@ -24,3 +24,11 @@ Version 1.3.0 (Tuesday, 2 January 2018 by Amin Mutohar)
 Version 1.4.0 (Wednesday, 3 January 2018 by Amin Mutohar)
  - Change Application
  	1. Mobil is not single entry per order
+ 	
+Version 1.4.1 (Thursday, 4 January 2018 by Amin Mutohar)
+ - Bug Fixing
+ 	1. Period next month fill by current month
+ 	2. Reset default value on unit price and amount when change order type
+ 	3. Delete order if jumlah order has reduced
+ 	4. PO Number is not valid on saved order
+ 	5. Force PO Number to current month if periode has gone 

@@ -58,8 +58,10 @@ public class OrderController {
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/order")
-	public void deleteOrder(@RequestParam Long orderid){
-		orderService.deleteOrder(orderid);
+	public void deleteOrder(@RequestBody List<Long> orderids){
+		for(Long orderid: orderids) {
+			orderService.deleteOrder(orderid);		
+		}
 	}
 	
 }

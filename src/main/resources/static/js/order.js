@@ -729,6 +729,68 @@ function saveOrderGrp(ss){
 	    },
 	    complete: function( xhr, status ) {
             console.log( "ordergrp >> complete for " + orderGrpId );
+            
+            //----delete order----//
+            var orderids = [];
+            if(jumlahOrderSelected<5){
+            	var orderId5 = 
+            		document.getElementById("orderId5").value;
+            	if(orderId5.trim().length>0){
+    				orderids.push(orderId5);
+    			}
+                if(jumlahOrderSelected<4){
+                	var orderId4 = 
+                		document.getElementById("orderId4").value;
+                	if(orderId4.trim().length>0){
+        				orderids.push(orderId4);
+        			}
+                    if(jumlahOrderSelected<3){
+                    	var orderId3 = 
+                    		document.getElementById("orderId3").value;
+                    	if(orderId3.trim().length>0){
+            				orderids.push(orderId3);
+            			}
+                        if(jumlahOrderSelected<2){
+                        	var orderId2 = 
+                        		document.getElementById("orderId2").value;
+                        	if(orderId2.trim().length>0){
+                				orderids.push(orderId2);
+                			}
+                        }
+                    }
+                }
+            }
+            
+            if(orderids.length>0){
+            	$.ajax({
+                    type: "DELETE",
+                    url: "/weborder/rest/order",
+                    data: JSON.stringify(orderids),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(result){
+            	    	console.log("order >> delete: " + orderids);
+                    },
+                    error: function( xhr, textStatus, errorThrown ) {
+            			console.log( "XMLHttpRequest.status:  " + xhr.status);
+            			if(xhr.status!==200){
+            				console.log( 
+            						"XMLHttpRequest.responseText:  " 
+            						+ xhr.responseText);
+            				responseText = JSON.parse(xhr.responseText);
+            				console.log( 
+            						"XMLHttpRequest.responseText.Error:  " 
+            						+ responseText.error);
+            				console.log( 
+            						"XMLHttpRequest.responseText.Message:  " 
+            						+ responseText.message);
+            			}
+            		}
+                });
+            }
+            
+            //----end of delete order----//
+            
             if(jumlahOrderSelected>0){
             	saveOrder(1, company, custId, orderGrpId, periodeSelected);
             }
@@ -900,39 +962,43 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 		    });
 		}
 		else{
-			if(orderDetailId!= null){
+			if(orderDetailId!== 'null'){
 				orderdetailids.push(orderDetailId);
 			}
 		}
 	}
 	
-	console.log(orderdetail);
+	console.log("orderdetail: " + orderdetail);
+	console.log("orderdetailids.length: " + orderdetailids.length);
 	
-	$.ajax({
-        type: "DELETE",
-        url: "/weborder/rest/orderdetail",
-        data: JSON.stringify(orderdetailids),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(result){
-	    	console.log("orderdetail >> delete");
-        },
-        error: function( xhr, textStatus, errorThrown ) {
-			console.log( "XMLHttpRequest.status:  " + xhr.status);
-			if(xhr.status!==200){
-				console.log( 
-						"XMLHttpRequest.responseText:  " 
-						+ xhr.responseText);
-				responseText = JSON.parse(xhr.responseText);
-				console.log( 
-						"XMLHttpRequest.responseText.Error:  " 
-						+ responseText.error);
-				console.log( 
-						"XMLHttpRequest.responseText.Message:  " 
-						+ responseText.message);
+	if(orderdetailids.length>0){
+		console.log("orderdetailids: " + orderdetailids);
+		$.ajax({
+	        type: "DELETE",
+	        url: "/weborder/rest/orderdetail",
+	        data: JSON.stringify(orderdetailids),
+	        contentType: "application/json; charset=utf-8",
+	        dataType: "json",
+	        success: function(result){
+		    	console.log("orderdetail >> delete");
+	        },
+	        error: function( xhr, textStatus, errorThrown ) {
+				console.log( "XMLHttpRequest.status:  " + xhr.status);
+				if(xhr.status!==200){
+					console.log( 
+							"XMLHttpRequest.responseText:  " 
+							+ xhr.responseText);
+					responseText = JSON.parse(xhr.responseText);
+					console.log( 
+							"XMLHttpRequest.responseText.Error:  " 
+							+ responseText.error);
+					console.log( 
+							"XMLHttpRequest.responseText.Message:  " 
+							+ responseText.message);
+				}
 			}
-		}
-    });
+	    });
+	}
 	
 	$.ajax({
 	    type: "PUT",
@@ -3619,12 +3685,33 @@ function changeOrderType(obj){
 	var poNumber3 = document.getElementById("poNumber3");
 	var poNumber4 = document.getElementById("poNumber4");
 	var poNumber5 = document.getElementById("poNumber5");
+	var up1 = document.getElementById("up1");
+	var up2 = document.getElementById("up2");
+	var up3 = document.getElementById("up3");
+	var up4 = document.getElementById("up4");
+	var up5 = document.getElementById("up5");
+	var amt1 = document.getElementById("amt1");
+	var amt2 = document.getElementById("amt2");
+	var amt3 = document.getElementById("amt3");
+	var amt4 = document.getElementById("amt4");
+	var amt5 = document.getElementById("amt5");
 
 	var tblOrder = document.getElementById("tblOrder");
 	var tblOrderItemFixed = document.getElementById("tblOrderItemFixed");
 	
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
+	
+	up1.value = "0";
+	up2.value = "0";
+	up3.value = "0";
+	up4.value = "0";
+	up5.value = "0";
+	amt1.value = "0";
+	amt2.value = "0";
+	amt3.value = "0";
+	amt4.value = "0";
+	amt5.value = "0";
 	
 	if(orderType === "SO Lokal Food With CO"
 			|| orderType === "SO Lokal Non Food With CO"){
@@ -3903,8 +3990,8 @@ function changePeriode(obj){
     poDate5.value = minDate;
     
     //PO201801009/AN00201
-    //console.log("poNumber1CurrentMonth: " + poNumber1CurrentMonth.substring(6, 8));
-    //console.log("poNumber1NextMonth: " + poNumber1NextMonth.substring(6, 8));
+    console.log("poNumber1CurrentMonth: " + poNumber1CurrentMonth);
+    console.log("poNumber1NextMonth: " + poNumber1NextMonth);
     //console.log("monthIndex: " + monthIndex);
     if(poNumber1CurrentMonth.substring(6, 8)==monthIndex){
         poNumber1.value = poNumber1CurrentMonth;
