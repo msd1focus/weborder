@@ -195,22 +195,40 @@
 			Lead Time:&nbsp;
 		</th>
 		<td> 
-			 <input 
-			 	id="leadTime"
-			 	type="number" name="leadtime" 
-			 	th:field="*{inputOrder.orderGrp.leadTime}" 
-			 	min="1"/>
-			 Days
-			<input 
-				id="btnCmob"
-				style="align: right"
-				onclick="return generateCMOB()"
-				type="submit"
-				value="Generate CMOB"/>
-			<!-- <img id="loadingCmob" 	
-				src="../static/images/loading.gif" 
-		    	th:src="@{images/loading.gif}"
-		    	width="25" height="25"/> -->
+			<table style="border: none;">
+				<tr style="border: none;">
+					<td style="border: none;">
+						 <input 
+						 	id="leadTime"
+						 	type="number" name="leadtime" 
+						 	th:field="*{inputOrder.orderGrp.leadTime}" 
+						 	min="1"/>
+					</td>
+					<td style="border: none;">Days</td>
+					<td style="border: none;">
+						<input 
+							id="btnCmob"
+							style="align: right"
+							onclick="return generateCMOB()"
+							type="submit"
+							value="Generate CMOB"/>
+					</td>
+					<td style="border: none;">
+						<img id="loadingCmob" 
+							style="display: none;"	
+							src="../static/images/loading.gif" 
+					    	th:src="@{images/loading.gif}"
+					    	width="20" height="20"/>
+					</td>
+					<td style="border: none;">
+						<img id="doneCmob" 
+							style="display: none;"	
+							src="../static/images/done.png" 
+					    	th:src="@{images/done.png}"
+					    	width="20" height="20"/>
+					</td>
+				</tr>
+		    </table>
 		</td>
 	</tr>
 	<tr>
@@ -335,7 +353,24 @@
 					</select>
 				</td>
 			</tr>
-		</th:block>
+		</th:block> 
+      	<tr id="loadingProduct1"
+      		style="display: none;">
+      		<td>
+    			<table style="border: none;">
+	    			<tr style="border: none;">
+		    			<td style="border: none;">
+						    <img src="../static/images/loading.gif" 
+						    	th:src="@{images/loading.gif}"
+						    	width="25" height="25"/>
+		    			</td>
+		    			<td style="border: none;">
+		    				Loading Data...
+		    			</td>
+	    			</tr>
+			  	</table>
+      		</td>
+      	</tr>
 		<tr>
 			<td style="border: none;" colspan="3" align="right">
 				<b>Unit Price:</b>&nbsp;&nbsp;
@@ -1105,6 +1140,23 @@
 			</td>
 		</tr>
       </th:block> 
+      	<tr id="loadingProduct2"
+      		style="display: none;">
+      		<td>
+    			<table style="border: none;">
+	    			<tr style="border: none;">
+		    			<td style="border: none;">
+						    <img src="../static/images/loading.gif" 
+						    	th:src="@{images/loading.gif}"
+						    	width="25" height="25"/>
+		    			</td>
+		    			<td style="border: none;">
+		    				Loading Data...
+		    			</td>
+	    			</tr>
+			  	</table>
+      		</td>
+      	</tr>
 		<tr>
 			<td style="border: none;" width="150px">	
 				<input id="up1" type="text" value="0" disabled="disabled"
@@ -1229,10 +1281,10 @@
   						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
   				</td>
   				<td>
-  					<input type="number"
+  					<input type="text"
+						onkeyup="formatText(this)"
 						style="text-align: right; width: 100px"
-  						value="0"
-  						min="0"/>
+  						value="0"/>
   				</td>
   			</tr>
   		</th:block>
@@ -1288,10 +1340,10 @@
   						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
   				</td>
   				<td>
-  					<input type="number"
+  					<input type="text"
+						onkeyup="formatText(this)"
 						style="text-align: right; width: 100px"
-  						value="0"
-  						min="0"/>
+  						value="0"/>
   				</td>
   			</tr>
   		</th:block>
@@ -1347,10 +1399,10 @@
   						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
   				</td>
   				<td>
-  					<input type="number"
+  					<input type="text"
+						onkeyup="formatText(this)"
 						style="text-align: right; width: 100px"
-  						value="0"
-  						min="0"/>
+  						value="0"/>
   				</td>
   			</tr>
   		</th:block>
@@ -1406,10 +1458,10 @@
   						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
   				</td>
   				<td>
-  					<input type="number"
+  					<input type="text"
+						onkeyup="formatText(this)"
 						style="text-align: right; width: 100px"
-  						value="0"
-  						min="0"/>
+  						value="0"/>
   				</td>
   			</tr>
   		</th:block>
@@ -1465,10 +1517,10 @@
   						th:field="*{listMobils[__${stat.index}__].mobilTinggi}"/>
   				</td>
   				<td>
-  					<input type="number"
+  					<input type="text"
+						onkeyup="formatText(this)"
 						style="text-align: right; width: 100px"
-  						value="0"
-  						min="0"/>
+  						value="0"/>
   				</td>
   			</tr>
   		</th:block>

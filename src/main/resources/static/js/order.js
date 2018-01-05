@@ -2,6 +2,11 @@ var firstLoadCMOB = true;
 
 window.onload = function(){
 
+	var loadingProduct1 = document.getElementById("loadingProduct1");
+	var loadingProduct2 = document.getElementById("loadingProduct2");
+	loadingProduct1.style.display = "table-row";
+	loadingProduct2.style.display = "table-row";
+	
 	inputProductInit();
 	dimensiMobilInit();
 	poDateInit();
@@ -334,6 +339,11 @@ function inputProductInit(){
 	    		changeOrderType(orderType);
 		    	changeJumlahOrder(jumlahOrder);	
 	    	}
+	    	
+	    	var loadingProduct1 = document.getElementById("loadingProduct1");
+	    	var loadingProduct2 = document.getElementById("loadingProduct2");
+	    	loadingProduct1.style.display = "none";
+	    	loadingProduct2.style.display = "none";
 	    	
 	    },
 		error: function( xhr, textStatus, errorThrown ) {
@@ -1089,22 +1099,23 @@ function unformatText(obj){
 }
 
 function dimensiMobilInit(){
-	var jumlahOrder = document.getElementById("jumlahOrder").value;
+
+	dimensiMobilInit1();
+	dimensiMobilInit2();
+	dimensiMobilInit3();
+	dimensiMobilInit4();
+	dimensiMobilInit5();
+	/*var jumlahOrder = document.getElementById("jumlahOrder").value;
 	if(jumlahOrder>0){
-		dimensiMobilInit1();
 		if(jumlahOrder>1){
-			dimensiMobilInit2();
 			if(jumlahOrder>2){
-				dimensiMobilInit3();
 				if(jumlahOrder>3){
-					dimensiMobilInit4();
 					if(jumlahOrder>4){
-						dimensiMobilInit5();
 					}
 				}
 			}
 		}
-	}
+	}*/
 }
 
 function dimensiMobilInit1(){
@@ -1128,12 +1139,22 @@ function dimensiMobilInit1(){
         lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
         var tinggi = 0;
         tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
-        var ms = mobilSelected.split("-/-");
-        for(var i=0; i<ms.length; i++){
-        	var d = ms[i].split(":");
-        	if(d[0]==desc){
-                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
-        	}
+        if(mobilSelected.includes(":")){
+            if(mobilSelected.includes("-/-")){
+            	var ms = mobilSelected.split("-/-");
+                for(var i=0; i<ms.length; i++){
+                	var d = ms[i].split(":");
+                	if(d[0]==desc){
+                        tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+                	}
+                }
+            }
+            else{
+            	var d = mobilSelected.split(":");
+            	if(d[0]==desc){
+                    tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+            	}
+            }
         }
         var jumlah = 0;
         jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
@@ -1143,8 +1164,12 @@ function dimensiMobilInit1(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = sd;
 }
 
 function dimensiMobilInit2(){
@@ -1168,12 +1193,22 @@ function dimensiMobilInit2(){
         lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
         var tinggi = 0;
         tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
-        var ms = mobilSelected.split("-/-");
-        for(var i=0; i<ms.length; i++){
-        	var d = ms[i].split(":");
-        	if(d[0]==desc){
-                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
-        	}
+        if(mobilSelected.includes(":")){
+            if(mobilSelected.includes("-/-")){
+            	var ms = mobilSelected.split("-/-");
+                for(var i=0; i<ms.length; i++){
+                	var d = ms[i].split(":");
+                	if(d[0]==desc){
+                        tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+                	}
+                }
+            }
+            else{
+            	var d = mobilSelected.split(":");
+            	if(d[0]==desc){
+                    tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+            	}
+            }
         }
         var jumlah = 0;
         jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
@@ -1183,8 +1218,12 @@ function dimensiMobilInit2(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = sd;
 }
 
 function dimensiMobilInit3(){
@@ -1208,12 +1247,22 @@ function dimensiMobilInit3(){
         lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
         var tinggi = 0;
         tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
-        var ms = mobilSelected.split("-/-");
-        for(var i=0; i<ms.length; i++){
-        	var d = ms[i].split(":");
-        	if(d[0]==desc){
-                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
-        	}
+        if(mobilSelected.includes(":")){
+            if(mobilSelected.includes("-/-")){
+            	var ms = mobilSelected.split("-/-");
+                for(var i=0; i<ms.length; i++){
+                	var d = ms[i].split(":");
+                	if(d[0]==desc){
+                        tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+                	}
+                }
+            }
+            else{
+            	var d = mobilSelected.split(":");
+            	if(d[0]==desc){
+                    tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+            	}
+            }
         }
         var jumlah = 0;
         jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
@@ -1223,8 +1272,12 @@ function dimensiMobilInit3(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = sd;
 }
 
 function dimensiMobilInit4(){
@@ -1248,12 +1301,22 @@ function dimensiMobilInit4(){
         lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
         var tinggi = 0;
         tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
-        var ms = mobilSelected.split("-/-");
-        for(var i=0; i<ms.length; i++){
-        	var d = ms[i].split(":");
-        	if(d[0]==desc){
-                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
-        	}
+        if(mobilSelected.includes(":")){
+            if(mobilSelected.includes("-/-")){
+            	var ms = mobilSelected.split("-/-");
+                for(var i=0; i<ms.length; i++){
+                	var d = ms[i].split(":");
+                	if(d[0]==desc){
+                        tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+                	}
+                }
+            }
+            else{
+            	var d = mobilSelected.split(":");
+            	if(d[0]==desc){
+                    tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+            	}
+            }
         }
         var jumlah = 0;
         jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
@@ -1263,8 +1326,12 @@ function dimensiMobilInit4(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = sd;
 }
 
 function dimensiMobilInit5(){
@@ -1288,12 +1355,22 @@ function dimensiMobilInit5(){
         lebar = parseFloat(tblMobil.rows[idxRow].cells[2].children[0].value);
         var tinggi = 0;
         tinggi = parseFloat(tblMobil.rows[idxRow].cells[3].children[0].value);
-        var ms = mobilSelected.split("-/-");
-        for(var i=0; i<ms.length; i++){
-        	var d = ms[i].split(":");
-        	if(d[0]==desc){
-                tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
-        	}
+        if(mobilSelected.includes(":")){
+            if(mobilSelected.includes("-/-")){
+            	var ms = mobilSelected.split("-/-");
+                for(var i=0; i<ms.length; i++){
+                	var d = ms[i].split(":");
+                	if(d[0]==desc){
+                        tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+                	}
+                }
+            }
+            else{
+            	var d = mobilSelected.split(":");
+            	if(d[0]==desc){
+                    tblMobil.rows[idxRow].cells[4].children[0].value = parseInt(d[1]);
+            	}
+            }
         }
         var jumlah = 0;
         jumlah = parseFloat(tblMobil.rows[idxRow].cells[4].children[0].value);
@@ -1303,13 +1380,17 @@ function dimensiMobilInit5(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = sd;
 }
 
 function poDateInit(){
 	   
-	var poDate1 = document.getElementById("poDate1");;
+	var poDate1 = document.getElementById("poDate1");
 	var poDate2 = document.getElementById("poDate2");
 	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
@@ -2104,10 +2185,15 @@ function calcAmount1(obj){
 
 	dimensiOrder1.value = dimensiOrder;
 	dimensiOrder1Text.value = formatTextValue(dimensiOrder);
-	var selisihDimensi = 0;
-	selisihDimensi =  parseFloat(dimensiMobil1.value - dimensiOrder);
-	selisihDimensi1.value = selisihDimensi;
-	selisihDimensi1Text.value = formatTextValue(selisihDimensi);
+
+	var jumlahMobil1 = unformatText(document.getElementById("jumlahMobil1").value);
+	if(jumlahMobil1>0){
+		var selisihDimensi = 0;
+		selisihDimensi =  parseFloat(dimensiMobil1.value - dimensiOrder);
+		selisihDimensi1.value = selisihDimensi;
+		selisihDimensi1Text.value = formatTextValue(selisihDimensi);
+	}
+	
 	/*if(selisihDimensi<0){
 		selisihDimensi1Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -2397,10 +2483,13 @@ function calcAmount2(obj){
 
 	dimensiOrder2.value = dimensiOrder;
 	dimensiOrder2Text.value = formatTextValue(dimensiOrder);
-	var selisihDimensi = 0;
-	selisihDimensi =  parseFloat(dimensiMobil2.value - dimensiOrder);
-	selisihDimensi2.value = selisihDimensi;
-	selisihDimensi2Text.value = formatTextValue(selisihDimensi);
+	var jumlahMobil2 = unformatText(document.getElementById("jumlahMobil2").value);
+	if(jumlahMobil2>0){
+		var selisihDimensi = 0;
+		selisihDimensi =  parseFloat(dimensiMobil2.value - dimensiOrder);
+		selisihDimensi2.value = selisihDimensi;
+		selisihDimensi2Text.value = formatTextValue(selisihDimensi);
+	}
 	/*if(selisihDimensi<0){
 		selisihDimensi2Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -2668,10 +2757,13 @@ function calcAmount3(obj){
 
 	dimensiOrder3.value = dimensiOrder;
 	dimensiOrder3Text.value = formatTextValue(dimensiOrder);
-	var selisihDimensi = 0;
-	selisihDimensi =  parseFloat(dimensiMobil3.value - dimensiOrder);
-	selisihDimensi3.value = selisihDimensi;
-	selisihDimensi3Text.value = formatTextValue(selisihDimensi);
+	var jumlahMobil3 = unformatText(document.getElementById("jumlahMobil3").value);
+	if(jumlahMobil3>0){
+		var selisihDimensi = 0;
+		selisihDimensi =  parseFloat(dimensiMobil3.value - dimensiOrder);
+		selisihDimensi3.value = selisihDimensi;
+		selisihDimensi3Text.value = formatTextValue(selisihDimensi);
+	}
 	/*if(selisihDimensi<0){
 		selisihDimensi3Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -2911,10 +3003,13 @@ function calcAmount4(obj){
 
 	dimensiOrder4.value = dimensiOrder;
 	dimensiOrder4Text.value = formatTextValue(dimensiOrder);
-	var selisihDimensi = 0;
-	selisihDimensi =  parseFloat(dimensiMobil4.value - dimensiOrder);
-	selisihDimensi4.value = selisihDimensi;
-	selisihDimensi4Text.value = formatTextValue(selisihDimensi);
+	var jumlahMobil4 = unformatText(document.getElementById("jumlahMobil4").value);
+	if(jumlahMobil4>0){
+		var selisihDimensi = 0;
+		selisihDimensi =  parseFloat(dimensiMobil4.value - dimensiOrder);
+		selisihDimensi4.value = selisihDimensi;
+		selisihDimensi4Text.value = formatTextValue(selisihDimensi);
+	}
 	/*if(selisihDimensi<0){
 		selisihDimensi4Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3120,10 +3215,13 @@ function calcAmount5(obj){
 
 	dimensiOrder5.value = dimensiOrder;
 	dimensiOrder5Text.value = formatTextValue(dimensiOrder);
-	var selisihDimensi = 0;
-	selisihDimensi =  parseFloat(dimensiMobil5.value - dimensiOrder);
-	selisihDimensi5.value = selisihDimensi;
-	selisihDimensi5Text.value = formatTextValue(selisihDimensi);
+	var jumlahMobil5 = unformatText(document.getElementById("jumlahMobil5").value);
+	if(jumlahMobil5>0){
+		var selisihDimensi = 0;
+		selisihDimensi =  parseFloat(dimensiMobil5.value - dimensiOrder);
+		selisihDimensi5.value = selisihDimensi;
+		selisihDimensi5Text.value = formatTextValue(selisihDimensi);
+	}
 	/*if(selisihDimensi<0){
 		selisihDimensi5Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3222,12 +3320,13 @@ function calcAmount5(obj){
 	return;
 }
 
-function calcAmount(){
-	
-}
-
 function generateCMOB(){
 	
+
+	var loadingCmob = document.getElementById("loadingCmob");
+	var doneCmob = document.getElementById("doneCmob");
+	doneCmob.style.display = "none";
+	loadingCmob.style.display = "block";
 	var company = document.getElementById("company").value;
 	var custId = document.getElementById("custId").value;
 	var periodeSelected = document.getElementById("periodeSelected").value;
@@ -3341,6 +3440,9 @@ function generateCMOB(){
 	    	firstLoadCMOB = false;
 	    	var jumlahOrder = document.getElementById("jumlahOrder");
 		    changeJumlahOrder(jumlahOrder);	
+			loadingCmob.style.display = "none";
+			var doneCmob = document.getElementById("doneCmob");
+			doneCmob.style.display = "block";
 	    },
 	    error: function( xhr, textStatus, errorThrown ) {
 			console.log( "XMLHttpRequest.status:  " + xhr.status);
@@ -4684,8 +4786,12 @@ function changeJumlahOrder(obj) {
 		
 		dimensiOrder1.value = do1;
 		dimensiOrder1Text.value = formatTextValue(do1);
+
+		var jumlahMobil1 = unformatText(document.getElementById("jumlahMobil1").value);
 		var sd1 = 0;
-		sd1 =  parseFloat(dimensiMobil1.value - do1);
+		if(jumlahMobil1>0){
+			sd1 =  parseFloat(dimensiMobil1.value - do1);
+		}
 		selisihDimensi1.value = sd1;
 		selisihDimensi1Text.value = formatTextValue(sd1);
 		/*if(sd1<0){
@@ -4711,8 +4817,12 @@ function changeJumlahOrder(obj) {
 
     		dimensiOrder2.value = do2;
     		dimensiOrder2Text.value = formatTextValue(do2);
-			var sd1 = 0;
-			sd2 =  parseFloat(dimensiMobil2.value - do2);
+
+    		var jumlahMobil2 = unformatText(document.getElementById("jumlahMobil2").value);
+			var sd2 = 0;
+    		if(jumlahMobil2>0){
+				sd2 =  parseFloat(dimensiMobil2.value - do2);
+    		}
 			selisihDimensi2.value = sd2;
     		selisihDimensi2Text.value = formatTextValue(sd2);
     		/*if(sd2<0){
@@ -4738,8 +4848,12 @@ function changeJumlahOrder(obj) {
 
 	    		dimensiOrder3.value = do3;
 	    		dimensiOrder3Text.value = formatTextValue(do3);
+
+	    		var jumlahMobil3 = unformatText(document.getElementById("jumlahMobil3").value);
 				var sd3 = 0;
-				sd3 =  parseFloat(dimensiMobil3.value - do3);
+	    		if(jumlahMobil3>0){
+					sd3 =  parseFloat(dimensiMobil3.value - do3);
+	    		}
 				selisihDimensi3.value = sd3;
 	    		selisihDimensi3Text.value = formatTextValue(sd3);
 	    		/*if(sd3<0){
@@ -4765,8 +4879,11 @@ function changeJumlahOrder(obj) {
 
 		    		dimensiOrder4.value = do4;
 		    		dimensiOrder4Text.value = formatTextValue(do4);
+		    		var jumlahMobil4 = unformatText(document.getElementById("jumlahMobil4").value);
 					var sd4 = 0;
-					sd4 =  parseFloat(dimensiMobil4.value - do4);
+		    		if(jumlahMobil4>0){
+						sd4 =  parseFloat(dimensiMobil4.value - do4);
+		    		}
 					selisihDimensi4.value = sd4;
 		    		selisihDimensi4Text.value = formatTextValue(sd4);
 		    		/*if(sd4<0){
@@ -4792,8 +4909,11 @@ function changeJumlahOrder(obj) {
 
 			    		dimensiOrder5.value = do5;
 			    		dimensiOrder5Text.value = formatTextValue(do5);
+			    		var jumlahMobil5 = unformatText(document.getElementById("jumlahMobil5").value);
 						var sd5 = 0;
-						sd5 =  parseFloat(dimensiMobil5.value - do5);
+			    		if(jumlahMobil5>0){
+							sd5 =  parseFloat(dimensiMobil5.value - do5);
+			    		}
 						selisihDimensi5.value = sd5;
 		        		selisihDimensi5Text.value = formatTextValue(sd5);
 		        		/*if(sd5<0){
@@ -4945,8 +5065,12 @@ function saveMobil1(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
     return false;
 }
@@ -4979,8 +5103,12 @@ function saveMobil2(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
     return false;
 }
@@ -5013,8 +5141,12 @@ function saveMobil3(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
     return false;
 }
@@ -5047,8 +5179,12 @@ function saveMobil4(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
     return false;
 }
@@ -5081,8 +5217,12 @@ function saveMobil5(){
     jumlahMobil.value = formatTextValue(jumlahMobilValue);
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
-    selisihDimensi.value = dm - dimensiOrder;
-    selisihDimensiText.value = formatTextValue(dm - dimensiOrder);
+    var sd = 0;
+    if(jumlahMobilValue>0){
+    	sd = dm - dimensiOrder;
+    }
+    selisihDimensi.value = sd;
+    selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
     return false;
 }
