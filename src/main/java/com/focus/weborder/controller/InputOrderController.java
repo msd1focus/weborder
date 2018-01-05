@@ -368,16 +368,6 @@ public class InputOrderController
 				Integer monthPeriode = month;
 				Integer yearPeriode = year;
 				
-				Boolean isForcePeriodeCurrent = false;
-				if(yearPeriode<year) {
-					isForcePeriodeCurrent = true;
-				}
-				else {
-					if(monthPeriode<month) {
-						isForcePeriodeCurrent = true;
-					}
-				}
-				
 				Customer customer =
 						customerService.getCustomer(company, custId);
 				List<OrderGrp> orderGrps =
@@ -421,6 +411,16 @@ public class InputOrderController
 						String[] p = orderGrp.getPeriodeOrder().split(" ");
 						monthPeriode = getMonthValue(p[0]);
 						yearPeriode = Integer.parseInt(p[1]);
+					}
+				}
+				
+				Boolean isForcePeriodeCurrent = false;
+				if(yearPeriode<year) {
+					isForcePeriodeCurrent = true;
+				}
+				else {
+					if(monthPeriode<month) {
+						isForcePeriodeCurrent = true;
 					}
 				}
 				
@@ -510,6 +510,20 @@ public class InputOrderController
 					
 					orders = orderService.getByCompanyCustidGrpid(
 							orderGrp.getOrderGrpId(), custId, company);
+					
+					for(Order o: orders) {
+						String[] p = o.getPeriode().split(" ");
+						monthPeriode = getMonthValue(p[0]);
+						yearPeriode = Integer.parseInt(p[1]);
+						if(yearPeriode<year) {
+							isForcePeriodeCurrent = true;
+						}
+						else {
+							if(monthPeriode<month) {
+								isForcePeriodeCurrent = true;
+							}
+						}
+					}
 					
 					if(isForcePeriodeCurrent) {
 						
@@ -695,6 +709,7 @@ public class InputOrderController
 						order1.setPoNumber(
 								generatePoNumber(customer, year, month, poNumber1));
 						order1.setPeriode(periodes.get(0));
+						order1.setOrderDate(Date.valueOf(getMinDate()));
 					}
 					order2 = setDefaultOrder(
 							customer, orderGrp, custShipTo,
@@ -809,6 +824,8 @@ public class InputOrderController
 								generatePoNumber(customer, year, month, poNumber2));
 						order1.setPeriode(periodes.get(0));
 						order2.setPeriode(periodes.get(0));
+						order1.setOrderDate(Date.valueOf(getMinDate()));
+						order2.setOrderDate(Date.valueOf(getMinDate()));
 					}
 					
 					order3 = setDefaultOrder(
@@ -924,6 +941,9 @@ public class InputOrderController
 						order1.setPeriode(periodes.get(0));
 						order2.setPeriode(periodes.get(0));
 						order3.setPeriode(periodes.get(0));
+						order1.setOrderDate(Date.valueOf(getMinDate()));
+						order2.setOrderDate(Date.valueOf(getMinDate()));
+						order3.setOrderDate(Date.valueOf(getMinDate()));
 					}
 					
 					order4 = setDefaultOrder(
@@ -1038,6 +1058,10 @@ public class InputOrderController
 						order2.setPeriode(periodes.get(0));
 						order3.setPeriode(periodes.get(0));
 						order4.setPeriode(periodes.get(0));
+						order1.setOrderDate(Date.valueOf(getMinDate()));
+						order2.setOrderDate(Date.valueOf(getMinDate()));
+						order3.setOrderDate(Date.valueOf(getMinDate()));
+						order4.setOrderDate(Date.valueOf(getMinDate()));
 					}
 					
 					order5 = setDefaultOrder(
@@ -1151,6 +1175,11 @@ public class InputOrderController
 						order3.setPeriode(periodes.get(0));
 						order4.setPeriode(periodes.get(0));
 						order5.setPeriode(periodes.get(0));
+						order1.setOrderDate(Date.valueOf(getMinDate()));
+						order2.setOrderDate(Date.valueOf(getMinDate()));
+						order3.setOrderDate(Date.valueOf(getMinDate()));
+						order4.setOrderDate(Date.valueOf(getMinDate()));
+						order5.setOrderDate(Date.valueOf(getMinDate()));
 					}
 				}
 				
@@ -1228,7 +1257,6 @@ public class InputOrderController
 				model.addAttribute("productQty", inputProducts.size());
 				model.addAttribute("custShipTo", custShipTo);
 				model.addAttribute("jumlahOrders", jumlahOrders);
-				//model.addAttribute("listMobils", listMobils);
 				model.addAttribute("expedisis", expedisis);
 				model.addAttribute("inputWebOrder", inputWebOrder);
 

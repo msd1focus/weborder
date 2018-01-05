@@ -3990,8 +3990,8 @@ function changePeriode(obj){
     poDate5.value = minDate;
     
     //PO201801009/AN00201
-    console.log("poNumber1CurrentMonth: " + poNumber1CurrentMonth);
-    console.log("poNumber1NextMonth: " + poNumber1NextMonth);
+    //console.log("poNumber1CurrentMonth: " + poNumber1CurrentMonth);
+    //console.log("poNumber1NextMonth: " + poNumber1NextMonth);
     //console.log("monthIndex: " + monthIndex);
     if(poNumber1CurrentMonth.substring(6, 8)==monthIndex){
         poNumber1.value = poNumber1CurrentMonth;

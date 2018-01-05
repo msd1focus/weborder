@@ -31,4 +31,4 @@ Version 1.4.1 (Thursday, 4 January 2018 by Amin Mutohar)
  	2. Reset default value on unit price and amount when change order type
  	3. Delete order if jumlah order has reduced
  	4. PO Number is not valid on saved order
- 	5. Force PO Number to current month if periode has gone 
+ 	5. Force PO Number, Periode, and Order Date to current month if periode has gone 
