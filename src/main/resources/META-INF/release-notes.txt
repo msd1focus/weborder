@@ -36,4 +36,8 @@ Version 1.4.1 (Thursday, 4 January 2018 by Amin Mutohar)
 Version 1.5.0 (Friday, 5 January 2018 by Amin Mutohar)
  - Change Application
  	1. add product and generate CMOB loading indicator
- 	2. dont calculate selisih dimensi if jumlah mobil is zero
+ 	
+
+Version 1.6.0 (Monday, 8 January 2018 by Amin Mutohar)
+ - Change Application
+ 	1. jumlah mobil validation

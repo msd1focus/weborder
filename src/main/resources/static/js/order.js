@@ -456,59 +456,103 @@ function saveForm(obj){
 		document.getElementById("submitStatus");
     var btnSubmit = 
 		document.getElementById("btnSubmit");
-    
+    var selisihDimensi1 = 
+		unformatText(document.getElementById("selisihDimensi1Text").value);
+	var selisihDimensi2 = 
+		unformatText(document.getElementById("selisihDimensi2Text").value);
+	var selisihDimensi3 = 
+		unformatText(document.getElementById("selisihDimensi3Text").value);
+	var selisihDimensi4 = 
+		unformatText(document.getElementById("selisihDimensi4Text").value);
+	var selisihDimensi5 = 
+		unformatText(document.getElementById("selisihDimensi5Text").value);
+    var jumlahMobil1 = 
+    	unformatText(document.getElementById("jumlahMobil1").value);
+    var jumlahMobil2 = 
+    	unformatText(document.getElementById("jumlahMobil2").value);
+    var jumlahMobil3 = 
+    	unformatText(document.getElementById("jumlahMobil3").value);
+    var jumlahMobil4 = 
+    	unformatText(document.getElementById("jumlahMobil4").value);
+    var jumlahMobil5 = 
+    	unformatText(document.getElementById("jumlahMobil5").value);
+	var jumlahOrderSelected = 
+		parseFloat(document.getElementById("jumlahOrderSelected").value);
+	
+	var isWarning = "false";
+	var alertText = "Dimensi Order pada : \n";
+	
+	var isWarningMobil = "false";
+	var alertTextMobil = "Jumlah Mobil pada : \n";
+	
+	if(jumlahOrderSelected>0){
+		if(selisihDimensi1<0){
+			alertText += "- Order 1\n";
+			isWarning = "true";
+		}
+		if(jumlahMobil1<=0){
+			alertTextMobil += "- Order 1\n";
+			isWarningMobil = "true";
+		}
+		if(jumlahOrderSelected>1){
+			if(selisihDimensi2<0){
+				alertText += "- Order 2\n";
+				isWarning = "true";
+			}	
+			if(jumlahMobil2<=0){
+				alertTextMobil += "- Order 2\n";
+				isWarningMobil = "true";
+			}
+			if(jumlahOrderSelected>2){
+				if(selisihDimensi3<0){
+					alertText += "- Order 3\n";
+					isWarning = "true";
+				}		
+				if(jumlahMobil3<=0){
+					alertTextMobil += "- Order 3\n";
+					isWarningMobil = "true";
+				}
+				if(jumlahOrderSelected>3){
+					if(selisihDimensi4<0){
+						alertText += "- Order 4\n";
+						isWarning = "true";
+					}		
+					if(jumlahMobil4<=0){
+						alertTextMobil += "- Order 4\n";
+						isWarningMobil = "true";
+					}
+					if(jumlahOrderSelected>4){
+						if(selisihDimensi5<0){
+							alertText += "- Order 5\n";
+							isWarning = "true";
+						}			
+						if(jumlahMobil5<=0){
+							alertTextMobil += "- Order 5\n";
+							isWarningMobil = "true";
+						}	
+					}
+				}
+			}
+		}
+	}
+	
+	
+	if(isWarning==="true"){
+		alertText += "Melebihi Kapasitas Mobil. Mohon Diperiksa Kembali.";
+		alert(alertText);
+	}
+	
+	if(isWarningMobil==="true"){
+		alertTextMobil += "Masih Kosong. Mohon Diisi.";
+		alert(alertTextMobil);
+	}
+	
 	if(submitStatus.value==="false"){
 		
         submitStatus.value = "true";
         obj.name = "action";
         btnSubmit.name = "action";
-	
-		var selisihDimensi1 = 
-			unformatText(document.getElementById("selisihDimensi1Text").value);
-		var selisihDimensi2 = 
-			unformatText(document.getElementById("selisihDimensi2Text").value);
-		var selisihDimensi3 = 
-			unformatText(document.getElementById("selisihDimensi3Text").value);
-		var selisihDimensi4 = 
-			unformatText(document.getElementById("selisihDimensi4Text").value);
-		var selisihDimensi5 = 
-			unformatText(document.getElementById("selisihDimensi5Text").value);
-		
-		/*console.log("selisihDimensi1: " + selisihDimensi1);
-		console.log("selisihDimensi2: " + selisihDimensi2);
-		console.log("selisihDimensi3: " + selisihDimensi3);
-		console.log("selisihDimensi4: " + selisihDimensi4);
-		console.log("selisihDimensi5: " + selisihDimensi5);*/
-		
-		var isWarning = "false";
-		var alertText = "Dimensi Order pada : \n";
-		
-		if(selisihDimensi1<0){
-			alertText += "- Order 1\n";
-			isWarning = "true";
-		}
-		if(selisihDimensi2<0){
-			alertText += "- Order 2\n";
-			isWarning = "true";
-		}
-		if(selisihDimensi3<0){
-			alertText += "- Order 3\n";
-			isWarning = "true";
-		}
-		if(selisihDimensi4<0){
-			alertText += "- Order 4\n";
-			isWarning = "true";
-		}
-		if(selisihDimensi5<0){
-			alertText+= "- Order 5\n";
-			isWarning = "true";
-		}
-		
-		if(isWarning==="true"){
-			alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
-			alert(alertText);
-		}
-		
+        
 		loading.style.display = "block";
 		saveOrderGrp("DRAFT");
 
@@ -516,7 +560,7 @@ function saveForm(obj){
 	else{
 
 		//alert ("Already saved, please wait!");
-		loading.style.display = "block";
+		//loading.style.display = "block";
         obj.name = "action1";
         btnSubmit.name = "action1";
 	}
@@ -534,6 +578,99 @@ function submitForm(obj){
 		parseFloat(document.getElementById("jumlahOrderSelected").value);
 	var productQty = 
 		parseFloat(document.getElementById("productQty").value);
+	
+
+    var selisihDimensi1 = 
+		unformatText(document.getElementById("selisihDimensi1Text").value);
+	var selisihDimensi2 = 
+		unformatText(document.getElementById("selisihDimensi2Text").value);
+	var selisihDimensi3 = 
+		unformatText(document.getElementById("selisihDimensi3Text").value);
+	var selisihDimensi4 = 
+		unformatText(document.getElementById("selisihDimensi4Text").value);
+	var selisihDimensi5 = 
+		unformatText(document.getElementById("selisihDimensi5Text").value);
+    var jumlahMobil1 = 
+    	unformatText(document.getElementById("jumlahMobil1").value);
+    var jumlahMobil2 = 
+    	unformatText(document.getElementById("jumlahMobil2").value);
+    var jumlahMobil3 = 
+    	unformatText(document.getElementById("jumlahMobil3").value);
+    var jumlahMobil4 = 
+    	unformatText(document.getElementById("jumlahMobil4").value);
+    var jumlahMobil5 = 
+    	unformatText(document.getElementById("jumlahMobil5").value);
+	var jumlahOrderSelected = 
+		parseFloat(document.getElementById("jumlahOrderSelected").value);
+	
+	var isWarning = "false";
+	var alertText = "Dimensi Order pada : \n";
+	
+	var isWarningMobil = "false";
+	var alertTextMobil = "Jumlah Mobil pada : \n";
+	
+	if(jumlahOrderSelected>0){
+		if(selisihDimensi1<0){
+			alertText += "- Order 1\n";
+			isWarning = "true";
+		}
+		if(jumlahMobil1<=0){
+			alertTextMobil += "- Order 1\n";
+			isWarningMobil = "true";
+		}
+		if(jumlahOrderSelected>1){
+			if(selisihDimensi2<0){
+				alertText += "- Order 2\n";
+				isWarning = "true";
+			}	
+			if(jumlahMobil2<=0){
+				alertTextMobil += "- Order 2\n";
+				isWarningMobil = "true";
+			}
+			if(jumlahOrderSelected>2){
+				if(selisihDimensi3<0){
+					alertText += "- Order 3\n";
+					isWarning = "true";
+				}		
+				if(jumlahMobil3<=0){
+					alertTextMobil += "- Order 3\n";
+					isWarningMobil = "true";
+				}
+				if(jumlahOrderSelected>3){
+					if(selisihDimensi4<0){
+						alertText += "- Order 4\n";
+						isWarning = "true";
+					}		
+					if(jumlahMobil4<=0){
+						alertTextMobil += "- Order 4\n";
+						isWarningMobil = "true";
+					}
+					if(jumlahOrderSelected>4){
+						if(selisihDimensi5<0){
+							alertText += "- Order 5\n";
+							isWarning = "true";
+						}			
+						if(jumlahMobil5<=0){
+							alertTextMobil += "- Order 5\n";
+							isWarningMobil = "true";
+						}	
+					}
+				}
+			}
+		}
+	}
+	
+	
+	if(isWarning==="true"){
+		alertText += "Melebihi Kapasitas Mobil. Mohon Diperiksa Kembali.";
+		alert(alertText);
+	}
+	
+	if(isWarningMobil==="true"){
+		alertTextMobil += "Masih Kosong. Mohon Diisi.";
+		alert(alertTextMobil);
+	}
+	
 	var orderItem1 = 0;
 	var orderItem2 = 0;
 	var orderItem3 = 0;
@@ -580,60 +717,19 @@ function submitForm(obj){
 	    	submitStatus.value = "true";
 	        obj.name = "action";
 	        btnSave.name = "action";
-	        
-	        var selisihDimensi1 = 
-				unformatText(document.getElementById("selisihDimensi1Text").value);
-			var selisihDimensi2 = 
-				unformatText(document.getElementById("selisihDimensi2Text").value);
-			var selisihDimensi3 = 
-				unformatText(document.getElementById("selisihDimensi3Text").value);
-			var selisihDimensi4 = 
-				unformatText(document.getElementById("selisihDimensi4Text").value);
-			var selisihDimensi5 = 
-				unformatText(document.getElementById("selisihDimensi5Text").value);
-			
-			/*console.log("selisihDimensi1: " + selisihDimensi1);
-			console.log("selisihDimensi2: " + selisihDimensi2);
-			console.log("selisihDimensi3: " + selisihDimensi3);
-			console.log("selisihDimensi4: " + selisihDimensi4);
-			console.log("selisihDimensi5: " + selisihDimensi5);*/
-			
-			var isWarning = "false";
-			var alertText = "Dimensi Order pada : \n";
-			
-			if(selisihDimensi1<0){
-				alertText += "- Order 1\n";
-				isWarning = "true";
-			}
-			if(selisihDimensi2<0){
-				alertText += "- Order 2\n";
-				isWarning = "true";
-			}
-			if(selisihDimensi3<0){
-				alertText += "- Order 3\n";
-				isWarning = "true";
-			}
-			if(selisihDimensi4<0){
-				alertText += "- Order 4\n";
-				isWarning = "true";
-			}
-			if(selisihDimensi5<0){
-				alertText+= "- Order 5\n";
-				isWarning = "true";
-			}
-	    	
-	    	if(isWarning==="true"){
-	    		alertText += "Melebihi Kapasitas Mobil. Mobon Diperiksa Kembali.";
-	    		alert(alertText);
-	    	}	
 
+			if(isWarningMobil==="false"){
+				loading.style.display = "block";
+				saveOrderGrp("SUBMITTED");
+			}
+			else{
+				submitStatus.value = "false";
+			}
 
-	    	loading.style.display = "block";
-			saveOrderGrp("SUBMITTED");
 		}
 		else{
 			//alert("Already submitted, please wait!");
-			loading.style.display = "block";
+			//loading.style.display = "block";
 	        obj.name = "action1";
 	        btnSave.name = "action1";
 		}
@@ -1165,9 +1261,9 @@ function dimensiMobilInit1(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = sd;
 }
@@ -1219,9 +1315,9 @@ function dimensiMobilInit2(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = sd;
 }
@@ -1273,9 +1369,9 @@ function dimensiMobilInit3(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = sd;
 }
@@ -1327,9 +1423,9 @@ function dimensiMobilInit4(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = sd;
 }
@@ -1381,9 +1477,9 @@ function dimensiMobilInit5(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = sd;
 }
@@ -2187,12 +2283,12 @@ function calcAmount1(obj){
 	dimensiOrder1Text.value = formatTextValue(dimensiOrder);
 
 	var jumlahMobil1 = unformatText(document.getElementById("jumlahMobil1").value);
-	if(jumlahMobil1>0){
+	//if(jumlahMobil1>0){
 		var selisihDimensi = 0;
 		selisihDimensi =  parseFloat(dimensiMobil1.value - dimensiOrder);
 		selisihDimensi1.value = selisihDimensi;
 		selisihDimensi1Text.value = formatTextValue(selisihDimensi);
-	}
+	//}
 	
 	/*if(selisihDimensi<0){
 		selisihDimensi1Text.style.backgroundColor = "yellow";
@@ -2484,12 +2580,12 @@ function calcAmount2(obj){
 	dimensiOrder2.value = dimensiOrder;
 	dimensiOrder2Text.value = formatTextValue(dimensiOrder);
 	var jumlahMobil2 = unformatText(document.getElementById("jumlahMobil2").value);
-	if(jumlahMobil2>0){
+	//if(jumlahMobil2>0){
 		var selisihDimensi = 0;
 		selisihDimensi =  parseFloat(dimensiMobil2.value - dimensiOrder);
 		selisihDimensi2.value = selisihDimensi;
 		selisihDimensi2Text.value = formatTextValue(selisihDimensi);
-	}
+	//}
 	/*if(selisihDimensi<0){
 		selisihDimensi2Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -2758,12 +2854,12 @@ function calcAmount3(obj){
 	dimensiOrder3.value = dimensiOrder;
 	dimensiOrder3Text.value = formatTextValue(dimensiOrder);
 	var jumlahMobil3 = unformatText(document.getElementById("jumlahMobil3").value);
-	if(jumlahMobil3>0){
+	//if(jumlahMobil3>0){
 		var selisihDimensi = 0;
 		selisihDimensi =  parseFloat(dimensiMobil3.value - dimensiOrder);
 		selisihDimensi3.value = selisihDimensi;
 		selisihDimensi3Text.value = formatTextValue(selisihDimensi);
-	}
+	//}
 	/*if(selisihDimensi<0){
 		selisihDimensi3Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3004,12 +3100,12 @@ function calcAmount4(obj){
 	dimensiOrder4.value = dimensiOrder;
 	dimensiOrder4Text.value = formatTextValue(dimensiOrder);
 	var jumlahMobil4 = unformatText(document.getElementById("jumlahMobil4").value);
-	if(jumlahMobil4>0){
+	//if(jumlahMobil4>0){
 		var selisihDimensi = 0;
 		selisihDimensi =  parseFloat(dimensiMobil4.value - dimensiOrder);
 		selisihDimensi4.value = selisihDimensi;
 		selisihDimensi4Text.value = formatTextValue(selisihDimensi);
-	}
+	//}
 	/*if(selisihDimensi<0){
 		selisihDimensi4Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -3216,12 +3312,12 @@ function calcAmount5(obj){
 	dimensiOrder5.value = dimensiOrder;
 	dimensiOrder5Text.value = formatTextValue(dimensiOrder);
 	var jumlahMobil5 = unformatText(document.getElementById("jumlahMobil5").value);
-	if(jumlahMobil5>0){
+	//if(jumlahMobil5>0){
 		var selisihDimensi = 0;
 		selisihDimensi =  parseFloat(dimensiMobil5.value - dimensiOrder);
 		selisihDimensi5.value = selisihDimensi;
 		selisihDimensi5Text.value = formatTextValue(selisihDimensi);
-	}
+	//}
 	/*if(selisihDimensi<0){
 		selisihDimensi5Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -4789,9 +4885,9 @@ function changeJumlahOrder(obj) {
 
 		var jumlahMobil1 = unformatText(document.getElementById("jumlahMobil1").value);
 		var sd1 = 0;
-		if(jumlahMobil1>0){
+		//if(jumlahMobil1>0){
 			sd1 =  parseFloat(dimensiMobil1.value - do1);
-		}
+		//}
 		selisihDimensi1.value = sd1;
 		selisihDimensi1Text.value = formatTextValue(sd1);
 		/*if(sd1<0){
@@ -4820,9 +4916,9 @@ function changeJumlahOrder(obj) {
 
     		var jumlahMobil2 = unformatText(document.getElementById("jumlahMobil2").value);
 			var sd2 = 0;
-    		if(jumlahMobil2>0){
+    		//if(jumlahMobil2>0){
 				sd2 =  parseFloat(dimensiMobil2.value - do2);
-    		}
+    		//}
 			selisihDimensi2.value = sd2;
     		selisihDimensi2Text.value = formatTextValue(sd2);
     		/*if(sd2<0){
@@ -4851,9 +4947,9 @@ function changeJumlahOrder(obj) {
 
 	    		var jumlahMobil3 = unformatText(document.getElementById("jumlahMobil3").value);
 				var sd3 = 0;
-	    		if(jumlahMobil3>0){
+	    		//if(jumlahMobil3>0){
 					sd3 =  parseFloat(dimensiMobil3.value - do3);
-	    		}
+	    		//}
 				selisihDimensi3.value = sd3;
 	    		selisihDimensi3Text.value = formatTextValue(sd3);
 	    		/*if(sd3<0){
@@ -4881,9 +4977,9 @@ function changeJumlahOrder(obj) {
 		    		dimensiOrder4Text.value = formatTextValue(do4);
 		    		var jumlahMobil4 = unformatText(document.getElementById("jumlahMobil4").value);
 					var sd4 = 0;
-		    		if(jumlahMobil4>0){
+		    		//if(jumlahMobil4>0){
 						sd4 =  parseFloat(dimensiMobil4.value - do4);
-		    		}
+		    		//}
 					selisihDimensi4.value = sd4;
 		    		selisihDimensi4Text.value = formatTextValue(sd4);
 		    		/*if(sd4<0){
@@ -4911,9 +5007,9 @@ function changeJumlahOrder(obj) {
 			    		dimensiOrder5Text.value = formatTextValue(do5);
 			    		var jumlahMobil5 = unformatText(document.getElementById("jumlahMobil5").value);
 						var sd5 = 0;
-			    		if(jumlahMobil5>0){
+			    		//if(jumlahMobil5>0){
 							sd5 =  parseFloat(dimensiMobil5.value - do5);
-			    		}
+			    		//}
 						selisihDimensi5.value = sd5;
 		        		selisihDimensi5Text.value = formatTextValue(sd5);
 		        		/*if(sd5<0){
@@ -5066,9 +5162,9 @@ function saveMobil1(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
@@ -5104,9 +5200,9 @@ function saveMobil2(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
@@ -5142,9 +5238,9 @@ function saveMobil3(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
@@ -5180,9 +5276,9 @@ function saveMobil4(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
@@ -5218,9 +5314,9 @@ function saveMobil5(){
     dimensiMobil.value = dm;
     dimensiMobilText.value = formatTextValue(dm);
     var sd = 0;
-    if(jumlahMobilValue>0){
+    //if(jumlahMobilValue>0){
     	sd = dm - dimensiOrder;
-    }
+    //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
     mobilInput.style.display = "none"; 
