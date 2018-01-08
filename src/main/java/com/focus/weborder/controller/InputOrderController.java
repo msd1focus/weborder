@@ -408,9 +408,11 @@ public class InputOrderController
 				if(orderGrps!=null) {
 					if(orderGrps.size()>0) {
 						orderGrp = orderGrps.get(0);
-						String[] p = orderGrp.getPeriodeOrder().split(" ");
+						String pOracle = orderGrp.getPeriodeOrder();
+						String[] p = getPeriode(pOracle).split(" ");
 						monthPeriode = getMonthValue(p[0]);
 						yearPeriode = Integer.parseInt(p[1]);
+						orderGrp.setPeriodeOrder(getPeriode(pOracle));
 					}
 				}
 				
@@ -427,7 +429,8 @@ public class InputOrderController
 				if(orderGrp==null) {		
 					
 					List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
-							orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
+							orderGrpService.getOrderGrpSubmitted(
+									company, custId, getPeriodeOracle(periodes.get(0)));
 					
 					if(orderGrpSubmittedsCurrentMonth!=null) {
 						if(orderGrpSubmittedsCurrentMonth.size()>0) {
@@ -461,7 +464,7 @@ public class InputOrderController
 					}
 					
 					List<OrderGrp> orderGrpSubmittedsNextMonth = 
-							orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+							orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(1)));
 					
 					if(orderGrpSubmittedsNextMonth!=null) {
 						if(orderGrpSubmittedsNextMonth.size()>0) {
@@ -512,7 +515,8 @@ public class InputOrderController
 							orderGrp.getOrderGrpId(), custId, company);
 					
 					for(Order o: orders) {
-						String[] p = o.getPeriode().split(" ");
+						String pOracle = o.getPeriode();
+						String[] p = getPeriode(pOracle).split(" ");
 						monthPeriode = getMonthValue(p[0]);
 						yearPeriode = Integer.parseInt(p[1]);
 						if(yearPeriode<year) {
@@ -530,7 +534,7 @@ public class InputOrderController
 						orderGrp.setPeriodeOrder(periodes.get(0));
 						
 						List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
-								orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
+								orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(0)));
 						
 						if(orderGrpSubmittedsCurrentMonth!=null) {
 							if(orderGrpSubmittedsCurrentMonth.size()>0) {
@@ -564,7 +568,7 @@ public class InputOrderController
 						}
 						
 						List<OrderGrp> orderGrpSubmittedsNextMonth = 
-								orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+								orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(1)));
 						
 						if(orderGrpSubmittedsNextMonth!=null) {
 							if(orderGrpSubmittedsNextMonth.size()>0) {
@@ -640,7 +644,7 @@ public class InputOrderController
 							poNumber5CurrentMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsNextMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(1)));
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
@@ -677,7 +681,7 @@ public class InputOrderController
 							poNumber5NextMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(0)));
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
@@ -752,7 +756,7 @@ public class InputOrderController
 							poNumber5CurrentMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsNextMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(1)));
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
@@ -789,7 +793,7 @@ public class InputOrderController
 							poNumber5NextMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(0)));
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
@@ -866,7 +870,7 @@ public class InputOrderController
 							poNumber5CurrentMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsNextMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(1)));
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
@@ -903,7 +907,7 @@ public class InputOrderController
 							poNumber5NextMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(0)));
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
@@ -980,7 +984,7 @@ public class InputOrderController
 							poNumber5CurrentMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsNextMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(1)));
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
@@ -1017,7 +1021,7 @@ public class InputOrderController
 							poNumber5NextMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(0)));
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
@@ -1094,7 +1098,7 @@ public class InputOrderController
 							poNumber5CurrentMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsNextMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(1));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(1)));
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
@@ -1131,7 +1135,7 @@ public class InputOrderController
 							poNumber5NextMonth = poNumber5;
 							
 							List<OrderGrp> orderGrpSubmittedsCurrentMonth = 
-									orderGrpService.getOrderGrpSubmitted(company, custId, periodes.get(0));
+									orderGrpService.getOrderGrpSubmitted(company, custId, getPeriodeOracle(periodes.get(0)));
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
@@ -2110,6 +2114,54 @@ public class InputOrderController
 		pn += year + m + po + "/" + customerName;
 				
 		return pn;
+	}
+
+	private String getMonth(String mOracle) {
+		String month = "XXX";
+		if(mOracle.equals("JAN")){month="Januari";}
+		else if(mOracle.equals("FEB")){month="Pebruari";}
+		else if(mOracle.equals("MAR")){month="Maret";}
+		else if(mOracle.equals("APR")){month="April";}
+		else if(mOracle.equals("MAY")){month="Mei";}
+		else if(mOracle.equals("JUN")){month="Juni";}
+		else if(mOracle.equals("JUL")){month="Juli";}
+		else if(mOracle.equals("AUG")){month="Agustus";}
+		else if(mOracle.equals("SEP")){month="September";}
+		else if(mOracle.equals("OCT")){month="Oktober";}
+		else if(mOracle.equals("NOV")){month="November";}
+		else if(mOracle.equals("DEC")){month="Desember";}
+		return month;
+	}
+	
+	private String getPeriode(String pOracle) {
+		String periode = "Januari 2000";
+		String[] p = pOracle.split("-");
+		periode = getMonth(p[0]) + " " + p[1];
+		return periode;
+	}
+	
+	private String getMonthOracle(String month) {
+		String mOracle = "XXX";
+		if(month.equals("Januari")){mOracle="JAN";}
+		else if(month.equals("Pebruari")){mOracle="FEB";}
+		else if(month.equals("Maret")){mOracle="MAR";}
+		else if(month.equals("April")){mOracle="APR";}
+		else if(month.equals("Mei")){mOracle="MAY";}
+		else if(month.equals("Juni")){mOracle="JUN";}
+		else if(month.equals("Juli")){mOracle="JUL";}
+		else if(month.equals("Agustus")){mOracle="AUG";}
+		else if(month.equals("September")){mOracle="SEP";}
+		else if(month.equals("Oktober")){mOracle="OCT";}
+		else if(month.equals("November")){mOracle="NOV";}
+		else if(month.equals("Desember")){mOracle="DEC";}
+		return mOracle;
+	}
+	
+	private String getPeriodeOracle(String periode) {
+		String pOracle = "JAN-2000";
+		String[] p = periode.split(" ");
+		pOracle = getMonthOracle(p[0]) + "-" + p[1];
+		return pOracle;
 	}
 
 }

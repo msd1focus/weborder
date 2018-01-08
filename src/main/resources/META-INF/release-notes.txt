@@ -37,7 +37,10 @@ Version 1.5.0 (Friday, 5 January 2018 by Amin Mutohar)
  - Change Application
  	1. add product and generate CMOB loading indicator
  	
-
 Version 1.6.0 (Monday, 8 January 2018 by Amin Mutohar)
  - Change Application
  	1. jumlah mobil validation
+ 	
+Version 1.7.0 (Monday, 8 January 2018 by Amin Mutohar)
+ - Change Application
+ 	1. change periode format from "Januari 2018" to "JAN-2018" 

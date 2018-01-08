@@ -781,7 +781,8 @@ function saveOrderGrp(ss){
 	var jumlahOrderSelected = 
 		document.getElementById("jumlahOrderSelected").value;
 	var periodeSelected = 
-		document.getElementById("periodeSelected").value;
+		formatPeriodeOracle( 
+				document.getElementById("periodeSelected").value);
 	var orderTypeSelected = 
 		document.getElementById("orderTypeSelected").value;
 	var orderBySelected = 
@@ -1154,6 +1155,26 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 		}
 	});
 	
+}
+
+function formatPeriodeOracle(obj){
+	var pOracle = "XXX-2000";
+	var p = obj.split(" ");
+	var mOracle = "XXX";
+	if(p[0]=="Januari"){mOracle="JAN";}
+	else if(p[0]=="Pebruari"){mOracle="FEB";}
+	else if(p[0]=="Maret"){mOracle="MAR";}
+	else if(p[0]=="April"){mOracle="APR";}
+	else if(p[0]=="Mei"){mOracle="MAY";}
+	else if(p[0]=="Juni"){mOracle="JUN";}
+	else if(p[0]=="Juli"){mOracle="JUL";}
+	else if(p[0]=="Agustus"){mOracle="AUG";}
+	else if(p[0]=="September"){mOracle="SEP";}
+	else if(p[0]=="Oktober"){mOracle="OCT";}
+	else if(p[0]=="November"){mOracle="NOV";}
+	else if(p[0]=="Desember"){mOracle="DEC";}
+	pOracle = mOracle + "-" + p[1];
+	return pOracle;
 }
 
 function formatText(obj){
