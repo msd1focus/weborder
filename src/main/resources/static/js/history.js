@@ -13,6 +13,7 @@ function showdetail(obj) {
 	document.getElementById("cell_podate").innerHTML = poDate;
 
 	document.getElementById("cell_totalorder").innerHTML = rowobj.children[2].innerHTML;
+	document.getElementById("cell_invoicenumber").innerHTML = rowobj.getAttribute("data-invoicenumber");
 	document.getElementById("cell_invoicestatus").innerHTML = rowobj.getAttribute("data-invoicestatus");
 	document.getElementById("cell_notes").innerHTML = rowobj.getAttribute("data-notes");
 

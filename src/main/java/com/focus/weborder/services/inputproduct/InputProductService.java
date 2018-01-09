@@ -172,6 +172,7 @@ public class InputProductService {
 		
 
 		Double qtyOnHand = (double)0;
+		Double qtyOnHandPrimary = (double)0;
 		CustProdStock custProdStock =
 				custProdStockService.
 					getBygetByCompanyCustidProductcode(
@@ -180,11 +181,11 @@ public class InputProductService {
 							inputCmob.getProductCode());
 		if(custProdStock!=null) {
 				if(custProdStock.getEndStock()!=null) {
-					qtyOnHand =
+					qtyOnHandPrimary =
 							custProdStock.getEndStock();
 					
 					qtyOnHand =
-							qtyOnHand
+							qtyOnHandPrimary
 							* inputCmob.getPrimaryUomRate()
 							/ inputCmob.getSelectedUomRate();
 					
@@ -268,10 +269,11 @@ public class InputProductService {
 			cmob = (long)0;
 		}
 		
+		outputCmob.setLastStock(qtyOnHandPrimary);
 		outputCmob.setQuantity(cmob);
 		
-/*
-		if(cmob>0) {
+
+		/*if(cmob>0) {
 		
 			System.out.println("=============================================");
 			System.out.println("CMOB Calculation >> " 

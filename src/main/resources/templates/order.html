@@ -1095,48 +1095,8 @@
 					th:value="${inputProduct.product.productCat1}"/>
 			</td>
 			<td style="display: none;">
-				<input id="averageSales3MonthBefore" type="number" 
-					th:value="${inputProduct.averageSales3MonthBefore}"/>
-				<input id="averageSales2MonthBefore" type="number" 
-					th:value="${inputProduct.averageSales2MonthBefore}"/>
-				<input id="averageSales1MonthBefore" type="number" 
-					th:value="${inputProduct.averageSales1MonthBefore}"/>
-				<input id="averageSalesCurrentMonth" type="number" 
-					th:value="${inputProduct.averageSalesCurrentMonth}"/>				
-				<input id="targetCustomerCurrentMonth" type="number" 
-					th:value="${inputProduct.targetCustomerCurrentMonth}"/>
-				<input id="targetCustomerNextMonth" type="number" 
-					th:value="${inputProduct.targetCustomerNextMonth}"/>
 				<input id="qtyOnHand" type="number" 
-					th:value="${inputProduct.qtyOnHand}"/>
-			</td>
-			<td style="display: none;">
-				<table id="tblCustInvoice">
-					<th:block th:each="custInvoice: ${inputProduct.custInvoices}">
-						<tr>
-							<td>	
-								<input id="trxNumber" type="text" 
-									th:value="${custInvoice.trxNumber}"/>
-							</td>
-							<td>	
-								<input id="trxId" type="number" 
-									th:value="${custInvoice.trxId}"/>
-							</td>
-							<td>	
-								<input id="trxDate" type="date" 
-									th:value="${custInvoice.trxDate}"/>
-							</td>		
-							<td>	
-								<input id="uomCode" type="text" 
-									th:value="${custInvoice.uomCode}"/>
-							</td>		
-							<td>	
-								<input id="qty" type="number" 
-									th:value="${custInvoice.qty}"/>
-							</td>
-						</tr>
-					</th:block>
-				</table>
+					value="0"/>
 			</td>
 		</tr>
       </th:block> 

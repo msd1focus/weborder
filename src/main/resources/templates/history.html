@@ -37,6 +37,7 @@
 			<tbody>
 			<tr th:each="order : ${orders}" 
 				th:attr="data-orderid=${order.orderId},
+				         data-invoicenumber=${order.invoiceNumber},
 				         data-invoicestatus=${order.invoiceStatus},
 				         data-notes=${order.notes},
 				         data-tonasemobil=${order.tonaseMobil},
@@ -81,6 +82,10 @@
 					 <tr>
 						   <th>Status:</th>
 							 <td id="cell_invoicestatus"></td>
+					 </tr>
+					 <tr>
+						   <th>Nomor Invoice:</th>
+							 <td id="cell_invoicenumber"></td>
 					 </tr>
 					 <tr>
 						   <th>Notes:</th>

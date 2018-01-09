@@ -25,8 +25,8 @@ function viewReport(){
 			document.location.origin
 			+ "/birt-viewer/frameset?__report=WO.rptdesign&CUST_ID="
 			+ custId + "&COMPANY="
-			+ company + "&Interval=3&Month="
-			+ month + "&Year=" + year;
+			+ company + "&Interval=3&Periode="
+			+ month + "-" + year;
 		console.log("source: " + source);
 		reportFrame.src = source;
 	}

@@ -1057,6 +1057,8 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				unformatText(tblOrder.rows[idxRow].cells[8].children[0].value);
 			var totalPrice = 
 				qty*unitPrice;
+			var lastStock =
+				tblOrder.rows[idxRow].cells[10].children[0].value;
 			orderdetail.push({ 
 		        "orderDetailId" : orderDetailId,
 				"orderId": odi,
@@ -1065,7 +1067,8 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				"uom": uomSelected,
 		        "jumlah"  : qty,
 				"unitPrice": unitPrice,
-				"totalPrice": totalPrice
+				"totalPrice": totalPrice,
+				"lastStock": lastStock
 		    });
 		}
 		else{
@@ -1764,8 +1767,11 @@ function searchProduct(obj){
 	return;
 }
 
+var isChangeUom = false;
 function changeUom(obj){
 
+	isChangeUom = true;
+	
 	console.log("===============================================================");
 	console.log("Change UOM");
 	console.log("===============================================================");
@@ -3540,12 +3546,14 @@ function generateCMOB(){
 						
 						if(productCode!=null){
 							if(productCode.value==field.productCode){
-								console.log(
+								/*console.log(
 										field.productCode
 										+ " - "
-										+ field.quantity);
+										+ field.quantity);*/
 								tblOrder.rows[idxRow].cells[0].children[11].value =
 									field.quantity;
+								tblOrder.rows[idxRow].cells[10].children[0].value =
+									field.lastStock;
 							}					
 						}	
 					}		
@@ -4354,53 +4362,56 @@ function changeJumlahOrder(obj) {
     		generateCMOB();
     	}
     	else{
-    		for(var idxRow = 1; idxRow<=productQty; idxRow++){
-            	var cmob = parseFloat(tblOrder.rows[idxRow].cells[0].children[11].value);
-            	if(jumlahOrder==1){
-                	tblOrder.rows[idxRow].cells[0].children[0].value =
-                		cmob;
-                }
-        		else if(jumlahOrder==2){
-        			var qty = Math.ceil(cmob/2);
-                	tblOrder.rows[idxRow].cells[0].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[1].children[0].value =
-                		qty;
-        		}
-        		else if(jumlahOrder==3){
-        			var qty = Math.ceil(cmob/3);
-                	tblOrder.rows[idxRow].cells[0].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[1].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[2].children[0].value =
-                		qty;
-        		}
-        		else if(jumlahOrder==4){
-        			var qty = Math.ceil(cmob/4);
-                	tblOrder.rows[idxRow].cells[0].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[1].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[2].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[3].children[0].value =
-                		qty;
-        		}
-        		else if(jumlahOrder==5){
-        			var qty = Math.ceil(cmob/5);
-                	tblOrder.rows[idxRow].cells[0].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[1].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[2].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[3].children[0].value =
-                		qty;
-                	tblOrder.rows[idxRow].cells[4].children[0].value =
-                		qty;
-        		}
-        	}
+    		if(!isChangeUom){
+        		for(var idxRow = 1; idxRow<=productQty; idxRow++){
+                	var cmob = parseFloat(tblOrder.rows[idxRow].cells[0].children[11].value);
+                	if(jumlahOrder==1){
+                    	tblOrder.rows[idxRow].cells[0].children[0].value =
+                    		cmob;
+                    }
+            		else if(jumlahOrder==2){
+            			var qty = Math.ceil(cmob/2);
+                    	tblOrder.rows[idxRow].cells[0].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[1].children[0].value =
+                    		qty;
+            		}
+            		else if(jumlahOrder==3){
+            			var qty = Math.ceil(cmob/3);
+                    	tblOrder.rows[idxRow].cells[0].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[1].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[2].children[0].value =
+                    		qty;
+            		}
+            		else if(jumlahOrder==4){
+            			var qty = Math.ceil(cmob/4);
+                    	tblOrder.rows[idxRow].cells[0].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[1].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[2].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[3].children[0].value =
+                    		qty;
+            		}
+            		else if(jumlahOrder==5){
+            			var qty = Math.ceil(cmob/5);
+                    	tblOrder.rows[idxRow].cells[0].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[1].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[2].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[3].children[0].value =
+                    		qty;
+                    	tblOrder.rows[idxRow].cells[4].children[0].value =
+                    		qty;
+            		}
+            	}	
+        		isChangeUom = false;
+    		}
     	}
     }
 

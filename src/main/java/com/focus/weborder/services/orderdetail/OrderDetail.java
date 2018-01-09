@@ -29,6 +29,8 @@ public class OrderDetail {
 	private Double unitPrice;
 	@Column(name="TOTAL_PRICE")
 	private Double totalPrice;
+	@Column(name="LAST_STOCK")
+	private Double lastStock;
 	
 	public OrderDetail() {
 		
@@ -36,7 +38,7 @@ public class OrderDetail {
 	
 	public OrderDetail(Long orderDetailId, Long orderId, String productCode, 
 			String productDesc, String uom, Long jumlah,
-			Double unitPrice, Double totalPrice) {
+			Double unitPrice, Double totalPrice, Double lastStock) {
 		
 		super();
 		this.orderDetailId = orderDetailId;
@@ -47,6 +49,7 @@ public class OrderDetail {
 		this.jumlah = jumlah;
 		this.unitPrice = unitPrice;
 		this.totalPrice = totalPrice;
+		this.lastStock = lastStock;
 	}
 
 	public Long getOrderDetailId() {
@@ -111,6 +114,14 @@ public class OrderDetail {
 
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public Double getLastStock() {
+		return lastStock;
+	}
+
+	public void setLastStock(Double lastStock) {
+		this.lastStock = lastStock;
 	}
 
 }

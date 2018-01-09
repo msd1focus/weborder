@@ -53,6 +53,8 @@ public class Order {
 	private String soStatus;
 	@Column(name="SO_DATE")
 	private Date soDate;
+	@Column(name="INVOICE_NUMBER")
+	private String invoiceNumber;
 	@Column(name="INVOICE_STATUS")
 	private String invoiceStatus;
 	@Column(name="INVOICE_DATE")
@@ -71,7 +73,9 @@ public class Order {
 			String expedisi, String jenisMobil, Double tonaseMobil,
 			Double tonaseOrder, Double selisihTonase, Double totalPrice,
 			String periode, String ebsSubmitStatus, Date ebsSubmitDate, 
-			String soNumber, String soStatus, Date soDate, String invoiceStatus,
+			String soNumber, String soStatus, Date soDate, 
+			String invoiceNumber,
+			String invoiceStatus,
 			Date invoiceDate, String notes) {
 		
 		super();
@@ -94,6 +98,7 @@ public class Order {
 		this.soNumber = soNumber;
 		this.soStatus = soStatus;
 		this.soDate = soDate;
+		this.invoiceNumber = invoiceNumber;
 		this.invoiceStatus = invoiceStatus;
 		this.invoiceDate = invoiceDate;
 		this.notes = notes;
@@ -249,6 +254,14 @@ public class Order {
 
 	public void setSoDate(Date soDate) {
 		this.soDate = soDate;
+	}
+
+	public String getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public void setInvoiceNumber(String invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
 	}
 
 	public String getInvoiceStatus() {
