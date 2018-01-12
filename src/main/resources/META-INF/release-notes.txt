@@ -49,8 +49,17 @@ Version 1.7.1 (Tuesday, 9 January 2018 by Amin Mutohar)
  - Bug Fixing
  	1. Change UOM on CMOB doesn't work
  	
-Version 1.8.0 (Monday, 8 January 2018 by Amin Mutohar)
+Version 1.8.0 (Wednesday, 10 January 2018 by Amin Mutohar)
  - Change Application
  	1. Add Invoice Number on History
  	2. Add Last Stock on Order Detail when CMOB  
  	3. Change Report Month from number to name ("JAN" format)
+ 	
+Version 1.9.0 (Thursday, 11 January 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add Change Password User for Admin
+ 	ormat)
+ 	
+Version 1.10.0 (Friday, 12 January 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add History User for Admin

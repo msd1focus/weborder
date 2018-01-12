@@ -14,6 +14,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,7 +133,7 @@ public class InputOrderController
 									order.getCustId(),
 									order.getOrderGrpId());
 				}
-				
+				//System.out.println("orderGrp: " + orderGrp + "orderid: " + order.getOrderId());
 				order.setInvoiceStatus(orderGrp.getSubmitStatus());
 				
 			}
@@ -140,6 +141,52 @@ public class InputOrderController
 		modelAndView.addObject("orders", orders);
 		modelAndView.setViewName("history");
 		//System.out.println(orders.size());
+		return modelAndView;
+	}
+	
+	@GetMapping("/historyall")
+	public String orderhistoryAll(Model model){
+		model.addAttribute("customername");
+		model.addAttribute("companyname");
+		return "/historyall";
+	}
+	
+	@RequestMapping(value = "/historyall", method = RequestMethod.POST)
+	public ModelAndView orderHistoryAll(
+			@RequestParam(value="companyname", required=false) String companyname,
+			@RequestParam(value="customername", required=false) String customername){
+		ModelAndView modelAndView = new ModelAndView();
+		List<Order> orders = new ArrayList<Order>();
+		OrderGrp orderGrp = null;
+		User user = new User();
+		String company = companyname;
+		String customer = customername;
+		user = userService.findUserByUsername(companyname + customername);
+		if(user!=null) {
+			orders = orderService.getOrdersByCompanyAndCustid(user.getCompany(), user.getCustId());
+			for(Order order: orders) {
+				if(orderGrp!=null) {
+					if(orderGrp.getOrderGrpId()!=order.getOrderGrpId()) {
+						orderGrp = orderGrpService.getOrderGrpOrdergrpid(
+										order.getCompany(), 
+										order.getCustId(),
+										order.getOrderGrpId());
+					}
+				}
+				else {
+					orderGrp = orderGrpService.getOrderGrpOrdergrpid(
+									order.getCompany(), 
+									order.getCustId(),
+									order.getOrderGrpId());
+				}
+				order.setInvoiceStatus(orderGrp.getSubmitStatus());
+				
+			}
+		}
+		modelAndView.addObject("orders", orders);
+		modelAndView.addObject("customername", customer);
+		modelAndView.addObject("companyname", company);
+		modelAndView.setViewName("historyall");
 		return modelAndView;
 	}
 	
@@ -218,7 +265,40 @@ public class InputOrderController
 		modelAndView.setViewName("changepassword");
 		return modelAndView;
 	}
+
+	@GetMapping("/changepassworduser")
+    public String changepassworduser() {
+        return "/changepassworduser";
+    }
     
+	@RequestMapping(value = "/changepassworduser", method = RequestMethod.POST)
+	public ModelAndView changePasswordUser(
+	        @RequestParam(value="username", required=true) String username,
+	        @RequestParam(value="newpassword", required=true) String newpassword) {
+    	
+       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String message = "Failed";
+		if (auth != null) {
+			for(GrantedAuthority ga: auth.getAuthorities()) {
+				String role = ga.getAuthority();
+				if(role != null) {
+					if(role.equals("ADMIN")) {
+						User user = 
+								userService.findUserByUsername(username);
+						user.setPassword(newpassword);
+						userService.saveUser(user);
+						message = "Success";
+					}
+				}
+			}
+		}
+			
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("messageInfo", message);
+		modelAndView.setViewName("changepassworduser");
+		return modelAndView;
+	}
+	
     @RequestMapping(value="/resetpassword", method = RequestMethod.GET)
 	public ModelAndView resetpassword(){
 		ModelAndView modelAndView = new ModelAndView();
@@ -335,7 +415,9 @@ public class InputOrderController
 					+ "."
 					+ c.get(Calendar.MILLISECOND)
 					+ " by " 
-					+ auth.getName());
+					+ auth.getName()
+					+ " with role: "
+					+ auth.getAuthorities());
 			
 			if(!(auth.getName().trim().equals("FDIadmin"))
 				&& !(auth.getName().trim().equals("FDNadmin"))) {

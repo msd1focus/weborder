@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Form Input Order</title>
+	<meta charset="UTF-8">
+	</meta>
+	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/historyall.css"/>
+  	<script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script src="js/historyall.js"></script>
+
+	<div th:replace="fragments/header :: header-css"/>
+
+</head>
+
+<body>
+
+	<div th:replace="fragments/header :: header"/>
+	
+	<!-- <div class="bagianlogo" id="logo">
+		<img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" src="images/logo.png" alt="" width="200" height="85px" />
+	</div> -->
+
+ 	<form
+		action="#"  
+       	th:action="@{/historyall}"
+       	method="post">
+
+	<div class="hist0">
+		<h2>Histori Transaksi</h2>
+		<label>Company: </label>
+		<select 
+         	id="companyname"
+         	name="companyname"
+         	onchange="">			    		
+			<option value="FDI">FDI</option>
+			<option value="FDN">FDN</option>
+		</select>
+		<label>Customer Name: </label>
+		<input id="customername" 
+			name="customername"
+			type="text" 
+			required="true"/>
+			<!-- th:field="${customername}" -->
+		<input type="submit" 
+			value="View" 
+			style="width:75px;" 
+			required="true"/>
+		<p/>
+		<table style="border: 1px solid black" id="conftab">
+			<thead>
+			<tr>
+				<th>No PO</th>
+				<th>Tgl PO</th>
+				<th>Total</th>
+				<th/>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="order : ${orders}" 
+				th:attr="data-orderid=${order.orderId},
+				         data-invoicenumber=${order.invoiceNumber},
+				         data-invoicestatus=${order.invoiceStatus},
+				         data-notes=${order.notes},
+				         data-tonasemobil=${order.tonaseMobil},
+				         data-expedisi=${order.expedisi}">
+				<td th:text="${order.poNumber}"></td>
+				<td th:text="${order.orderDate}">232323</td>
+				<td style="text-align:right" 
+				    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}">232323</td>
+				<td>
+				  <input type="button" value="Click untuk detail" style="width:10em; color:blue; border:none; background-color:white;"
+                           th:onclick="'javascript:showdetail(this);'"/>
+                 </td> 
+			</tr>
+			</tbody>
+		</table>
+
+	</div> <!-- div hist -->
+
+
+	<!-- The Modal -->
+	<div id="myModal" class="modal">
+
+		<div class="modal-content">
+			<div id="closediv">
+				<h4 >Detail Order <span class="close">&times;</span></h4>
+				
+			</div>
+			<div id="poinfo">
+				<table>
+					 <tr>
+						   <th>Nomor PO:</th>
+							 <td id="cell_ponumber"></td>
+					 </tr>
+					 <tr>
+						   <th>Tanggal PO:</th>
+							 <td id="cell_podate"></td>
+					 </tr>
+					 <tr>
+						   <th>Total Order:</th>
+							 <td id="cell_totalorder"></td>
+					 </tr>
+					 <tr>
+						   <th>Status:</th>
+							 <td id="cell_invoicestatus"></td>
+					 </tr>
+					 <tr>
+						   <th>Nomor Invoice:</th>
+							 <td id="cell_invoicenumber"></td>
+					 </tr>
+					 <tr>
+						   <th>Notes:</th>
+							 <td id="cell_notes"></td>
+					 </tr>
+				</table>
+			</div>
+			<div id="rincian">
+				<table style="text-align:left">
+          			<thead>
+					  <tr>
+							  <th style="max-width:90px">Code</th>
+								<th>Product Name</th>
+								<th>Unit</th>
+								<th>Unit Price</th>
+								<th style="max-width:60px">Quantity</th>
+								<th>Total</th>
+						</tr>
+					</thead>
+					<tbody id="rincianorder"></tbody>
+				</table>
+			</div>
+
+	  	</div>
+	</div>
+	</form>
+	<div th:replace="fragments/footer :: footer"/>
+
+ <script>
+		var modal = document.getElementById('myModal');
+		var span = document.getElementsByClassName("close")[0];
+		span.onclick = function() {
+		    modal.style.display = "none";
+		}
+</script>  
+	
+</body>
+</html>

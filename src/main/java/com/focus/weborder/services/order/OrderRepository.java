@@ -13,8 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
 	
-	List<Order> findOrderByCompanyAndCustId (String company, Long custId);
+	//List<Order> findOrderByCompanyAndCustId (String company, Long custId);
 	Order	findOrderByOrderId (Long orderId);
+	
+	@Query("SELECT o FROM Order o WHERE "
+            + "o.company = :company AND "
+            + "o.custId = :custId "
+            + "ORDER BY o.orderId Desc"
+           )
+	List<Order> findOrderByCompanyAndCustId(
+			@Param("company") String company,
+    		@Param("custId") Long custId
+    	);
 	
 	@Query("SELECT o FROM Order o "
             + "ORDER BY o.orderId ASC"
