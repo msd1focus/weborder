@@ -16,5 +16,11 @@ public class ListMobilService {
 				listMobilRepository.getAll();
 		return listMobils;		
 	}
+	
+	public ListMobil getById(Long mobilId) {
+		ListMobil listMobil = 
+				listMobilRepository.findOne(mobilId);
+		return listMobil;		
+	}
 
 }

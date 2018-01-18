@@ -33,6 +33,8 @@ import com.focus.weborder.security.repository.UserRepository;
 import com.focus.weborder.security.service.UserService;
 import com.focus.weborder.services.custinvoice.CustInvoice;
 import com.focus.weborder.services.custinvoice.CustInvoiceService;
+import com.focus.weborder.services.custmobil.CustMobil;
+import com.focus.weborder.services.custmobil.CustMobilService;
 import com.focus.weborder.services.customer.Customer;
 import com.focus.weborder.services.customer.CustomerService;
 import com.focus.weborder.services.custprod.CustProd;
@@ -101,6 +103,9 @@ public class InputOrderController
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CustMobilService custMobilService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -456,10 +461,20 @@ public class InputOrderController
 						orderGrpService.getOrderGrpDraft(company, custId);
 				List<CustShipTo> custShipTo =
 						custShipToService.getCustShipTo(company, custId);
-				List<ListMobil> listMobils =
-						listMobilService.getListMobils();
 				List<String> expedisis =
 						orderService.getExpedisiByCompanyCustid(company, custId);
+				List<CustMobil> custMobils =
+						custMobilService.getByCompanyCustid(company, custId);
+				List<ListMobil> listMobils = new ArrayList<>();
+				for(CustMobil cm: custMobils) {
+					if(cm.getMobilId()!=null) {
+						ListMobil lm = 
+								listMobilService.getById(cm.getMobilId());
+						if(lm!=null) {
+							listMobils.add(lm);
+						}
+					}
+				}
 				
 				List<Order> orders = new ArrayList<>();
 				Order order1 = null;

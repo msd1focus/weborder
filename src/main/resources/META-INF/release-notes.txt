@@ -58,8 +58,12 @@ Version 1.8.0 (Wednesday, 10 January 2018 by Amin Mutohar)
 Version 1.9.0 (Thursday, 11 January 2018 by Amin Mutohar)
  - Change Application
  	1. Add Change Password User for Admin
- 	ormat)
  	
 Version 1.10.0 (Friday, 12 January 2018 by Amin Mutohar)
  - Change Application
  	1. Add History User for Admin
+ 	
+Version 1.11.0 (Thursday, 18 January 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add custmobil services
+ 	2. List of mobil on input order is depend on custmobil
