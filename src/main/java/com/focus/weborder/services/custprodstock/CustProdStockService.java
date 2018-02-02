@@ -41,8 +41,10 @@ public class CustProdStockService {
 		//custProdStockRepository.save(custProdStock);
 	}
 	
-	public void updateCustProdStock(CustProdStock custProdStock) {
-		//custProdStockRepository.save(custProdStock);
+	public void updateCustProdStock(List<CustProdStock> custProdStocks) {
+		for(CustProdStock cps: custProdStocks) {
+			custProdStockRepository.save(cps);
+		}
 	}
 	
 	public void deleteCustProdStock(String custId) {

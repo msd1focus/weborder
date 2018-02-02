@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Web Order - Focus Distribusi Indonesia</title>
+    <div th:replace="fragments/header :: header-css"/>  
+ 	<script type="text/javascript" src="../static/js/readcsv.js"
+		th:src="@{js/readcsv.js}"></script> 
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+	<div th:if="${message}">
+		<h2 th:text="${message}"/>
+	</div>
+	<h1>Upload File Data</h1>
+	
+	<table>
+				<tr><td style="width:130px">File type:</td>
+					<td>				
+						<select id="jenisfile" onchange="chfiletype()">
+								<option value="target">Target Sales</option>
+								<option value="stock">Stock</option>
+								<option value="custmobil">Customer-mobil</option>
+						</select>
+					</td>
+				</tr>
+				<tr/>
+		</table>
+		
+	<div>
+		<form id="form-id" 
+		method="POST" 
+		enctype="multipart/form-data" 
+		action="#" 
+		th:action="@{/upload}">
+		<!-- action="/upload"> -->
+			<table>
+				<tr><td style="width:130px">File to upload:</td>
+					<td><input type="file" id="file" accept="text/csv" name="file" style="width:40em"/></td>
+				</tr>
+				<tr><td/><td></td></tr>
+				<tr>
+					<td></td>
+					<td><input type="button" value="Upload" onclick="return verify()"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<p/>
+	<div>
+		<h3>Rule:</h3>
+		<div id="targetrule" style="display:block">
+				Upload data target sales: <br/>
+				* Format csv <br/>
+				* File name : target_yymmdd.csv <br/>
+				* Header : company,product_code,cust_number,cust_id,periode_target,target_sales,,, <br/>
+		<p/>		
+		</div>
+		<div id="stockrule" style="display:none">
+				Upload data stock: <br/>
+				* Format csv <br/>
+				* File name : stock_yymmdd.csv <br/>
+				* Header : company,product_code,cust_number,cust_id,periode_stock,end_stock<br/>
+		<p/>		
+		</div>
+		<div id="mobilrule" style="display:none">
+				Upload data mobil-customer: <br/>
+				* Format csv <br/>
+				* File name : custmobil_yymmdd.csv <br/>
+				* Header : company,cust_number,cust_id,mobil_desc,mobil_id<br/>
+		<p/>		
+		</div>
+	</div>
+	<div id="errordiv" style="display:none">
+		<p>Error message disini</p>
+	</div>		
+
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

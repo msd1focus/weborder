@@ -1,16 +1,19 @@
 package com.focus.weborder.services.customer;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-@Entity
+@Entity @IdClass(CustomerId.class)
 @Table(name = "CUSTOMER")
 public class Customer {
 	
+	@Id
 	@Column(name="COMPANY")
 	private String company;
 	@Id
@@ -159,4 +162,9 @@ public class Customer {
 		this.creditLimit = creditLimit;
 	}
 
+}
+
+class CustomerId implements Serializable{
+	String company;
+	Long custId;
 }

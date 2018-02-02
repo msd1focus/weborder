@@ -41,8 +41,10 @@ public class CustProdTargetService {
 		//custTargetRepository.save(custTarget);
 	}
 	
-	public void updateCustProdTarget(CustProdTarget custProdTarget) {
-		//custTargetRepository.save(custTarget);
+	public void updateCustProdTarget(List<CustProdTarget> custProdTargets) {
+		for(CustProdTarget cpt: custProdTargets) {
+			custProdTargetRepository.save(cpt);
+		}
 	}
 	
 	public void deleteCustProdTarget(String custId) {

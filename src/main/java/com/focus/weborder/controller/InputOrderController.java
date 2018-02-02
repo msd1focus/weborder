@@ -1,5 +1,6 @@
 package com.focus.weborder.controller;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -23,10 +24,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.focus.weborder.security.model.User;
 import com.focus.weborder.security.repository.UserRepository;
@@ -58,6 +62,7 @@ import com.focus.weborder.services.product.ProductService;
 import com.focus.weborder.services.produom.ProdUom;
 import com.focus.weborder.services.produom.ProdUomService;
 import com.focus.weborder.types.InputWebOrder;
+import com.focus.weborder.upload.storage.StorageService;
 import com.focus.weborder.types.InputOrder;
 import com.focus.weborder.types.InputProduct;
 
@@ -106,6 +111,9 @@ public class InputOrderController
 	
 	@Autowired
 	private CustMobilService custMobilService;
+	
+	@Autowired
+	private StorageService storageService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -274,6 +282,29 @@ public class InputOrderController
 	@GetMapping("/changepassworduser")
     public String changepassworduser() {
         return "/changepassworduser";
+    }
+
+	/*@GetMapping("/custmobil")
+    public String custmobil() {
+        return "/custmobil";
+    }*/
+	
+	@RequestMapping(value="/upload", method = RequestMethod.GET)
+    public String uploadForm() {
+        return "/uploadform";
+    }
+    
+
+    //@PostMapping("/upload")
+    @RequestMapping(value = "//upload", method = RequestMethod.POST)
+    public String handleFileUpload(
+    		@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws IOException {
+    	//System.out.println("file: " + file);
+    	storageService.store(file);
+    	redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+    	return "/uploadform";
     }
     
 	@RequestMapping(value = "/changepassworduser", method = RequestMethod.POST)

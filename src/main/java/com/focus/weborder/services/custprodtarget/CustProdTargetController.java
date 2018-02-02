@@ -47,8 +47,9 @@ public class CustProdTargetController {
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/custprodtarget")
-	public void updateCustProdTarget(@RequestBody CustProdTarget custProdTarget){
-		custProdTargetService.updateCustProdTarget(custProdTarget);
+	public void updateCustProdTarget(
+			@RequestBody List<CustProdTarget> custProdTargets){
+		custProdTargetService.updateCustProdTarget(custProdTargets);
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/custprodtarget/{custId}")

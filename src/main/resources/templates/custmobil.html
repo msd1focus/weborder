@@ -1,0 +1,37 @@
+<html>
+<head>
+	<title>Web Order - Focus Distribusi Indonesia</title>
+    <div th:replace="fragments/header :: header-css"/>  
+	<script th:inline="javascript"
+		src="../static/js/custmobil.js"
+		th:src="@{js/custmobil.js}">
+	</script>
+	<script type="text/javascript"
+		src="webjars/jquery/3.2.1/jquery.min.js">
+	</script>
+</head>
+<body>
+	<div th:replace="fragments/header :: header"/>
+	<h1>Uploading a CSV File</h1>
+
+	<b>CSV File</b> <input type="file" id="csvfile"/> 
+	<br />
+	
+	<b>Header</b> <select id="header">
+	<option>true</option>
+	<option>false</option>
+	</select> 
+	
+	<br />
+	<button 
+		id="submitbutton" 
+		type="button"
+		onclick="readcsv()">
+		read.csv
+	</button>
+	
+	<pre><code id="output"></code></pre>
+
+	<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

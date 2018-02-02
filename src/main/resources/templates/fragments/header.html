@@ -39,6 +39,10 @@
 	                    <li sec:authorize="hasAuthority('ADMIN')" class="active">       	 
 			            	<a id="changepassworduser" 
 			            		th:href="@{/changepassworduser}">Change Password User</a>
+	                    </li>		 
+	                    <li sec:authorize="hasAuthority('ADMIN')" class="active">       	 
+			            	<a id="upload" 
+			            		th:href="@{/upload}">Uploads</a>
 	                    </li>	        
 	                    <li class="active">
 	                    	<a id="logout" th:href="@{/logout}">Logout</a>
