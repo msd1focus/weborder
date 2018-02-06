@@ -295,14 +295,17 @@ public class InputOrderController
     }
     
 
-    //@PostMapping("/upload")
-    @RequestMapping(value = "//upload", method = RequestMethod.POST)
+    //@PostMapping("/upload") 
+    //RedirectAttributes redirectAttributes,
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String handleFileUpload(
     		@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+            Model model) throws IOException {
     	//System.out.println("file: " + file);
     	storageService.store(file);
-    	redirectAttributes.addFlashAttribute("message",
+    	/*redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");*/
+    	model.addAttribute("message", 
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
     	return "/uploadform";
     }

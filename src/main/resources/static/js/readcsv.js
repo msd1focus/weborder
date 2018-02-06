@@ -24,8 +24,7 @@ function companyIsValid (lineNum, company) {
 	switch (company) {
 		case "FDI":
 		case "FDN": break;
-		default : errorText("Error baris " + lineNum + ", Company tidak valid. ");  
-				retvalue = false;
+		default : retvalue = false;
 	}
 	return (retvalue);
 }
@@ -55,14 +54,12 @@ function targetValIsValid (lineNum, targetVal) {
 
 function errorText (msg) {
 	 var x = document.getElementById("errordiv");
-//	 console.log(x.innerHTML);
-	 x.innerHTML = "<h4>Error : </h4>" + msg;
+	 x.innerHTML = "<h4>Error : </h4><ul>" + msg + "</ul>";
 	 x.style.display = "block";
 }
  
 function targetListIsValid(text) {
 	 var targetRowStatus;
-		//break the lines apart
 		var lines = text.split('\n');
 		if (lines[0].trim() != 'company,product_code,cust_number,cust_id,periode_target,target_sales') { 
 			errorText("Header file tidak valid.");
@@ -105,7 +102,6 @@ function targetListIsValid(text) {
 	
 function stockListIsValid(text) {
 	var stockRowStatus;
-		//break the lines apart
 	var lines = text.split('\n');
 	if (lines[0].trim() != 'company,product_code,cust_number,cust_id,periode_stock,end_stock') { 
 			errorText("Header file tidak valid.");
@@ -115,7 +111,6 @@ function stockListIsValid(text) {
 	for(var j = 1; j<lines.length; j++){
 		if(lines[j].trim() != ""){
 
-			//split the rows at the cellTerminator character
 			var information = lines[j].trim().split(',');
 			var target = new Object();
 
@@ -145,7 +140,10 @@ function stockListIsValid(text) {
 
 function custmobilListIsValid(text) {
 	var stockRowStatus;
-		//break the lines apart
+	var isValid = "true";
+	var companyErrors = [];
+	var custIdErrors = [];
+	var mobilIdErrors = [];
 	var lines = text.split('\n');
 	if (lines[0].trim() != 'company,cust_number,cust_id,mobil_desc,mobil_id') { 
 			errorText("Header file tidak valid.");
@@ -155,7 +153,6 @@ function custmobilListIsValid(text) {
 	for(var j = 1; j<lines.length; j++){
 		if(lines[j].trim() != ""){
 
-			//split the rows at the cellTerminator character
 			var information = lines[j].trim().split(',');
 			var custmobil = new Object();
 
@@ -170,12 +167,61 @@ function custmobilListIsValid(text) {
 			}
 
 			if (!companyIsValid(j, custmobil.company) ) {
-				return("false");
+				isValid = "false";
+				companyErrors.push(j);
+			}
+			if(!isInteger(custmobil.cust_id)){
+				isValid = "false";
+				custIdErrors.push(j);
+			}
+			if(!isInteger(custmobil.mobil_id)){
+				isValid = "false";
+				mobilIdErrors.push(j);
 			}
 		}
 
 	}
-	return("true")
+	
+	if(isValid=="false"){
+		
+		var errorLog = "";
+		
+		if(companyErrors.length>0){
+			var lineNum = "";
+			for(var i = 0; i<companyErrors.length; i++){
+				lineNum += companyErrors[i];
+				if(i!=(companyErrors.length-1)){
+					lineNum += ",";
+				}
+			}
+			errorLog += "<li> company tidak valid pada baris " + lineNum + "</li>";  
+		}
+		
+		if(custIdErrors.length>0){
+			var lineNum = "";
+			for(var i = 0; i<custIdErrors.length; i++){
+				lineNum += custIdErrors[i];
+				if(i!=(custIdErrors.length-1)){
+					lineNum += ",";
+				}
+			}
+			errorLog += "<li> cust_id tidak valid pada baris " + lineNum + "</li>";  
+		}
+		
+		if(mobilIdErrors.length>0){
+			var lineNum = "";
+			for(var i = 0; i<mobilIdErrors.length; i++){
+				lineNum += mobilIdErrors[i];
+				if(i!=(mobilIdErrors.length-1)){
+					lineNum += ",";
+				}
+			}
+			errorLog += "<li> mobil_id tidak valid pada baris " + lineNum + "</li>";  
+		}
+		
+		errorText(errorLog);
+	}
+	return(isValid)
 	
 }
 
@@ -183,34 +229,33 @@ function verify() {
 	var x = document.getElementById("jenisfile").value;
   	var file =  document.getElementById('file').files[0];
   	var parseStatus;
-
-	console.log("type:" + x);
-
+  	
 	if (file == null) {
-		console.log("disini panggil error");
-  			errorText ("File belum dipilih.");
-  			return;
+		errorText ("File belum dipilih.");
+		return;
 	}
-	console.log("filename:" + file.name);
 	if (!(file.name.endsWith(".csv"))) {
-  			errorText("Nama file tidak valid");
-  			return;
+		errorText("Nama file tidak valid");
+		return;
 	}
-	if (x == "target" && !(file.name.startsWith("target_")) ) {
+	if (x == "target" 
+			&& !(file.name.startsWith("target_"))) {
 			errorText("Nama file " + file.name + " tidak valid");
   			return;
 	}
-	if (x == "stock" && !(file.name.startsWith("stock_")) ) {
+	if (x == "stock" 
+			&& !(file.name.startsWith("stock_"))) {
 		errorText("Nama file " + file.name + " tidak valid");
-			return;
+		return;
 	}
-	if (x == "custmobil" && !(file.name.startsWith("custmobil_")) ) {
+	if (x == "custmobil" 
+			&& (!(file.name.startsWith("custmobil_"))
+					|| !(isInteger(file.name.substring(10,18))))) {
 		errorText("Nama file " + file.name + " tidak valid");
-			return;
+		return;
 	}
 
   	var reader = new FileReader();
-	// Closure to capture the file information.
 	reader.onload = (function(theFile) {
 		return function(e) {
 			if (x == "target") {
@@ -223,11 +268,13 @@ function verify() {
 			if (parseStatus == "true") {
 				document.getElementById("form-id").submit();
 			} 
-				
 		};
 	})(file);
-	// Read the file as text
 	reader.readAsText(file);
 	
 	return false;
+}
+
+function isInteger(value){
+	return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 }

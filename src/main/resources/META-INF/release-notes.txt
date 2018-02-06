@@ -63,9 +63,13 @@ Version 1.10.0 (Friday, 12 January 2018 by Amin Mutohar)
  - Change Application
  	1. Add History User for Admin
  	
-Version 1.11.0 (Friday, 18 February 2018 by Amin Mutohar)
+Version 1.11.0 (Friday, 2 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add custmobil services
  	2. List of mobil on input order is depend on custmobil
  	3. add upload cust_mobil form for admin
  	4. add insert custmobil from uploaded csv file
+ 	
+ Version 1.12.0 (Monday, 5 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add cust_mobil upload validation
