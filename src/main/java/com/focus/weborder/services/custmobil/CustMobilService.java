@@ -17,6 +17,7 @@ import com.focus.weborder.services.customer.Customer;
 import com.focus.weborder.services.customer.CustomerService;
 import com.focus.weborder.services.listmobil.ListMobil;
 import com.focus.weborder.services.listmobil.ListMobilService;
+import com.focus.weborder.services.uploadhistory.UploadHistory;
 import com.focus.weborder.upload.storage.StorageProperties;
 
 @Service
@@ -82,8 +83,7 @@ public class CustMobilService {
 					    			  if(Integer.parseInt(file.getName().substring(10, 18))>=date) {
 					    				  date = Integer.parseInt(file.getName().substring(10, 18));
 					    				  csvFile = folder.getAbsolutePath() + "/" +  file.getName();
-					    			  }
-					    			  
+					    			  }		  
 					    			  /*System.out.println("year: " + file.getName().substring(10, 14) + " - " + year);
 					    			  if(Integer.parseInt(file.getName().substring(10, 14))>=year) {
 					    				  year = Integer.parseInt(file.getName().substring(10, 14));
@@ -202,6 +202,7 @@ public class CustMobilService {
 		else {
 			result = "Error: " + storageProperties.getFolders().getMobilcustomer() + " directory is not found.";
 		}
+		
         return result;
 	}
 	

@@ -295,16 +295,13 @@ public class InputOrderController
     }
     
 
-    //@PostMapping("/upload") 
-    //RedirectAttributes redirectAttributes,
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String handleFileUpload(
     		@RequestParam("file") MultipartFile file,
             Model model) throws IOException {
-    	//System.out.println("file: " + file);
-    	storageService.store(file);
-    	/*redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");*/
+       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+       	String username = auth.getName();
+    	storageService.store(file, username);
     	model.addAttribute("message", 
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
     	return "/uploadform";

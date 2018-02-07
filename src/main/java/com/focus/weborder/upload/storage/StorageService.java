@@ -1,28 +1,20 @@
 package com.focus.weborder.upload.storage;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.stream.Stream;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.focus.weborder.services.custprodtarget.CustProdTarget;
-//import com.focus.weborder.services.custprodtarget.CustProdTargetPK;
 import com.focus.weborder.services.custprodtarget.CustProdTargetService;
-
+import com.focus.weborder.services.uploadhistory.UploadHistory;
+import com.focus.weborder.services.uploadhistory.UploadHistoryService;
 import com.focus.weborder.upload.storage.StorageException;
 
 @Service
@@ -31,47 +23,57 @@ public class StorageService {
 	@Autowired
 	StorageProperties storageProperties;
 
-//    private static String UPLOADED_FOLDER = "C://dev//";
-
 	@Autowired
 	public CustProdTargetService custProdTargetService;
 	
-    public void store(MultipartFile file) throws IOException {
-    	String fileType;
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        //System.out.println("filename: " + filename);
+
+	@Autowired
+	public UploadHistoryService uploadHistoryService;
+	
+    public void store(MultipartFile file, String username) throws IOException {
+
+    	String fileType = "UNKNOWN";
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		
         if (file.isEmpty()) {
-		    throw new StorageException("Failed to store empty file " + filename);
+		    throw new StorageException("Failed to store empty file " + fileName);
 		}
-		if (filename.contains("..")) {
-		    // This is a security check
+		if (fileName.contains("..")) {
 		    throw new StorageException(
 		            "Cannot store file with relative path outside current directory "
-		                    + filename);
+		                    + fileName);
 		}
-        if (!filename.contains(".csv")) {
+        if (!fileName.contains(".csv")) {
                 throw new StorageException(
-                        "File " + filename + " is not csv file");
+                        "File " + fileName + " is not csv file");
         }
-        fileType = filename.contains("stock")?"stock"
-        		  :filename.contains("target")?"target"
-        		  :filename.contains("custmobil")?"custmobil"
+        fileType = fileName.contains("stock")?"STOCK"
+        		  :fileName.contains("target")?"TARGET"
+        		  :fileName.contains("custmobil")?"CUSTMOBIL"
         		  :"undefined";
             
         byte[] bytes = file.getBytes();
-        if (fileType == "target") {
-        	Path path = Paths.get(storageProperties.getFolders().getTarget(), file.getOriginalFilename());
+        if (fileType == "TARGET") {
+        	Path path = Paths.get(storageProperties.getFolders().getTarget(), fileName);
             Files.write(path, bytes);
-        } else if (fileType == "stock") {
-        	Path path = Paths.get(storageProperties.getFolders().getStock(), file.getOriginalFilename());
+        } else if (fileType == "STOCK") {
+        	Path path = Paths.get(storageProperties.getFolders().getStock(), fileName);
             Files.write(path, bytes);
-        } else if (fileType == "custmobil") {
-        	//System.out.println("fileType: " + fileType);
-        	//System.out.println("getMobilCustomer: " + storageProperties.getFolders().getMobilcustomer());
-        	Path path = Paths.get(storageProperties.getFolders().getMobilcustomer(), file.getOriginalFilename());
-        	//System.out.println("path: " + path);
+        } else if (fileType == "CUSTMOBIL") {
+        	Path path = Paths.get(storageProperties.getFolders().getMobilcustomer(), fileName);
             Files.write(path, bytes);
         } 
+        
+        UploadHistory uploadHistory = new UploadHistory();
+		uploadHistory.setUploadStatus("UPLOADED");
+		uploadHistory.setUploadBy(username);
+		uploadHistory.setUploadFileName(fileName);
+		uploadHistory.setUploadType(fileType);
+		uploadHistory.setUploadDirTo(
+				storageProperties.getFolders().getMobilcustomer());
+		Date date = new Date();
+		uploadHistory.setUploadTime(date);
+		uploadHistoryService.updateUploadHistory(uploadHistory);
 
         //upload to database per rows
 /*		String line = null;

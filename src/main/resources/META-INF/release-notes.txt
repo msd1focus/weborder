@@ -72,4 +72,10 @@ Version 1.11.0 (Friday, 2 February 2018 by Amin Mutohar)
  	
  Version 1.12.0 (Monday, 5 February 2018 by Amin Mutohar)
  - Change Application
- 	1. Add cust_mobil upload validation
+ 	1. Add cust_mobil upload validation by data type
+ 	
+
+ Version 1.13.0 (Wednesday, 7 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add upload_history service package
+ 	2. Insert upload_history when upload data 
