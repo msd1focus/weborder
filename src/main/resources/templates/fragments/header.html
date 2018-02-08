@@ -32,7 +32,16 @@
 	                    </li>	
 	                    <li sec:authorize="hasAuthority('USER')" class="active">
 	                    	<a id="report" 
-	                    		th:href="@{/report}">Report</a></li>	 
+	                    		th:href="@{/report}">Report</a></li>		
+						<!-- <li class="dropdown active">
+						  <a class="dropdown-toggle active" data-toggle="dropdown" href="#">Page 1
+						  <span class="caret"></span></a>
+						  <ul class="dropdown-menu active">
+						    <li class="active"><a href="#">Page 1-1</a></li>
+						    <li class="active"><a href="#">Page 1-2</a></li>
+						    <li class="active"><a href="#">Page 1-3</a></li>
+						  </ul>
+						</li>  -->
 	                    <li class="active">
 	                    	<a id="changepassword" th:href="@{/changepassword}">Change Password</a>
 	                    </li>	 
@@ -43,7 +52,11 @@
 	                    <li sec:authorize="hasAuthority('ADMIN')" class="active">       	 
 			            	<a id="upload" 
 			            		th:href="@{/upload}">Uploads</a>
-	                    </li>	        
+	                    </li>			 
+	                    <li sec:authorize="hasAuthority('ADMIN')" class="active">       	 
+			            	<a id="uploadhistory" 
+			            		th:href="@{/uploadhistory}">Uploads History</a>
+	                    </li>	         
 	                    <li class="active">
 	                    	<a id="logout" th:href="@{/logout}">Logout</a>
 	                    </li>

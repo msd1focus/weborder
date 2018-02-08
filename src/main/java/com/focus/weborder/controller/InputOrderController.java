@@ -61,6 +61,8 @@ import com.focus.weborder.services.product.Product;
 import com.focus.weborder.services.product.ProductService;
 import com.focus.weborder.services.produom.ProdUom;
 import com.focus.weborder.services.produom.ProdUomService;
+import com.focus.weborder.services.uploadhistory.UploadHistory;
+import com.focus.weborder.services.uploadhistory.UploadHistoryService;
 import com.focus.weborder.types.InputWebOrder;
 import com.focus.weborder.upload.storage.StorageService;
 import com.focus.weborder.types.InputOrder;
@@ -113,6 +115,9 @@ public class InputOrderController
 	private CustMobilService custMobilService;
 	
 	@Autowired
+	private UploadHistoryService uploadHistoryService;
+
+	@Autowired
 	private StorageService storageService;
 
 	@InitBinder
@@ -146,14 +151,12 @@ public class InputOrderController
 									order.getCustId(),
 									order.getOrderGrpId());
 				}
-				//System.out.println("orderGrp: " + orderGrp + "orderid: " + order.getOrderId());
 				order.setInvoiceStatus(orderGrp.getSubmitStatus());
 				
 			}
 		}
 		modelAndView.addObject("orders", orders);
 		modelAndView.setViewName("history");
-		//System.out.println(orders.size());
 		return modelAndView;
 	}
 	
@@ -283,11 +286,6 @@ public class InputOrderController
     public String changepassworduser() {
         return "/changepassworduser";
     }
-
-	/*@GetMapping("/custmobil")
-    public String custmobil() {
-        return "/custmobil";
-    }*/
 	
 	@RequestMapping(value="/upload", method = RequestMethod.GET)
     public String uploadForm() {
@@ -305,6 +303,17 @@ public class InputOrderController
     	model.addAttribute("message", 
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
     	return "/uploadform";
+    }
+    
+	@RequestMapping(value="/uploadhistory", method = RequestMethod.GET)
+    public ModelAndView uploadHistory() {
+
+		ModelAndView modelAndView = new ModelAndView();
+		List<UploadHistory> uploadHistories = new ArrayList<>();
+		uploadHistories = uploadHistoryService.getAllUploadHistories();
+		modelAndView.addObject("uploadHistories", uploadHistories);
+		modelAndView.setViewName("uploadhistory");
+        return modelAndView;
     }
     
 	@RequestMapping(value = "/changepassworduser", method = RequestMethod.POST)

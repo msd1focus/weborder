@@ -55,6 +55,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/weborder/report").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder/order").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder/upload").hasAnyRole("ADMIN")
+                .antMatchers("/weborder/uploadhistory").hasAnyRole("ADMIN")
                 .antMatchers("/weborder/401").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder/404").hasAnyRole("USER","ADMIN")
                 .antMatchers("/weborder/405").hasAnyRole("USER","ADMIN")

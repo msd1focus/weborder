@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.focus.weborder.services.customer.CustomerService;
 import com.focus.weborder.services.listmobil.ListMobil;
 import com.focus.weborder.services.listmobil.ListMobilService;
 import com.focus.weborder.services.uploadhistory.UploadHistory;
+import com.focus.weborder.services.uploadhistory.UploadHistoryService;
 import com.focus.weborder.upload.storage.StorageProperties;
 
 @Service
@@ -34,6 +36,9 @@ public class CustMobilService {
 	
 	@Autowired
 	StorageProperties storageProperties;
+
+	@Autowired
+	public UploadHistoryService uploadHistoryService;
 	
 	public List<CustMobil> getByCompanyCustid(
 			String company,
@@ -61,15 +66,14 @@ public class CustMobilService {
 	
 	public String syncCustMobil() {
 		
-		String result = "Success";
+		String result = "SUCCESS";
 		
 		File folder = new File(storageProperties.getFolders().getMobilcustomer());
 		String csvFile = null;
 		File[] files;
-		//Integer year = 0;
-		//Integer month = 0;
-		//Integer day = 0;
 		Integer date = 0;
+		String fileType = "";
+		String fileName = "";
 		if(folder!=null) {
 			files = folder.listFiles();
 			if(files!=null) {
@@ -83,20 +87,9 @@ public class CustMobilService {
 					    			  if(Integer.parseInt(file.getName().substring(10, 18))>=date) {
 					    				  date = Integer.parseInt(file.getName().substring(10, 18));
 					    				  csvFile = folder.getAbsolutePath() + "/" +  file.getName();
-					    			  }		  
-					    			  /*System.out.println("year: " + file.getName().substring(10, 14) + " - " + year);
-					    			  if(Integer.parseInt(file.getName().substring(10, 14))>=year) {
-					    				  year = Integer.parseInt(file.getName().substring(10, 14));
-						    			  System.out.println("month: " + file.getName().substring(15, 16) + " - " + month);
-					    				  if(Integer.parseInt(file.getName().substring(15, 16))>=month) {
-					    					  month = Integer.parseInt(file.getName().substring(15, 16));
-							    			  System.out.println("day: " + file.getName().substring(17, 18) + " - " + day);
-					    					  if(Integer.parseInt(file.getName().substring(17, 18))>=day) {
-					    						  day = Integer.parseInt(file.getName().substring(17, 18));
-										    	  csvFile = folder.getAbsolutePath() + "/" +  file.getName();	  
-							    			  }
-						    			  }
-					    			  } */ 			  
+					    				  fileType = "CUSTMOBIL";
+					    				  fileName = file.getName();
+					    			  }	  
 					    		  }
 				    		  }
 				    	  }
@@ -114,6 +107,13 @@ public class CustMobilService {
 			    	
 			        try{
 
+			        	List<Customer> customers =
+				        		customerService.getAllCustomers();
+				        System.out.println("customers: " + customers.size());
+				        List<ListMobil> listMobils =
+				        		listMobilService.getListMobils();
+				        System.out.println("listMobils: " + listMobils.size());
+				        
 			        	br = new BufferedReader(new FileReader(csvFile));
 			            while ((line = br.readLine()) != null) {
 
@@ -130,14 +130,11 @@ public class CustMobilService {
 			                	custMobils.add(custMobil);
 			                	custMobilId++;
 			                }
+			                /*else {
+			                	
+			                }*/
 			            }
 			            
-			            List<Customer> customers =
-				        		customerService.getAllCustomers();
-				        System.out.println("customers: " + customers.size());
-				        List<ListMobil> listMobils =
-				        		listMobilService.getListMobils();
-				        System.out.println("listMobils: " + listMobils.size());
 				        System.out.println("custMobils: " + custMobils);
 				        
 				        for(Customer c: customers) {
@@ -202,6 +199,35 @@ public class CustMobilService {
 		else {
 			result = "Error: " + storageProperties.getFolders().getMobilcustomer() + " directory is not found.";
 		}
+		
+
+        List<UploadHistory> uploadHistories = 
+        		uploadHistoryService.getByTypeStatus(fileType, "UPLOADED");
+		UploadHistory uploadHistory = new UploadHistory();
+		Date dt = new Date();
+		if(uploadHistories!=null) {
+			for(UploadHistory uh: uploadHistories) {
+				if(uh.getUploadFileName().trim().equals(fileName.trim())) {
+					uploadHistory = uh;
+				}
+				else {
+					uh.setUploadStatus("ARCHIVED");
+					uh.setProcessedTime(dt);
+					uploadHistoryService.updateUploadHistory(uh);
+				}
+			}
+		}
+		
+		uploadHistory.setUploadDescription(result);
+		uploadHistory.setProcessedTime(dt);
+		
+		if(result=="SUCCESS") {
+			uploadHistory.setUploadStatus("USED");
+		}
+		else {
+			uploadHistory.setUploadStatus("ERROR");
+		}
+		uploadHistoryService.updateUploadHistory(uploadHistory);
 		
         return result;
 	}

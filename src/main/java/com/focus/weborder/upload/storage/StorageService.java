@@ -25,7 +25,6 @@ public class StorageService {
 
 	@Autowired
 	public CustProdTargetService custProdTargetService;
-	
 
 	@Autowired
 	public UploadHistoryService uploadHistoryService;
@@ -64,11 +63,15 @@ public class StorageService {
             Files.write(path, bytes);
         } 
         
-        UploadHistory uploadHistory = new UploadHistory();
-		uploadHistory.setUploadStatus("UPLOADED");
+        UploadHistory uploadHistory = 
+        		uploadHistoryService.getByTypeStatusFileName(fileType, "UPLOADED", fileName);
+        if(uploadHistory==null) {
+        	uploadHistory = new UploadHistory();
+    		uploadHistory.setUploadStatus("UPLOADED");
+    		uploadHistory.setUploadFileName(fileName);
+    		uploadHistory.setUploadType(fileType);
+        }
 		uploadHistory.setUploadBy(username);
-		uploadHistory.setUploadFileName(fileName);
-		uploadHistory.setUploadType(fileType);
 		uploadHistory.setUploadDirTo(
 				storageProperties.getFolders().getMobilcustomer());
 		Date date = new Date();
@@ -98,19 +101,4 @@ public class StorageService {
 		reader.close();
 */
     }
-
-
-/*    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
-    }
-
-    public void init() {
-        try {
-            Files.createDirectories(rootLocation);
-        }
-        catch (IOException e) {
-            throw new StorageException("Could not initialize storage", e);
-        }
-    }
-*/
 }

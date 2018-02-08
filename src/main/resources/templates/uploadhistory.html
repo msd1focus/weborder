@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Web Order - Focus Distribusi Indonesia</title>
+    <div th:replace="fragments/header :: header-css"/>  
+ 	<script type="text/javascript" src="../static/js/uploadhistory.js"
+		th:src="@{js/uploadhistory.js}"></script> 
+	<link rel="stylesheet" href="css/uploadhistory.css"/>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"/>
+<form 
+	name="uploadHistory"
+	action="#" 
+	th:action="@{/uploadhistory}"
+	th:object="${uploadHistories}"
+	method="get">
+<div class="container">
+
+	<h2>Histori Transaksi</h2>
+	<p/>
+
+	<table style="border: 1px solid black">
+		<tr>
+			<th>Type</th>
+			<th>Status</th>
+			<th>Description</th>
+			<th>File Name</th>
+			<th>Directory</th>
+			<th>Upload By</th>
+			<th>Upload Time</th>
+			<th>Processed Time</th>
+		</tr>
+		<th:block th:each="uploadHistory: ${uploadHistories}">
+			<tr>
+				<td th:text="${uploadHistory.uploadType}"></td>
+				<td th:text="${uploadHistory.uploadStatus}"></td>
+				<td th:text="${uploadHistory.uploadDescription}"></td>
+				<td th:text="${uploadHistory.uploadFileName}"></td>
+				<td th:text="${uploadHistory.uploadDirTo}"></td>
+				<td th:text="${uploadHistory.uploadBy}"></td>
+				<td th:text="${uploadHistory.uploadTime}"></td>
+				<td th:text="${uploadHistory.processedTime}"></td>
+			</tr>
+		</th:block>
+	</table>
+</div>
+</form>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

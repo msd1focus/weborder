@@ -79,3 +79,9 @@ Version 1.11.0 (Friday, 2 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add upload_history service package
  	2. Insert upload_history when upload data 
+ 	
+ 
+ Version 1.14.0 (Thursday, 8 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add Upload History Form for Admin
+ 	2. Update upload_history when insert data cust_mobil
