@@ -74,6 +74,10 @@ public class CustMobilService {
 		Integer date = 0;
 		String fileType = "";
 		String fileName = "";
+		String status = "USED";
+		List<Integer> companyErrors = new ArrayList<>();
+		List<Integer> custIdErrors = new ArrayList<>();
+		List<Integer> mobilIdErrors = new ArrayList<>();
 		if(folder!=null) {
 			files = folder.listFiles();
 			if(files!=null) {
@@ -115,54 +119,81 @@ public class CustMobilService {
 				        System.out.println("listMobils: " + listMobils.size());
 				        
 			        	br = new BufferedReader(new FileReader(csvFile));
-			            while ((line = br.readLine()) != null) {
-
-			                System.out.println("line: " + line);
-			                String[] asCustMobil = line.split(cvsSplitBy);
-			                if(asCustMobil[0].trim().equals("FDI") 
-			                	|| asCustMobil[0].trim().equals("FDN")) {
-			                	CustMobil custMobil = new CustMobil();
-			                	custMobil.setCustMobilId(custMobilId);
-			                	custMobil.setCompany(asCustMobil[0].trim());
-			                	custMobil.setCustId(Long.parseLong(asCustMobil[2].trim()));
-			                	custMobil.setMobilId(Long.parseLong(asCustMobil[4].trim()));
-			                	custMobilUploads.add(custMobil);
-			                	custMobils.add(custMobil);
-			                	custMobilId++;
-			                }
-			                /*else {
-			                	
-			                }*/
-			            }
-			            
-				        System.out.println("custMobils: " + custMobils);
-				        
-				        for(Customer c: customers) {
-				        	Boolean isContain = 
-				        			this.isContainInArray(
-				        					c.getCompany(), c.getCustId(), custMobilUploads);
-				        	
-				        	if(!isContain){
-				        		for(ListMobil lm: listMobils) {
-				        			CustMobil custMobil = new CustMobil();
+			        	Integer lineNumber = 0;
+			        	
+			            while ((line = br.readLine()) != null) {	
+			                //System.out.println("line: " + line);
+			                if(lineNumber>0) {
+				                String[] asCustMobil = line.split(cvsSplitBy);
+				                String company = asCustMobil[0].trim();
+				                Long custId = Long.parseLong(asCustMobil[2].trim());
+				                Long mobilId = Long.parseLong(asCustMobil[4].trim());
+				                
+				                if(!(company.equals("FDI") 
+				                		|| company.equals("FDN"))) {   
+						            status = "ERROR";
+				                	companyErrors.add(lineNumber);
+				                }
+				                //System.out.println("custId: " + custId);
+				                //System.out.println("customers: " + customers.size());
+				                if(!isCustomerValid(custId, customers)) {
+				                	System.out.println("!isCustomerValid: " + custId);
+						            status = "ERROR";
+						            custIdErrors.add(lineNumber);
+				                }
+				                
+				                if(!isMobilValid(mobilId, listMobils)) {
+				                	System.out.println("!isMobilValid: " + mobilId);
+						            status = "ERROR";
+						            mobilIdErrors.add(lineNumber);
+				                }
+				                
+				                if(status.equals("USED")) {
+				                	CustMobil custMobil = new CustMobil();
 				                	custMobil.setCustMobilId(custMobilId);
-				                	custMobil.setCompany(c.getCompany());
-				                	custMobil.setCustId(c.getCustId());
-				                	custMobil.setMobilId(lm.getMobilId());
+				                	custMobil.setCompany(company);
+				                	custMobil.setCustId(custId);
+				                	custMobil.setMobilId(mobilId);
+				                	custMobilUploads.add(custMobil);
 				                	custMobils.add(custMobil);
 				                	custMobilId++;
-				        		}
-				        	}
-				        	else {
-				                System.out.println("isContain: " + c.getCompany() + c.getCustId());
-				        	}
+				                }
+			                }  
+			            	lineNumber++;
+			            }
+			            
+				        //System.out.println("custMobils: " + custMobils);
+				        
+				        if(status.equals("USED")) {
+				        	
+				        	for(Customer c: customers) {
+					        	Boolean isContain = 
+					        			this.isContainInArray(
+					        					c.getCompany(), c.getCustId(), custMobilUploads);
+					        	
+					        	if(!isContain){
+					        		for(ListMobil lm: listMobils) {
+					        			CustMobil custMobil = new CustMobil();
+					                	custMobil.setCustMobilId(custMobilId);
+					                	custMobil.setCompany(c.getCompany());
+					                	custMobil.setCustId(c.getCustId());
+					                	custMobil.setMobilId(lm.getMobilId());
+					                	custMobils.add(custMobil);
+					                	custMobilId++;
+					        		}
+					        	}
+					        	/*else {
+					                System.out.println("isContain: " + c.getCompany() + c.getCustId());
+					        	}*/
+					        }
+					        System.out.println("custMobilUploads: " + custMobilUploads.size());
+					        System.out.println("custMobil: " + custMobils.size());
+					        this.deleteAllCustMobil();
+					        System.out.println("delete all");
+					        this.updateCustMobil(custMobils);
+					        System.out.println("insert custMobild done!");
+				        	
 				        }
-				        System.out.println("custMobilUploads: " + custMobilUploads.size());
-				        System.out.println("custMobil: " + custMobils.size());
-				        this.deleteAllCustMobil();
-				        System.out.println("delete all");
-				        this.updateCustMobil(custMobils);
-				        System.out.println("insert custMobild done!");
 				        
 				        File arc = new File(folder.getAbsolutePath() + "/arc/");
 				        
@@ -182,54 +213,138 @@ public class CustMobilService {
 										 StandardCopyOption.REPLACE_EXISTING);
 						    }
 				        }
-
+				        
 			        } catch (IOException e) {
 			            e.printStackTrace();
+			            status = "ERROR";
 			            result = "Error: " + e.getMessage();
 			        }
 			    }
 			    else {
+		            status = "ERROR";
 			    	result = "Error: cust_mobil file in " + folder + " directory is not found. File must have custmobil_yyyymmdd.csv format";
 			    }
 		    }      
 		    else {
+	            status = "ERROR";
 		    	result = "Error: " + storageProperties.getFolders().getMobilcustomer() + " directory is not found.";
 		    }
 		}
 		else {
+            status = "ERROR";
 			result = "Error: " + storageProperties.getFolders().getMobilcustomer() + " directory is not found.";
 		}
 		
 
-        List<UploadHistory> uploadHistories = 
-        		uploadHistoryService.getByTypeStatus(fileType, "UPLOADED");
-		UploadHistory uploadHistory = new UploadHistory();
-		Date dt = new Date();
-		if(uploadHistories!=null) {
-			for(UploadHistory uh: uploadHistories) {
-				if(uh.getUploadFileName().trim().equals(fileName.trim())) {
-					uploadHistory = uh;
-				}
-				else {
-					uh.setUploadStatus("ARCHIVED");
-					uh.setProcessedTime(dt);
-					uploadHistoryService.updateUploadHistory(uh);
+		if(!fileName.trim().equals("")) {
+			
+			List<UploadHistory> uploadHistories = 
+	        		uploadHistoryService.getByTypeStatus(fileType, "UPLOADED");
+			UploadHistory uploadHistory = new UploadHistory();
+			Date dt = new Date();
+			System.out.println("fileName: " + fileName);
+			if(uploadHistories!=null) {
+				for(UploadHistory uh: uploadHistories) {
+					System.out.println("uh.getUploadFileName(): " + uh.getUploadFileName());
+					if(uh.getUploadFileName().trim().equals(fileName.trim())) {
+						uploadHistory = uh;
+					}
+					else {
+						uh.setUploadStatus("ARCHIVED");
+						uh.setProcessedTime(dt);
+						uploadHistoryService.updateUploadHistory(uh);
+					}
 				}
 			}
-		}
-		
-		uploadHistory.setUploadDescription(result);
-		uploadHistory.setProcessedTime(dt);
-		
-		if(result=="SUCCESS") {
-			uploadHistory.setUploadStatus("USED");
+			
+			uploadHistory.setProcessedTime(dt);
+			
+			String error = "ERROR: ";
+			if(status=="ERROR") {
+				if(companyErrors.size()>0) {
+					error += "company tidak valid pada baris ";
+					for(Integer ce: companyErrors) {
+						error += ce;
+						if(ce!=(companyErrors.size()-1)){
+							error += ",";
+						}
+						else {
+							error += ";";
+						}
+					}
+					//status = "ERROR";
+				}
+				if(custIdErrors.size()>0) {
+					error += "custId tidak valid pada baris ";
+					for(Integer cie: custIdErrors) {
+						error += cie;
+						if(cie!=(custIdErrors.size()-1)){
+							error += ",";
+						}
+						else {
+							error += ";";
+						}
+					}
+					//status = "ERROR";
+				}
+				if(mobilIdErrors.size()>0) {
+					error += "mobilId tidak valid pada baris ";
+					for(Integer ce: mobilIdErrors) {
+						error += ce;
+						if(ce!=(mobilIdErrors.size()-1)){
+							error += ",";
+						}
+						else {
+							error += ";";
+						}
+					}
+					//status = "ERROR";
+				}
+			}
+			/*else {
+				status = "ERROR";
+			}*/
+			if(status.equals("ERROR")) {
+				result = error;
+			}
+			uploadHistory.setUploadStatus(status);
+			System.out.println("result: " + result);
+			uploadHistory.setUploadDescription(result);
+			uploadHistoryService.updateUploadHistory(uploadHistory);
+			
 		}
 		else {
-			uploadHistory.setUploadStatus("ERROR");
+			result = "INFO: No custmobil file on " 
+					+ folder.getAbsolutePath();
 		}
-		uploadHistoryService.updateUploadHistory(uploadHistory);
 		
         return result;
+	}
+	
+	private Boolean isCustomerValid(
+			Long custId, List<Customer> customers) {
+		Boolean isValid = false;
+		for(Customer c: customers) {
+			//System.out.println("c.getCustId(): " + c.getCustId());
+			if(c.getCustId().equals(custId)) {
+				//System.out.println("valid: " + custId);
+				isValid = true;
+				break;
+			}
+		}
+		return isValid;
+	}
+	
+	private Boolean isMobilValid(
+			Long mobilId, List<ListMobil> listMobils) {
+		Boolean isValid = false;
+		for(ListMobil lm: listMobils) {
+			if(lm.getMobilId()==mobilId) {
+				isValid = true;
+				break;
+			}
+		}
+		return isValid;
 	}
 	
 	private Boolean isInteger(String s) {
