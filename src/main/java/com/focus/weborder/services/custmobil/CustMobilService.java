@@ -86,7 +86,7 @@ public class CustMobilService {
 			    	  if(file.getName().length()==22) {
 				    	  if(file.getName().startsWith("custmobil_")) {
 				    		  if(file.getName().endsWith(".csv")) {
-				    			  System.out.println("file.getName().substring(10, 18): " + file.getName().substring(10, 18));
+				    			  //System.out.println("file.getName().substring(10, 18): " + file.getName().substring(10, 18));
 					    		  if(isInteger(file.getName().substring(10, 18))) {
 					    			  if(Integer.parseInt(file.getName().substring(10, 18))>=date) {
 					    				  date = Integer.parseInt(file.getName().substring(10, 18));
@@ -101,7 +101,7 @@ public class CustMobilService {
 			      }
 			    }		    
 			    if(csvFile!=null) {
-					System.out.println("csvFile: " + csvFile);
+					//System.out.println("csvFile: " + csvFile);
 			        String line = "";
 			        String cvsSplitBy = ",";
 			        List<CustMobil> custMobilUploads = new ArrayList<>();
@@ -113,10 +113,10 @@ public class CustMobilService {
 
 			        	List<Customer> customers =
 				        		customerService.getAllCustomers();
-				        System.out.println("customers: " + customers.size());
+				        //System.out.println("customers: " + customers.size());
 				        List<ListMobil> listMobils =
 				        		listMobilService.getListMobils();
-				        System.out.println("listMobils: " + listMobils.size());
+				        //System.out.println("listMobils: " + listMobils.size());
 				        
 			        	br = new BufferedReader(new FileReader(csvFile));
 			        	Integer lineNumber = 0;
@@ -137,13 +137,13 @@ public class CustMobilService {
 				                //System.out.println("custId: " + custId);
 				                //System.out.println("customers: " + customers.size());
 				                if(!isCustomerValid(custId, customers)) {
-				                	System.out.println("!isCustomerValid: " + custId);
+				                	//System.out.println("!isCustomerValid: " + custId);
 						            status = "ERROR";
 						            custIdErrors.add(lineNumber);
 				                }
 				                
 				                if(!isMobilValid(mobilId, listMobils)) {
-				                	System.out.println("!isMobilValid: " + mobilId);
+				                	//System.out.println("!isMobilValid: " + mobilId);
 						            status = "ERROR";
 						            mobilIdErrors.add(lineNumber);
 				                }
@@ -186,23 +186,24 @@ public class CustMobilService {
 					                System.out.println("isContain: " + c.getCompany() + c.getCustId());
 					        	}*/
 					        }
-					        System.out.println("custMobilUploads: " + custMobilUploads.size());
-					        System.out.println("custMobil: " + custMobils.size());
+					        //System.out.println("custMobilUploads: " + custMobilUploads.size());
+					        //System.out.println("custMobil: " + custMobils.size());
 					        this.deleteAllCustMobil();
-					        System.out.println("delete all");
+					        //System.out.println("delete all");
 					        this.updateCustMobil(custMobils);
-					        System.out.println("insert custMobild done!");
+					        //System.out.println("insert custMobild done!");
 				        	
 				        }
 				        
 				        File arc = new File(folder.getAbsolutePath() + "/arc/");
 				        
 				        if (!arc.exists()) {
-				            if (arc.mkdirs()) {
+				        	arc.mkdirs();
+				            /*if (arc.mkdirs()) {
 				                System.out.println("Arc directory are created!");
 				            } else {
 				                System.out.println("Failed to create arc directory!");
-				            }
+				            }*/
 				        }
 				        
 				        for(File file: files) {
@@ -230,10 +231,10 @@ public class CustMobilService {
 		    	result = "Error: " + storageProperties.getFolders().getMobilcustomer() + " directory is not found.";
 		    }
 		}
-		else {
+		/*else {
             status = "ERROR";
 			result = "Error: " + storageProperties.getFolders().getMobilcustomer() + " directory is not found.";
-		}
+		}*/
 		
 
 		if(!fileName.trim().equals("")) {
@@ -242,10 +243,10 @@ public class CustMobilService {
 	        		uploadHistoryService.getByTypeStatus(fileType, "UPLOADED");
 			UploadHistory uploadHistory = new UploadHistory();
 			Date dt = new Date();
-			System.out.println("fileName: " + fileName);
+			//System.out.println("fileName: " + fileName);
 			if(uploadHistories!=null) {
 				for(UploadHistory uh: uploadHistories) {
-					System.out.println("uh.getUploadFileName(): " + uh.getUploadFileName());
+					//System.out.println("uh.getUploadFileName(): " + uh.getUploadFileName());
 					if(uh.getUploadFileName().trim().equals(fileName.trim())) {
 						uploadHistory = uh;
 					}
@@ -308,7 +309,7 @@ public class CustMobilService {
 				result = error;
 			}
 			uploadHistory.setUploadStatus(status);
-			System.out.println("result: " + result);
+			//System.out.println("result: " + result);
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);
 			

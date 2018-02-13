@@ -67,26 +67,33 @@ Version 1.11.0 (Friday, 2 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add custmobil services
  	2. List of mobil on input order is depend on custmobil
- 	3. add upload cust_mobil form for admin
- 	4. add insert custmobil from uploaded csv file
+ 	3. Add upload cust_mobil form for admin
+ 	4. Add insert custmobil from uploaded csv file
  	
- Version 1.12.0 (Monday, 5 February 2018 by Amin Mutohar)
+Version 1.12.0 (Monday, 5 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add cust_mobil upload validation by data type
  	
 
- Version 1.13.0 (Wednesday, 7 February 2018 by Amin Mutohar)
+Version 1.13.0 (Wednesday, 7 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add upload_history service package
  	2. Insert upload_history when upload data 
  	
  
- Version 1.14.0 (Thursday, 8 February 2018 by Amin Mutohar)
+Version 1.14.0 (Thursday, 8 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add Upload History Form for Admin
  	2. Update upload_history when insert data cust_mobil
  	
-  Version 1.15.0 (Friday, 9 February 2018 by Amin Mutohar)
+Version 1.15.0 (Friday, 9 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add cust_mobil validation when insert data to table
- 		by customer and mobil per line
+ 		by customer and mobil per line 	
+ 		
+Version 1.16.0 (Tuesday, 13 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add upload target_sales and end_stock form for admin
+ 	2. Add target_sales and end_stock upload validation by data type
+ 		
+ 		

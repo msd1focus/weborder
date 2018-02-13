@@ -361,32 +361,34 @@ public class InputOrderController
 		ModelAndView modelAndView = new ModelAndView();
 		
        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+       	
+       	Boolean isAdmin = false;
 		
-		if (auth != null) {
-			
-			if(auth.getName().trim().equals("FDIadmin")
-				|| auth.getName().trim().equals("FDNadmin")) {
-
-				List<User> users = userService.getAll();
-				
-				for(User u: users) {
-					u.setPassword("password");
-					userService.saveUser(u);
+		if (auth != null) {	
+			for(GrantedAuthority ga: auth.getAuthorities()) {
+				String role = ga.getAuthority();
+				if(role != null) {
+					if(role.equals("ADMIN")) {
+						
+						isAdmin = true;
+						
+						List<User> users = userService.getAll();
+						
+						for(User u: users) {
+							u.setPassword("password");
+							userService.saveUser(u);
+						}
+						
+						User user = new User();
+						modelAndView.addObject("user", user);
+						modelAndView.addObject("successMessage", "Success");
+						modelAndView.setViewName("resetpassword");
+					}
 				}
-				
-				User user = new User();
-				modelAndView.addObject("user", user);
-				modelAndView.addObject("successMessage", "Success");
-				modelAndView.setViewName("resetpassword");
-			}
-			else {
-				User user = new User();
-				modelAndView.addObject("user", user);
-				modelAndView.addObject("successMessage", "Failed");
-				modelAndView.setViewName("resetpassword");;
 			}
 		}
-		else {
+		
+		if(!isAdmin) {
 			User user = new User();
 			modelAndView.addObject("user", user);
 			modelAndView.addObject("successMessage", "Failed");
@@ -464,8 +466,23 @@ public class InputOrderController
 					+ " with role: "
 					+ auth.getAuthorities());
 			
-			if(!(auth.getName().trim().equals("FDIadmin"))
-				&& !(auth.getName().trim().equals("FDNadmin"))) {
+			Boolean isAdmin = false;
+			for(GrantedAuthority ga: auth.getAuthorities()) {
+				String role = ga.getAuthority();
+				if(role != null) {
+					if(role.equals("ADMIN")) {
+						isAdmin = true;
+					}
+				}
+			}
+			
+			if(isAdmin) {
+				user = new User();
+				modelAndView.addObject("user", user);
+				modelAndView.setViewName("registration");
+				return modelAndView;
+			}
+			else {
 				
 				System.out.print("; user: " + user.getName());
 				System.out.print("; custid: " + user.getCustId());
@@ -1403,15 +1420,7 @@ public class InputOrderController
 
 				modelAndView.setViewName("order");
 				return modelAndView;
-	        
-			}
-			else {
-				user = new User();
-				modelAndView.addObject("user", user);
-				modelAndView.setViewName("registration");
-				return modelAndView;
-			}
-	        
+			}        
 		}
 		else {
 			modelAndView.setViewName("login");
