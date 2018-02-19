@@ -95,5 +95,10 @@ Version 1.16.0 (Tuesday, 13 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add upload target_sales and end_stock form for admin
  	2. Add target_sales and end_stock upload validation by data type
+ 	
+Version 1.17.0 (Monday, 19 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add target_sales validation when merge data to table
+ 		by customer, product and period per line 
  		
  		

@@ -1,14 +1,19 @@
 package com.focus.weborder.services.custprodtarget;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-@Entity
+
+@Entity @IdClass(CustProdTargetId.class)
 @Table(name = "CUST_PROD_TARGET")
 public class CustProdTarget {
 	
+	@Id
 	@Column(name="COMPANY")
 	private String company;
 	@Id
@@ -16,8 +21,10 @@ public class CustProdTarget {
 	private String productCode;
 	@Column(name="CUST_NUMBER")
 	private String custNumber;
+	@Id
 	@Column(name="CUST_ID")
 	private Long custId;
+	@Id
 	@Column(name="PERIODE_TARGET")
 	private String periodeTarget;
 	@Column(name="TARGET_SALES")
@@ -87,5 +94,12 @@ public class CustProdTarget {
 	public void setTargetSales(Double targetSales) {
 		this.targetSales = targetSales;
 	}
-	
+}
+
+
+class CustProdTargetId implements Serializable{
+	String company;
+	Long custId;
+	String productCode;
+	String periodeTarget;
 }

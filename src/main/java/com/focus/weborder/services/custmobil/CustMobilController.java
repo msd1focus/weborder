@@ -30,7 +30,7 @@ public class CustMobilController {
 		custMobilService.updateCustMobil(custMobils);
 	}
 	
-	@RequestMapping("/custmobil/sync")
+	@RequestMapping(method=RequestMethod.PUT, value="/custmobil/sync")
 	public String syncCustMobil() {
 		return custMobilService.syncCustMobil();
 	}

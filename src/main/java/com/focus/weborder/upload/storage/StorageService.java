@@ -33,6 +33,7 @@ public class StorageService {
 
     	String fileType = "UNKNOWN";
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String dirTo = "UNKNOWN";
 		
         if (file.isEmpty()) {
 		    throw new StorageException("Failed to store empty file " + fileName);
@@ -53,12 +54,15 @@ public class StorageService {
             
         byte[] bytes = file.getBytes();
         if (fileType == "TARGET") {
+        	dirTo = storageProperties.getFolders().getTarget();
         	Path path = Paths.get(storageProperties.getFolders().getTarget(), fileName);
             Files.write(path, bytes);
         } else if (fileType == "STOCK") {
+        	dirTo = storageProperties.getFolders().getStock();
         	Path path = Paths.get(storageProperties.getFolders().getStock(), fileName);
             Files.write(path, bytes);
         } else if (fileType == "CUSTMOBIL") {
+        	dirTo = storageProperties.getFolders().getMobilcustomer();
         	Path path = Paths.get(storageProperties.getFolders().getMobilcustomer(), fileName);
             Files.write(path, bytes);
         } 
@@ -72,8 +76,7 @@ public class StorageService {
     		uploadHistory.setUploadType(fileType);
         }
 		uploadHistory.setUploadBy(username);
-		uploadHistory.setUploadDirTo(
-				storageProperties.getFolders().getMobilcustomer());
+		uploadHistory.setUploadDirTo(dirTo);
 		Date date = new Date();
 		uploadHistory.setUploadTime(date);
 		uploadHistoryService.updateUploadHistory(uploadHistory);

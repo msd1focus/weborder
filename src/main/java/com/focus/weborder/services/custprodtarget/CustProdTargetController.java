@@ -41,6 +41,11 @@ public class CustProdTargetController {
 					company, custid, productcode);
 		}
 	
+	@RequestMapping(method=RequestMethod.PUT, value="/custprodtarget/sync")
+	public String syncCustProdTarget() {
+		return custProdTargetService.syncCustProdTarget();
+	}
+	
 	@RequestMapping(method=RequestMethod.POST, value="/custprodtarget")
 	public void addCustProdTarget(@RequestBody CustProdTarget custProdTarget){
 		custProdTargetService.addCustProdTarget(custProdTarget);
