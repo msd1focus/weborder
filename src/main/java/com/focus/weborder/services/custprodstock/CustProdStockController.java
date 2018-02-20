@@ -41,6 +41,11 @@ public class CustProdStockController {
 			return custProdStockService.getBygetByCompanyCustidProductcode(
 					company, custid, productcode);
 		}
+
+	@RequestMapping(method=RequestMethod.PUT, value="/custprodstock/sync")
+	public String syncCustProdStock() {
+		return custProdStockService.syncCustProdStock();
+	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/custprodstock")
 	public void addCustProdStock(@RequestBody CustProdStock custProdStock){

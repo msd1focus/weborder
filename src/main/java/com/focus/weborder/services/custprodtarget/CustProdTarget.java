@@ -96,7 +96,6 @@ public class CustProdTarget {
 	}
 }
 
-
 class CustProdTargetId implements Serializable{
 	String company;
 	Long custId;

@@ -81,7 +81,7 @@ public class CustProdTargetService {
 		//custTargetRepository.delete(custId);
 	}
 	
-public String syncCustProdTarget() {
+	public String syncCustProdTarget() {
 		
 		String result = "SUCCESS";
 		
@@ -99,6 +99,7 @@ public String syncCustProdTarget() {
 		List<Integer> companyErrors = new ArrayList<>();
 		List<Integer> custIdErrors = new ArrayList<>();
 		List<Integer> custNumberErrors = new ArrayList<>();
+		List<Integer> custIdNumberErrors = new ArrayList<>();
 		List<Integer> productCodeErrors = new ArrayList<>();
 		List<Integer> periodeTargetErrors = new ArrayList<>();
 		List<Integer> targetSalesErrors = new ArrayList<>();
@@ -129,8 +130,6 @@ public String syncCustProdTarget() {
 			        String line = "";
 			        String cvsSplitBy = ",";
 			        List<CustProdTarget> custProdTargetUploads = new ArrayList<>();
-			        //List<CustMobil> custMobils = new ArrayList<>();
-			        //Long custMobilId = (long)1;
 			    	BufferedReader br;
 			    	
 			        try{
@@ -198,8 +197,8 @@ public String syncCustProdTarget() {
 				                	}
 
 				                	Boolean isCustNumberValid = false;
-				                	if(!isCustNumberContainInArray(company, custId, custNumber, customerValids)) {
-					                	if(!isCustNumberContainInArray(company, custId, custNumber, customers)) {
+				                	if(!isCustNumberContainInArray(company, custNumber, customerValids)) {
+					                	if(!isCustNumberContainInArray(company, custNumber, customers)) {
 								            status = "ERROR";
 								            custNumberErrors.add(lineNumber);
 						                }
@@ -210,8 +209,26 @@ public String syncCustProdTarget() {
 				                	else {
 				                		isCustNumberValid = true;
 				                	}
+
+
+				                	Boolean isCustIdNumberValid = false;
+				                	if(isCustIdValid && isCustNumberValid) {
+					                	if(!isCustIdNumberContainInArray(company, custId, custNumber, customerValids)) {
+						                	if(!isCustIdNumberContainInArray(company, custId, custNumber, customers)) {
+									            status = "ERROR";
+									            custIdNumberErrors.add(lineNumber);
+							                }
+							                else {
+							                	isCustIdNumberValid = true;
+							                }
+					                	}
+					                	else {
+					                		isCustIdNumberValid = true;
+					                	}
+				                		
+				                	}
 				                	
-					                if(isCustIdValid && isCustNumberValid) {
+					                if(isCustIdNumberValid) {
 					                	isCustomerValid = true;
 					                	for(Customer c: customers) {
 					                		if(isCustIdContainInArray(company, custId, customerValids)) {
@@ -381,6 +398,19 @@ public String syncCustProdTarget() {
 					}
 					//status = "ERROR";
 				}
+				if(custIdNumberErrors.size()>0) {
+					error += "cust_id dan cust_number tidak sesuai pada baris ";
+					for(Integer cine: custIdNumberErrors) {
+						error += cine;
+						if(cine!=(custIdNumberErrors.size())){
+							error += ",";
+						}
+						else {
+							error += ";";
+						}
+					}
+					//status = "ERROR";
+				}
 				if(productCodeErrors.size()>0) {
 					error += "product_code tidak valid pada baris ";
 					for(Integer pce: productCodeErrors) {
@@ -515,6 +545,23 @@ public String syncCustProdTarget() {
 	
 
 	private Boolean isCustNumberContainInArray(
+			String company,
+			String custNumber,
+			List<Customer> customers) {
+		Boolean isContain = false;
+		
+		for(Customer c: customers) {
+			if(c.getCompany().equals(company)
+				&& c.getCustomerNumber().equals(custNumber)) {
+				isContain = true;
+				break;
+			}
+		}
+		
+		return isContain;
+	}
+	
+	private Boolean isCustIdNumberContainInArray(
 			String company,
 			Long custId,
 			String custNumber,

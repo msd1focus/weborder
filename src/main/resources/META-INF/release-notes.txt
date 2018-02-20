@@ -101,4 +101,13 @@ Version 1.17.0 (Monday, 19 February 2018 by Amin Mutohar)
  	1. Add target_sales validation when merge data to table
  		by customer, product and period per line 
  		
+Version 1.18.0 (Tuesday, 20 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add end_stock validation when merge data to table
+ 		by customer, product and period per line 
+ 	2. Add cust_id and cust_number matching validation on
+ 		target_sales 
+ 	3. Add cust_id and cust_number matching validation on
+ 		end_stock
+ 		
  		

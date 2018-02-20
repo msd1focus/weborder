@@ -1,14 +1,18 @@
 package com.focus.weborder.services.custprodstock;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-@Entity
+@Entity @IdClass(CustProdStockId.class)
 @Table(name = "CUST_PROD_STOCK")
 public class CustProdStock {
 
+	@Id
 	@Column(name="COMPANY")
 	private String company;
 	@Id
@@ -16,8 +20,10 @@ public class CustProdStock {
 	private String productCode;
 	@Column(name="CUST_NUMBER")
 	private String custNumber;
+	@Id
 	@Column(name="CUST_ID")
 	private Long custId;
+	@Id
 	@Column(name="PERIODE_STOCK")
 	private String periodeStock;
 	@Column(name="END_STOCK")
@@ -88,4 +94,11 @@ public class CustProdStock {
 		this.endStock = endStock;
 	}
 	
+}
+
+class CustProdStockId implements Serializable{
+	String company;
+	Long custId;
+	String productCode;
+	String periodeStock;
 }
