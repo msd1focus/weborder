@@ -454,6 +454,10 @@ public class CustProdTargetService {
 			/*else {
 				status = "ERROR";
 			}*/
+			
+			List<UploadHistory> uploadHistoryUseds =
+					uploadHistoryService.getByTypeStatus("TARGET", "USED");
+			
 			if(status.equals("ERROR")) {
 				result = error;
 			}
@@ -461,6 +465,13 @@ public class CustProdTargetService {
 			//System.out.println("result: " + result);
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);
+			
+			if(!status.equals("ERROR")) {
+				for(UploadHistory up: uploadHistoryUseds) {
+					up.setUploadStatus("ARCHIVED");
+					uploadHistoryService.updateUploadHistory(up);
+				}
+			}
 			
 		}
 		else {

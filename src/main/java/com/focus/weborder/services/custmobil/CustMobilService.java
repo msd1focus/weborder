@@ -134,12 +134,14 @@ public class CustMobilService {
 						            status = "ERROR";
 				                	companyErrors.add(lineNumber);
 				                }
-				                //System.out.println("custId: " + custId);
-				                //System.out.println("customers: " + customers.size());
-				                if(!isCustomerValid(custId, customers)) {
-				                	//System.out.println("!isCustomerValid: " + custId);
-						            status = "ERROR";
-						            custIdErrors.add(lineNumber);
+				                else {
+					                //System.out.println("custId: " + custId);
+					                //System.out.println("customers: " + customers.size());
+					                if(!isCustomerValid(company, custId, customers)) {
+					                	//System.out.println("!isCustomerValid: " + custId);
+							            status = "ERROR";
+							            custIdErrors.add(lineNumber);
+					                }
 				                }
 				                
 				                if(!isMobilValid(mobilId, listMobils)) {
@@ -305,6 +307,10 @@ public class CustMobilService {
 			/*else {
 				status = "ERROR";
 			}*/
+			
+			List<UploadHistory> uploadHistoryUseds =
+					uploadHistoryService.getByTypeStatus("CUSTMOBIL", "USED");
+			
 			if(status.equals("ERROR")) {
 				result = error;
 			}
@@ -312,6 +318,13 @@ public class CustMobilService {
 			//System.out.println("result: " + result);
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);
+
+			if(!status.equals("ERROR")) {
+				for(UploadHistory up: uploadHistoryUseds) {
+					up.setUploadStatus("ARCHIVED");
+					uploadHistoryService.updateUploadHistory(up);
+				}
+			}
 			
 		}
 		else {
@@ -323,11 +336,14 @@ public class CustMobilService {
 	}
 	
 	private Boolean isCustomerValid(
-			Long custId, List<Customer> customers) {
+			String company,
+			Long custId, 
+			List<Customer> customers) {
 		Boolean isValid = false;
 		for(Customer c: customers) {
 			//System.out.println("c.getCustId(): " + c.getCustId());
-			if(c.getCustId().equals(custId)) {
+			if(c.getCompany().equals(company)
+					&& c.getCustId().equals(custId)) {
 				//System.out.println("valid: " + custId);
 				isValid = true;
 				break;

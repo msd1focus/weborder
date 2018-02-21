@@ -113,3 +113,5 @@ Version 1.18.0 (Tuesday, 20 February 2018 by Amin Mutohar)
 Version 1.18.1 (Wednesday, 21 February 2018 by Amin Mutohar)
  - Bug Fixing
  	1. Last stock did't inserted when input by cmob
+ 	2. Change upload status to ARCHIVED on Upload History 
+ 		after new succeed upload
