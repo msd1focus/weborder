@@ -25,7 +25,7 @@ public class CustProdSalesController {
 		@RequestParam Long custid,
 		@RequestParam String productcode, 
 		@RequestParam String periode) {
-		return custProdSalesService.getBygetByCompanyCustidProductcodePeriode(
+		return custProdSalesService.getByCompanyCustidProductcodePeriode(
 				company, custid, productcode, periode);
 	}
 

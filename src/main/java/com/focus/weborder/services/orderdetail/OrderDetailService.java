@@ -35,7 +35,8 @@ public class OrderDetailService {
 				orderDetail.getOrderDetailId(), orderDetail.getOrderId(), 
 				orderDetail.getProductCode(), orderDetail.getProductDesc(), 
 				orderDetail.getUom(), orderDetail.getJumlah(), 
-				orderDetail.getUnitPrice(), orderDetail.getTotalPrice());
+				orderDetail.getUnitPrice(), orderDetail.getTotalPrice(),
+				orderDetail.getLastStock());
 	}
 	
 	public void updateOrderDetail(OrderDetail orderDetail) {

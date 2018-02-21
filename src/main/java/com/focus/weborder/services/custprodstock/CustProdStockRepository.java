@@ -30,7 +30,7 @@ public interface CustProdStockRepository
             + "cps.custId = :custId AND "
             + "cps.productCode = :productCode"
            )
-	CustProdStock getByCompanyCustidProductcode(
+	List<CustProdStock> getByCompanyCustidProductcode(
 			@Param("company") String company,
     		@Param("custId") Long custId,
 			@Param("productCode") String productCode

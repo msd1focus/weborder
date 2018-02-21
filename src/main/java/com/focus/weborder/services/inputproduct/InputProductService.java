@@ -128,7 +128,7 @@ public class InputProductService {
 		Double averageSales1MonthBefore = (double) 0;
 		CustProdSales custProdSales1MonthBefore = 
 				custProdSalesService.
-					getBygetByCompanyCustidProductcodePeriode(
+					getByCompanyCustidProductcodePeriode(
 							inputCmob.getCompany(), 
 							inputCmob.getCustId(),
 							inputCmob.getProductCode(),
@@ -143,7 +143,7 @@ public class InputProductService {
 		Double averageSales2MonthBefore = (double) 0;
 		CustProdSales custProdSales2MonthBefore = 
 				custProdSalesService.
-					getBygetByCompanyCustidProductcodePeriode(
+					getByCompanyCustidProductcodePeriode(
 							inputCmob.getCompany(), 
 							inputCmob.getCustId(),
 							inputCmob.getProductCode(),
@@ -158,7 +158,7 @@ public class InputProductService {
 		Double averageSales3MonthBefore = (double) 0;
 		CustProdSales custProdSales3MonthBefore = 
 				custProdSalesService.
-					getBygetByCompanyCustidProductcodePeriode(
+					getByCompanyCustidProductcodePeriode(
 							inputCmob.getCompany(), 
 							inputCmob.getCustId(),
 							inputCmob.getProductCode(),
@@ -175,7 +175,7 @@ public class InputProductService {
 		Double qtyOnHandPrimary = (double)0;
 		CustProdStock custProdStock =
 				custProdStockService.
-					getBygetByCompanyCustidProductcode(
+					getByCompanyCustidProductcodeLastperiode(
 							inputCmob.getCompany(), 
 							inputCmob.getCustId(),
 							inputCmob.getProductCode());

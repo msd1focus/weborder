@@ -17,7 +17,7 @@ public class CustProdSalesService {
 		return custProdSales;		
 	}
 
-	public CustProdSales getBygetByCompanyCustidProductcodePeriode(
+	public CustProdSales getByCompanyCustidProductcodePeriode(
 			String company, Long custId,
 			String productCode, String periode) {
 		CustProdSales custProdSales = 

@@ -1059,6 +1059,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				qty*unitPrice;
 			var lastStock =
 				tblOrder.rows[idxRow].cells[10].children[0].value;
+			//console.log("lastStock: " + lastStock);
 			orderdetail.push({ 
 		        "orderDetailId" : orderDetailId,
 				"orderId": odi,

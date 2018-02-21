@@ -41,13 +41,17 @@ public class CustProdStockService {
 	@Autowired
 	private UploadHistoryService uploadHistoryService;
 	
+	private List<String> validMonths =
+			Arrays.asList("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+			"JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+	
 	public List<CustProdStock> getAllCustProdStocks() {
 		List<CustProdStock> custProdStocks = 
 				custProdStockRepository.getAll();
 		return custProdStocks;		
 	}
 
-	public CustProdStock getBygetByCompanyCustidProductcodePeriodestock(
+	public CustProdStock getByCompanyCustidProductcodePeriodestock(
 			String company, Long custId,
 			String productCode, String periodeStock) {
 		CustProdStock custProdStock = 
@@ -57,13 +61,37 @@ public class CustProdStockService {
 		return custProdStock;		
 	}
 	
-	public CustProdStock getBygetByCompanyCustidProductcode(
+	public List<CustProdStock> getByCompanyCustidProductcode(
 			String company, Long custId,
 			String productCode) {
-		CustProdStock custProdStock = 
+		List<CustProdStock> custProdStocks = 
 				custProdStockRepository.getByCompanyCustidProductcode(
 						company, custId, 
 						productCode);
+		return custProdStocks;		
+	}
+	
+	public CustProdStock getByCompanyCustidProductcodeLastperiode(
+			String company, Long custId,
+			String productCode) {
+		CustProdStock custProdStock = null;
+		List<CustProdStock> custProdStocks = 
+				custProdStockRepository.getByCompanyCustidProductcode(
+						company, custId, 
+						productCode);
+		String lastPeriode = null;
+		for(CustProdStock cps: custProdStocks) {	
+			if(lastPeriode==null) {
+				custProdStock = cps;
+				lastPeriode = cps.getPeriodeStock();
+			}
+			else {
+				if(isNewestPeriode(cps.getPeriodeStock(), lastPeriode)) {
+					custProdStock = cps;
+					lastPeriode = cps.getPeriodeStock();
+				}
+			}
+		}
 		return custProdStock;		
 	}
 	
@@ -81,13 +109,35 @@ public class CustProdStockService {
 		//custProdStockRepository.delete(custId);
 	}
 	
-public String syncCustProdStock() {
+	private Boolean isNewestPeriode(
+			String checkPeriode,
+			String refPeriode) {
+		Boolean isNewest = false;
+		Integer checkYear = 
+					Integer.parseInt(
+							checkPeriode.substring(4,8));
+		Integer refYear = 
+				Integer.parseInt(
+						checkPeriode.substring(4,8));
+		Integer checkMonth = 
+				validMonths.indexOf(
+						checkPeriode.substring(0,3));
+		Integer refMonth = 
+				validMonths.indexOf(
+						checkPeriode.substring(0,3));
+		System.out.println("checkYear: " + checkYear);
+		System.out.println("checkMonth: " + checkMonth);
+		if(checkYear>=refYear) {
+			if(checkMonth>refMonth) {
+				isNewest = true;
+			}
+		}
+		return isNewest;
+	}
+	
+	public String syncCustProdStock() {
 		
 		String result = "SUCCESS";
-		
-		List<String> validMon =
-				Arrays.asList("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-				"JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
 		
 		File folder = new File(storageProperties.getFolders().getStock());
 		String csvFile = null;
@@ -240,7 +290,7 @@ public String syncCustProdStock() {
 					                }
 				                }
 				                
-				                if(!isPeriodeValid(periodeStock, validMon)) {
+				                if(!isPeriodeValid(periodeStock)) {
 				                	status = "ERROR";
 					        		periodeStockErrors.add(lineNumber);
 				                } 
@@ -514,10 +564,10 @@ public String syncCustProdStock() {
 	    return true;
 	}
 	
-	private Boolean isPeriodeValid(String s, List<String> months) {
+	private Boolean isPeriodeValid(String s) {
 		Boolean isValid = true;
 		String month = s.substring(0, 3);
-		if(!months.contains(month)) {
+		if(!validMonths.contains(month)) {
 			isValid = false;
 		}
 		String year = s.substring(4, 8);

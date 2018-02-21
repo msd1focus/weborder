@@ -28,17 +28,26 @@ public class CustProdStockController {
 			@RequestParam Long custid,
 			@RequestParam String productcode, 
 			@RequestParam String periodestock) {
-			return custProdStockService.getBygetByCompanyCustidProductcodePeriodestock(
+			return custProdStockService.getByCompanyCustidProductcodePeriodestock(
 					company, custid, productcode, periodestock);
 		}
 	
 
 	@RequestMapping("/custprodstock/productcode")
-	public CustProdStock getByCompanyCustidProductcode(
+	public List<CustProdStock> getByCompanyCustidProductcode(
 			@RequestParam String company, 
 			@RequestParam Long custid,
 			@RequestParam String productcode) {
-			return custProdStockService.getBygetByCompanyCustidProductcode(
+			return custProdStockService.getByCompanyCustidProductcode(
+					company, custid, productcode);
+		}
+	
+	@RequestMapping("/custprodstock/lastperiode")
+	public CustProdStock getByCompanyCustidProductcodeLastperiode(
+			@RequestParam String company, 
+			@RequestParam Long custid,
+			@RequestParam String productcode) {
+			return custProdStockService.getByCompanyCustidProductcodeLastperiode(
 					company, custid, productcode);
 		}
 
