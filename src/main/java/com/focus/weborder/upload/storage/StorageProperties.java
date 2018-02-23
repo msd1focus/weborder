@@ -8,9 +8,12 @@ import org.springframework.context.annotation.Configuration;
 public class StorageProperties {
 
 	public static class Folders {
+		
 		private String target;
 		private String stock;
 		private String mobilcustomer;
+		private String mastermobil;
+		
 		public String getTarget() {
 			return target;
 		}
@@ -28,6 +31,12 @@ public class StorageProperties {
 		}
 		public void setMobilcustomer(String mobilcustomer) {
 			this.mobilcustomer = mobilcustomer;
+		}
+		public String getMastermobil() {
+			return mastermobil;
+		}
+		public void setMastermobil(String mastermobil) {
+			this.mastermobil = mastermobil;
 		}
 		
 	}

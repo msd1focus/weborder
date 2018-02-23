@@ -526,7 +526,7 @@ public class CustProdStockService {
 			
 		}
 		else {
-			result = "INFO: No target file on " 
+			result = "INFO: No stock file on " 
 					+ folder.getAbsolutePath();
 		}
 		

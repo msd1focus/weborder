@@ -295,13 +295,21 @@ public class InputOrderController
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String handleFileUpload(
-    		@RequestParam("file") MultipartFile file,
+    		@RequestParam("file") MultipartFile[] files,
             Model model) throws IOException {
        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
        	String username = auth.getName();
-    	storageService.store(file, username);
-    	model.addAttribute("message", 
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
+       	String uploadLog = "You successfully uploaded ";
+       	int i = 0;
+       	for(MultipartFile mf: files) {
+        	storageService.store(mf, username);
+        	uploadLog += mf.getOriginalFilename();
+        	if(i!=(files.length-1)) {
+        		uploadLog += " & ";
+        	}
+        	i++;
+       	}
+    	model.addAttribute("message", uploadLog + "!");
     	return "/uploadform";
     }
     

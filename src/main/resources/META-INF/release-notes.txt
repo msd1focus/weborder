@@ -115,3 +115,7 @@ Version 1.18.1 (Wednesday, 21 February 2018 by Amin Mutohar)
  	1. Last stock did't inserted when input by cmob
  	2. Change upload status to ARCHIVED on Upload History 
  		after new succeed upload
+ 		
+Version 1.19.0 (Friday, 23 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add master mobil on upload form

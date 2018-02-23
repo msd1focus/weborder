@@ -23,7 +23,8 @@
 						<select id="jenisfile" onchange="chfiletype()">
 								<option value="target">Target Sales</option>
 								<option value="stock">Stock</option>
-								<option value="custmobil">Customer-mobil</option>
+								<option value="custmobil">Customer-Mobil</option>
+								<option value="mastermobil">Master Mobil</option>
 						</select>
 					</td>
 				</tr>
@@ -39,7 +40,7 @@
 		<!-- action="/upload"> -->
 			<table>
 				<tr><td style="width:130px">File to upload:</td>
-					<td><input type="file" id="file" accept="text/csv" name="file" style="width:40em"/></td>
+					<td><input type="file" id="file" accept="text/csv" name="file" style="width:40em" multiple="true"/></td>
 				</tr>
 				<tr><td/><td></td></tr>
 				<tr>
@@ -69,10 +70,17 @@
 		<p/>		
 		</div>
 		<div id="mobilrule" style="display:none">
-				Upload data mobil-customer: <br/>
+				Upload data customer-mobil: <br/>
 				* Format csv <br/>
 				* File name : custmobil_yyyymmdd.csv <br/>
 				* Header : company,cust_number,cust_id,mobil_desc,mobil_id<br/>
+		<p/>		
+		</div>
+		<div id="mastermobilrule" style="display:none">
+				Upload data master-mobil: <br/>
+				* Format csv <br/>
+				* File name : mastermobil_yyyymmdd.csv <br/>
+				* Header : mobil_id,mobil_desc,mobil_panjang,mobil_lebar,mobil_tinggi<br/>
 		<p/>		
 		</div>
 	</div>

@@ -50,6 +50,7 @@ public class StorageService {
         fileType = fileName.contains("stock")?"STOCK"
         		  :fileName.contains("target")?"TARGET"
         		  :fileName.contains("custmobil")?"CUSTMOBIL"
+        		  :fileName.contains("mastermobil")?"MASTERMOBIL"
         		  :"undefined";
             
         byte[] bytes = file.getBytes();
@@ -64,6 +65,10 @@ public class StorageService {
         } else if (fileType == "CUSTMOBIL") {
         	dirTo = storageProperties.getFolders().getMobilcustomer();
         	Path path = Paths.get(storageProperties.getFolders().getMobilcustomer(), fileName);
+            Files.write(path, bytes);
+        } else if (fileType == "MASTERMOBIL") {
+        	dirTo = storageProperties.getFolders().getMastermobil();
+        	Path path = Paths.get(storageProperties.getFolders().getMastermobil(), fileName);
             Files.write(path, bytes);
         } 
         
