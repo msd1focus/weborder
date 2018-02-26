@@ -40,6 +40,10 @@ public class CustMobilService {
 	@Autowired
 	public UploadHistoryService uploadHistoryService;
 	
+	public List<CustMobil> getAll(){
+		return (List<CustMobil>) custMobilRepository.findAll();
+	}
+			
 	public List<CustMobil> getByCompanyCustid(
 			String company,
 			Long custId){
@@ -106,8 +110,11 @@ public class CustMobilService {
 			        String cvsSplitBy = ",";
 			        List<CustMobil> custMobilUploads = new ArrayList<>();
 			        List<CustMobil> custMobils = new ArrayList<>();
+			        List<CustMobil> custMobilsPrevious =
+			        		this.getAll();
 			        Long custMobilId = (long)1;
 			    	BufferedReader br;
+			    	Boolean isCustMobilDeleted = false;
 			    	
 			        try{
 
@@ -221,6 +228,9 @@ public class CustMobilService {
 			            e.printStackTrace();
 			            status = "ERROR";
 			            result = "Error: " + e.getMessage();
+			            if(isCustMobilDeleted && (!custMobilsPrevious.isEmpty())) {
+			            	this.updateCustMobil(custMobilsPrevious);
+			            }
 			        }
 			    }
 			    else {
@@ -268,7 +278,7 @@ public class CustMobilService {
 					error += "company tidak valid pada baris ";
 					for(Integer ce: companyErrors) {
 						error += ce;
-						if(ce!=(companyErrors.size()-1)){
+						if(ce!=companyErrors.size()){
 							error += ",";
 						}
 						else {
@@ -278,10 +288,10 @@ public class CustMobilService {
 					//status = "ERROR";
 				}
 				if(custIdErrors.size()>0) {
-					error += "custId tidak valid pada baris ";
+					error += "cust_id tidak valid pada baris ";
 					for(Integer cie: custIdErrors) {
 						error += cie;
-						if(cie!=(custIdErrors.size()-1)){
+						if(cie!=custIdErrors.size()){
 							error += ",";
 						}
 						else {
@@ -291,10 +301,10 @@ public class CustMobilService {
 					//status = "ERROR";
 				}
 				if(mobilIdErrors.size()>0) {
-					error += "mobilId tidak valid pada baris ";
+					error += "mobil_id tidak valid pada baris ";
 					for(Integer ce: mobilIdErrors) {
 						error += ce;
-						if(ce!=(mobilIdErrors.size()-1)){
+						if(ce!=mobilIdErrors.size()){
 							error += ",";
 						}
 						else {
@@ -316,6 +326,9 @@ public class CustMobilService {
 			}
 			uploadHistory.setUploadStatus(status);
 			//System.out.println("result: " + result);
+			if(result.length()>500) {
+				result = result.substring(0, 500);
+			}
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);
 

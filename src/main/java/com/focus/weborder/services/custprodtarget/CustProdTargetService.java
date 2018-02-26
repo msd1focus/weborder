@@ -463,6 +463,9 @@ public class CustProdTargetService {
 			}
 			uploadHistory.setUploadStatus(status);
 			//System.out.println("result: " + result);
+			if(result.length()>500) {
+				result = result.substring(0, 500);
+			}
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);
 			

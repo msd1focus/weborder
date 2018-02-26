@@ -119,3 +119,7 @@ Version 1.18.1 (Wednesday, 21 February 2018 by Amin Mutohar)
 Version 1.19.0 (Friday, 23 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add master mobil on upload form
+ 	
+Version 1.20.0 (Monday, 26 February 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add insert listmobil from file csv
