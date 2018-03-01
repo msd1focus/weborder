@@ -25,7 +25,7 @@
 		<tr>
 			<th>Type</th>
 			<th>Status</th>
-			<th>Description</th>
+			<th style="max-width:300px;">Description</th>
 			<th>File Name</th>
 			<th>Directory</th>
 			<th>Upload By</th>
@@ -36,7 +36,7 @@
 			<tr>
 				<td th:text="${uploadHistory.uploadType}"></td>
 				<td th:text="${uploadHistory.uploadStatus}"></td>
-				<td th:text="${uploadHistory.uploadDescription}"></td>
+				<td style="max-width:300px;" th:text="${uploadHistory.uploadDescription}"></td>
 				<td th:text="${uploadHistory.uploadFileName}"></td>
 				<td th:text="${uploadHistory.uploadDirTo}"></td>
 				<td th:text="${uploadHistory.uploadBy}"></td>

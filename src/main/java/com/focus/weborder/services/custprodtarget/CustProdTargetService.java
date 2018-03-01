@@ -364,10 +364,10 @@ public class CustProdTargetService {
 					for(Integer ce: companyErrors) {
 						error += ce;
 						if(ce!=(companyErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -377,10 +377,10 @@ public class CustProdTargetService {
 					for(Integer cie: custIdErrors) {
 						error += cie;
 						if(cie!=(custIdErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -390,10 +390,10 @@ public class CustProdTargetService {
 					for(Integer cne: custNumberErrors) {
 						error += cne;
 						if(cne!=(custNumberErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -403,10 +403,10 @@ public class CustProdTargetService {
 					for(Integer cine: custIdNumberErrors) {
 						error += cine;
 						if(cine!=(custIdNumberErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -416,10 +416,10 @@ public class CustProdTargetService {
 					for(Integer pce: productCodeErrors) {
 						error += pce;
 						if(pce!=(productCodeErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -429,10 +429,10 @@ public class CustProdTargetService {
 					for(Integer pte: periodeTargetErrors) {
 						error += pte;
 						if(pte!=(periodeTargetErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -442,10 +442,10 @@ public class CustProdTargetService {
 					for(Integer tse: targetSalesErrors) {
 						error += tse;
 						if(tse!=(targetSalesErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -462,10 +462,13 @@ public class CustProdTargetService {
 				result = error;
 			}
 			uploadHistory.setUploadStatus(status);
+			//System.out.println("result.length(): " + result.length());
 			//System.out.println("result: " + result);
 			if(result.length()>500) {
-				result = result.substring(0, 500);
+				result = result.substring(0, 499);
 			}
+
+			//System.out.println("result.length() after: " + result.length());
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);
 			

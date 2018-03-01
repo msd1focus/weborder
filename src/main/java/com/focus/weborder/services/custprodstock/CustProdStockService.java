@@ -415,10 +415,10 @@ public class CustProdStockService {
 					for(Integer ce: companyErrors) {
 						error += ce;
 						if(ce!=(companyErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -428,10 +428,10 @@ public class CustProdStockService {
 					for(Integer cie: custIdErrors) {
 						error += cie;
 						if(cie!=(custIdErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -441,10 +441,10 @@ public class CustProdStockService {
 					for(Integer cne: custNumberErrors) {
 						error += cne;
 						if(cne!=(custNumberErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -454,10 +454,10 @@ public class CustProdStockService {
 					for(Integer cine: custIdNumberErrors) {
 						error += cine;
 						if(cine!=(custIdNumberErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -467,10 +467,10 @@ public class CustProdStockService {
 					for(Integer pce: productCodeErrors) {
 						error += pce;
 						if(pce!=(productCodeErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -480,10 +480,10 @@ public class CustProdStockService {
 					for(Integer pse: periodeStockErrors) {
 						error += pse;
 						if(pse!=(periodeStockErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -493,10 +493,10 @@ public class CustProdStockService {
 					for(Integer ese: endStockErrors) {
 						error += ese;
 						if(ese!=(endStockErrors.size())){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -515,7 +515,7 @@ public class CustProdStockService {
 			uploadHistory.setUploadStatus(status);
 			//System.out.println("result: " + result);
 			if(result.length()>500) {
-				result = result.substring(0, 500);
+				result = result.substring(0, 499);
 			}
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);

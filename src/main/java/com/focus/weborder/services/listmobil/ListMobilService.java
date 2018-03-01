@@ -277,10 +277,10 @@ public class ListMobilService {
 					for(Integer ce: mobilIdErrors) {
 						error += ce;
 						if(ce!=mobilIdErrors.size()){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -290,10 +290,10 @@ public class ListMobilService {
 					for(Integer ce: mobilPanjangErrors) {
 						error += ce;
 						if(ce!=mobilPanjangErrors.size()){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -303,10 +303,10 @@ public class ListMobilService {
 					for(Integer ce: mobilLebarErrors) {
 						error += ce;
 						if(ce!=mobilLebarErrors.size()){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -316,10 +316,10 @@ public class ListMobilService {
 					for(Integer ce: mobilTinggiErrors) {
 						error += ce;
 						if(ce!=mobilTinggiErrors.size()){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -338,7 +338,7 @@ public class ListMobilService {
 			uploadHistory.setUploadStatus(status);
 			//System.out.println("result: " + result);
 			if(result.length()>500) {
-				result = result.substring(0, 500);
+				result = result.substring(0, 499);
 			}
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);

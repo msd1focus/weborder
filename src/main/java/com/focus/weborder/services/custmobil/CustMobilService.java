@@ -279,10 +279,10 @@ public class CustMobilService {
 					for(Integer ce: companyErrors) {
 						error += ce;
 						if(ce!=companyErrors.size()){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -292,10 +292,10 @@ public class CustMobilService {
 					for(Integer cie: custIdErrors) {
 						error += cie;
 						if(cie!=custIdErrors.size()){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -305,10 +305,10 @@ public class CustMobilService {
 					for(Integer ce: mobilIdErrors) {
 						error += ce;
 						if(ce!=mobilIdErrors.size()){
-							error += ",";
+							error += ", ";
 						}
 						else {
-							error += ";";
+							error += "; ";
 						}
 					}
 					//status = "ERROR";
@@ -327,7 +327,7 @@ public class CustMobilService {
 			uploadHistory.setUploadStatus(status);
 			//System.out.println("result: " + result);
 			if(result.length()>500) {
-				result = result.substring(0, 500);
+				result = result.substring(0, 499);
 			}
 			uploadHistory.setUploadDescription(result);
 			uploadHistoryService.updateUploadHistory(uploadHistory);
