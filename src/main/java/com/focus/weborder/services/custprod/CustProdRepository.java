@@ -12,11 +12,17 @@ public interface CustProdRepository extends CrudRepository<CustProd, Long> {
             + "c.price > 0")
 	List<CustProd> getAll();
 	
-	
 	@Query("SELECT c FROM CustProd c WHERE " +
             "c.company = :company AND " +
             "c.custId = :custId "
             + "AND c.price > 0")
 	List<CustProd> getByCompanyCustid(@Param("company") String company,
+    		@Param("custId") Long custId);
+	
+
+	@Query("SELECT c FROM CustProd c WHERE " +
+            "c.company = :company AND " +
+            "c.custId = :custId")
+	List<CustProd> getByCompanyCustidAll(@Param("company") String company,
     		@Param("custId") Long custId);
 }

@@ -123,8 +123,11 @@ Version 1.19.0 (Friday, 23 February 2018 by Amin Mutohar)
 Version 1.20.0 (Monday, 26 February 2018 by Amin Mutohar)
  - Change Application
  	1. Add insert listmobil from file csv
- 	
- 	
-Version 1.20.1 (Wednesday, 1 March 2018 by Amin Mutohar)
+ 		
+Version 1.20.1 (Thursday, 1 March 2018 by Amin Mutohar)
  - Change Application
  	1. Limit Description width on Upload History to 300 px
+ 	
+Version 1.20.2 (Friday, 2 March 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Product code validation is not limited to greater than 0

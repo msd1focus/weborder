@@ -249,7 +249,7 @@ public class CustProdTargetService {
 				                		company, custId, productCode, custProdValids)) {
 					                if(isCustomerValid) {
 					                	List<CustProd> custProds =
-								        		custProdService.getCustProd(company, custId);
+								        		custProdService.getCustProdAll(company, custId);
 								        for(CustProd cp: custProds) {
 								        	if(isCustProdValid(company, custId, productCode, cp)) {
 								        		isCustProd = true;

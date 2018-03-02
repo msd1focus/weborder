@@ -20,6 +20,10 @@ public class CustProdService {
 	public List<CustProd> getCustProd(String company, Long custId) {
 		return custProdRepository.getByCompanyCustid(company, custId);
 	}
+
+	public List<CustProd> getCustProdAll(String company, Long custId) {
+		return custProdRepository.getByCompanyCustidAll(company, custId);
+	}
 	
 	public void addCustProd(CustProd custProd) {
 		//custProdRepository.save(custProd);
