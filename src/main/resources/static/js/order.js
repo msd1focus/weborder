@@ -114,15 +114,33 @@ function inputProductInit(){
 			
 			$.each(result, function(i, field){
 				
-				var productName = field.product.productName;
-				if(custLocation=="BATAM"){
-					productName = field.product.productName2;
+				var productName = "";
+				var productCode = "";
+				var prodUom1 = "";
+				var productCat1 = "";
+				var prodWidth = 0;
+				var prodLength = 0;
+				var prodHeight = 0;
+				
+				if(field.product!=null){
+					//console.log("field.product: " + field.product);
+					//console.log("field.product.productName: " + field.product.productName);
+					productName = field.product.productName;	
+					productCode = field.product.productCode;
+					prodUom1 = field.product.prodUom1;
+					productCat1 = field.product.productCat1;
+					prodWidth = field.product.prodWidth;
+					prodLength = field.product.prodLength;
+					prodHeight = field.product.prodHeight;
+					if(custLocation=="BATAM"){
+						productName = field.product.productName2;
+					}
 				}
 				
 				var toif = 
 					'<tr><td>'
 					+ '<input readonly="readonly" style="width: 100px" value="'
-					+ field.product.productCode +'"/>'
+					+ productCode +'"/>'
 					+ '</td><td>'
 					+ '<input readonly="readonly" style="width: 320px" value="'
 					+ productName +'"/>'
@@ -148,7 +166,7 @@ function inputProductInit(){
 				
 				var option = document.createElement("option");
 				option.value = productName;
-				option.text = field.product.productCode;
+				option.text = productCode;
 				searchSelect.add(option);
 				
 				var to =
@@ -163,10 +181,10 @@ function inputProductInit(){
 					+ field.orderDetailId1
 					+ '"/>'
 					+ '<input type="hidden" value="'
-					+ field.product.company
+					+ company //field.product.company
 					+ '"/>'
 					+ '<input type="hidden" value="'
-					+ field.product.prodUom1
+					+ prodUom1
 					+ '"/>'
 					+ '<input type="hidden" value="'
 					+ field.custProd.company
@@ -187,7 +205,7 @@ function inputProductInit(){
 					+ field.custProd.outstandingQuote
 					+ '"/>'
 					+ '<input type="hidden" value="'
-					+ field.product.productCat1
+					+ productCat1
 					+ '"/>'
 					+ '<input type="hidden" id="cmobValue" value="0"/>'
 					+ '</td><td class="order2" width="150px" id="detail2" style="display: none;">'
@@ -257,16 +275,16 @@ function inputProductInit(){
 					+ '"/>'
 					+ '</td><td style="display: none;">'
 					+ '<input type="hidden" id="prodWidth" value="'
-					+ field.product.prodWidth
+					+ prodWidth
 					+ '"/>'
 					+ '<input type="hidden" id="prodLength" value="'
-					+ field.product.prodLength
+					+ prodLength
 					+ '"/>'
 					+ '<input type="hidden" id="prodHeight" value="'
-					+ field.product.prodHeight
+					+ prodHeight
 					+ '"/>'
 					+ '<input type="hidden" id="productCat1" value="'
-					+ field.product.productCat1
+					+ productCat1
 					+ '"/>'
 					+ '</td><td style="display: none;">'
 					+ '<input type="hidden" id="averageSales3MonthBefore" value="'
@@ -1059,6 +1077,14 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 				qty*unitPrice;
 			var lastStock =
 				tblOrder.rows[idxRow].cells[10].children[0].value;
+			var salesForecast =
+				tblOrder.rows[idxRow].cells[10].children[1].value;
+			var averageSales =
+				tblOrder.rows[idxRow].cells[10].children[2].value;
+			var bufferStock =
+				tblOrder.rows[idxRow].cells[10].children[3].value;
+			var outstandingOrder =
+				tblOrder.rows[idxRow].cells[10].children[4].value;
 			//console.log("lastStock: " + lastStock);
 			orderdetail.push({ 
 		        "orderDetailId" : orderDetailId,
@@ -1069,7 +1095,11 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 		        "jumlah"  : qty,
 				"unitPrice": unitPrice,
 				"totalPrice": totalPrice,
-				"lastStock": lastStock
+				"lastStock": lastStock,
+				"salesForecast": salesForecast,
+				"averageSales": averageSales,
+				"bufferStock": bufferStock,
+				"outstandingOrder": outstandingOrder
 		    });
 		}
 		else{
@@ -3492,10 +3522,14 @@ function generateCMOB(){
 			tblOrder.rows[idxRow].cells[0].children[3].value;
 		var selectedUom =
 			tblOrder.rows[idxRow].cells[8].children[3].value;
-		var outstandingSo =
-			tblOrder.rows[idxRow].cells[0].children[8].value;
-		var outstandingQuote =
-			tblOrder.rows[idxRow].cells[0].children[9].value;
+		var outstandingSo = 0;
+		if(tblOrder.rows[idxRow].cells[0].children[8].value!=null){
+			outstandingSo = tblOrder.rows[idxRow].cells[0].children[8].value;
+		}
+		var outstandingQuote = 0;
+		if(tblOrder.rows[idxRow].cells[0].children[9].value!=null){
+			outstandingSo = tblOrder.rows[idxRow].cells[0].children[9].value;
+		}
 		var uom = 
 			tblOrderItemFixed.rows[idxRow].cells[2].children[0];
 	
@@ -3550,11 +3584,29 @@ function generateCMOB(){
 								/*console.log(
 										field.productCode
 										+ " - "
+										+ field.lastStock
+										+ " - "
+										+ field.salesForecast
+										+ " - "
+										+ field.averageSales
+										+ " - "
+										+ field.bufferStock
+										+ " - "
+										+ field.outstandingOrder
+										+ " - "
 										+ field.quantity);*/
 								tblOrder.rows[idxRow].cells[0].children[11].value =
 									field.quantity;
 								tblOrder.rows[idxRow].cells[10].children[0].value =
 									field.lastStock;
+								tblOrder.rows[idxRow].cells[10].children[1].value =
+									field.salesForecast;
+								tblOrder.rows[idxRow].cells[10].children[2].value =
+									field.averageSales;
+								tblOrder.rows[idxRow].cells[10].children[3].value =
+									field.bufferStock;
+								tblOrder.rows[idxRow].cells[10].children[4].value =
+									field.outstandingOrder;
 							}					
 						}	
 					}		

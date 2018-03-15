@@ -131,3 +131,16 @@ Version 1.20.1 (Thursday, 1 March 2018 by Amin Mutohar)
 Version 1.20.2 (Friday, 2 March 2018 by Amin Mutohar)
  - Change Application
  	1. Product code validation is not limited to greater than 0
+ 	
+Version 1.21.0 (Tuesday, 6 March 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Add salesForecast, averageSales, bufferStock, and 
+ 		outstandingOrder to orderDetail
+ 		
+ - Bug Fixing
+ 	1. Error invalid product		
+ 	
+Version 1.22.0 (Wednesday, 7 March 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Move Invoice Number to History table
+ 	2. show invoice detail when Invoice Number has clicked on History table

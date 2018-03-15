@@ -1,11 +1,9 @@
 package com.focus.weborder.services.inputproduct;
 
 import java.sql.Date;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import com.focus.weborder.services.custprodstock.CustProdStockService;
 import com.focus.weborder.services.custprodtarget.CustProdTarget;
 import com.focus.weborder.services.custprodtarget.CustProdTargetService;
 import com.focus.weborder.services.orderdetail.OrderDetail;
-import com.focus.weborder.services.orderdetail.OrderDetailService;
 import com.focus.weborder.services.product.Product;
 import com.focus.weborder.services.product.ProductService;
 import com.focus.weborder.services.produom.ProdUom;
@@ -42,8 +39,8 @@ public class InputProductService {
 	@Autowired
 	private ProductService productService;
 
-	@Autowired
-	private OrderDetailService orderDetailService;
+	/*@Autowired
+	private OrderDetailService orderDetailService;*/
 
 	@Autowired
 	private CustProdSalesService custProdSalesService;
@@ -269,7 +266,13 @@ public class InputProductService {
 			cmob = (long)0;
 		}
 		
-		outputCmob.setLastStock(qtyOnHandPrimary);
+		outputCmob.setLastStock(qtyOnHand);
+		outputCmob.setSalesForecast(targetCustomerCurrentMonth);
+		outputCmob.setAverageSales(averageSales);
+		outputCmob.setBufferStock(bufferStock);
+		outputCmob.setOutstandingOrder(
+				inputCmob.getOutstandingSo()
+					+ inputCmob.getOutstandingQuote());
 		outputCmob.setQuantity(cmob);
 		
 
@@ -352,7 +355,7 @@ public class InputProductService {
 		
 		List<CustProd> custProds = custProdService.getCustProd(
 				company, custId);
-		System.out.println("custProds.size(): " + custProds.size());
+		System.out.println("; custProds.size(): " + custProds.size());
 		for(CustProd custProd: custProds) {
 			
 			String productCode = custProd.getProductCode();
@@ -385,13 +388,14 @@ public class InputProductService {
 							custProd.getProductCode());
 				}*/		
 				
-				if(orderDetail1!=null) {
+				/*if(orderDetail1!=null) {
 					inputProduct.setOrderDetailId1(
 							orderDetail1.getOrderDetailId());
 					inputProduct.setOrderQty1(
 							formatText(orderDetail1.getJumlah()));
 				}
-				else {
+				else */
+				if(orderDetail1==null){
 
 					inputProduct.setOrderQty1("0");
 				}
@@ -403,13 +407,14 @@ public class InputProductService {
 							custProd.getProductCode());
 				}	*/
 				
-				if(orderDetail2!=null) {
+				/*if(orderDetail2!=null) {
 					inputProduct.setOrderDetailId2(
 							orderDetail2.getOrderDetailId());
 					inputProduct.setOrderQty2(
 							formatText(orderDetail2.getJumlah()));
 				}
-				else {
+				else */
+				if(orderDetail2==null){
 
 					inputProduct.setOrderQty2("0");
 				}
@@ -421,13 +426,14 @@ public class InputProductService {
 							custProd.getProductCode());
 				}	*/
 				
-				if(orderDetail3!=null) {
+				/*if(orderDetail3!=null) {
 					inputProduct.setOrderDetailId3(
 							orderDetail3.getOrderDetailId());
 					inputProduct.setOrderQty3(
 							formatText(orderDetail3.getJumlah()));
 				}
-				else {
+				else */
+				if(orderDetail3==null){
 
 					inputProduct.setOrderQty3("0");
 				}
@@ -439,13 +445,14 @@ public class InputProductService {
 							custProd.getProductCode());
 				}*/	
 				
-				if(orderDetail4!=null) {
+				/*if(orderDetail4!=null) {
 					inputProduct.setOrderDetailId4(
 							orderDetail4.getOrderDetailId());
 					inputProduct.setOrderQty4(
 							formatText(orderDetail4.getJumlah()));
 				}
-				else {
+				else */
+				if(orderDetail4==null){
 
 					inputProduct.setOrderQty4("0");
 				}
@@ -457,13 +464,14 @@ public class InputProductService {
 							custProd.getProductCode());
 				}*/	
 				
-				if(orderDetail5!=null) {
+				/*if(orderDetail5!=null) {
 					inputProduct.setOrderDetailId5(
 							orderDetail5.getOrderDetailId());
 					inputProduct.setOrderQty5(
 							formatText(orderDetail5.getJumlah()));
 				}
-				else {
+				else */
+				if(orderDetail5==null){
 
 					inputProduct.setOrderQty5("0");
 				}
@@ -527,11 +535,11 @@ public class InputProductService {
 		return m;
 	}
 	
-	private String formatText(Long value) {
+	/*private String formatText(Long value) {
 		String text = "0";
 		NumberFormat usFormat = NumberFormat.getNumberInstance(Locale.US);
 		text = usFormat.format(value);
 		return text;
-	}
+	}*/
 
 }

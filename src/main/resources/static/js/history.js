@@ -1,5 +1,35 @@
 "use strict";
 
+function onload(){
+	console.log("onload");
+	var conftab = document.getElementById("conftab");
+	console.log("conftab.rows.length: " + conftab.rows.length);
+	for(var idxRow = 1; idxRow<conftab.rows.length; idxRow++){
+		var invoiceNumber = conftab.rows[idxRow].getAttribute("data-invoicenumber");
+    	console.log("data-invoicenumber: " + invoiceNumber);
+    	if(invoiceNumber!=null){
+    		var innerHtml = "";
+    		if(invoiceNumber.includes(";")){
+    			var inn = invoiceNumber.split(";");
+                for(var i=0; i<inn.length; i++){
+                	if(i>0){
+                		innerHtml += '<br/>';
+                	}
+                	innerHtml += '<input type="button" value="' 
+                		+ inn[i].trim() 
+                		+ '" style="width:10em; color:blue; border:none; background-color:white;" onclick="showinvoice(this)"/>';
+                }
+    		}
+    		else{
+    			innerHtml += '<input type="button" value="' 
+    				+ invoiceNumber.trim() 
+    				+ '" style="width:10em; color:blue; border:none; background-color:white;" onclick="showinvoice(this)"/>';
+    		}
+    		conftab.rows[idxRow].cells[4].innerHTML = innerHtml;
+    	}
+	}
+}
+
 function showdetail(obj) {
 	var rowobj = obj.parentElement.parentElement;
 	var ordId = rowobj.getAttribute("data-orderid");
@@ -13,8 +43,8 @@ function showdetail(obj) {
 	document.getElementById("cell_podate").innerHTML = poDate;
 
 	document.getElementById("cell_totalorder").innerHTML = rowobj.children[2].innerHTML;
-	document.getElementById("cell_invoicenumber").innerHTML = rowobj.getAttribute("data-invoicenumber");
-	document.getElementById("cell_invoicestatus").innerHTML = rowobj.getAttribute("data-invoicestatus");
+	//document.getElementById("cell_invoicenumber").innerHTML = rowobj.getAttribute("data-invoicenumber");
+	//document.getElementById("cell_invoicestatus").innerHTML = rowobj.getAttribute("data-invoicestatus");
 	document.getElementById("cell_notes").innerHTML = rowobj.getAttribute("data-notes");
 
 	var xhttp = new XMLHttpRequest();
@@ -40,4 +70,165 @@ function showdetail(obj) {
 	xhttp.send();
 
 	document.getElementById("myModal").style.display = "block";
+}
+
+function showinvoice(obj){
+	console.log("obj.value: " + obj.value);
+	var loading = document.getElementById('loading');
+	loading.style.display = "block";
+	var invoiceNumber = obj.value;
+	var tab = document.getElementById("detailInvoices");
+	var rowobj = obj.parentElement.parentElement;
+	var company = rowobj.getAttribute("data-company").toLowerCase();
+	console.log("company: " + company);
+	
+	tab.innerHTML = "";
+	
+	document.getElementById("cell_invnumber").innerHTML = invoiceNumber;	
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log("this.readyState == 4 && this.status == 200: " + obj.value);
+			var objitems;
+			var nf = Intl.NumberFormat();
+			objitems = JSON.parse(this.responseText);
+			var cellJumlah = document.getElementById("cell_jumlah");
+			var rowDiskon1 = document.getElementById("row_diskon1");
+			var rowDiskon2 = document.getElementById("row_diskon2");
+			var rowDiskon3 = document.getElementById("row_diskon3");
+			var rowDiskon4 = document.getElementById("row_diskon4");
+			var rowDiskon5 = document.getElementById("row_diskon5");
+			var rowDiskon6 = document.getElementById("row_diskon6");
+			var rowDiskon7 = document.getElementById("row_diskon7");
+			var cellDiskon1 = document.getElementById("cell_diskon1");
+			var cellDiskon2 = document.getElementById("cell_diskon2");
+			var cellDiskon3 = document.getElementById("cell_diskon3");
+			var cellDiskon4 = document.getElementById("cell_diskon4");
+			var cellDiskon5 = document.getElementById("cell_diskon5");
+			var cellDiskon6 = document.getElementById("cell_diskon6");
+			var cellDiskon7 = document.getElementById("cell_diskon7");
+			var labelTotal = document.getElementById("label_total");
+			var cellTotal = document.getElementById("cell_total");
+			var jumlah = 0; 
+			var diskon1 = 0;
+			var diskon2 = 0;
+			var diskon3 = 0;
+			var diskon4 = 0;
+			var diskon5 = 0;
+			var diskon6 = 0;
+			var diskon7 = 0;
+			var labelTotalText = "TOTAL (DPP):";
+			for (var i = 0; i < objitems.length; i++) {
+				var qty = parseFloat(objitems[i].quantityInvoiced);
+				var price = parseFloat(objitems[i].unitSellingPrice);
+				var amount = qty*price;
+				diskon1 = objitems[i].diskon1;
+				diskon2 = objitems[i].diskon2;
+				diskon3 = objitems[i].diskon3;
+				diskon4 = objitems[i].diskon4;
+				diskon5 = objitems[i].diskon5;
+				diskon6 = objitems[i].diskon6;
+				diskon7 = objitems[i].diskon7;
+				if(objitems[i].taxClassificationCode=="PPN 10% INCLUDE"){
+					labelTotalText = 
+						"TOTAL (" + objitems[i].taxClassificationCode + "):";
+				}
+				jumlah += amount;
+				tab.insertRow(i).outerHTML = '<tr><td>'
+						+ objitems[i].lineNumber + '</td><td>'
+						+ objitems[i].itemCode + '</td><td>' 
+						+ objitems[i].itemDesc + '</td><td style="text-align:right">' 
+						+ nf.format(qty) + ' ' + objitems[i].uomCode  + '</td><td style="text-align:right">' 
+						+ nf.format(price) + '</td><td style="text-align:right">' 
+						+ nf.format(amount) + '</td></tr>';
+			}
+			
+			cellJumlah.innerHTML = nf.format(jumlah);
+			
+			var total = jumlah;
+			
+			if(diskon1>0){
+				cellDiskon1.innerHTML = nf.format(diskon1);
+				rowDiskon1.style.display = "table-row";
+				total -= diskon1;
+			}
+			else{
+				rowDiskon1.style.display = "none";
+			}
+			
+			if(diskon2>0){
+				cellDiskon2.innerHTML = nf.format(diskon2);
+				rowDiskon2.style.display = "table-row";
+				total -= diskon2;
+			}
+			else{
+				rowDiskon2.style.display = "none";
+			}
+			
+			if(diskon3>0){
+				cellDiskon3.innerHTML = nf.format(diskon3);
+				rowDiskon3.style.display = "table-row";
+				total -= diskon3;
+			}
+			else{
+				rowDiskon3.style.display = "none";
+			}
+			
+			if(diskon4>0){
+				cellDiskon4.innerHTML = nf.format(diskon4);
+				rowDiskon4.style.display = "table-row";
+				total -= diskon4;
+			}
+			else{
+				rowDiskon4.style.display = "none";
+			}
+			
+			if(diskon5>0){
+				cellDiskon5.innerHTML = nf.format(diskon5);
+				rowDiskon5.style.display = "table-row";
+				total -= diskon5;
+			}
+			else{
+				rowDiskon5.style.display = "none";
+			}
+			
+			if(diskon6>0){
+				cellDiskon6.innerHTML = nf.format(diskon6);
+				rowDiskon6.style.display = "table-row";
+				total -= diskon6;
+			}
+			else{
+				rowDiskon6.style.display = "none";
+			}
+			
+			if(diskon7>0){
+				cellDiskon7.innerHTML = nf.format(diskon7);
+				rowDiskon7.style.display = "table-row";
+				total -= diskon7;
+			}
+			else{
+				rowDiskon7.style.display = "none";
+			}
+			labelTotal.innerHTML = labelTotalText;
+			if(total<0){
+				total = 0;
+			}
+			cellTotal.innerHTML = total;
+			loading.style.display = "none";
+			document.getElementById("modalInvoice").style.display = "block";
+		}
+		else{
+			console.log("this.readyState: " + this.readyState);
+			console.log("this.status: " + this.status);
+		}
+	};
+/*	setRequestHeader()	*/	
+	xhttp.open("GET", "/oracle" + company + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
+	xhttp.send();
+}
+
+function closeinvoice(){
+	console.log("closeinvoice");
+	document.getElementById("modalInvoice").style.display = "none";
 }

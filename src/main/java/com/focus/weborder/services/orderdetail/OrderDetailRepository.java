@@ -69,7 +69,9 @@ public interface OrderDetailRepository extends CrudRepository<OrderDetail, Long>
             + "total_price ) VALUES ("
             + ":orderDetailId, :orderId, :productCode, "
             + ":productDesc, :uom, :jumlah, "
-            + ":unitPrice, :totalPrice, :lastStock)", nativeQuery = true
+            + ":unitPrice, :totalPrice, :lastStock, "
+            + ":salesForecast, :averageSales, :bufferStock, "
+            + ":outstandingOrder)", nativeQuery = true
 		)
 	@Transactional
 	void insert(
@@ -81,6 +83,10 @@ public interface OrderDetailRepository extends CrudRepository<OrderDetail, Long>
 			@Param("jumlah") Long jumlah,
     		@Param("unitPrice") Double unitPrice,
 			@Param("totalPrice") Double totalPrice,
-			@Param("lastStock") Double lastStock
+			@Param("lastStock") Double lastStock,
+    		@Param("salesForecast") Double salesForecast,
+			@Param("averageSales") Double averageSales,
+			@Param("bufferStock") Double bufferStock,
+			@Param("outstandingOrder") Double outstandingOrder
     	);
 }

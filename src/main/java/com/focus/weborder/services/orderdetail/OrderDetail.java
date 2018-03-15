@@ -31,6 +31,14 @@ public class OrderDetail {
 	private Double totalPrice;
 	@Column(name="LAST_STOCK")
 	private Double lastStock;
+	@Column(name="SALES_FORECAST")
+	private Double salesForecast;
+	@Column(name="AVERAGE_SALES")
+	private Double averageSales;
+	@Column(name="BUFFER_STOCK")
+	private Double bufferStock;
+	@Column(name="OUTSTANDING_ORDER")
+	private Double outstandingOrder;
 	
 	public OrderDetail() {
 		
@@ -38,7 +46,9 @@ public class OrderDetail {
 	
 	public OrderDetail(Long orderDetailId, Long orderId, String productCode, 
 			String productDesc, String uom, Long jumlah,
-			Double unitPrice, Double totalPrice, Double lastStock) {
+			Double unitPrice, Double totalPrice, Double lastStock,
+			Double salesForecast, Double averageSales, Double bufferStock,
+			Double outstandingOrder) {
 		
 		super();
 		this.orderDetailId = orderDetailId;
@@ -50,6 +60,10 @@ public class OrderDetail {
 		this.unitPrice = unitPrice;
 		this.totalPrice = totalPrice;
 		this.lastStock = lastStock;
+		this.salesForecast = salesForecast;
+		this.averageSales = averageSales;
+		this.bufferStock = bufferStock;
+		this.outstandingOrder = outstandingOrder;
 	}
 
 	public Long getOrderDetailId() {
@@ -122,6 +136,38 @@ public class OrderDetail {
 
 	public void setLastStock(Double lastStock) {
 		this.lastStock = lastStock;
+	}
+
+	public Double getSalesForecast() {
+		return salesForecast;
+	}
+
+	public void setSalesForecast(Double salesForecast) {
+		this.salesForecast = salesForecast;
+	}
+
+	public Double getAverageSales() {
+		return averageSales;
+	}
+
+	public void setAverageSales(Double averageSales) {
+		this.averageSales = averageSales;
+	}
+
+	public Double getBufferStock() {
+		return bufferStock;
+	}
+
+	public void setBufferStock(Double bufferStock) {
+		this.bufferStock = bufferStock;
+	}
+
+	public Double getOutstandingOrder() {
+		return outstandingOrder;
+	}
+
+	public void setOutstandingOrder(Double outstandingOrder) {
+		this.outstandingOrder = outstandingOrder;
 	}
 
 }

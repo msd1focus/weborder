@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Form Input Order</title>
+	<title>Web Order - Focus Distribusi Indonesia</title>
 	<meta charset="UTF-8">
 	</meta>
 	<link rel="stylesheet" href="css/style.css"/>
@@ -13,7 +13,7 @@
 
 </head>
 
-<body>
+<body onload="onload()">
 
 	<div th:replace="fragments/header :: header"/>
 	
@@ -29,35 +29,53 @@
 			<thead>
 			<tr>
 				<th>No PO</th>
-				<th>Tgl PO</th>
+				<th>Tanggal PO</th>
 				<th>Total</th>
-				<th/>
+				<th>Detail PO</th>
+				<th>No Invoice</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr th:each="order : ${orders}" 
-				th:attr="data-orderid=${order.orderId},
-				         data-invoicenumber=${order.invoiceNumber},
-				         data-invoicestatus=${order.invoiceStatus},
-				         data-notes=${order.notes},
-				         data-tonasemobil=${order.tonaseMobil},
-				         data-expedisi=${order.expedisi}">
+				th:attr="data-company=${order.company},
+							data-orderid=${order.orderId},
+							data-invoicenumber=${order.invoiceNumber},
+							data-invoicestatus=${order.invoiceStatus},
+							data-notes=${order.notes},
+							data-tonasemobil=${order.tonaseMobil},
+							data-expedisi=${order.expedisi}">
 				<td th:text="${order.poNumber}"></td>
 				<td th:text="${order.orderDate}">232323</td>
 				<td style="text-align:right" 
 				    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}">232323</td>
 				<td>
-				  <input type="button" value="Click untuk detail" style="width:10em; color:blue; border:none; background-color:white;"
-                           th:onclick="'javascript:showdetail(this);'"/>
+				  <input type="button" 
+				  	value="Click Detail PO" 
+				  	style="width:10em; color:blue; border:none; background-color:white;"
+                    th:onclick="'javascript:showdetail(this);'"/>
                  </td> 
+                 <td id="cell_invoicenumber">
+                 </td>
 			</tr>
 			</tbody>
 		</table>
 
 	</div> <!-- div hist -->
 
+	<!-- Modal Loading -->
+	<div id="loading" class="modal-loading">
+	
+	  <div class="modal-content-loading">
+	    <!-- <span class="close">&times;</span> -->
+	    <img src="../static/images/loading.gif" 
+	    	th:src="@{images/loading.gif}"
+	    	width="42" height="42"/>
+	    Please Wait, Loading Data...
+	  </div>
+	
+	</div>
 
-	<!-- The Modal -->
+	<!-- The Modal PO-->
 	<div id="myModal" class="modal">
 
 		<div class="modal-content">
@@ -78,14 +96,6 @@
 					 <tr>
 						   <th>Total Order:</th>
 							 <td id="cell_totalorder"></td>
-					 </tr>
-					 <tr>
-						   <th>Status:</th>
-							 <td id="cell_invoicestatus"></td>
-					 </tr>
-					 <tr>
-						   <th>Nomor Invoice:</th>
-							 <td id="cell_invoicenumber"></td>
 					 </tr>
 					 <tr>
 						   <th>Notes:</th>
@@ -109,6 +119,95 @@
 				</table>
 			</div>
 
+	  	</div>
+	</div>
+	
+	<!-- The Modal Invoice-->
+	<div id="modalInvoice" class="modal">
+
+		<div class="modal-content">
+			<div id="closedivInvoice">
+				<h4>Detail Invoices <span id="closeInv" onclick="closeinvoice()" class="close">&times;</span></h4>
+				
+			</div>
+			<div id="invoiceinfo">
+				<table>
+					 <tr>
+						   <th>Nomor Invoice:</th>
+							 <td id="cell_invnumber"></td>
+					 </tr>
+					 <!--<tr>
+						   <th>Status Invoice:</th>
+							 <td id="cell_invstatus"></td>
+					 </tr> -->
+					 <tr>
+						   <th>Jumlah:</th>
+							 <td id="cell_jumlah"></td>
+					 </tr>
+					 <tr id="row_diskon1"
+					 	style="display: none;">
+						   <th>Diskon 1:</th>
+							 <td id="cell_diskon1"></td>
+					 </tr> 
+					 <tr id="row_diskon2"
+					 	style="display: none;">
+						   <th>Diskon 2:</th>
+							 <td id="cell_diskon2"></td>
+					 </tr>
+					 <tr id="row_diskon3"
+					 	style="display: none;">
+						   <th>Diskon 3:</th>
+							 <td id="cell_diskon3"></td>
+					 </tr>
+					 <tr id="row_diskon4"
+					 	style="display: none;">
+						   <th>Diskon 4:</th>
+							 <td id="cell_diskon4"></td>
+					 </tr>
+					 <tr id="row_diskon5"
+					 	style="display: none;">
+						   <th>Diskon 5:</th>
+							 <td id="cell_diskon5"></td>
+					 </tr>
+					 <tr id="row_diskon6"
+					 	style="display: none;">
+						   <th>Diskon 6:</th>
+							 <td id="cell_diskon6"></td>
+					 </tr>
+					 <tr id="row_diskon7" 
+					 	style="display: none;">
+						   <th>Diskon 7:</th>
+							 <td id="cell_diskon7"></td>
+					 </tr>
+					 <!--<tr>
+						   <th>Diskon 8:</th>
+							 <td id="cell_diskon8"></td>
+					 </tr>
+					 <tr>
+						   <th>PPN:</th>
+							 <td id="cell_ppn"></td>
+					 </tr>-->
+					 <tr>
+						   <th id="label_total">TOTAL (DPP):</th>
+							 <td id="cell_total"></td>
+					 </tr>
+				</table>
+			</div>
+			<div id="detailInvoice">
+				<table style="text-align:left">
+          			<thead>
+					  <tr>
+							<th >No</th>
+							<th>Kode Produk</th>
+							<th>Name</th>
+							<th>Qty + UoM</th>
+							<th>Harga</th>
+							<th>Amount</th>
+						</tr>
+					</thead>
+					<tbody id="detailInvoices"></tbody>
+				</table>
+			</div>
 	  	</div>
 	</div>
 	<div th:replace="fragments/footer :: footer"/>

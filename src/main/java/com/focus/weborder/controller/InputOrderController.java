@@ -3,13 +3,10 @@ package com.focus.weborder.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -24,29 +21,18 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.focus.weborder.security.model.User;
-import com.focus.weborder.security.repository.UserRepository;
 import com.focus.weborder.security.service.UserService;
-import com.focus.weborder.services.custinvoice.CustInvoice;
-import com.focus.weborder.services.custinvoice.CustInvoiceService;
 import com.focus.weborder.services.custmobil.CustMobil;
 import com.focus.weborder.services.custmobil.CustMobilService;
 import com.focus.weborder.services.customer.Customer;
 import com.focus.weborder.services.customer.CustomerService;
-import com.focus.weborder.services.custprod.CustProd;
-import com.focus.weborder.services.custprod.CustProdService;
-import com.focus.weborder.services.custprodsales.CustProdSales;
-import com.focus.weborder.services.custprodsales.CustProdSalesService;
-import com.focus.weborder.services.custprodtarget.CustProdTarget;
-import com.focus.weborder.services.custprodtarget.CustProdTargetService;
 import com.focus.weborder.services.custshipto.CustShipTo;
 import com.focus.weborder.services.custshipto.CustShipToService;
 import com.focus.weborder.services.listmobil.ListMobil;
@@ -57,10 +43,6 @@ import com.focus.weborder.services.orderdetail.OrderDetail;
 import com.focus.weborder.services.orderdetail.OrderDetailService;
 import com.focus.weborder.services.ordergrp.OrderGrp;
 import com.focus.weborder.services.ordergrp.OrderGrpService;
-import com.focus.weborder.services.product.Product;
-import com.focus.weborder.services.product.ProductService;
-import com.focus.weborder.services.produom.ProdUom;
-import com.focus.weborder.services.produom.ProdUomService;
 import com.focus.weborder.services.uploadhistory.UploadHistory;
 import com.focus.weborder.services.uploadhistory.UploadHistoryService;
 import com.focus.weborder.types.InputWebOrder;
@@ -74,15 +56,6 @@ public class InputOrderController
 
 	@Autowired
 	private CustomerService customerService;
-	
-	@Autowired
-	private CustProdService custProdService;
-	
-	@Autowired
-	private ProductService productService;
-	
-	@Autowired
-	private ProdUomService prodUomService;
 	
 	@Autowired
 	private OrderGrpService orderGrpService;
@@ -100,15 +73,6 @@ public class InputOrderController
 	private CustShipToService custShipToService;
 	
 	@Autowired
-	private CustInvoiceService custInvoiceService;
-
-	@Autowired
-	private CustProdSalesService custProdSalesService;
-	
-	@Autowired
-	private CustProdTargetService custProdTargetService;
-	
-	@Autowired
 	private UserService userService;
 	
 	@Autowired
@@ -123,87 +87,6 @@ public class InputOrderController
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	    binder.setAutoGrowCollectionLimit(100000);
-	}
-	
-	@GetMapping("/history")
-	public ModelAndView orderHistory(){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		ModelAndView modelAndView = new ModelAndView();
-		List<Order> orders = new ArrayList<Order>();
-		OrderGrp orderGrp = null;
-		User user = new User();
-		if (auth != null) {
-			user = userService.findUserByUsername(auth.getName());
-			orders = orderService.getOrdersByCompanyAndCustid(user.getCompany(), user.getCustId());
-			for(Order order: orders) {
-
-				if(orderGrp!=null) {
-					if(orderGrp.getOrderGrpId()!=order.getOrderGrpId()) {
-						orderGrp = orderGrpService.getOrderGrpOrdergrpid(
-										order.getCompany(), 
-										order.getCustId(),
-										order.getOrderGrpId());
-					}
-				}
-				else {
-					orderGrp = orderGrpService.getOrderGrpOrdergrpid(
-									order.getCompany(), 
-									order.getCustId(),
-									order.getOrderGrpId());
-				}
-				order.setInvoiceStatus(orderGrp.getSubmitStatus());
-				
-			}
-		}
-		modelAndView.addObject("orders", orders);
-		modelAndView.setViewName("history");
-		return modelAndView;
-	}
-	
-	@GetMapping("/historyall")
-	public String orderhistoryAll(Model model){
-		model.addAttribute("customername");
-		model.addAttribute("companyname");
-		return "/historyall";
-	}
-	
-	@RequestMapping(value = "/historyall", method = RequestMethod.POST)
-	public ModelAndView orderHistoryAll(
-			@RequestParam(value="companyname", required=false) String companyname,
-			@RequestParam(value="customername", required=false) String customername){
-		ModelAndView modelAndView = new ModelAndView();
-		List<Order> orders = new ArrayList<Order>();
-		OrderGrp orderGrp = null;
-		User user = new User();
-		String company = companyname;
-		String customer = customername;
-		user = userService.findUserByUsername(companyname + customername);
-		if(user!=null) {
-			orders = orderService.getOrdersByCompanyAndCustid(user.getCompany(), user.getCustId());
-			for(Order order: orders) {
-				if(orderGrp!=null) {
-					if(orderGrp.getOrderGrpId()!=order.getOrderGrpId()) {
-						orderGrp = orderGrpService.getOrderGrpOrdergrpid(
-										order.getCompany(), 
-										order.getCustId(),
-										order.getOrderGrpId());
-					}
-				}
-				else {
-					orderGrp = orderGrpService.getOrderGrpOrdergrpid(
-									order.getCompany(), 
-									order.getCustId(),
-									order.getOrderGrpId());
-				}
-				order.setInvoiceStatus(orderGrp.getSubmitStatus());
-				
-			}
-		}
-		modelAndView.addObject("orders", orders);
-		modelAndView.addObject("customername", customer);
-		modelAndView.addObject("companyname", company);
-		modelAndView.setViewName("historyall");
-		return modelAndView;
 	}
 	
 	@GetMapping("/login")
@@ -455,7 +338,7 @@ public class InputOrderController
 			
 			System.out.println();
 			System.out.print(
-					"[WebOrder-Login]" 
+					"[WebOrder-InputOrder]" 
 					+ year 
 					+ "/"
 					+ month
@@ -540,7 +423,7 @@ public class InputOrderController
 						}
 					}
 				}
-				
+
 				List<Order> orders = new ArrayList<>();
 				Order order1 = null;
 				Order order2 = null;
@@ -759,7 +642,7 @@ public class InputOrderController
 					}
 				}
 				
-				System.out.print("; " + orders.size());
+				//System.out.print("; " + orders.size());
 				
 				if(orders.size()==0) {
 					
@@ -1504,7 +1387,6 @@ public class InputOrderController
 			Order order3 = null;
 			Order order4 = null;
 			Order order5 = null;
-			
 			if(orders.size()>0) {
 				order1 = orders.get(0);
 				if(orders.size()>1) {
@@ -1846,13 +1728,6 @@ public class InputOrderController
 	    return "home";
 	}
 	
-	private String formatText(Long value) {
-		String text = "0";
-		NumberFormat usFormat = NumberFormat.getNumberInstance(Locale.US);
-		text = usFormat.format(value);
-		return text;
-	}
-	
 	private Long unFormatText(String text) {
 		Long value = (long)0;
 		text = text.replaceAll("[^\\d.]+", "");
@@ -1977,23 +1852,6 @@ public class InputOrderController
 		return m;
 	}
 	
-	private String getMonthNameOracle(int m) {
-		String mName = "";
-		if(m==1) {mName= "JAN";}
-		else if(m==2) {mName= "FEB";}
-		else if(m==3) {mName= "MAR";}
-		else if(m==4) {mName= "APR";}
-		else if(m==5) {mName= "MAY";}
-		else if(m==6) {mName= "JUN";}
-		else if(m==7) {mName= "JUL";}
-		else if(m==8) {mName= "AUG";}
-		else if(m==9) {mName= "SEP";}
-		else if(m==10) {mName= "OCT";}
-		else if(m==11) {mName= "NOV";}
-		else if(m==12) {mName= "DEC";}
-		return mName;
-	}
-	
 	private Long upsertOrder(Order order) {
 		
 		Long orderId = order.getOrderId();
@@ -2027,107 +1885,7 @@ public class InputOrderController
 	private String getMinDate() {
 		return getCurrentDate();
 	}
-	
-	private String getMinDate(String periodeOrder) {
-		String minDate = getMinDate();
 		
-		String[] p = periodeOrder.split(" ");
-	    String monthName = p[0];
-	    String year = p[1];
-		if(monthName.equals("Januari")){
-			minDate = year + "-01-01";
-	    }
-	    else if(monthName.equals("Pebruari")){
-	    	minDate = year + "-02-01";
-	    }
-	    else if(monthName.equals("Maret")){
-	    	minDate = year + "-03-01";
-	    }
-	    else if(monthName.equals("April")){
-	    	minDate = year + "-04-01";
-	    }
-	    else if(monthName.equals("Mei")){
-	    	minDate = year + "-05-01";
-	    }
-	    else if(monthName.equals("Juni")){
-	    	minDate = year + "-06-01";
-	    }
-	    else if(monthName.equals("Juli")){
-	    	minDate = year + "-07-01";
-	    }
-	    else if(monthName.equals("Agustus")){
-	    	minDate = year + "-08-01";
-	    }
-	    else if(monthName.equals("September")){
-	    	minDate = year + "-09-01";
-	    }
-	    else if(monthName.equals("Oktober")){
-	    	minDate = year + "-10-01";
-	    }
-	    else if(monthName.equals("November")){
-	    	minDate = year + "-11-01";
-	    }
-	    else if(monthName.equals("Desember")){
-	    	minDate = year + "-12-01";
-	    } 
-		return minDate;
-	}
-	
-	private java.util.Date getMinDateUtil(String periodeOrder) {
-		
-		java.util.Date date = null;
-		String minDate = "2000/01/01";
-		
-		String[] p = periodeOrder.split(" ");
-	    String monthName = p[0];
-	    String year = p[1];
-		if(monthName.equals("Januari")){
-			minDate = year + "/01/01";
-	    }
-	    else if(monthName.equals("Pebruari")){
-	    	minDate = year + "/02/01";
-	    }
-	    else if(monthName.equals("Maret")){
-	    	minDate = year + "/03/01";
-	    }
-	    else if(monthName.equals("April")){
-	    	minDate = year + "/04/01";
-	    }
-	    else if(monthName.equals("Mei")){
-	    	minDate = year + "/05/01";
-	    }
-	    else if(monthName.equals("Juni")){
-	    	minDate = year + "/06/01";
-	    }
-	    else if(monthName.equals("Juli")){
-	    	minDate = year + "/07/01";
-	    }
-	    else if(monthName.equals("Agustus")){
-	    	minDate = year + "/08/01";
-	    }
-	    else if(monthName.equals("September")){
-	    	minDate = year + "/09/01";
-	    }
-	    else if(monthName.equals("Oktober")){
-	    	minDate = year + "/10/01";
-	    }
-	    else if(monthName.equals("November")){
-	    	minDate = year + "/11/01";
-	    }
-	    else if(monthName.equals("Desember")){
-	    	minDate = year + "/12/01";
-	    } 
-		
-	    SimpleDateFormat df = new SimpleDateFormat("yyyy/mm/dd");
-	    try {
-			date = df.parse(minDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	    
-		return date;
-	}
-	
 	private String getMaxDate(String periodeOrder) {
 		String maxDate = "2100-01-01";
 		
@@ -2173,71 +1931,6 @@ public class InputOrderController
 	    } 
 		
 		return maxDate;
-	}
-	
-	private java.util.Date getMaxDateUtil(String periodeOrder) {
-		
-		java.util.Date date = null;
-		String maxDate = "2100/01/01";
-		
-		String[] p = periodeOrder.split(" ");
-	    String monthName = p[0];
-	    String year = p[1];
-	    
-		if(monthName.equals("Januari")){
-	    	maxDate = year + "/01/31";
-	    }
-	    else if(monthName.equals("Pebruari")){
-	    	maxDate = year + "/02/28";
-	    }
-	    else if(monthName.equals("Maret")){
-	    	maxDate = year + "/03/31";
-	    }
-	    else if(monthName.equals("April")){
-	    	maxDate = year + "/04/30";
-	    }
-	    else if(monthName.equals("Mei")){
-	    	maxDate = year + "/05/31";
-	    }
-	    else if(monthName.equals("Juni")){
-	    	maxDate = year + "/06/30";
-	    }
-	    else if(monthName.equals("Juli")){
-	    	maxDate = year + "/07/31";
-	    }
-	    else if(monthName.equals("Agustus")){
-	    	maxDate = year + "/08/31";
-	    }
-	    else if(monthName.equals("September")){
-	    	maxDate = year + "/09/30";
-	    }
-	    else if(monthName.equals("Oktober")){
-	    	maxDate = year + "/10/31";
-	    }
-	    else if(monthName.equals("November")){
-	    	maxDate = year + "/11/30";
-	    }
-	    else if(monthName.equals("Desember")){
-	    	maxDate = year + "/12/31";
-	    } 
-		
-
-	    SimpleDateFormat df = new SimpleDateFormat("yyyy/mm/dd");
-	    try {
-			date = df.parse(maxDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	    
-		return date;
-	}
-	
-	private String getYearOracle(Integer year) {
-		String s = year.toString();
-		String yearOracle = 
-				String.valueOf(s.charAt(2)) 
-				+ String.valueOf(s.charAt(3));
-		return yearOracle;
 	}
 	
 	private String createPoNumber(
