@@ -55,13 +55,20 @@ function showdetail(obj) {
 			objitems = JSON.parse(this.responseText);
 
 			for (var i = 0; i < objitems.length; i++) {
-				tab.insertRow(i).outerHTML = '<tr><td>'
-						+ objitems[i].productCode + '</td><td>'
-						+ objitems[i].productDesc + '</td><td>' 
-						+ objitems[i].uom + '</td><td style="text-align:right">' 
-						+ nf.format(objitems[i].unitPrice) + '</td><td style="text-align:right">' 
-						+ objitems[i].jumlah + '</td><td style="text-align:right">' 
-						+ nf.format(objitems[i].totalPrice) + '</td></tr>';
+				tab.insertRow(i).outerHTML = 
+						'<tr><td>'
+						+ objitems[i].productCode 
+						+ '</td><td>'
+						+ objitems[i].productDesc 
+						+ '</td><td>' 
+						+ objitems[i].uom 
+						+ '</td><td style="text-align:right">' 
+						+ nf.format(objitems[i].unitPrice) 
+						+ '</td><td style="text-align:right">' 
+						+ objitems[i].jumlah 
+						+ '</td><td style="text-align:right">' 
+						+ nf.format(objitems[i].totalPrice) 
+						+ '</td></tr>';
 			}
 		}
 	};
@@ -93,6 +100,7 @@ function showinvoice(obj){
 			var objitems;
 			var nf = Intl.NumberFormat();
 			objitems = JSON.parse(this.responseText);
+			var cellTrxDate = document.getElementById("cell_trxdate");
 			var cellJumlah = document.getElementById("cell_jumlah");
 			var rowDiskon1 = document.getElementById("row_diskon1");
 			var rowDiskon2 = document.getElementById("row_diskon2");
@@ -101,6 +109,9 @@ function showinvoice(obj){
 			var rowDiskon5 = document.getElementById("row_diskon5");
 			var rowDiskon6 = document.getElementById("row_diskon6");
 			var rowDiskon7 = document.getElementById("row_diskon7");
+			var rowDpp = document.getElementById("row_dpp");
+			var rowPpn = document.getElementById("row_ppn");
+			var rowTotal = document.getElementById("row_total");
 			var cellDiskon1 = document.getElementById("cell_diskon1");
 			var cellDiskon2 = document.getElementById("cell_diskon2");
 			var cellDiskon3 = document.getElementById("cell_diskon3");
@@ -108,8 +119,10 @@ function showinvoice(obj){
 			var cellDiskon5 = document.getElementById("cell_diskon5");
 			var cellDiskon6 = document.getElementById("cell_diskon6");
 			var cellDiskon7 = document.getElementById("cell_diskon7");
-			var labelTotal = document.getElementById("label_total");
+			var cellDpp = document.getElementById("cell_dpp");
+			var cellPpn = document.getElementById("cell_ppn");
 			var cellTotal = document.getElementById("cell_total");
+			var trxDate = "UNKNOWN";
 			var jumlah = 0; 
 			var diskon1 = 0;
 			var diskon2 = 0;
@@ -118,8 +131,12 @@ function showinvoice(obj){
 			var diskon5 = 0;
 			var diskon6 = 0;
 			var diskon7 = 0;
-			var labelTotalText = "TOTAL (DPP):";
+			var isIncludeTax = false;
+			var isBatam = false;
 			for (var i = 0; i < objitems.length; i++) {
+				if(objitems[i].trxDate!=null){
+					trxDate = objitems[i].trxDate;
+				}
 				var qty = parseFloat(objitems[i].quantityInvoiced);
 				var price = parseFloat(objitems[i].unitSellingPrice);
 				var amount = qty*price;
@@ -131,25 +148,40 @@ function showinvoice(obj){
 				diskon6 = objitems[i].diskon6;
 				diskon7 = objitems[i].diskon7;
 				if(objitems[i].taxClassificationCode=="PPN 10% INCLUDE"){
-					labelTotalText = 
-						"TOTAL (" + objitems[i].taxClassificationCode + "):";
+					isIncludeTax = true;
+				}
+				else{
+					if(objitems[i].attribute5=="SLB006"){
+						isBatam = true;
+					}
 				}
 				jumlah += amount;
-				tab.insertRow(i).outerHTML = '<tr><td>'
-						+ objitems[i].lineNumber + '</td><td>'
-						+ objitems[i].itemCode + '</td><td>' 
-						+ objitems[i].itemDesc + '</td><td style="text-align:right">' 
-						+ nf.format(qty) + ' ' + objitems[i].uomCode  + '</td><td style="text-align:right">' 
-						+ nf.format(price) + '</td><td style="text-align:right">' 
-						+ nf.format(amount) + '</td></tr>';
+				tab.insertRow(i).outerHTML = 
+						'<tr><td>'
+						+ objitems[i].lineNumber 
+						+ '</td><td>'
+						+ objitems[i].itemCode 
+						+ '</td><td>' 
+						+ objitems[i].itemDesc 
+						+ '</td><td style="text-align:right">' 
+						+ formatCurrency(nf.format(qty)) 
+						+ ' ' 
+						+ objitems[i].uomCode  
+						+ '</td><td style="text-align:right">' 
+						+ formatCurrency(nf.format(price)) 
+						+ '</td><td style="text-align:right">' 
+						+ formatCurrency(nf.format(amount)) 
+						+ '</td></tr>';
 			}
 			
-			cellJumlah.innerHTML = nf.format(jumlah);
+			cellTrxDate.innerHTML = trxDate;
+			cellJumlah.innerHTML = formatCurrency(nf.format(jumlah));
 			
 			var total = jumlah;
 			
 			if(diskon1>0){
-				cellDiskon1.innerHTML = nf.format(diskon1);
+				cellDiskon1.innerHTML = 
+					formatCurrency(nf.format(diskon1));
 				rowDiskon1.style.display = "table-row";
 				total -= diskon1;
 			}
@@ -158,7 +190,8 @@ function showinvoice(obj){
 			}
 			
 			if(diskon2>0){
-				cellDiskon2.innerHTML = nf.format(diskon2);
+				cellDiskon2.innerHTML = 
+					formatCurrency(nf.format(diskon2));
 				rowDiskon2.style.display = "table-row";
 				total -= diskon2;
 			}
@@ -167,7 +200,8 @@ function showinvoice(obj){
 			}
 			
 			if(diskon3>0){
-				cellDiskon3.innerHTML = nf.format(diskon3);
+				cellDiskon3.innerHTML = 
+					formatCurrency(nf.format(diskon3));
 				rowDiskon3.style.display = "table-row";
 				total -= diskon3;
 			}
@@ -176,7 +210,8 @@ function showinvoice(obj){
 			}
 			
 			if(diskon4>0){
-				cellDiskon4.innerHTML = nf.format(diskon4);
+				cellDiskon4.innerHTML = 
+					formatCurrency(nf.format(diskon4));
 				rowDiskon4.style.display = "table-row";
 				total -= diskon4;
 			}
@@ -185,7 +220,8 @@ function showinvoice(obj){
 			}
 			
 			if(diskon5>0){
-				cellDiskon5.innerHTML = nf.format(diskon5);
+				cellDiskon5.innerHTML = 
+					formatCurrency(nf.format(diskon5));
 				rowDiskon5.style.display = "table-row";
 				total -= diskon5;
 			}
@@ -194,7 +230,8 @@ function showinvoice(obj){
 			}
 			
 			if(diskon6>0){
-				cellDiskon6.innerHTML = nf.format(diskon6);
+				cellDiskon6.innerHTML = 
+					formatCurrency(nf.format(diskon6));
 				rowDiskon6.style.display = "table-row";
 				total -= diskon6;
 			}
@@ -203,18 +240,36 @@ function showinvoice(obj){
 			}
 			
 			if(diskon7>0){
-				cellDiskon7.innerHTML = nf.format(diskon7);
+				cellDiskon7.innerHTML = 
+					formatCurrency(nf.format(diskon7));
 				rowDiskon7.style.display = "table-row";
 				total -= diskon7;
 			}
 			else{
 				rowDiskon7.style.display = "none";
 			}
-			labelTotal.innerHTML = labelTotalText;
 			if(total<0){
 				total = 0;
 			}
-			cellTotal.innerHTML = total;
+			if(isIncludeTax){
+				cellTotal.innerHTML = 
+					formatCurrency(nf.format(total));
+				rowTotal.style.display = "table-row";
+			}
+			else{
+				cellDpp.innerHTML = 
+					formatCurrency(nf.format(total));
+				rowDpp.style.display = "table-row";
+				if(!isBatam){
+					var ppn = total/10;
+					cellPpn.innerHTML = 
+						formatCurrency(nf.format(ppn));
+					cellTotal.innerHTML = 
+						formatCurrency(nf.format(total+ppn));
+					rowPpn.style.display = "table-row";
+					rowTotal.style.display = "table-row";
+				}
+			}
 			loading.style.display = "none";
 			document.getElementById("modalInvoice").style.display = "block";
 		}
@@ -226,6 +281,29 @@ function showinvoice(obj){
 /*	setRequestHeader()	*/	
 	xhttp.open("GET", "/oracle" + company + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
 	xhttp.send();
+}
+
+function formatCurrency(obj){
+	var result = "0.00";
+	if(obj.includes(".")){
+		var objs = obj.split(".");
+        var obj1 = objs[0].trim();
+        var obj2 = objs[1].trim();
+        if(obj2.length==0){
+        	obj2 = obj2 + "00";
+        }
+        else if(obj2.length==1){
+        	obj2 = obj2 + "0";
+        }
+        else if(obj2.length>2){
+        	obj2 = obj2.substring(0,2);
+        }
+        result = obj1 + "." + obj2;
+	}
+	else{
+		result = obj + ".00";
+	}
+	return result;
 }
 
 function closeinvoice(){

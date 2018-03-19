@@ -140,7 +140,34 @@ Version 1.21.0 (Tuesday, 6 March 2018 by Amin Mutohar)
  - Bug Fixing
  	1. Error invalid product		
  	
-Version 1.22.0 (Wednesday, 7 March 2018 by Amin Mutohar)
+Version 1.22.0 (Wednesday, 15 March 2018 by Amin Mutohar)
  - Change Application
  	1. Move Invoice Number to History table
  	2. show invoice detail when Invoice Number has clicked on History table
+ 	
+Version 1.23.0 (Friday, 16 March 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Move User Management Controller from InputOrderController to 
+ 		UserController
+ 	2. Move Error Controller from InputOrderController to 
+ 		ErrorController
+ 	3. Move Report Controller from InputOrderController to 
+ 		ReportController
+ 	4. Move Upload Controller from InputOrderController to 
+ 		UploadController
+ 	5. Add default serialVersionUID on StorageException
+ 	6. Add default serialVersionUID on Customer
+ 	7. Add default serialVersionUID on CustProdStock
+ 	8. Add default serialVersionUID on CustProdTarget
+ 	9. Add spring-boot-configuration-processor dependency on POM
+ 		for @ConfigurationProperties requirement on StorageProperties
+ 		
+ - Bug Fixing
+ 	1. Fix total number format on invoice detail on history
+ 	
+Version 1.24.0 (Monday, 19 March 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Change Invoice Detail show for Included Tax, Excluded Tax,
+ 		and Batam Distributors
+ 	2. Add Tanggal Invoice to Invoice Detail
+ 	3. Formatting currency

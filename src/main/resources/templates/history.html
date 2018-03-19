@@ -133,63 +133,79 @@
 			<div id="invoiceinfo">
 				<table>
 					 <tr>
-						   <th>Nomor Invoice:</th>
-							 <td id="cell_invnumber"></td>
+						   <th>Tanggal Invoice:</th>
+							 <td id="cell_trxdate"
+							 	style="text-align:right"></td>
 					 </tr>
-					 <!--<tr>
-						   <th>Status Invoice:</th>
-							 <td id="cell_invstatus"></td>
-					 </tr> -->
+					 <tr>
+						   <th>Nomor Invoice:</th>
+							 <td id="cell_invnumber"
+							 	style="text-align:right"></td>
+					 </tr>
 					 <tr>
 						   <th>Jumlah:</th>
-							 <td id="cell_jumlah"></td>
+							 <td id="cell_jumlah"
+							 	style="text-align:right"></td>
 					 </tr>
 					 <tr id="row_diskon1"
 					 	style="display: none;">
 						   <th>Diskon 1:</th>
-							 <td id="cell_diskon1"></td>
+							 <td id="cell_diskon1"
+							 	style="text-align:right"></td>
 					 </tr> 
 					 <tr id="row_diskon2"
 					 	style="display: none;">
 						   <th>Diskon 2:</th>
-							 <td id="cell_diskon2"></td>
+							 <td id="cell_diskon2"
+							 	style="text-align:right"></td>
 					 </tr>
 					 <tr id="row_diskon3"
 					 	style="display: none;">
 						   <th>Diskon 3:</th>
-							 <td id="cell_diskon3"></td>
+							 <td id="cell_diskon3"
+							 	style="text-align:right"></td>
 					 </tr>
 					 <tr id="row_diskon4"
 					 	style="display: none;">
 						   <th>Diskon 4:</th>
-							 <td id="cell_diskon4"></td>
+							 <td id="cell_diskon4"
+							 	style="text-align:right"></td>
 					 </tr>
 					 <tr id="row_diskon5"
 					 	style="display: none;">
 						   <th>Diskon 5:</th>
-							 <td id="cell_diskon5"></td>
+							 <td id="cell_diskon5"
+							 	style="text-align:right"></td>
 					 </tr>
 					 <tr id="row_diskon6"
 					 	style="display: none;">
 						   <th>Diskon 6:</th>
-							 <td id="cell_diskon6"></td>
+							 <td id="cell_diskon6"
+							 	style="text-align:right"></td>
 					 </tr>
 					 <tr id="row_diskon7" 
 					 	style="display: none;">
 						   <th>Diskon 7:</th>
-							 <td id="cell_diskon7"></td>
+							 <td id="cell_diskon7"
+							 	style="text-align:right"></td>
 					 </tr>
-					 <!--<tr>
-						   <th>Diskon 8:</th>
-							 <td id="cell_diskon8"></td>
+					 <tr id="row_dpp"
+					 	style="display: none;">
+						   <th>DPP:</th>
+							 <td id="cell_dpp"
+							 	style="text-align:right"></td>
 					 </tr>
-					 <tr>
+					 <tr id="row_ppn"
+					 	style="display: none;">
 						   <th>PPN:</th>
-							 <td id="cell_ppn"></td>
-					 </tr>-->
-					 <tr>
-						   <th id="label_total">TOTAL (DPP):</th>
-							 <td id="cell_total"></td>
+							 <td id="cell_ppn"
+							 	style="text-align:right"></td>
+					 </tr>
+					 <tr id="row_total"
+					 	style="display: none;">
+						   <th>TOTAL (INC. PPN 10%):</th>
+							 <td id="cell_total"
+							 	style="text-align:right"></td>
 					 </tr>
 				</table>
 			</div>
@@ -200,7 +216,7 @@
 							<th >No</th>
 							<th>Kode Produk</th>
 							<th>Name</th>
-							<th>Qty + UoM</th>
+							<th>Qty</th>
 							<th>Harga</th>
 							<th>Amount</th>
 						</tr>

@@ -165,6 +165,10 @@ public class Customer {
 }
 
 class CustomerId implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String company;
 	Long custId;
 }

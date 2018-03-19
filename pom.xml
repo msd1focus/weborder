@@ -5,7 +5,7 @@
 
 	<groupId>com.focus.focus-weborder</groupId>
 	<artifactId>focus-weborder</artifactId>
-	<version>1.22.0</version>
+	<version>1.24.0</version>
 	<packaging>war</packaging>
 	
 	<name>focus-weborder</name>
@@ -77,7 +77,12 @@
 	        <groupId>org.webjars</groupId>
 	        <artifactId>jquery</artifactId>
 	        <version>3.2.1</version>
-	    </dependency>  
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework.boot</groupId>
+	    	<artifactId>spring-boot-configuration-processor</artifactId>
+	    	<optional>true</optional>
+	    </dependency>
 	</dependencies>
 
 	<build>

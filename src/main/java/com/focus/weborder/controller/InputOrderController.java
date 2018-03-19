@@ -1,14 +1,11 @@
 package com.focus.weborder.controller;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,13 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.focus.weborder.security.model.User;
@@ -43,10 +38,7 @@ import com.focus.weborder.services.orderdetail.OrderDetail;
 import com.focus.weborder.services.orderdetail.OrderDetailService;
 import com.focus.weborder.services.ordergrp.OrderGrp;
 import com.focus.weborder.services.ordergrp.OrderGrpService;
-import com.focus.weborder.services.uploadhistory.UploadHistory;
-import com.focus.weborder.services.uploadhistory.UploadHistoryService;
 import com.focus.weborder.types.InputWebOrder;
-import com.focus.weborder.upload.storage.StorageService;
 import com.focus.weborder.types.InputOrder;
 import com.focus.weborder.types.InputProduct;
 
@@ -77,252 +69,15 @@ public class InputOrderController
 	
 	@Autowired
 	private CustMobilService custMobilService;
-	
-	@Autowired
-	private UploadHistoryService uploadHistoryService;
-
-	@Autowired
-	private StorageService storageService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 	    binder.setAutoGrowCollectionLimit(100000);
 	}
-	
-	@GetMapping("/login")
-    public String login() {
-        return "/login";
-    }
-
-    @GetMapping("/401")
-    public String error401() {
-        return "/error/401";
-    }
-
-    @GetMapping("/403")
-    public String error403() {
-        return "/error/403";
-    }
-    
-    @GetMapping("/404")
-    public String error404() {
-        return "/error/404";
-    }
-    
-    @GetMapping("/405")
-    public String error405() {
-        return "/error/405";
-    }
-    
-
-    @GetMapping("/500")
-    public String error500() {
-        return "/error/500";
-    }
-    
-    @GetMapping("/report")
-    public String report(Model model) {
-    	
-    	Customer customer = new Customer();
-    	
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {
-			if(auth.getName() != null) {
-				User user = 
-						userService.findUserByUsername(auth.getName());
-				customer.setCompany(user.getCompany());
-		    	customer.setCustId(user.getCustId());	
-			}
-		}
-		model.addAttribute("customer", customer);
-        return "report";
-    }
-    
-    @RequestMapping(value="/changepassword", method = RequestMethod.GET)
-    public String changePassword() {
-        return "/changepassword";
-    }
-    
-    @RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-	public ModelAndView changePassword(
-	        @RequestParam(value="newpassword", required=true) String newpassword) {
-    	
-       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String message = "Failed";
-		if (auth != null) {
-			if(auth.getName() != null) {
-				User user = 
-						userService.findUserByUsername(auth.getName());
-				user.setPassword(newpassword);
-				userService.saveUser(user);
-				message = "Success";
-			}
-		}
-			
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("messageInfo", message);
-		modelAndView.setViewName("changepassword");
-		return modelAndView;
-	}
-
-	@GetMapping("/changepassworduser")
-    public String changepassworduser() {
-        return "/changepassworduser";
-    }
-	
-	@RequestMapping(value="/upload", method = RequestMethod.GET)
-    public String uploadForm() {
-        return "/uploadform";
-    }
-    
-
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public String handleFileUpload(
-    		@RequestParam("file") MultipartFile[] files,
-            Model model) throws IOException {
-       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-       	String username = auth.getName();
-       	String uploadLog = "You successfully uploaded ";
-       	int i = 0;
-       	for(MultipartFile mf: files) {
-        	storageService.store(mf, username);
-        	uploadLog += mf.getOriginalFilename();
-        	if(i!=(files.length-1)) {
-        		uploadLog += " & ";
-        	}
-        	i++;
-       	}
-    	model.addAttribute("message", uploadLog + "!");
-    	return "/uploadform";
-    }
-    
-	@RequestMapping(value="/uploadhistory", method = RequestMethod.GET)
-    public ModelAndView uploadHistory() {
-
-		ModelAndView modelAndView = new ModelAndView();
-		List<UploadHistory> uploadHistories = new ArrayList<>();
-		uploadHistories = uploadHistoryService.getAllUploadHistories();
-		modelAndView.addObject("uploadHistories", uploadHistories);
-		modelAndView.setViewName("uploadhistory");
-        return modelAndView;
-    }
-    
-	@RequestMapping(value = "/changepassworduser", method = RequestMethod.POST)
-	public ModelAndView changePasswordUser(
-	        @RequestParam(value="username", required=true) String username,
-	        @RequestParam(value="newpassword", required=true) String newpassword) {
-    	
-       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String message = "Failed";
-		if (auth != null) {
-			for(GrantedAuthority ga: auth.getAuthorities()) {
-				String role = ga.getAuthority();
-				if(role != null) {
-					if(role.equals("ADMIN")) {
-						User user = 
-								userService.findUserByUsername(username);
-						user.setPassword(newpassword);
-						userService.saveUser(user);
-						message = "Success";
-					}
-				}
-			}
-		}
-			
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("messageInfo", message);
-		modelAndView.setViewName("changepassworduser");
-		return modelAndView;
-	}
-	
-    @RequestMapping(value="/resetpassword", method = RequestMethod.GET)
-	public ModelAndView resetpassword(){
-		ModelAndView modelAndView = new ModelAndView();
-		User user = new User();
-		modelAndView.addObject("user", user);
-		modelAndView.setViewName("resetpassword");
-		return modelAndView;
-	}
-    
-    @RequestMapping(value = "/resetpassword", method = RequestMethod.POST)
-	public ModelAndView resetpassword(
-			Model model) {
-    	
-
-		ModelAndView modelAndView = new ModelAndView();
-		
-       	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-       	
-       	Boolean isAdmin = false;
-		
-		if (auth != null) {	
-			for(GrantedAuthority ga: auth.getAuthorities()) {
-				String role = ga.getAuthority();
-				if(role != null) {
-					if(role.equals("ADMIN")) {
-						
-						isAdmin = true;
-						
-						List<User> users = userService.getAll();
-						
-						for(User u: users) {
-							u.setPassword("password");
-							userService.saveUser(u);
-						}
-						
-						User user = new User();
-						modelAndView.addObject("user", user);
-						modelAndView.addObject("successMessage", "Success");
-						modelAndView.setViewName("resetpassword");
-					}
-				}
-			}
-		}
-		
-		if(!isAdmin) {
-			User user = new User();
-			modelAndView.addObject("user", user);
-			modelAndView.addObject("successMessage", "Failed");
-			modelAndView.setViewName("resetpassword");
-		}
-		
-		return modelAndView;
-	}
-    
-    @RequestMapping(value="/registration", method = RequestMethod.GET)
-	public ModelAndView registration(){
-		ModelAndView modelAndView = new ModelAndView();
-		User user = new User();
-		modelAndView.addObject("user", user);
-		modelAndView.setViewName("registration");
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-		ModelAndView modelAndView = new ModelAndView();
-		User userExists = userService.findUserByUsername(user.getUsername());
-		if (userExists != null) {
-			bindingResult
-					.rejectValue("name", "error.user",
-							"There is already a user registered with the name provided");
-		}
-		if (bindingResult.hasErrors()) {
-			modelAndView.setViewName("registration");
-		} else {
-			userService.saveUser(user);
-			modelAndView.addObject("successMessage", "User has been registered successfully");
-			modelAndView.addObject("user", new User());
-			modelAndView.setViewName("registration");
-			
-		}
-		return modelAndView;
-	}
-    
+	   
 	@RequestMapping(value="/", method=RequestMethod.GET)
     public ModelAndView order(
     		Model model){
-		
 
 		ModelAndView modelAndView = new ModelAndView();
 		

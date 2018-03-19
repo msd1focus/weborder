@@ -10,4 +10,5 @@ public interface UserService {
 	public void saveUser(User user);
 	public User findUserByName(String name);
 	public User findUserByUsername(String username);
+	public void changePassword(User user);
 }
