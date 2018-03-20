@@ -171,3 +171,8 @@ Version 1.24.0 (Monday, 19 March 2018 by Amin Mutohar)
  		and Batam Distributors
  	2. Add Tanggal Invoice to Invoice Detail
  	3. Formatting currency
+ 	
+Version 1.25.0 (Tuesday, 20 March 2018 by Amin Mutohar)
+ - Change Application
+ 	1. Rearrange all history table size
+ 	2. Update admin history based on user history

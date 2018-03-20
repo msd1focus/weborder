@@ -83,6 +83,7 @@ function showinvoice(obj){
 	console.log("obj.value: " + obj.value);
 	var loading = document.getElementById('loading');
 	loading.style.display = "block";
+	//document.getElementById("modalInvoice").style.display = "block"; //testonly
 	var invoiceNumber = obj.value;
 	var tab = document.getElementById("detailInvoices");
 	var rowobj = obj.parentElement.parentElement;
