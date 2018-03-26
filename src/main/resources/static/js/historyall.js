@@ -1,32 +1,34 @@
 "use strict";
 
 function onload(){
-	console.log("onload");
+	//console.log("onload");
 	var conftab = document.getElementById("conftab");
-	console.log("conftab.rows.length: " + conftab.rows.length);
-	for(var idxRow = 1; idxRow<conftab.rows.length; idxRow++){
-		var invoiceNumber = conftab.rows[idxRow].getAttribute("data-invoicenumber");
-    	console.log("data-invoicenumber: " + invoiceNumber);
-    	if(invoiceNumber!=null){
-    		var innerHtml = "";
-    		if(invoiceNumber.includes(";")){
-    			var inn = invoiceNumber.split(";");
-                for(var i=0; i<inn.length; i++){
-                	if(i>0){
-                		innerHtml += '<br/>';
-                	}
-                	innerHtml += '<input type="button" value="' 
-                		+ inn[i].trim() 
-                		+ '" style="width:10em; color:blue; border:none; background-color:white;" onclick="showinvoice(this)"/>';
-                }
-    		}
-    		else{
-    			innerHtml += '<input type="button" value="' 
-    				+ invoiceNumber.trim() 
-    				+ '" style="width:10em; color:blue; border:none; background-color:white;" onclick="showinvoice(this)"/>';
-    		}
-    		conftab.rows[idxRow].cells[4].innerHTML = innerHtml;
-    	}
+	//console.log("conftab.rows.length: " + conftab.rows.length);
+	if(conftab.rows.length>1){
+		for(var idxRow = 1; idxRow<conftab.rows.length; idxRow++){
+			var invoiceNumber = conftab.rows[idxRow].getAttribute("data-invoicenumber");
+	    	//console.log("data-invoicenumber: " + invoiceNumber);
+	    	if(invoiceNumber!=null){
+	    		var innerHtml = "";
+	    		if(invoiceNumber.includes(";")){
+	    			var inn = invoiceNumber.split(";");
+	                for(var i=0; i<inn.length; i++){
+	                	if(i>0){
+	                		innerHtml += '<br/>';
+	                	}
+	                	innerHtml += '<input type="button" value="' 
+	                		+ inn[i].trim() 
+	                		+ '" style="width:10em; color:blue; border:none; background-color:white;" onclick="showinvoice(this)"/>';
+	                }
+	    		}
+	    		else{
+	    			innerHtml += '<input type="button" value="' 
+	    				+ invoiceNumber.trim() 
+	    				+ '" style="width:10em; color:blue; border:none; background-color:white;" onclick="showinvoice(this)"/>';
+	    		}
+	    		conftab.rows[idxRow].cells[4].innerHTML = innerHtml;
+	    	}
+		}
 	}
 }
 
@@ -44,7 +46,7 @@ function showdetail(obj) {
 
 	document.getElementById("cell_totalorder").innerHTML = rowobj.children[2].innerHTML;
 	//document.getElementById("cell_invoicenumber").innerHTML = rowobj.getAttribute("data-invoicenumber");
-	//document.getElementById("cell_invoicestatus").innerHTML = rowobj.getAttribute("data-invoicestatus");
+	document.getElementById("cell_postatus").innerHTML = rowobj.getAttribute("data-postatus");
 	document.getElementById("cell_notes").innerHTML = rowobj.getAttribute("data-notes");
 
 	var xhttp = new XMLHttpRequest();
@@ -80,7 +82,7 @@ function showdetail(obj) {
 }
 
 function showinvoice(obj){
-	console.log("obj.value: " + obj.value);
+	//console.log("obj.value: " + obj.value);
 	var loading = document.getElementById('loading');
 	loading.style.display = "block";
 	//document.getElementById("modalInvoice").style.display = "block"; //testonly
@@ -88,7 +90,7 @@ function showinvoice(obj){
 	var tab = document.getElementById("detailInvoices");
 	var rowobj = obj.parentElement.parentElement;
 	var company = rowobj.getAttribute("data-company").toLowerCase();
-	console.log("company: " + company);
+	//console.log("company: " + company);
 	
 	tab.innerHTML = "";
 	
@@ -97,7 +99,7 @@ function showinvoice(obj){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			console.log("this.readyState == 4 && this.status == 200: " + obj.value);
+			//console.log("this.readyState == 4 && this.status == 200: " + obj.value);
 			var objitems;
 			var nf = Intl.NumberFormat();
 			objitems = JSON.parse(this.responseText);
@@ -274,10 +276,10 @@ function showinvoice(obj){
 			loading.style.display = "none";
 			document.getElementById("modalInvoice").style.display = "block";
 		}
-		else{
+		/*else{
 			console.log("this.readyState: " + this.readyState);
 			console.log("this.status: " + this.status);
-		}
+		}*/
 	};
 /*	setRequestHeader()	*/	
 	xhttp.open("GET", "/oracle" + company + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
@@ -308,6 +310,6 @@ function formatCurrency(obj){
 }
 
 function closeinvoice(){
-	console.log("closeinvoice");
+	//console.log("closeinvoice");
 	document.getElementById("modalInvoice").style.display = "none";
 }

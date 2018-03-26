@@ -30,6 +30,14 @@ public class OrderController {
 				ordergrpid, custid, company);
 	}
 	
+	@RequestMapping("/order/company")
+	public List<Order> getByCompanyCustid(
+			@RequestParam String company,
+			@RequestParam Long custid){
+		return orderService.getOrdersByCompanyAndCustid(
+				company, custid);
+	}
+	
 	@RequestMapping("/order/ponumber")
 	public Order getByCompanyCustidGrpidPonumber(
 			@RequestParam String company,

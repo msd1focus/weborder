@@ -62,7 +62,7 @@
 				th:attr="data-company=${order.company},
 							data-orderid=${order.orderId},
 							data-invoicenumber=${order.invoiceNumber},
-							data-invoicestatus=${order.invoiceStatus},
+							data-postatus=${order.invoiceStatus},
 							data-notes=${order.notes},
 							data-tonasemobil=${order.tonaseMobil},
 							data-expedisi=${order.expedisi}">
@@ -114,6 +114,10 @@
 					 <tr>
 						   <th>Tanggal PO:</th>
 							 <td id="cell_podate"></td>
+					 </tr>
+					 <tr>
+						   <th>Status PO:</th>
+							 <td id="cell_postatus"></td>
 					 </tr>
 					 <tr>
 						   <th>Total Order:</th>
