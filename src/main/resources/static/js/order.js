@@ -355,7 +355,7 @@ function inputProductInit(){
 		    	var jumlahOrder = document.getElementById("jumlahOrder");
 	    		var orderType = document.getElementById("orderType");
 	    		changeOrderType(orderType);
-		    	changeJumlahOrder(jumlahOrder);	
+		    	changeJumlahOrder(jumlahOrder, true);	
 	    	}
 	    	
 	    	var loadingProduct1 = document.getElementById("loadingProduct1");
@@ -446,7 +446,7 @@ function initOrderDetail(o, oi){
 	    	if(initOrderCount==jumlahOrder.value){
 	    		var orderType = document.getElementById("orderType");
 	    		changeOrderType(orderType);
-		    	changeJumlahOrder(jumlahOrder);	
+		    	changeJumlahOrder(jumlahOrder, true);	
 	    	}
 	    	
 	    },
@@ -1768,9 +1768,9 @@ function getDate(obj){
 
 function searchProduct(obj){
 	
-	console.log("===============================================================");
-	console.log("Search");
-	console.log("===============================================================");
+	//console.log("===============================================================");
+	//console.log("Search");
+	//console.log("===============================================================");
 	
 	var tblOrderItemFixed = document.getElementById("tblOrderItemFixed");
 	var tblOrder = document.getElementById("tblOrder");
@@ -1780,7 +1780,7 @@ function searchProduct(obj){
 	
 	var productCodeSelected =
 		searchInput.value;
-	console.log("productCodeSelected: " + productCodeSelected);
+	//console.log("productCodeSelected: " + productCodeSelected);
 	
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 		
@@ -1794,7 +1794,7 @@ function searchProduct(obj){
 	}
 	
 
-	console.log("===============================================================");
+	//console.log("===============================================================");
 	return;
 }
 
@@ -1803,14 +1803,14 @@ function changeUom(obj){
 
 	isChangeUom = true;
 	
-	console.log("===============================================================");
-	console.log("Change UOM");
-	console.log("===============================================================");
+	//console.log("===============================================================");
+	//console.log("Change UOM");
+	//console.log("===============================================================");
 	
 	var uomCurrentRate = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
-	console.log("idxRowCurrent: " + idxRowCurrent);
-	console.log("obj.selectedIndex: " + obj.selectedIndex);
+	//console.log("idxRowCurrent: " + idxRowCurrent);
+	//console.log("obj.selectedIndex: " + obj.selectedIndex);
 	var jumlahOrder = document.getElementById("jumlahOrder");
 	var tblOrder = document.getElementById("tblOrder");
 	var tblOrderItemFixed = document.getElementById("tblOrderItemFixed");
@@ -1849,9 +1849,9 @@ function changeUom(obj){
 		* parseFloat(uomCurrentRate)
 		/ parseFloat(uomInitRate);
 	
-	console.log("prodWidthValue: " + prodWidthValue);
-	console.log("prodLengthValue: " + prodLengthValue);
-	console.log("prodHeightValue: " + prodHeightValue);
+	//console.log("prodWidthValue: " + prodWidthValue);
+	//console.log("prodLengthValue: " + prodLengthValue);
+	//console.log("prodHeightValue: " + prodHeightValue);
 	
 	prodWidthValue = 
 		parseFloat(prodWidthValue)
@@ -1868,10 +1868,10 @@ function changeUom(obj){
 		* parseFloat(uomCurrentRate)
 		/ parseFloat(uomSelectedRate);
 	
-	console.log("====================================");
-	console.log("prodWidthValue: " + prodWidthValue);
-	console.log("prodLengthValue: " + prodLengthValue);
-	console.log("prodHeightValue: " + prodHeightValue);
+	//console.log("====================================");
+	//console.log("prodWidthValue: " + prodWidthValue);
+	//console.log("prodLengthValue: " + prodLengthValue);
+	//console.log("prodHeightValue: " + prodHeightValue);
 	
 	if(jumlahOrder.value>0){
 		
@@ -1982,21 +1982,21 @@ function changeUom(obj){
 		}	
 	}
 	
-	console.log("uomCurrentRate: " + uomCurrentRate);
-	console.log("untPriceInit: " + untPriceInit.value);
-	console.log("uomCurrent: " + uomCurrent);
-	console.log("uomSelected.value: " + uomSelected.value);
-	console.log("uomSelectedRate: " + uomSelectedRate);
-	console.log("untPrice: " + untPrice.value);
-	console.log("up: " + up);
+	//console.log("uomCurrentRate: " + uomCurrentRate);
+	//console.log("untPriceInit: " + untPriceInit.value);
+	//console.log("uomCurrent: " + uomCurrent);
+	//console.log("uomSelected.value: " + uomSelected.value);
+	//console.log("uomSelectedRate: " + uomSelectedRate);
+	//console.log("untPrice: " + untPrice.value);
+	//console.log("up: " + up);
 	
 	untPrice.value = up;
 	prodWidth.value = prodWidthValue;
 	prodLength.value = prodLengthValue;
 	prodHeight.value = prodHeightValue;
 	uomSelected.value = uomCurrent;
-	changeJumlahOrder(jumlahOrder);	
-	console.log("===============================================================");
+	changeJumlahOrder(jumlahOrder, false);	
+	//console.log("===============================================================");
 }
 
 function focusSearch(obj){
@@ -3476,7 +3476,6 @@ function calcAmount5(obj){
 
 function generateCMOB(){
 	
-
 	var loadingCmob = document.getElementById("loadingCmob");
 	var doneCmob = document.getElementById("doneCmob");
 	doneCmob.style.display = "none";
@@ -3617,7 +3616,7 @@ function generateCMOB(){
 
 	    	firstLoadCMOB = false;
 	    	var jumlahOrder = document.getElementById("jumlahOrder");
-		    changeJumlahOrder(jumlahOrder);	
+		    changeJumlahOrder(jumlahOrder, false);	
 			loadingCmob.style.display = "none";
 			var doneCmob = document.getElementById("doneCmob");
 			doneCmob.style.display = "block";
@@ -4317,7 +4316,8 @@ function changePeriode(obj){
     
 }
 
-function changeJumlahOrder(obj) {
+function changeJumlahOrder(obj, isInit) {
+	//console.log("isInit: " + isInit);
 	var selectBox = obj;
     var jumlahOrder = selectBox.options[selectBox.selectedIndex].value;
     var jumlahOrderSelected = document.getElementById("jumlahOrderSelected");
@@ -4988,7 +4988,9 @@ function changeJumlahOrder(obj) {
     	sisaLimit1.value = formatTextValue(sl1);
     	if(sl1<0){
     		//sisaLimit1.style.backgroundColor = "yellow";
-    		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+    		if(!isInit){
+        		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+    		}
     	}
     	else{
     		sisaLimit1.style.backgroundColor = "#D3D3D3";
@@ -5019,7 +5021,9 @@ function changeJumlahOrder(obj) {
         	sisaLimit2.value = formatTextValue(sl2);
         	if(sl2<0){
         		//sisaLimit2.style.backgroundColor = "yellow";
-        		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
+        		if(!isInit){
+            		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+        		}
         	}
         	else{
         		sisaLimit2.style.backgroundColor = "#D3D3D3";
@@ -5050,7 +5054,9 @@ function changeJumlahOrder(obj) {
             	sisaLimit3.value = formatTextValue(sl3);
             	if(sl3<0){
             		//sisaLimit3.style.backgroundColor = "yellow";
-            		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
+            		if(!isInit){
+                		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+            		}
             	}
             	else{
             		sisaLimit3.style.backgroundColor = "#D3D3D3";
@@ -5080,7 +5086,9 @@ function changeJumlahOrder(obj) {
 	            	sisaLimit4.value = formatTextValue(sl4);
 	            	if(sl4<0){
 	            		//sisaLimit4.style.backgroundColor = "yellow";
-	            		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
+	            		if(!isInit){
+	                		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+	            		}
 	            	}
 	            	else{
 	            		sisaLimit4.style.backgroundColor = "#D3D3D3";
@@ -5110,7 +5118,9 @@ function changeJumlahOrder(obj) {
 		            	sisaLimit5.value = formatTextValue(sl5);
 		            	if(sl5<0){
 		            		//sisaLimit5.style.backgroundColor = "yellow";
-		            		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
+		            		if(!isInit){
+		                		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		            		}
 		            	}
 		            	else{
 		            		sisaLimit5.style.backgroundColor = "#D3D3D3";
@@ -5147,6 +5157,20 @@ function changeJumlahOrder(obj) {
 		sisaLimitText.style.backgroundColor = "#D3D3D3";
 	}*/
 	
+}
+
+function showSisaLimit(){
+	var sisaLimitDetail = document.getElementById("sisaLimitDetail");
+	sisaLimitDetail.style.display = "block";
+	
+    return false;
+}
+
+function closeSisaLimit(){
+	var sisaLimitDetail = document.getElementById("sisaLimitDetail");
+	sisaLimitDetail.style.display = "none";
+	
+    return false;
 }
 
 function addMobil1(){

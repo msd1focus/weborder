@@ -36,7 +36,7 @@ public class OrderGrp {
 	@Column(name="TOTAL_PRICE")
 	private Long totalPrice;
 	@Column(name="SISA_LIMIT")
-	private Long sisaLimit;
+	private Double sisaLimit;
 	@Column(name="SUBMIT_STATUS")
 	private String submitStatus;
 	@Column(name="CREATE_TIME")
@@ -51,7 +51,7 @@ public class OrderGrp {
 	public OrderGrp( Long orderGrpId, String company, Long custId,
 			String periodeOrder, String orderType, String orderBy,
 			Long leadTime, Long totalOrder, Long totalPrice,
-			Long sisaLimit, String submitStatus, Date createTime,
+			Double sisaLimit, String submitStatus, Date createTime,
 			Date updateTime) {
 		
 		super();
@@ -152,11 +152,11 @@ public class OrderGrp {
 		this.totalPrice = totalPrice;
 	}
 
-	public Long getSisaLimit() {
+	public Double getSisaLimit() {
 		return sisaLimit;
 	}
 
-	public void setSisaLimit(Long sisaLimit) {
+	public void setSisaLimit(Double sisaLimit) {
 		this.sisaLimit = sisaLimit;
 	}
 

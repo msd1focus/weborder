@@ -11,6 +11,7 @@ public class InputWebOrder {
 	private InputOrder inputOrder;
 	private List<InputProduct> inputProducts;
 	private List<ListMobil> listMobils;
+	private CreditLimit creditLimit;
 	
 	public InputWebOrder() {
 		
@@ -20,13 +21,15 @@ public class InputWebOrder {
 			Customer customer,
 			InputOrder inputOrder,
 			List<InputProduct> inputProducts,
-			List<ListMobil> listMobils
+			List<ListMobil> listMobils,
+			CreditLimit creditLimit
 			) {
 		super();
 		this.customer = customer;
 		this.inputOrder = inputOrder;
 		this.inputProducts = inputProducts;
 		this.listMobils = listMobils;
+		this.creditLimit = creditLimit;
 	}
 
 	public Customer getCustomer() {
@@ -59,6 +62,14 @@ public class InputWebOrder {
 
 	public void setListMobils(List<ListMobil> listMobils) {
 		this.listMobils = listMobils;
+	}
+
+	public CreditLimit getCreditLimit() {
+		return creditLimit;
+	}
+
+	public void setCreditLimit(CreditLimit creditLimit) {
+		this.creditLimit = creditLimit;
 	}
 
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.focus.weborder.external.creditlimit.CreditLimitService;
 import com.focus.weborder.security.model.User;
 import com.focus.weborder.security.service.UserService;
 import com.focus.weborder.services.custmobil.CustMobil;
@@ -39,6 +40,7 @@ import com.focus.weborder.services.orderdetail.OrderDetailService;
 import com.focus.weborder.services.ordergrp.OrderGrp;
 import com.focus.weborder.services.ordergrp.OrderGrpService;
 import com.focus.weborder.types.InputWebOrder;
+import com.focus.weborder.types.CreditLimit;
 import com.focus.weborder.types.InputOrder;
 import com.focus.weborder.types.InputProduct;
 
@@ -69,6 +71,9 @@ public class InputOrderController
 	
 	@Autowired
 	private CustMobilService custMobilService;
+	
+	@Autowired
+	private CreditLimitService creditLimitService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -160,6 +165,8 @@ public class InputOrderController
 				
 				Customer customer =
 						customerService.getCustomer(company, custId);
+				CreditLimit creditLimits =
+						creditLimitService.getCreditLimit(company, custId);
 				List<OrderGrp> orderGrps =
 						orderGrpService.getOrderGrpDraft(company, custId);
 				List<CustShipTo> custShipTo =
@@ -299,12 +306,15 @@ public class InputOrderController
 					orderGrp.setPeriodeOrder(monthName + " " + year);
 					orderGrp.setJumlahOrder((long)0);
 					orderGrp.setLeadTime((long) 1);
-					Long creditLimit = (long) 0;
-					if(customer!=null) {
+					Double creditLimit = (double) 0;
+					if(creditLimits!=null) {
+						creditLimit = creditLimits.getSisaLimit();
+					}
+					/*if(customer!=null) {
 						if(customer.getCreditLimit()!=null) {
 							creditLimit = customer.getCreditLimit();	
 						}
-					}
+					}*/
 					orderGrp.setSisaLimit(creditLimit);
 				}
 				else {
@@ -1050,6 +1060,28 @@ public class InputOrderController
 				}
 				
 				inputWebOrder.setCustomer(customer);
+				System.out.println(
+						"creditLimits.getOverallCreditLimitText(): "
+						+ creditLimits.getOverallCreditLimitText());
+				System.out.println(
+						"creditLimits.getSisaArText(): "
+						+ creditLimits.getSisaArText());
+				System.out.println(
+						"creditLimits.getOutstandingSoText(): "
+						+ creditLimits.getOutstandingSoText());
+				System.out.println(
+						"creditLimits.getOutstandingCo1Text(): "
+						+ creditLimits.getOutstandingCo1Text());
+				System.out.println(
+						"creditLimits.getOutstandingCo2Text(): "
+						+ creditLimits.getOutstandingCo2Text());
+				System.out.println(
+						"creditLimits.getSisaLimitText(): "
+						+ creditLimits.getSisaLimitText());
+				System.out.println(
+						"creditLimits.getSisaLimit(): "
+						+ creditLimits.getSisaLimit());
+				inputWebOrder.setCreditLimit(creditLimits);
 				inputWebOrder.setInputOrder(inputOrder);
 				inputWebOrder.setInputProducts(inputProducts);
 				inputWebOrder.setListMobils(listMobils);

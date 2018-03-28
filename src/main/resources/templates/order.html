@@ -256,10 +256,15 @@
 					readonly="readonly"
 					style="text-align: right;"
 				type="text"/>
+			<input type="image"
+				style="vertical-align: middle; width: 20px; height: 20px"
+				onclick="return showSisaLimit();"
+				src="../static/images/edit.png" 
+		    	th:src="@{images/edit.png}"/>
 			<input id="sisaLimit" type="hidden" 
 				th:field="*{inputOrder.orderGrp.sisaLimit}"/>
 			<input id="sisaLimitInit" type="hidden" 
-				th:field="*{customer.creditLimit}" />
+				th:field="*{creditLimit.sisaLimit}" />
 			<label id="sisaLimitDP"
 				style="display: none;">
 				Sisa limit tidak berlaku untuk order dengan DP
@@ -1204,6 +1209,95 @@
     Please Wait, Uploading Data...
   </div>
 
+</div>
+
+<!-- Sisa Limit -->
+<div id="sisaLimitDetail" class="modal">
+  <div class="modal-content-sisalimit">
+  	<table>
+	  	<tr>
+			<th>
+				Credit Limit:&nbsp;
+			</th>
+			<td> 
+				<input id="creditLimitText"
+						readonly="readonly"
+						style="text-align: right;"
+						type="text"
+						th:field="*{creditLimit.overallCreditLimitText}" />
+			</td>
+		</tr>
+	  	<tr>
+			<th>
+				Sisa A/R:&nbsp;
+			</th>
+			<td> 
+				<input id="sisaArText"
+						readonly="readonly"
+						style="text-align: right;"
+						type="text"
+						th:field="*{creditLimit.sisaArText}" />
+			</td>
+		</tr>
+	  	<tr>
+			<th>
+				Outstanding SO:&nbsp;
+			</th>
+			<td> 
+				<input id="outstandingSoText"
+						readonly="readonly"
+						style="text-align: right;"
+						type="text"
+						th:field="*{creditLimit.outstandingSoText}" />
+			</td>
+		</tr>
+	  	<tr>
+			<th>
+				Outstanding CO (Approval1):&nbsp;
+			</th>
+			<td> 
+				<input id="outstandingCo1Text"
+						readonly="readonly"
+						style="text-align: right;"
+						type="text"
+						th:field="*{creditLimit.outstandingCo1Text}" />
+			</td>
+		</tr>
+	  	<tr>
+			<th>
+				Outstanding CO (Approval2):&nbsp;
+			</th>
+			<td> 
+				<input id="outstandingCo2Text"
+						readonly="readonly"
+						style="text-align: right;"
+						type="text"
+						th:field="*{creditLimit.outstandingCo2Text}" />
+			</td>
+		</tr>
+	  	<tr>
+			<th>
+				Sisa Limit:&nbsp;
+			</th>
+			<td> 
+				<input id="sisaLimitDetailText"
+						readonly="readonly"
+						style="text-align: right;"
+						type="text"
+						th:field="*{creditLimit.sisaLimitText}" />
+			</td>
+		</tr>
+	  	<tr>
+			<th>
+			</th>
+			<td style="text: center"> 
+				<input type="button"
+			  		onclick="return closeSisaLimit();"
+			  		value="OK"/>
+			</td>
+		</tr>
+	</table>
+  </div>
 </div>
 
 <!-- Mobil -->
