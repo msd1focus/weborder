@@ -237,7 +237,7 @@
 		</th>
 		<td> 
 			<select id="jumlahOrder" name="jmlOrder" 
-				onchange="changeJumlahOrder(this)">
+				onchange="changeJumlahOrder(this, false)">
 			     <option th:each="jumlahOrder : ${jumlahOrders}"
 			             th:value="${jumlahOrder}"
 			             th:text="${jumlahOrder}"

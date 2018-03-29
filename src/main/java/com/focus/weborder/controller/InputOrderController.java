@@ -1060,7 +1060,7 @@ public class InputOrderController
 				}
 				
 				inputWebOrder.setCustomer(customer);
-				System.out.println(
+				/*System.out.println(
 						"creditLimits.getOverallCreditLimitText(): "
 						+ creditLimits.getOverallCreditLimitText());
 				System.out.println(
@@ -1080,7 +1080,7 @@ public class InputOrderController
 						+ creditLimits.getSisaLimitText());
 				System.out.println(
 						"creditLimits.getSisaLimit(): "
-						+ creditLimits.getSisaLimit());
+						+ creditLimits.getSisaLimit());*/
 				inputWebOrder.setCreditLimit(creditLimits);
 				inputWebOrder.setInputOrder(inputOrder);
 				inputWebOrder.setInputProducts(inputProducts);

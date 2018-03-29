@@ -4317,9 +4317,9 @@ function changePeriode(obj){
 }
 
 function changeJumlahOrder(obj, isInit) {
-	//console.log("isInit: " + isInit);
 	var selectBox = obj;
     var jumlahOrder = selectBox.options[selectBox.selectedIndex].value;
+	//console.log("jumlahOrder: " + jumlahOrder);
     var jumlahOrderSelected = document.getElementById("jumlahOrderSelected");
     jumlahOrderSelected.value = jumlahOrder;
     var tblOrder = document.getElementById("tblOrder");
@@ -5022,7 +5022,7 @@ function changeJumlahOrder(obj, isInit) {
         	if(sl2<0){
         		//sisaLimit2.style.backgroundColor = "yellow";
         		if(!isInit){
-            		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+            		alert("Sisa Limit pada Order 2 Tidak Mencukupi. Mohon Periksa Kembali");
         		}
         	}
         	else{
@@ -5055,7 +5055,7 @@ function changeJumlahOrder(obj, isInit) {
             	if(sl3<0){
             		//sisaLimit3.style.backgroundColor = "yellow";
             		if(!isInit){
-                		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+                		alert("Sisa Limit pada Order 3 Tidak Mencukupi. Mohon Periksa Kembali");
             		}
             	}
             	else{
@@ -5087,7 +5087,7 @@ function changeJumlahOrder(obj, isInit) {
 	            	if(sl4<0){
 	            		//sisaLimit4.style.backgroundColor = "yellow";
 	            		if(!isInit){
-	                		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+	                		alert("Sisa Limit pada Order 4 Tidak Mencukupi. Mohon Periksa Kembali");
 	            		}
 	            	}
 	            	else{
@@ -5119,7 +5119,7 @@ function changeJumlahOrder(obj, isInit) {
 		            	if(sl5<0){
 		            		//sisaLimit5.style.backgroundColor = "yellow";
 		            		if(!isInit){
-		                		alert("Sisa Limit pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
+		                		alert("Sisa Limit pada Order 5 Tidak Mencukupi. Mohon Periksa Kembali");
 		            		}
 		            	}
 		            	else{

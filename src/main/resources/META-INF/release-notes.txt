@@ -184,3 +184,11 @@ Version 1.25.1 (Thursday, 22 March 2018 by Amin Mutohar)
 Version 1.26.0 (Tuesday, 26 March 2018 by Amin Mutohar)
  - Change Application
  	1. Add Sisa Limit detail
+ 	
+Version 1.26.1 (Thursday, 29 March 2018 by Amin Mutohar)
+- Change Application
+ 	1. Add log when add/update order_grp and order service
+	
+ - Bug Fixing
+ 	1. Change Jumlah Order only display Sisa Limit Order 1
+ 		validation

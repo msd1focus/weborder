@@ -54,7 +54,6 @@ public class CreditLimitService {
 		try {
 			JSONArray responses = new JSONArray(restResponse);
 			DecimalFormat df = new DecimalFormat("##,##0.00");
-			DecimalFormat dfLong = new DecimalFormat("###.##");
 			for(int i=0; i < responses.length(); i++) {
 			    JSONObject response = responses.getJSONObject(i);
 			    cl.setOverallCreditLimitText(

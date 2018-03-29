@@ -1,8 +1,11 @@
 package com.focus.weborder.services.order;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,8 +51,48 @@ public class OrderService {
 	}
 	
 	public Long addOrder(Order order) {
+		
 		orderRepository.save(order);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			Calendar c = Calendar.getInstance();
+			System.out.println();
+			System.out.print("[WebOrder-POST-Order]"
+					+ c.get(Calendar.YEAR) 
+					+ "/"
+					+ (c.get(Calendar.MONTH) + 1)
+					+ "/"
+					+ c.get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ c.get(Calendar.HOUR)
+					+ ":"
+					+ c.get(Calendar.MINUTE)
+					+ ":"
+					+ c.get(Calendar.SECOND)
+					+ "."
+					+ c.get(Calendar.MILLISECOND)
+					+ " by " 
+					+ auth.getName()
+					+ " with role: "
+					+ auth.getAuthorities());
+			System.out.print("; company: " + order.getCompany());
+			System.out.print("; custId: " + order.getCustId());
+			System.out.print("; orderGrpId: " + order.getOrderGrpId());
+			System.out.print("; poNumber: " + order.getPoNumber());
+			System.out.print("; orderDate: " + order.getOrderDate());
+			System.out.print("; shipTo: " + order.getShipTo());
+			System.out.print("; expedisi: " + order.getExpedisi());
+			System.out.print("; jenisMobil: " + order.getJenisMobil());
+			System.out.print("; tonaseMobil: " + order.getTonaseMobil());
+			System.out.print("; tonaseOrder: " + order.getTonaseOrder());
+			System.out.print("; totalPrice: " + order.getTotalPrice());
+			System.out.print("; periode: " + order.getPeriode());
+			System.out.print("; notes: " + order.getNotes() + ";");
+		}
+		
 		return order.getOrderId();
+		
 		/*orderRepository.insert(
 				order.getOrderId(), order.getOrderGrpId(), 
 				order.getCompany(), order.getCustId(),
@@ -66,11 +109,48 @@ public class OrderService {
 	}
 	
 	public Long updateOrder(Order order) {
-		//Double totalPrice = order.getTotalPrice();
-		//Double tonaseOrder = order.getTonaseOrder();
-		//System.out.println("tonaseOrder: " + tonaseOrder);
+		
 		orderRepository.save(order);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			Calendar c = Calendar.getInstance();
+			System.out.println();
+			System.out.print("[WebOrder-POST-Order]"
+					+ c.get(Calendar.YEAR) 
+					+ "/"
+					+ (c.get(Calendar.MONTH) + 1)
+					+ "/"
+					+ c.get(Calendar.DAY_OF_MONTH)
+					+ " "
+					+ c.get(Calendar.HOUR)
+					+ ":"
+					+ c.get(Calendar.MINUTE)
+					+ ":"
+					+ c.get(Calendar.SECOND)
+					+ "."
+					+ c.get(Calendar.MILLISECOND)
+					+ " by " 
+					+ auth.getName()
+					+ " with role: "
+					+ auth.getAuthorities());
+			System.out.print("; company: " + order.getCompany());
+			System.out.print("; custId: " + order.getCustId());
+			System.out.print("; orderGrpId: " + order.getOrderGrpId());
+			System.out.print("; poNumber: " + order.getPoNumber());
+			System.out.print("; orderDate: " + order.getOrderDate());
+			System.out.print("; shipTo: " + order.getShipTo());
+			System.out.print("; expedisi: " + order.getExpedisi());
+			System.out.print("; jenisMobil: " + order.getJenisMobil());
+			System.out.print("; tonaseMobil: " + order.getTonaseMobil());
+			System.out.print("; tonaseOrder: " + order.getTonaseOrder());
+			System.out.print("; totalPrice: " + order.getTotalPrice());
+			System.out.print("; periode: " + order.getPeriode());
+			System.out.print("; notes: " + order.getNotes() + ";");
+		}
+		
 		return order.getOrderId();
+		
 		/*orderRepository.updateByCompanyCustidGrpidOrderid(
 				order.getOrderId(), order.getOrderGrpId(), 
 				order.getCompany(), order.getCustId(), 

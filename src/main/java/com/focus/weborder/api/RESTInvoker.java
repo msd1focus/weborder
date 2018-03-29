@@ -28,7 +28,7 @@ public class RESTInvoker {
         StringBuilder sb = new StringBuilder();
         try {
             URL url = new URL(baseUrl + path);
-            System.out.print("; url: " + url);
+            //System.out.print("; url: " + url);
             HttpURLConnection urlConnection = setUsernamePassword(url);
             urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("Accept", "application/json");
