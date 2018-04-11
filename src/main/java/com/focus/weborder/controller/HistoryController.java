@@ -40,8 +40,12 @@ public class HistoryController {
 		List<Order> orders = new ArrayList<Order>();
 		OrderGrp orderGrp = null;
 		User user = new User();
+		String company = "";
+		Long custId = (long)0;
 		if (auth != null) {
 			user = userService.findUserByUsername(auth.getName());
+			company = user.getCompany();
+			custId = user.getCustId();
 			orders = orderService.getOrdersByCompanyAndCustid(user.getCompany(), user.getCustId());
 			for(Order order: orders) {
 
@@ -64,6 +68,8 @@ public class HistoryController {
 			}
 		}
 		modelAndView.addObject("orders", orders);
+		modelAndView.addObject("custId", custId);
+		modelAndView.addObject("company", company);
 		modelAndView.setViewName("history");
 		return modelAndView;
 	}

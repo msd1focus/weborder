@@ -20,46 +20,74 @@
 	<!-- <div class="bagianlogo" id="logo">
 		<img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" src="images/logo.png" alt="" width="200" height="85px" />
 	</div> -->
-
-
+       	
 	<div class="hist0">
 		<h2>Histori Transaksi</h2>
+		<input 
+		   	id="company"
+		   	type="hidden"
+		   	th:value="${company}"/>
+		<input 
+		   	id="custId"
+		   	type="hidden"
+		   	th:value="${custId}"/>
 		<p/>
-		<table style="border: 1px solid black" id="conftab">
-			<thead>
+		<table>
 			<tr>
-				<th style="text-align:center; width:300px">No PO</th>
-				<th style="text-align:center; width:150px">Tanggal PO</th>
-				<th style="text-align:center; width:150px">Total</th>
-				<th style="text-align:center; width:200px">Detail PO</th>
-				<th style="text-align:center; width:200px">No Invoice</th>
+				<td style="vertical-align:top">
+					<table style="border: 1px solid black" id="conftab">
+						<thead>
+						<tr>
+							<th style="text-align:center; width:300px">No PO</th>
+							<th style="text-align:center; width:150px">Tanggal PO</th>
+							<th style="text-align:center; width:150px">Total</th>
+							<th style="text-align:center; width:200px">Detail PO</th>
+							<th style="text-align:center; width:200px">No Invoice</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="order : ${orders}" 
+							th:attr="data-company=${order.company},
+										data-orderid=${order.orderId},
+										data-invoicenumber=${order.invoiceNumber},
+										data-postatus=${order.invoiceStatus},
+										data-notes=${order.notes},
+										data-tonasemobil=${order.tonaseMobil},
+										data-expedisi=${order.expedisi}">
+							<td th:text="${order.poNumber}"></td>
+							<td th:text="${order.orderDate}">232323</td>
+							<td style="text-align:right" 
+							    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}">232323</td>
+							<td>
+							  <input type="button" 
+							  	value="Click Detail PO" 
+							  	style="width:10em; color:blue; border:none; background-color:white;"
+			                    th:onclick="'javascript:showdetail(this);'"/>
+			                 </td> 
+			                 <td id="cell_invoicenumber">
+			                 </td>
+						</tr>
+						</tbody>
+					</table>
+				</td>
 			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="order : ${orders}" 
-				th:attr="data-company=${order.company},
-							data-orderid=${order.orderId},
-							data-invoicenumber=${order.invoiceNumber},
-							data-postatus=${order.invoiceStatus},
-							data-notes=${order.notes},
-							data-tonasemobil=${order.tonaseMobil},
-							data-expedisi=${order.expedisi}">
-				<td th:text="${order.poNumber}"></td>
-				<td th:text="${order.orderDate}">232323</td>
-				<td style="text-align:right" 
-				    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}">232323</td>
-				<td>
-				  <input type="button" 
-				  	value="Click Detail PO" 
-				  	style="width:10em; color:blue; border:none; background-color:white;"
-                    th:onclick="'javascript:showdetail(this);'"/>
-                 </td> 
-                 <td id="cell_invoicenumber">
-                 </td>
+			<tr>
+				<td style="vertical-align:top">
+					<table style="border: 1px solid black" id="nonwo">			
+						<thead>
+						<tr>
+							<th style="text-align:center; width:300px"></th>
+							<th style="text-align:center; width:150px"></th>
+							<th style="text-align:center; width:150px"></th>
+							<th style="text-align:center; width:200px"></th>
+							<th style="text-align:center; width:200px"></th>
+						</tr>
+						</thead>
+						<tbody id="detailNonWO"></tbody>
+					</table>
+				</td>
 			</tr>
-			</tbody>
 		</table>
-
 	</div> <!-- div hist -->
 
 	<!-- Modal Loading -->
@@ -229,6 +257,7 @@
 			</div>
 	  	</div>
 	</div>
+	
 	<div th:replace="fragments/footer :: footer"/>
 
  <script>

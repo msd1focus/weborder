@@ -408,7 +408,7 @@ function initOrderDetail(o, oi){
 					for(var idxRow = 1; idxRow<=productQty; idxRow++){
 						
 						var productCode = 
-							tblOrder.rows[idxRow].cells[0].children[5];
+							tblOrder.rows[idxRow].cells[0].children[3];
 						
 						if(productCode!=null){
 							
