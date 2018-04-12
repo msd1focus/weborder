@@ -196,3 +196,9 @@ Version 1.26.1 (Thursday, 29 March 2018 by Amin Mutohar)
 Version 1.27.0 (Thursday, 10 April 2018 by Amin Mutohar)
  - Change Application
  	1. Add Non WO Invoice on History
+ 	
+Version 1.27.1 (Thursday, 29 March 2018 by Amin Mutohar)
+	
+ - Change Application
+ 	1. Change view for zero Non Web Order Invoice
+ 		on History page

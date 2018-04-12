@@ -55,34 +55,27 @@
 										data-tonasemobil=${order.tonaseMobil},
 										data-expedisi=${order.expedisi}">
 							<td th:text="${order.poNumber}"></td>
-							<td th:text="${order.orderDate}">232323</td>
+							<td th:text="${order.orderDate}"></td>
 							<td style="text-align:right" 
-							    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}">232323</td>
-							<td>
+							    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}"></td>
+							<td style="align: center;">
 							  <input type="button" 
 							  	value="Click Detail PO" 
 							  	style="width:10em; color:blue; border:none; background-color:white;"
 			                    th:onclick="'javascript:showdetail(this);'"/>
 			                 </td> 
-			                 <td id="cell_invoicenumber">
+			                 <td style="text-align:center;"
+			                 	id="cell_invoicenumber">
 			                 </td>
 						</tr>
 						</tbody>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td style="vertical-align:top">
-					<table style="border: 1px solid black" id="nonwo">			
-						<thead>
 						<tr>
-							<th style="text-align:center; width:300px"></th>
-							<th style="text-align:center; width:150px"></th>
-							<th style="text-align:center; width:150px"></th>
-							<th style="text-align:center; width:200px"></th>
-							<th style="text-align:center; width:200px"></th>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
 						</tr>
-						</thead>
 						<tbody id="detailNonWO"></tbody>
 					</table>
 				</td>

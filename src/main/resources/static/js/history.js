@@ -39,29 +39,40 @@ function onload(){
 			var objitems;
 			var nf = Intl.NumberFormat();
 			objitems = JSON.parse(this.responseText);
-
-			for (var i = 0; i < objitems.length; i++) {
+			
+			if(objitems.length>0){
+				
+				for (var i = 0; i < objitems.length; i++) {
+					tabNonWO.insertRow(i).innerHTML = 
+							'<tr>'
+							+ '<td>Non Web Order</td>'
+							+ '<td style="text-align:center;">-</td>'
+							+ '<td style="text-align:center;">-</td>'
+							+ '<td style="text-align:center;">'
+							+ '<input id="customerTrxId" type="hidden" value="'
+							+ objitems[i].customerTrxId
+							+ '"/>'
+							+ '-</td>'
+							+ '<td style="text-align:center;">'
+							+ '<input type="button" value="'
+							+ objitems[i].trxNumber
+							+ '" style="width:10em; color:blue; border:none; background-color:white;"'
+							+ 'onclick="showinvoicenonwo(this)"/>'
+							+ '</td>'
+							+ '</tr>';
+				}
+			}else{
+				
 				tabNonWO.insertRow(i).innerHTML = 
-						'<tr'
-						//+ ' data-company="' 
-						//+ company
-						//+ '" data-customertrxid="'
-						//+ objitems[i].customerTrxId
-						+ '><td>Non Web Order</td>'
-						+ '<td style="text-align:center;">-</td>'
-						+ '<td style="text-align:center;">-</td>'
-						+ '<td style="text-align:center;">'
-						+ '<input id="customerTrxId" type="hidden" value="'
-						+ objitems[i].customerTrxId
-						+ '"/>'
-						+ '-</td>'
-						+ '<td style="text-align:center;">'
-						+ '<input type="button" value="'
-						+ objitems[i].trxNumber
-						+ '" style="width:10em; color:blue; border:none; background-color:white;"'
-						+ 'onclick="showinvoicenonwo(this)"/>'
-						+ '</td></tr>';
+					'<tr>'
+					+ '<td>Non Web Order</td>'
+					+ '<td style="text-align:center;">-</td>'
+					+ '<td style="text-align:center;">-</td>'
+					+ '<td style="text-align:center;">-</td>'
+					+ '<td style="text-align:center;">-</td>'
+					+ '</tr>';
 			}
+			
 		}
 	};
 /*	setRequestHeader()	*/	
