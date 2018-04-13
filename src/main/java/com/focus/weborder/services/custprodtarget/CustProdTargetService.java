@@ -15,13 +15,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.focus.weborder.properties.StorageProperties;
 import com.focus.weborder.services.customer.Customer;
 import com.focus.weborder.services.customer.CustomerService;
 import com.focus.weborder.services.custprod.CustProd;
 import com.focus.weborder.services.custprod.CustProdService;
 import com.focus.weborder.services.uploadhistory.UploadHistory;
 import com.focus.weborder.services.uploadhistory.UploadHistoryService;
-import com.focus.weborder.upload.storage.StorageProperties;
 
 @Service
 public class CustProdTargetService {

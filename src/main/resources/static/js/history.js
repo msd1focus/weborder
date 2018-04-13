@@ -5,8 +5,10 @@ function onload(){
 	var company = document.getElementById("company").value.toLowerCase();
 	var custId = document.getElementById("custId").value;
 	var tabNonWO = document.getElementById("detailNonWO");
-	//console.log("company: " + company);
-	//console.log("custId: " + custId);
+	var startInvoiceDate = document.getElementById("startInvoiceDate").textContent;
+	var endInvoiceDate = document.getElementById("endInvoiceDate").textContent;
+	//console.log("startInvoiceDate: " + startInvoiceDate);
+	//console.log("endInvoiceDate: " + endInvoiceDate);
 	if(conftab.rows.length>1){
 		for(var idxRow = 1; idxRow<conftab.rows.length; idxRow++){
 			var invoiceNumber = conftab.rows[idxRow].getAttribute("data-invoicenumber");
@@ -76,7 +78,13 @@ function onload(){
 		}
 	};
 /*	setRequestHeader()	*/	
-	xhttp.open("GET", "/oracle" + company + "/rest/invdetailnonwo/custid?custid=" + custId, true);
+	xhttp.open(
+			"GET",
+			"/oracle" + company 
+			+ "/rest/invdetailnonwo/custidstartenddate?custid=" + custId 
+			+ "&startdate=" + startInvoiceDate
+			+ "&enddate=" + endInvoiceDate,
+			true);
 	xhttp.send();
 }
 
@@ -93,7 +101,6 @@ function showdetail(obj) {
 	document.getElementById("cell_podate").innerHTML = poDate;
 
 	document.getElementById("cell_totalorder").innerHTML = rowobj.children[2].innerHTML;
-	//document.getElementById("cell_invoicenumber").innerHTML = rowobj.getAttribute("data-invoicenumber");
 	document.getElementById("cell_postatus").innerHTML = rowobj.getAttribute("data-postatus");
 	document.getElementById("cell_notes").innerHTML = rowobj.getAttribute("data-notes");
 
@@ -335,7 +342,6 @@ function showinvoice(obj){
 function showinvoicenonwo(obj){
 	var loading = document.getElementById('loading');
 	var company = document.getElementById("company").value.toLowerCase();
-	//var company = rowobj.getAttribute("data-company").toLowerCase();
 	loading.style.display = "block";
 	//document.getElementById("modalInvoice").style.display = "block"; //testonly
 	var invoiceNumber = obj.value;
@@ -561,6 +567,5 @@ function formatCurrency(obj){
 }
 
 function closeinvoice(){
-	//console.log("closeinvoice");
 	document.getElementById("modalInvoice").style.display = "none";
 }

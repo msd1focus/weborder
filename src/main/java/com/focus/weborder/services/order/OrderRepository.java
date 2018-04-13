@@ -26,6 +26,20 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     		@Param("custId") Long custId
     	);
 	
+	@Query("SELECT o FROM Order o WHERE "
+            + "o.company = :company AND "
+            + "o.custId = :custId AND "
+            + "o.orderDate >= :startOrderDate AND "
+            + "o.orderDate <= :endOrderDate "
+            + "ORDER BY o.orderId Desc"
+           )
+	List<Order> getByCompanyCustidStartEndorderdate(
+			@Param("company") String company,
+    		@Param("custId") Long custId,
+			@Param("startOrderDate") Date startOrderDate,
+    		@Param("endOrderDate") Date endOrderDate
+    	);
+	
 	@Query("SELECT o FROM Order o "
             + "ORDER BY o.orderId ASC"
            )

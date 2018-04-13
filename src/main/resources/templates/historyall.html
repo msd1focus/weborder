@@ -28,6 +28,14 @@
 
 	<div class="hist0">
 		<h2>Histori Transaksi</h2>
+		<input 
+		   	id="company"
+		   	type="hidden"
+		   	th:value="${company}"/>
+		<input 
+		   	id="custId"
+		   	type="hidden"
+		   	th:value="${custId}"/>
 		<label>Company: </label>
 		<select 
          	id="companyname"
@@ -46,6 +54,8 @@
 			value="View" 
 			style="width:75px;" 
 			required="true"/>
+		<p/>
+		<h4>LIST PO FROM PO DATE : <label id="startOrderDate" th:text="${startOrderDate}"></label> – <label id="endOrderDate" th:text="${endOrderDate}"></label></h4>
 		<p/>
 		<table style="border: 1px solid black" id="conftab">
 			<thead>
@@ -67,21 +77,41 @@
 							data-tonasemobil=${order.tonaseMobil},
 							data-expedisi=${order.expedisi}">
 				<td th:text="${order.poNumber}"></td>
-				<td th:text="${order.orderDate}">232323</td>
+				<td th:text="${order.orderDate}"></td>
 				<td style="text-align:right" 
 				    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}">232323</td>
-				<td>
+				<td style="text-align:center">
 				  <input type="button" 
 				  	value="Click Detail PO" 
 				  	style="width:10em; color:blue; border:none; background-color:white;"
                     th:onclick="'javascript:showdetail(this);'"/>
                  </td> 
-                 <td id="cell_invoicenumber">
+                 <td style="text-align:center;"
+                 	id="cell_invoicenumber">
                  </td>
 			</tr>
 			</tbody>
 		</table>
-
+		<p/>
+		<h4>LIST INVOICE FROM INVOICE DATE : <label id="startInvoiceDate" th:text="${startInvoiceDate}"></label> – <label id="endInvoiceDate" th:text="${endInvoiceDate}"></label></h4>
+		<table>
+			<tr>
+				<td style="vertical-align:top">
+					<table style="border: 1px solid black" id="conftabnonwo">
+						<thead>
+						<tr>
+							<th style="text-align:center; width:300px">No PO</th>
+							<th style="text-align:center; width:150px">Tanggal PO</th>
+							<th style="text-align:center; width:150px">Total</th>
+							<th style="text-align:center; width:200px">Detail PO</th>
+							<th style="text-align:center; width:200px">No Invoice</th>
+						</tr>
+						</thead>
+						<tbody id="detailNonWO"></tbody>
+					</table>
+				</td>
+			</tr>
+		</table>
 	</div> <!-- div hist -->
 
 	<!-- Modal Loading -->

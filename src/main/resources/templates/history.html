@@ -32,6 +32,8 @@
 		   	type="hidden"
 		   	th:value="${custId}"/>
 		<p/>
+		<h4>LIST PO FROM PO DATE : <label id="startOrderDate" th:text="${startOrderDate}"></label> – <label id="endOrderDate" th:text="${endOrderDate}"></label></h4>
+		<p/>
 		<table>
 			<tr>
 				<td style="vertical-align:top">
@@ -58,7 +60,7 @@
 							<td th:text="${order.orderDate}"></td>
 							<td style="text-align:right" 
 							    th:text="${#numbers.formatDecimal(order.totalPrice,0,'DEFAULT',0,'DEFAULT')}"></td>
-							<td style="align: center;">
+							<td style="text-align:center" >
 							  <input type="button" 
 							  	value="Click Detail PO" 
 							  	style="width:10em; color:blue; border:none; background-color:white;"
@@ -69,13 +71,25 @@
 			                 </td>
 						</tr>
 						</tbody>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<p/>
+		<h4>LIST INVOICE FROM INVOICE DATE : <label id="startInvoiceDate" th:text="${startInvoiceDate}"></label> – <label id="endInvoiceDate" th:text="${endInvoiceDate}"></label></h4>
+		<table>
+			<tr>
+				<td style="vertical-align:top">
+					<table style="border: 1px solid black" id="conftabnonwo">
+						<thead>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<th style="text-align:center; width:300px">No PO</th>
+							<th style="text-align:center; width:150px">Tanggal PO</th>
+							<th style="text-align:center; width:150px">Total</th>
+							<th style="text-align:center; width:200px">Detail PO</th>
+							<th style="text-align:center; width:200px">No Invoice</th>
 						</tr>
+						</thead>
 						<tbody id="detailNonWO"></tbody>
 					</table>
 				</td>

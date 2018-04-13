@@ -1,5 +1,6 @@
 package com.focus.weborder.services.order;
 
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,6 +18,17 @@ public class OrderService {
 	public List<Order> getOrdersByCompanyAndCustid(String company, Long custId) {
 		List<Order> orders = 
 				orderRepository.findOrderByCompanyAndCustId(company, custId);
+		return orders;		
+	}
+	
+	public List<Order> getByCompanyCustidStartEndorderdate(
+			String company,
+			Long custId,
+			Date startOrderDate,
+			Date endOrderDate) {
+		List<Order> orders = 
+				orderRepository.getByCompanyCustidStartEndorderdate(
+						company, custId, startOrderDate, endOrderDate);
 		return orders;		
 	}
 	

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.focus.weborder.api.RESTInvoker;
+import com.focus.weborder.properties.CreditLimitProperties;
 import com.focus.weborder.types.CreditLimit;
 
 @Service

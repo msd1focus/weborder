@@ -193,12 +193,19 @@ Version 1.26.1 (Thursday, 29 March 2018 by Amin Mutohar)
  	1. Change Jumlah Order only display Sisa Limit Order 1
  		validation
  		
-Version 1.27.0 (Thursday, 10 April 2018 by Amin Mutohar)
+Version 1.27.0 (Tuesday, 10 April 2018 by Amin Mutohar)
  - Change Application
  	1. Add Non WO Invoice on History
  	
-Version 1.27.1 (Thursday, 29 March 2018 by Amin Mutohar)
+Version 1.27.1 (Thursday, 12 April by Amin Mutohar)
 	
  - Change Application
  	1. Change view for zero Non Web Order Invoice
  		on History page
+ 		
+Version 1.28.0 (Friday, 23 April 2018 by Amin Mutohar)
+	
+ - Change Application
+ 	1. Add Filter Date Parameter on History Page and History Controller
+ 	2. Add Property Reader class
+ 	3. Create weborder.properties file and upload to tomcat home 

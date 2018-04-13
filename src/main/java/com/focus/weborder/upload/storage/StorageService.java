@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.focus.weborder.properties.StorageProperties;
 import com.focus.weborder.services.custprodtarget.CustProdTargetService;
 import com.focus.weborder.services.uploadhistory.UploadHistory;
 import com.focus.weborder.services.uploadhistory.UploadHistoryService;
