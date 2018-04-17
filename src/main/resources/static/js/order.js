@@ -405,10 +405,18 @@ function initOrderDetail(o, oi){
 				
 				$.each(result, function(i, field){
 					
+					/*console.log(
+							o 
+							+ " field.productCode: " + field.productCode 
+							+ " - field.jumlah: " + field.jumlah 
+							+ " - field.orderDetailId: " + field.orderDetailId
+							+ " - field.unitPrice: " + field.unitPrice
+							+ " - field.uom: " + field.uom);*/
 					for(var idxRow = 1; idxRow<=productQty; idxRow++){
 						
 						var productCode = 
-							tblOrder.rows[idxRow].cells[0].children[3];
+							//tblOrder.rows[idxRow].cells[0].children[3]; //bugs 20180416
+							tblOrder.rows[idxRow].cells[0].children[5];
 						
 						if(productCode!=null){
 							

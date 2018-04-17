@@ -209,3 +209,10 @@ Version 1.28.0 (Friday, 23 April 2018 by Amin Mutohar)
  	1. Add Filter Date Parameter on History Page and History Controller
  	2. Add Property Reader class
  	3. Create weborder.properties file and upload to tomcat home 
+ 	
+Version 1.28.1 (Monday, 16 April 2018 by Amin Mutohar)
+	
+ - Bug Fixing
+ 	1. Order detail value on order page on status draft always show 0
+ 		when open the page. This problem make duplication orders detail
+ 		when re-entry order detail.
