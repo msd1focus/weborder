@@ -102,7 +102,7 @@ public class OrderGrpService {
 	}
 	
 	public void deleteOrderGrp(Long groupId) {
-		//orderGrpRepository.delete(groupId);
+		orderGrpRepository.delete(groupId);
 	}
 
 }

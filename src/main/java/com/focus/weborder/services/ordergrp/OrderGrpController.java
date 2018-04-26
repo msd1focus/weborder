@@ -47,8 +47,8 @@ public class OrderGrpController {
 		return orderGrpService.updateOrderGrp(orderGrp);
 	}
 	
-	@RequestMapping(method=RequestMethod.DELETE, value="/ordergrps/{groupId}")
-	public void deleteOrderGrp(@PathVariable Long groupId){
+	@RequestMapping(method=RequestMethod.DELETE, value="/ordergrp")
+	public void deleteOrderGrp(@RequestBody Long groupId){
 		orderGrpService.deleteOrderGrp(groupId);
 	}
 

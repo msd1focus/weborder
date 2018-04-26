@@ -354,7 +354,7 @@ function inputProductInit(){
 	    	if(isOrderNull){
 		    	var jumlahOrder = document.getElementById("jumlahOrder");
 	    		var orderType = document.getElementById("orderType");
-	    		changeOrderType(orderType);
+	    		changeOrderType(orderType, true);
 		    	changeJumlahOrder(jumlahOrder, true);	
 	    	}
 	    	
@@ -453,7 +453,7 @@ function initOrderDetail(o, oi){
 	    	var jumlahOrder = document.getElementById("jumlahOrder");
 	    	if(initOrderCount==jumlahOrder.value){
 	    		var orderType = document.getElementById("orderType");
-	    		changeOrderType(orderType);
+	    		changeOrderType(orderType, true);
 		    	changeJumlahOrder(jumlahOrder, true);	
 	    	}
 	    	
@@ -823,6 +823,9 @@ function saveOrderGrp(ss){
 		unformatText(document.getElementById("amtTotal").value);
 	var createTime = 
 		document.getElementById("createTime").value;
+	var maxInactiveInterval = 
+		(parseInt(document.getElementById("maxInactiveInterval").value))*1000;
+	console.log("maxInactiveInterval: " + maxInactiveInterval);
 	var currentdate = new Date();
 	updateTime = currentdate.getTime();
 	if(createTime=="" || createTime == null){
@@ -918,7 +921,15 @@ function saveOrderGrp(ss){
             						"XMLHttpRequest.responseText.Message:  " 
             						+ responseText.message);
             			}
-            		}
+            			
+            			if(textStatus === 'timeout')
+            	        { 
+            				loading.style.display = "none";
+            				var to = document.getElementById('timeout');
+            				to.style.display = "block";
+            	        }
+            		},
+            		timeout: maxInactiveInterval
                 });
             }
             
@@ -942,7 +953,15 @@ function saveOrderGrp(ss){
 						"ordergrp >> XMLHttpRequest.responseText.Message:  " 
 						+ responseText.message);
 			}
-		}
+			
+			if(textStatus === 'timeout')
+	        { 
+				loading.style.display = "none";
+				var to = document.getElementById('timeout');
+				to.style.display = "block";
+	        }
+		},
+		timeout: maxInactiveInterval
 	});
 }
 
@@ -970,6 +989,8 @@ function saveOrder(o, c, ci, ogi, ps){
 		document.getElementById("selisihDimensi"+o).value;
 	var totalAmount = 
 		document.getElementById("totalAmount"+o).value;
+	var maxInactiveInterval = 
+		parseInt(document.getElementById("maxInactiveInterval").value)*1000;
 	
 	var mobilSelected = "";
 
@@ -1043,7 +1064,15 @@ function saveOrder(o, c, ci, ogi, ps){
 						"order >> XMLHttpRequest.responseText.Message:  " 
 						+ responseText.message);
 			}
-		}
+			
+			if(textStatus === 'timeout')
+	        { 
+				loading.style.display = "none";
+				var to = document.getElementById('timeout');
+				to.style.display = "block";
+	        }
+		},
+		timeout: maxInactiveInterval
 	});
 }
 
@@ -1062,6 +1091,8 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 		parseFloat(document.getElementById("productQty").value);
 	var jumlahOrderSelected = 
 		document.getElementById("jumlahOrderSelected").value;
+	var maxInactiveInterval = 
+		parseInt(document.getElementById("maxInactiveInterval").value)*1000;
 	var item = 0;
 	
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
@@ -1145,7 +1176,15 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 							"XMLHttpRequest.responseText.Message:  " 
 							+ responseText.message);
 				}
-			}
+    			
+    			if(textStatus === 'timeout')
+    	        { 
+    				loading.style.display = "none";
+    				var to = document.getElementById('timeout');
+    				to.style.display = "block";
+    	        }
+    		},
+    		timeout: maxInactiveInterval
 	    });
 	}
 	
@@ -1176,9 +1215,10 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 			if(jumlahOrderSelected>4 && orderSavedCount==4){
 				saveOrder(5, c, ci, ogi, ps);
 			}          
-            if(orderSavedCount==jumlahOrderSelected){
+			//block below code for test only
+           if(orderSavedCount==jumlahOrderSelected){
     	    	window.location.replace("/weborder/home");
-            }
+           }
 	    },
 	    error: function( xhr, textStatus, errorThrown ) {
 			console.log( "XMLHttpRequest.status:  " + xhr.status);
@@ -1194,7 +1234,15 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 						"XMLHttpRequest.responseText.Message:  " 
 						+ responseText.message);
 			}
-		}
+			
+			if(textStatus === 'timeout')
+	        { 
+				loading.style.display = "none";
+				var to = document.getElementById('timeout');
+				to.style.display = "block";
+	        }
+		},
+		timeout: maxInactiveInterval
 	});
 	
 }
@@ -3959,7 +4007,7 @@ function changeShipTo5(obj){
     shipToSelected.value = shipTo;
 }
 
-function changeOrderType(obj){
+function changeOrderType(obj, isInit){
 	
 	var selectBox = obj;
 	var orderType = selectBox.options[selectBox.selectedIndex].value;
@@ -4033,6 +4081,10 @@ function changeOrderType(obj){
 			tblOrder.rows[idxRow].style.display = "none";
 			tblOrderItemFixed.rows[idxRow].style.display = "none";
 		}
+	}
+	
+	if(!isInit){
+		resetOrder();
 	}
 	
 }
