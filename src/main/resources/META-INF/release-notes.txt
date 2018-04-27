@@ -216,3 +216,18 @@ Version 1.28.1 (Monday, 16 April 2018 by Amin Mutohar)
  	1. Order detail value on order page on status draft always show 0
  		when open the page. This problem make duplication orders detail
  		when re-entry order detail.
+ 		 	
+Version 1.28.2 (Thursday, 19 April 2018 by Amin Mutohar)
+	 
+ - Bug Fixing
+ 	1. Add timeout procedure on order page
+	2. Change Order type make reset order detail
+	
+Version 1.28.3 (Thursday, 26 April 2018 by Amin Mutohar)
+	
+- Change Application
+	1. Logo and credit depend on company
+	
+ - Bug Fixing
+ 	1. Delete last order group when order is empty
+ 	2. Order date must be not null and fill with current date
