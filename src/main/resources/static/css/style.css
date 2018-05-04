@@ -43,6 +43,22 @@ body {
     overflow: hidden !important; 
 }
 
+/* amin */
+.bagianlogowhite {
+    position: static;
+    top: 0;
+  /*  left: 0;
+    right: 0; 
+    bottom: 0; */
+    background-color: white;
+    z-index: 5;
+    height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+    width: 95%;
+    overflow: hidden !important; 
+}
+
 .bagianlogox {
     position: static;
     top: 0;

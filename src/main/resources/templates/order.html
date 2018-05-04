@@ -24,11 +24,27 @@
 
 <div th:replace="fragments/header :: header"/>
 
-<div class="bagianlogo" id="logo">
+<!-- <div class="bagianlogo" id="logo">
     <img style="padding-bottom: 30px; margin-top: 0; padding-left: 20px" 
     	src="../static/images/logo.png" 
     	th:src="@{images/logo.png}"
     	alt="" width="200" height="85px" />
+</div> -->
+
+<div class="bagianlogowhite" id="logofdn"
+	style="display: none;">
+    <img style="padding-bottom: 60px; margin-top: 0; padding-left: 50px" 
+    	src="../static/images/logo_fdn.png" 
+    	th:src="@{images/logo_fdn.png}"
+    	alt="" width="500" height="150px" />
+</div>
+
+<div class="bagianlogowhite" id="logofdi"
+	style="display: none;">
+    <img style="padding-bottom: 60px; margin-top: 0; padding-left: 50px" 
+    	src="../static/images/logo_fdi.png" 
+    	th:src="@{images/logo_fdi.png}"
+    	alt="" width="500" height="150px" />
 </div>
  
 <form 
@@ -77,6 +93,8 @@
 	th:field="*{inputOrder.orderGrp.custId}" />	
 <input id="createTime" type="hidden" 
 	th:field="*{inputOrder.orderGrp.createTime}" />	
+<input id="maxInactiveInterval" type="hidden" 
+	th:value="${maxInactiveInterval}" />
 		
 <table id="table1">
 	<tr>
@@ -159,7 +177,7 @@
 		</th>
 		<td>
 			<select id="orderType" name="orderType"
-				onchange="changeOrderType(this)">
+				onchange="changeOrderType(this, false)">
 				<option th:each="orderType : ${orderTypes}"
 			             th:value="${orderType}"
 			             th:text="${orderType}"
@@ -1207,6 +1225,19 @@
     	th:src="@{images/loading.gif}"
     	width="42" height="42"/>
     Please Wait, Uploading Data...
+  </div>
+
+</div>
+
+<!-- Loading -->
+<div id="timeout" class="modal">
+
+  <div class="modal-content">
+    <!-- <span class="close">&times;</span> -->
+    <img src="../static/images/delete.png" 
+    	th:src="@{images/delete.png}"
+    	width="42" height="42"/>
+    Timeout, Please check your internet connection!
   </div>
 
 </div>

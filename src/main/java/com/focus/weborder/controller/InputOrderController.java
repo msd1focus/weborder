@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -82,7 +85,8 @@ public class InputOrderController
 	   
 	@RequestMapping(value="/", method=RequestMethod.GET)
     public ModelAndView order(
-    		Model model){
+    		Model model,
+    		HttpServletRequest req){
 
 		ModelAndView modelAndView = new ModelAndView();
 		
@@ -137,6 +141,11 @@ public class InputOrderController
 				
 				System.out.print("; user: " + user.getName());
 				System.out.print("; custid: " + user.getCustId());
+				
+
+				Integer maxInactiveInterval = 0;
+				HttpSession session = req.getSession();
+				maxInactiveInterval = session.getMaxInactiveInterval();
 				
 				String company = user.getCompany();
 				Long custId = user.getCustId();
@@ -241,31 +250,45 @@ public class InputOrderController
 					
 					if(orderGrpSubmittedsCurrentMonth!=null) {
 						if(orderGrpSubmittedsCurrentMonth.size()>0) {
-							OrderGrp orderGrpSubmittedLast = 
-									orderGrpSubmittedsCurrentMonth.get(0);
-							List<Order> orderSubmittedLasts = 
-									orderService.getByCompanyCustidGrpid(
-											orderGrpSubmittedLast.getOrderGrpId(),
-											custId, company); 
-							if(orderSubmittedLasts!=null) {
-								Order orderSubmittedLast = 
-										orderSubmittedLasts.get(
-												orderSubmittedLasts.size()-1);
-								String poNumberLast =
-										orderSubmittedLast.getPoNumber();
-								String sPoNumberLast = poNumberLast.substring(8,11);
-								Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-								poNumber1CurrentMonth = lPoNumberLast + 1;
-								poNumber2CurrentMonth = lPoNumberLast + 2;
-								poNumber3CurrentMonth = lPoNumberLast + 3;
-								poNumber4CurrentMonth = lPoNumberLast + 4;
-								poNumber5CurrentMonth = lPoNumberLast + 5;
-								
-								poNumber1 = poNumber1CurrentMonth;
-								poNumber2 = poNumber2CurrentMonth;
-								poNumber3 = poNumber3CurrentMonth;
-								poNumber4 = poNumber4CurrentMonth;
-								poNumber5 = poNumber5CurrentMonth; 
+							
+							for(Integer i=0; i<orderGrpSubmittedsCurrentMonth.size(); i++) {
+									
+								OrderGrp orderGrpSubmittedLast = 
+										orderGrpSubmittedsCurrentMonth.get(i);
+								List<Order> orderSubmittedLasts = 
+										orderService.getByCompanyCustidGrpid(
+												orderGrpSubmittedLast.getOrderGrpId(),
+												custId, company); 
+								if(orderSubmittedLasts!=null) {
+									if(orderSubmittedLasts.size()>0) {
+										Order orderSubmittedLast = 
+												orderSubmittedLasts.get(
+														orderSubmittedLasts.size()-1);
+										String poNumberLast =
+												orderSubmittedLast.getPoNumber();
+										String sPoNumberLast = poNumberLast.substring(8,11);
+										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+										poNumber1CurrentMonth = lPoNumberLast + 1;
+										poNumber2CurrentMonth = lPoNumberLast + 2;
+										poNumber3CurrentMonth = lPoNumberLast + 3;
+										poNumber4CurrentMonth = lPoNumberLast + 4;
+										poNumber5CurrentMonth = lPoNumberLast + 5;
+										
+										poNumber1 = poNumber1CurrentMonth;
+										poNumber2 = poNumber2CurrentMonth;
+										poNumber3 = poNumber3CurrentMonth;
+										poNumber4 = poNumber4CurrentMonth;
+										poNumber5 = poNumber5CurrentMonth; 
+										
+										break;
+									}
+									else {
+										orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+									}
+								}
+								else {
+									orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+								}
 							}
 						}						
 					}
@@ -275,25 +298,39 @@ public class InputOrderController
 					
 					if(orderGrpSubmittedsNextMonth!=null) {
 						if(orderGrpSubmittedsNextMonth.size()>0) {
-							OrderGrp orderGrpSubmittedLast = 
-									orderGrpSubmittedsNextMonth.get(0);
-							List<Order> orderSubmittedLasts = 
-									orderService.getByCompanyCustidGrpid(
-											orderGrpSubmittedLast.getOrderGrpId(),
-											custId, company); 
-							if(orderSubmittedLasts!=null) {
-								Order orderSubmittedLast = 
-										orderSubmittedLasts.get(
-												orderSubmittedLasts.size()-1);
-								String poNumberLast =
-										orderSubmittedLast.getPoNumber();
-								String sPoNumberLast = poNumberLast.substring(8,11);
-								Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-								poNumber1NextMonth = lPoNumberLast + 1;
-								poNumber2NextMonth = lPoNumberLast + 2;
-								poNumber3NextMonth = lPoNumberLast + 3;
-								poNumber4NextMonth = lPoNumberLast + 4;
-								poNumber5NextMonth = lPoNumberLast + 5;
+							
+							for(Integer i=0; i<orderGrpSubmittedsNextMonth.size(); i++) {
+								
+								OrderGrp orderGrpSubmittedLast = 
+										orderGrpSubmittedsNextMonth.get(i);
+								List<Order> orderSubmittedLasts = 
+										orderService.getByCompanyCustidGrpid(
+												orderGrpSubmittedLast.getOrderGrpId(),
+												custId, company); 
+								if(orderSubmittedLasts!=null) {
+									if(orderSubmittedLasts.size()>0) {
+										Order orderSubmittedLast = 
+												orderSubmittedLasts.get(
+														orderSubmittedLasts.size()-1);
+										String poNumberLast =
+												orderSubmittedLast.getPoNumber();
+										String sPoNumberLast = poNumberLast.substring(8,11);
+										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+										poNumber1NextMonth = lPoNumberLast + 1;
+										poNumber2NextMonth = lPoNumberLast + 2;
+										poNumber3NextMonth = lPoNumberLast + 3;
+										poNumber4NextMonth = lPoNumberLast + 4;
+										poNumber5NextMonth = lPoNumberLast + 5;
+										
+										break;
+									}
+									else {
+										orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+									}
+								}
+								else {
+									orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+								}
 							}
 						}						
 					}
@@ -310,7 +347,8 @@ public class InputOrderController
 					if(creditLimits!=null) {
 						creditLimit = creditLimits.getSisaLimit();
 					}
-					/*if(customer!=null) {
+					/* change to direct ebs web service
+					 * if(customer!=null) {
 						if(customer.getCreditLimit()!=null) {
 							creditLimit = customer.getCreditLimit();	
 						}
@@ -348,31 +386,45 @@ public class InputOrderController
 						
 						if(orderGrpSubmittedsCurrentMonth!=null) {
 							if(orderGrpSubmittedsCurrentMonth.size()>0) {
-								OrderGrp orderGrpSubmittedLast = 
-										orderGrpSubmittedsCurrentMonth.get(0);
-								List<Order> orderSubmittedLasts = 
-										orderService.getByCompanyCustidGrpid(
-												orderGrpSubmittedLast.getOrderGrpId(),
-												custId, company); 
-								if(orderSubmittedLasts!=null) {
-									Order orderSubmittedLast = 
-											orderSubmittedLasts.get(
-													orderSubmittedLasts.size()-1);
-									String poNumberLast =
-											orderSubmittedLast.getPoNumber();
-									String sPoNumberLast = poNumberLast.substring(8,11);
-									Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-									poNumber1CurrentMonth = lPoNumberLast + 1;
-									poNumber2CurrentMonth = lPoNumberLast + 2;
-									poNumber3CurrentMonth = lPoNumberLast + 3;
-									poNumber4CurrentMonth = lPoNumberLast + 4;
-									poNumber5CurrentMonth = lPoNumberLast + 5;
+								
+								for(Integer i=0; i<orderGrpSubmittedsCurrentMonth.size(); i++) {
 									
-									poNumber1 = poNumber1CurrentMonth;
-									poNumber2 = poNumber2CurrentMonth;
-									poNumber3 = poNumber3CurrentMonth;
-									poNumber4 = poNumber4CurrentMonth;
-									poNumber5 = poNumber5CurrentMonth; 
+									OrderGrp orderGrpSubmittedLast = 
+											orderGrpSubmittedsCurrentMonth.get(i);
+									List<Order> orderSubmittedLasts = 
+											orderService.getByCompanyCustidGrpid(
+													orderGrpSubmittedLast.getOrderGrpId(),
+													custId, company); 
+									if(orderSubmittedLasts!=null) {
+										if(orderSubmittedLasts.size()>0) {
+											Order orderSubmittedLast = 
+													orderSubmittedLasts.get(
+															orderSubmittedLasts.size()-1);
+											String poNumberLast =
+													orderSubmittedLast.getPoNumber();
+											String sPoNumberLast = poNumberLast.substring(8,11);
+											Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+											poNumber1CurrentMonth = lPoNumberLast + 1;
+											poNumber2CurrentMonth = lPoNumberLast + 2;
+											poNumber3CurrentMonth = lPoNumberLast + 3;
+											poNumber4CurrentMonth = lPoNumberLast + 4;
+											poNumber5CurrentMonth = lPoNumberLast + 5;
+											
+											poNumber1 = poNumber1CurrentMonth;
+											poNumber2 = poNumber2CurrentMonth;
+											poNumber3 = poNumber3CurrentMonth;
+											poNumber4 = poNumber4CurrentMonth;
+											poNumber5 = poNumber5CurrentMonth; 
+											
+											break;
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
+									}
+									else {
+										orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+									}
 								}
 							}						
 						}
@@ -382,25 +434,39 @@ public class InputOrderController
 						
 						if(orderGrpSubmittedsNextMonth!=null) {
 							if(orderGrpSubmittedsNextMonth.size()>0) {
-								OrderGrp orderGrpSubmittedLast = 
-										orderGrpSubmittedsNextMonth.get(0);
-								List<Order> orderSubmittedLasts = 
-										orderService.getByCompanyCustidGrpid(
-												orderGrpSubmittedLast.getOrderGrpId(),
-												custId, company); 
-								if(orderSubmittedLasts!=null) {
-									Order orderSubmittedLast = 
-											orderSubmittedLasts.get(
-													orderSubmittedLasts.size()-1);
-									String poNumberLast =
-											orderSubmittedLast.getPoNumber();
-									String sPoNumberLast = poNumberLast.substring(8,11);
-									Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-									poNumber1NextMonth = lPoNumberLast + 1;
-									poNumber2NextMonth = lPoNumberLast + 2;
-									poNumber3NextMonth = lPoNumberLast + 3;
-									poNumber4NextMonth = lPoNumberLast + 4;
-									poNumber5NextMonth = lPoNumberLast + 5;
+								
+								for(Integer i=0; i<orderGrpSubmittedsNextMonth.size(); i++) {
+									
+									OrderGrp orderGrpSubmittedLast = 
+											orderGrpSubmittedsNextMonth.get(i);
+									List<Order> orderSubmittedLasts = 
+											orderService.getByCompanyCustidGrpid(
+													orderGrpSubmittedLast.getOrderGrpId(),
+													custId, company); 
+									if(orderSubmittedLasts!=null) {
+										if(orderSubmittedLasts.size()>0) {
+											Order orderSubmittedLast = 
+													orderSubmittedLasts.get(
+															orderSubmittedLasts.size()-1);
+											String poNumberLast =
+													orderSubmittedLast.getPoNumber();
+											String sPoNumberLast = poNumberLast.substring(8,11);
+											Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+											poNumber1NextMonth = lPoNumberLast + 1;
+											poNumber2NextMonth = lPoNumberLast + 2;
+											poNumber3NextMonth = lPoNumberLast + 3;
+											poNumber4NextMonth = lPoNumberLast + 4;
+											poNumber5NextMonth = lPoNumberLast + 5;
+											
+											break;
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
+									}
+									else {
+										orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+									}
 								}
 							}						
 						}
@@ -458,25 +524,39 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsNextMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1NextMonth = lPoNumberLast + 1;
-										poNumber2NextMonth = lPoNumberLast + 2;
-										poNumber3NextMonth = lPoNumberLast + 3;
-										poNumber4NextMonth = lPoNumberLast + 4;
-										poNumber5NextMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsNextMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsNextMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1NextMonth = lPoNumberLast + 1;
+												poNumber2NextMonth = lPoNumberLast + 2;
+												poNumber3NextMonth = lPoNumberLast + 3;
+												poNumber4NextMonth = lPoNumberLast + 4;
+												poNumber5NextMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
 									}
 								}						
 							}
@@ -495,25 +575,39 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsCurrentMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1CurrentMonth = lPoNumberLast + 1;
-										poNumber2CurrentMonth = lPoNumberLast + 2;
-										poNumber3CurrentMonth = lPoNumberLast + 3;
-										poNumber4CurrentMonth = lPoNumberLast + 4;
-										poNumber5CurrentMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsCurrentMonth.size(); i++) {
+
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsCurrentMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1CurrentMonth = lPoNumberLast + 1;
+												poNumber2CurrentMonth = lPoNumberLast + 2;
+												poNumber3CurrentMonth = lPoNumberLast + 3;
+												poNumber4CurrentMonth = lPoNumberLast + 4;
+												poNumber5CurrentMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
 									}
 								}						
 							}
@@ -570,25 +664,40 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsNextMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1NextMonth = lPoNumberLast + 1;
-										poNumber2NextMonth = lPoNumberLast + 2;
-										poNumber3NextMonth = lPoNumberLast + 3;
-										poNumber4NextMonth = lPoNumberLast + 4;
-										poNumber5NextMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsNextMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsNextMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1NextMonth = lPoNumberLast + 1;
+												poNumber2NextMonth = lPoNumberLast + 2;
+												poNumber3NextMonth = lPoNumberLast + 3;
+												poNumber4NextMonth = lPoNumberLast + 4;
+												poNumber5NextMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
+										
 									}
 								}						
 							}
@@ -607,25 +716,39 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsCurrentMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1CurrentMonth = lPoNumberLast + 1;
-										poNumber2CurrentMonth = lPoNumberLast + 2;
-										poNumber3CurrentMonth = lPoNumberLast + 3;
-										poNumber4CurrentMonth = lPoNumberLast + 4;
-										poNumber5CurrentMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsCurrentMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsCurrentMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1CurrentMonth = lPoNumberLast + 1;
+												poNumber2CurrentMonth = lPoNumberLast + 2;
+												poNumber3CurrentMonth = lPoNumberLast + 3;
+												poNumber4CurrentMonth = lPoNumberLast + 4;
+												poNumber5CurrentMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
 									}
 								}						
 							}
@@ -684,25 +807,39 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsNextMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1NextMonth = lPoNumberLast + 1;
-										poNumber2NextMonth = lPoNumberLast + 2;
-										poNumber3NextMonth = lPoNumberLast + 3;
-										poNumber4NextMonth = lPoNumberLast + 4;
-										poNumber5NextMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsNextMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsNextMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1NextMonth = lPoNumberLast + 1;
+												poNumber2NextMonth = lPoNumberLast + 2;
+												poNumber3NextMonth = lPoNumberLast + 3;
+												poNumber4NextMonth = lPoNumberLast + 4;
+												poNumber5NextMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
 									}
 								}						
 							}
@@ -721,25 +858,39 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsCurrentMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1CurrentMonth = lPoNumberLast + 1;
-										poNumber2CurrentMonth = lPoNumberLast + 2;
-										poNumber3CurrentMonth = lPoNumberLast + 3;
-										poNumber4CurrentMonth = lPoNumberLast + 4;
-										poNumber5CurrentMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsCurrentMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsCurrentMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1CurrentMonth = lPoNumberLast + 1;
+												poNumber2CurrentMonth = lPoNumberLast + 2;
+												poNumber3CurrentMonth = lPoNumberLast + 3;
+												poNumber4CurrentMonth = lPoNumberLast + 4;
+												poNumber5CurrentMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
 									}
 								}						
 							}
@@ -798,26 +949,40 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsNextMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1NextMonth = lPoNumberLast + 1;
-										poNumber2NextMonth = lPoNumberLast + 2;
-										poNumber3NextMonth = lPoNumberLast + 3;
-										poNumber4NextMonth = lPoNumberLast + 4;
-										poNumber5NextMonth = lPoNumberLast + 5;
-									}
+									
+									for(Integer i=0; i<orderGrpSubmittedsNextMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsNextMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1NextMonth = lPoNumberLast + 1;
+												poNumber2NextMonth = lPoNumberLast + 2;
+												poNumber3NextMonth = lPoNumberLast + 3;
+												poNumber4NextMonth = lPoNumberLast + 4;
+												poNumber5NextMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
+									}	
 								}						
 							}
 							
@@ -835,25 +1000,39 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsCurrentMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1CurrentMonth = lPoNumberLast + 1;
-										poNumber2CurrentMonth = lPoNumberLast + 2;
-										poNumber3CurrentMonth = lPoNumberLast + 3;
-										poNumber4CurrentMonth = lPoNumberLast + 4;
-										poNumber5CurrentMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsCurrentMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsCurrentMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1CurrentMonth = lPoNumberLast + 1;
+												poNumber2CurrentMonth = lPoNumberLast + 2;
+												poNumber3CurrentMonth = lPoNumberLast + 3;
+												poNumber4CurrentMonth = lPoNumberLast + 4;
+												poNumber5CurrentMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
 									}
 								}						
 							}
@@ -912,25 +1091,39 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsNextMonth!=null) {
 								if(orderGrpSubmittedsNextMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsNextMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1NextMonth = lPoNumberLast + 1;
-										poNumber2NextMonth = lPoNumberLast + 2;
-										poNumber3NextMonth = lPoNumberLast + 3;
-										poNumber4NextMonth = lPoNumberLast + 4;
-										poNumber5NextMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsNextMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsNextMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1NextMonth = lPoNumberLast + 1;
+												poNumber2NextMonth = lPoNumberLast + 2;
+												poNumber3NextMonth = lPoNumberLast + 3;
+												poNumber4NextMonth = lPoNumberLast + 4;
+												poNumber5NextMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
 									}
 								}						
 							}
@@ -949,25 +1142,40 @@ public class InputOrderController
 							
 							if(orderGrpSubmittedsCurrentMonth!=null) {
 								if(orderGrpSubmittedsCurrentMonth.size()>0) {
-									OrderGrp orderGrpSubmittedLast = 
-											orderGrpSubmittedsCurrentMonth.get(0);
-									List<Order> orderSubmittedLasts = 
-											orderService.getByCompanyCustidGrpid(
-													orderGrpSubmittedLast.getOrderGrpId(),
-													custId, company); 
-									if(orderSubmittedLasts!=null) {
-										Order orderSubmittedLast = 
-												orderSubmittedLasts.get(
-														orderSubmittedLasts.size()-1);
-										String poNumberLast =
-												orderSubmittedLast.getPoNumber();
-										String sPoNumberLast = poNumberLast.substring(8,11);
-										Long lPoNumberLast = Long.parseLong(sPoNumberLast);
-										poNumber1CurrentMonth = lPoNumberLast + 1;
-										poNumber2CurrentMonth = lPoNumberLast + 2;
-										poNumber3CurrentMonth = lPoNumberLast + 3;
-										poNumber4CurrentMonth = lPoNumberLast + 4;
-										poNumber5CurrentMonth = lPoNumberLast + 5;
+									
+									for(Integer i=0; i<orderGrpSubmittedsCurrentMonth.size(); i++) {
+										
+										OrderGrp orderGrpSubmittedLast = 
+												orderGrpSubmittedsCurrentMonth.get(i);
+										List<Order> orderSubmittedLasts = 
+												orderService.getByCompanyCustidGrpid(
+														orderGrpSubmittedLast.getOrderGrpId(),
+														custId, company); 
+										if(orderSubmittedLasts!=null) {
+											if(orderSubmittedLasts.size()>0) {
+												Order orderSubmittedLast = 
+														orderSubmittedLasts.get(
+																orderSubmittedLasts.size()-1);
+												String poNumberLast =
+														orderSubmittedLast.getPoNumber();
+												String sPoNumberLast = poNumberLast.substring(8,11);
+												Long lPoNumberLast = Long.parseLong(sPoNumberLast);
+												poNumber1CurrentMonth = lPoNumberLast + 1;
+												poNumber2CurrentMonth = lPoNumberLast + 2;
+												poNumber3CurrentMonth = lPoNumberLast + 3;
+												poNumber4CurrentMonth = lPoNumberLast + 4;
+												poNumber5CurrentMonth = lPoNumberLast + 5;
+												
+												break;
+											}
+											else {
+												orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+											}
+										}
+										else {
+											orderGrpService.deleteOrderGrp(orderGrpSubmittedLast.getOrderGrpId());
+										}
+										
 									}
 								}						
 							}
@@ -1085,7 +1293,9 @@ public class InputOrderController
 				inputWebOrder.setInputOrder(inputOrder);
 				inputWebOrder.setInputProducts(inputProducts);
 				inputWebOrder.setListMobils(listMobils);
-		
+
+				//System.out.println("maxInactiveInterval: " + maxInactiveInterval);
+				model.addAttribute("maxInactiveInterval", maxInactiveInterval);
 				model.addAttribute("minOrderDate", minOrderDate);
 				model.addAttribute("maxOrderDate", maxOrderDate);
 				model.addAttribute("orderTypes", orderTypes);
