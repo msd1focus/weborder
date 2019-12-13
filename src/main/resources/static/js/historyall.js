@@ -179,6 +179,7 @@ function showinvoice(obj){
 			var rowDiskon5 = document.getElementById("row_diskon5");
 			var rowDiskon6 = document.getElementById("row_diskon6");
 			var rowDiskon7 = document.getElementById("row_diskon7");
+			var rowDownpayment = document.getElementById("row_downpayment");
 			var rowDpp = document.getElementById("row_dpp");
 			var rowPpn = document.getElementById("row_ppn");
 			var rowTotal = document.getElementById("row_total");
@@ -189,6 +190,7 @@ function showinvoice(obj){
 			var cellDiskon5 = document.getElementById("cell_diskon5");
 			var cellDiskon6 = document.getElementById("cell_diskon6");
 			var cellDiskon7 = document.getElementById("cell_diskon7");
+			var cellDownpayment = document.getElementById("cell_downpayment");
 			var cellDpp = document.getElementById("cell_dpp");
 			var cellPpn = document.getElementById("cell_ppn");
 			var cellTotal = document.getElementById("cell_total");
@@ -201,6 +203,7 @@ function showinvoice(obj){
 			var diskon5 = 0;
 			var diskon6 = 0;
 			var diskon7 = 0;
+			var downpayment = 0;
 			var isIncludeTax = false;
 			var isBatam = false;
 			for (var i = 0; i < objitems.length; i++) {
@@ -217,6 +220,7 @@ function showinvoice(obj){
 				diskon5 = objitems[i].diskon5;
 				diskon6 = objitems[i].diskon6;
 				diskon7 = objitems[i].diskon7;
+				downpayment = objitems[i].downPayment;
 				if(objitems[i].taxClassificationCode=="PPN 10% INCLUDE"){
 					isIncludeTax = true;
 				}
@@ -318,6 +322,17 @@ function showinvoice(obj){
 			else{
 				rowDiskon7.style.display = "none";
 			}
+			
+			if(downpayment>0){
+				cellDownpayment.innerHTML = 
+					formatCurrency(nf.format(downpayment));
+				rowDownpayment.style.display = "table-row";
+				total -= downpayment;
+			}
+			else{
+				rowDownpayment.style.display = "none";
+			}
+			
 			if(total<0){
 				total = 0;
 			}
