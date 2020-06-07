@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
-	
+
 	//List<Order> findOrderByCompanyAndCustId (String company, Long custId);
 	Order	findOrderByOrderId (Long orderId);
-	
+
 	@Query("SELECT o FROM Order o WHERE "
             + "o.company = :company AND "
             + "o.custId = :custId "
@@ -25,7 +25,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 			@Param("company") String company,
     		@Param("custId") Long custId
     	);
-	
+
 	@Query("SELECT o FROM Order o WHERE "
             + "o.company = :company AND "
             + "o.custId = :custId AND "
@@ -39,12 +39,12 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 			@Param("startOrderDate") Date startOrderDate,
     		@Param("endOrderDate") Date endOrderDate
     	);
-	
+
 	@Query("SELECT o FROM Order o "
             + "ORDER BY o.orderId ASC"
            )
 	List<Order> getAll();
-	
+
 	@Query("SELECT o FROM Order o WHERE "
             + "o.company = :company AND "
             + "o.custId = :custId AND "
@@ -56,7 +56,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     		@Param("custId") Long custId,
 			@Param("company") String company
     	);
-	
+
 	@Query("SELECT DISTINCT o.expedisi FROM Order o WHERE "
             + "o.company = :company AND "
             + "o.custId = :custId"
@@ -65,7 +65,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 			@Param("company") String company,
     		@Param("custId") Long custId
     	);
-	
+
 	@Query("SELECT o FROM Order o WHERE "
             + "o.company = :company AND "
             + "o.custId = :custId AND "
@@ -78,7 +78,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 			@Param("company") String company,
 			@Param("poNumber") String poNumber
     	);
-	
+
 	@Modifying
 	@Query("DELETE Order o "
 			+ "WHERE "
@@ -90,17 +90,18 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 	@Transactional
 	void deleteByCompanyCustidGrpidOrderid(
 			@Param("orderId") String orderId,
-    		@Param("orderGrpId") Long orderGrpId, 
+    		@Param("orderGrpId") Long orderGrpId,
 			@Param("company") String company,
     		@Param("custId") String custId
     	);
-	
+
 	@Modifying
 	@Query("UPDATE Order o SET "
 			+ "o.orderId = :orderId, o.orderGrpId = :orderGrpId, "
 			+ "o.company = :company, o.custId = :custId, "
 			+ "o.poNumber = :poNumber, "
 			+ "o.orderDate = :orderDate, o.shipTo = :shipTo, "
+			+ "o.shipDate = :shipDate, "
 			+ "o.expedisi = :expedisi, o.jenisMobil = :jenisMobil, "
 			+ "o.tonaseMobil = :tonaseMobil, o.tonaseOrder = :tonaseOrder, "
 			+ "o.selisihTonase = :selisihTonase, o.totalPrice = :totalPrice, "
@@ -119,12 +120,13 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 	@Transactional
 	void updateByCompanyCustidGrpidOrderid(
 			@Param("orderId") Long orderId,
-    		@Param("orderGrpId") Long orderGrpId, 
+    		@Param("orderGrpId") Long orderGrpId,
 			@Param("company") String company,
     		@Param("custId") Long custId,
     		@Param("poNumber") String poNumber,
 			@Param("orderDate") Date orderDate,
     		@Param("shipTo") String shipTo,
+				@Param("shipDate") Date shipDate,
 			@Param("expedisi") String expedisi,
     		@Param("jenisMobil") String jenisMobil,
 			@Param("tonaseMobil") Double tonaseMobil,
@@ -141,11 +143,12 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     		@Param("invoiceDate") Date invoiceDate,
     		@Param("notes") String notes
     	);
-	
+
 	@Modifying
 	@Query(value="insert into orders ("
             + "order_id, order_grp_id, company, "
             + "cust_id, po_number, order_date, ship_to, "
+						+ "ship_date, "
             + "expedisi, jenis_mobil, tonase_mobil, "
             + "tonase_order, selisih_tonase, total_price, "
             + "periode, ebs_submit_status, ebs_submit_date, "
@@ -153,6 +156,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
             + "invoice_date) VALUES ("
             + ":orderId, :orderGrpId, :company, "
             + ":custId, :poNumber, :orderDate, :shipTo, "
+						+ ":shipDate, "
             + ":expedisi, :jenisMobil, :tonaseMobil, "
             + ":tonaseOrder, :selisihTonase, :totalPrice, "
             + ":periode, :ebsSubmitStatus, :ebsSubmitDate, "
@@ -162,12 +166,13 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 	@Transactional
 	void insert(
 			@Param("orderId") Long orderId,
-    		@Param("orderGrpId") Long orderGrpId, 
+    		@Param("orderGrpId") Long orderGrpId,
 			@Param("company") String company,
     		@Param("custId") Long custId,
     		@Param("poNumber") String poNumber,
 			@Param("orderDate") Date orderDate,
     		@Param("shipTo") String shipTo,
+				@Param("shipDate") Date shipDate,
 			@Param("expedisi") String expedisi,
     		@Param("jenisMobil") String jenisMobil,
 			@Param("tonaseMobil") Double tonaseMobil,

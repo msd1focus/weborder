@@ -14,16 +14,16 @@ window.onload = function(){
 		logofdn.style.display = "none";
 		logofdi.style.display = "block";
 	}
-	
+
 	var loadingProduct1 = document.getElementById("loadingProduct1");
 	var loadingProduct2 = document.getElementById("loadingProduct2");
 	loadingProduct1.style.display = "table-row";
 	loadingProduct2.style.display = "table-row";
-	
+
 	inputProductInit();
 	dimensiMobilInit();
 	poDateInit();
-	
+
 	var orderBySelected = document.getElementById("orderBySelected").value;
 	var manual = document.getElementById("manual");
 	var cmob = document.getElementById("cmob");
@@ -39,7 +39,7 @@ window.onload = function(){
 	var shipTo3Selected = document.getElementById("shipTo3Selected").value;
 	var shipTo4Selected = document.getElementById("shipTo4Selected").value;
 	var shipTo5Selected = document.getElementById("shipTo5Selected").value;
-	
+
 	if(orderBySelected=="CMOB"){
 		cmob.checked = "checked";
 		rowLeadTime.style.display = "table-row";
@@ -48,7 +48,7 @@ window.onload = function(){
 		manual.checked = "checked";
 		rowLeadTime.style.display = "none";
 	}
-	
+
 	if(shipTo1Selected!=null){
 		shipTo1.value = shipTo1Selected;
 	}
@@ -64,7 +64,7 @@ window.onload = function(){
 	if(shipTo5Selected!=null){
 		shipTo5.value = shipTo5Selected;
 	}
-	
+
 	//var jumlahOrder = document.getElementById("jumlahOrder");
     //changeJumlahOrder(jumlahOrder);
 }
@@ -79,23 +79,23 @@ window.onload = function(){
 });*/
 
 function inputProductInit(){
-	var company = 
+	var company =
 		document.getElementById("company").value;
-	var custLocation = 
+	var custLocation =
 		document.getElementById("custLocation").value;
-	var custId = 
+	var custId =
 		document.getElementById("custId").value;
-	var orderId1 = 
+	var orderId1 =
 		document.getElementById("orderId1").value;
-	var orderId2 = 
+	var orderId2 =
 		document.getElementById("orderId2").value;
-	var orderId3 = 
+	var orderId3 =
 		document.getElementById("orderId3").value;
-	var orderId4 = 
+	var orderId4 =
 		document.getElementById("orderId4").value;
-	var orderId5 = 
+	var orderId5 =
 		document.getElementById("orderId5").value;
-	
+
 	var data = {}
 	data["company"] = company;
 	data["custid"] = custId;
@@ -105,7 +105,7 @@ function inputProductInit(){
 	data["orderid4"] = orderId4;
 	data["orderid5"] = orderId5;
 	data["periodecurrent"] = null;
-	
+
 	$.ajax({
 		type: "GET",
 		url: "/weborder/rest/inputproduct",
@@ -114,19 +114,19 @@ function inputProductInit(){
 	    data: data,
 		success: function(result, textStatus, xhr){
 			console.log("inputproduct >> status: " + xhr.status);
-			
-			var tblOrderItemFixed = 
+
+			var tblOrderItemFixed =
 				document.getElementById("tblOrderItemFixed");
-			var tblOrder = 
+			var tblOrder =
 				document.getElementById("tblOrder");
-			var productQty = 
+			var productQty =
 				document.getElementById("productQty");
 			var searchSelect = document.getElementById("searchSelect");
 			productQty.value = Object.keys(result).length;
-			
-			
+
+
 			$.each(result, function(i, field){
-				
+
 				var productName = "";
 				var productCode = "";
 				var prodUom1 = "";
@@ -134,11 +134,11 @@ function inputProductInit(){
 				var prodWidth = 0;
 				var prodLength = 0;
 				var prodHeight = 0;
-				
+
 				if(field.product!=null){
 					//console.log("field.product: " + field.product);
 					//console.log("field.product.productName: " + field.product.productName);
-					productName = field.product.productName;	
+					productName = field.product.productName;
 					productCode = field.product.productCode;
 					prodUom1 = field.product.prodUom1;
 					productCat1 = field.product.productCat1;
@@ -149,8 +149,8 @@ function inputProductInit(){
 						productName = field.product.productName2;
 					}
 				}
-				
-				var toif = 
+
+				var toif =
 					'<tr><td>'
 					+ '<input readonly="readonly" style="width: 100px" value="'
 					+ productCode +'"/>'
@@ -159,29 +159,29 @@ function inputProductInit(){
 					+ productName +'"/>'
 					+ '</td><td>'
 					+ '<select id="uom" style="width: 60px" onchange="changeUom(this)"/>'
-				
-				$.each(field.prodUoms, function(j, pu){				
+
+				$.each(field.prodUoms, function(j, pu){
 					toif += '<option'
-						
+
 					if(pu.uomCode==field.custProd.priceUom){
 						toif += ' selected';
 					}
-					
-					toif += ' value="'+ pu.conversionRate 
-						+ '">' 
+
+					toif += ' value="'+ pu.conversionRate
+						+ '">'
 						+ pu.uomCode
 						+ '</option>'
 				});
-				
+
 				toif += '</select>'
 					+ '</td></tr>';
 				tblOrderItemFixed.insertRow(i+1).outerHTML = toif;
-				
+
 				var option = document.createElement("option");
 				option.value = productName;
 				option.text = productCode;
 				searchSelect.add(option);
-				
+
 				var to =
 					'<tr><td>'
 					+ '<input id="dtl1" type="text" value="'
@@ -322,12 +322,12 @@ function inputProductInit(){
 					+ field.qtyOnHand
 					+ '"/>'
 					+ '</td></tr>';
-				
+
 				tblOrder.insertRow(i+1).outerHTML = to;
 		     });
 		},
 	    complete: function( xhr, status ) {
-	    	
+
 	    	var isOrderNull = true;
 	    	if(orderId1!=null){
 	    		if(orderId1!=""){
@@ -335,21 +335,21 @@ function inputProductInit(){
 			    	initOrderDetail(1, orderId1);
 	    		}
 	    	}
-	    	
+
 	    	if(orderId2!=null){
 	    		if(orderId2!=""){
 		    		isOrderNull = false;
 			    	initOrderDetail(2, orderId2);
 	    		}
 	    	}
-	    	
+
 	    	if(orderId3!=null){
 	    		if(orderId3!=""){
 		    		isOrderNull = false;
 			    	initOrderDetail(3, orderId3);
 	    		}
 	    	}
-	    	
+
 	    	if(orderId4!=null){
 	    		if(orderId4!=""){
 		    		isOrderNull = false;
@@ -368,26 +368,26 @@ function inputProductInit(){
 		    	var jumlahOrder = document.getElementById("jumlahOrder");
 	    		var orderType = document.getElementById("orderType");
 	    		changeOrderType(orderType, true);
-		    	changeJumlahOrder(jumlahOrder, true);	
+		    	changeJumlahOrder(jumlahOrder, true);
 	    	}
-	    	
+
 	    	var loadingProduct1 = document.getElementById("loadingProduct1");
 	    	var loadingProduct2 = document.getElementById("loadingProduct2");
 	    	loadingProduct1.style.display = "none";
 	    	loadingProduct2.style.display = "none";
-	    	
+
 	    },
 		error: function( xhr, textStatus, errorThrown ) {
 			console.log( "XMLHttpRequest.status:  " + xhr.status);
-			console.log( 
-					"XMLHttpRequest.responseText:  " 
+			console.log(
+					"XMLHttpRequest.responseText:  "
 					+ xhr.responseText);
 			responseText = JSON.parse(xhr.responseText);
-			console.log( 
-					"XMLHttpRequest.responseText.Error:  " 
+			console.log(
+					"XMLHttpRequest.responseText.Error:  "
 					+ responseText.error);
-			console.log( 
-					"XMLHttpRequest.responseText.Message:  " 
+			console.log(
+					"XMLHttpRequest.responseText.Message:  "
 					+ responseText.message);
 		}
 	});
@@ -395,7 +395,7 @@ function inputProductInit(){
 
 var initOrderCount = 0;
 function initOrderDetail(o, oi){
-	
+
 	var data = {}
 	data["orderid"] = oi;
 	$.ajax({
@@ -405,36 +405,36 @@ function initOrderDetail(o, oi){
 	    dataType: "json",
 	    data: data,
 		success: function(result, textStatus, xhr){
-		
-			console.log("orderdetail"+ o + " >> status: " + xhr.status + " - " + oi);
-			if(Object.keys(result).length>0){	
 
-				var tblOrderItemFixed = 
+			console.log("orderdetail"+ o + " >> status: " + xhr.status + " - " + oi);
+			if(Object.keys(result).length>0){
+
+				var tblOrderItemFixed =
 					document.getElementById("tblOrderItemFixed");
-				var tblOrder = 
+				var tblOrder =
 					document.getElementById("tblOrder");
-				var productQty = 
+				var productQty =
 					document.getElementById("productQty").value;
-				
+
 				$.each(result, function(i, field){
-					
+
 					/*console.log(
-							o 
-							+ " field.productCode: " + field.productCode 
-							+ " - field.jumlah: " + field.jumlah 
+							o
+							+ " field.productCode: " + field.productCode
+							+ " - field.jumlah: " + field.jumlah
 							+ " - field.orderDetailId: " + field.orderDetailId
 							+ " - field.unitPrice: " + field.unitPrice
 							+ " - field.uom: " + field.uom);*/
 					for(var idxRow = 1; idxRow<=productQty; idxRow++){
-						
-						var productCode = 
+
+						var productCode =
 							//tblOrder.rows[idxRow].cells[0].children[3]; //bugs 20180416
 							tblOrder.rows[idxRow].cells[0].children[5];
-						
+
 						if(productCode!=null){
-							
+
 							if(productCode.value==field.productCode){
-								
+
 								tblOrder.rows[idxRow].cells[o-1].children[0].value =
 									field.jumlah;
 								tblOrder.rows[idxRow].cells[o-1].children[1].value =
@@ -443,87 +443,130 @@ function initOrderDetail(o, oi){
 									field.unitPrice;
 								tblOrder.rows[idxRow].cells[8].children[3].value =
 									field.uom;
-								
-								var uom = 
+
+								var uom =
 									tblOrderItemFixed.rows[idxRow].cells[2].children[0];
 								for (var i=0; i<uom.length; i++){
 									if(field.uom==uom.options[i].text){
 										uom.options[i].selected = "selected";
 									}
 								}
-							}					
-						}	
+							}
+						}
 					}
-					
+
 				});
-				
+
 			}
-	    	
+
 		},
 	    complete: function( xhr, status ) {
-	    	
+
 	    	initOrderCount += 1;
 	    	var jumlahOrder = document.getElementById("jumlahOrder");
 	    	if(initOrderCount==jumlahOrder.value){
 	    		var orderType = document.getElementById("orderType");
 	    		changeOrderType(orderType, true);
-		    	changeJumlahOrder(jumlahOrder, true);	
+		    	changeJumlahOrder(jumlahOrder, true);
 	    	}
-	    	
+
 	    },
 		error: function( xhr, textStatus, errorThrown ) {
 			console.log( "XMLHttpRequest.status:  " + xhr.status);
-			console.log( 
-					"XMLHttpRequest.responseText:  " 
+			console.log(
+					"XMLHttpRequest.responseText:  "
 					+ xhr.responseText);
 			responseText = JSON.parse(xhr.responseText);
-			console.log( 
-					"XMLHttpRequest.responseText.Error:  " 
+			console.log(
+					"XMLHttpRequest.responseText.Error:  "
 					+ responseText.error);
-			console.log( 
-					"XMLHttpRequest.responseText.Message:  " 
+			console.log(
+					"XMLHttpRequest.responseText.Message:  "
 					+ responseText.message);
 		}
 	});
-			
+
 }
 
 function saveForm(obj){
 
-	var loading = document.getElementById('loading');
-    var submitStatus = 
-		document.getElementById("submitStatus");
-    var btnSubmit = 
-		document.getElementById("btnSubmit");
-    var selisihDimensi1 = 
-		unformatText(document.getElementById("selisihDimensi1Text").value);
-	var selisihDimensi2 = 
-		unformatText(document.getElementById("selisihDimensi2Text").value);
-	var selisihDimensi3 = 
-		unformatText(document.getElementById("selisihDimensi3Text").value);
-	var selisihDimensi4 = 
-		unformatText(document.getElementById("selisihDimensi4Text").value);
-	var selisihDimensi5 = 
-		unformatText(document.getElementById("selisihDimensi5Text").value);
-    var jumlahMobil1 = 
-    	unformatText(document.getElementById("jumlahMobil1").value);
-    var jumlahMobil2 = 
-    	unformatText(document.getElementById("jumlahMobil2").value);
-    var jumlahMobil3 = 
-    	unformatText(document.getElementById("jumlahMobil3").value);
-    var jumlahMobil4 = 
-    	unformatText(document.getElementById("jumlahMobil4").value);
-    var jumlahMobil5 = 
-    	unformatText(document.getElementById("jumlahMobil5").value);
-	var jumlahOrderSelected = 
+	var jumlahOrderSelected =
 		parseFloat(document.getElementById("jumlahOrderSelected").value);
-	
+
+	var shipDate1 =
+			document.getElementById("shipDate1").value;
+	var shipDate2 =
+			document.getElementById("shipDate2").value;
+	var shipDate3 =
+			document.getElementById("shipDate3").value;
+	var shipDate4 =
+			document.getElementById("shipDate4").value;
+	var shipDate5 =
+			document.getElementById("shipDate5").value;
+
+
+	var isShipDateWarning = false;
+	var shipDateWarning = "" ;
+	if(jumlahOrderSelected>0 && shipDate1.length==0){
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 1 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>1 && shipDate2.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 2 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>2 && shipDate3.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 3 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>3 && shipDate4.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 4 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>4 && shipDate5.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 5 tidak boleh kosong.\n";
+	}
+
+	if (isShipDateWarning===true) {
+		alert(shipDateWarning);
+		return false;
+	}
+
+
+	var loading = document.getElementById('loading');
+	var submitStatus =
+			document.getElementById("submitStatus");
+	var btnSubmit =
+			document.getElementById("btnSubmit");
+
+	var selisihDimensi1 =
+		unformatText(document.getElementById("selisihDimensi1Text").value);
+	var selisihDimensi2 =
+		unformatText(document.getElementById("selisihDimensi2Text").value);
+	var selisihDimensi3 =
+		unformatText(document.getElementById("selisihDimensi3Text").value);
+	var selisihDimensi4 =
+		unformatText(document.getElementById("selisihDimensi4Text").value);
+	var selisihDimensi5 =
+		unformatText(document.getElementById("selisihDimensi5Text").value);
+    var jumlahMobil1 =
+    	unformatText(document.getElementById("jumlahMobil1").value);
+    var jumlahMobil2 =
+    	unformatText(document.getElementById("jumlahMobil2").value);
+    var jumlahMobil3 =
+    	unformatText(document.getElementById("jumlahMobil3").value);
+    var jumlahMobil4 =
+    	unformatText(document.getElementById("jumlahMobil4").value);
+    var jumlahMobil5 =
+    	unformatText(document.getElementById("jumlahMobil5").value);
+
 	var isWarning = "false";
 	var alertText = "Dimensi Order pada : \n";
-	
+
 	var isWarningMobil = "false";
 	var alertTextMobil = "Jumlah Mobil pada : \n";
-	
+
 	if(jumlahOrderSelected>0){
 		if(selisihDimensi1<0){
 			alertText += "- Order 1\n";
@@ -537,7 +580,7 @@ function saveForm(obj){
 			if(selisihDimensi2<0){
 				alertText += "- Order 2\n";
 				isWarning = "true";
-			}	
+			}
 			if(jumlahMobil2<=0){
 				alertTextMobil += "- Order 2\n";
 				isWarningMobil = "true";
@@ -546,7 +589,7 @@ function saveForm(obj){
 				if(selisihDimensi3<0){
 					alertText += "- Order 3\n";
 					isWarning = "true";
-				}		
+				}
 				if(jumlahMobil3<=0){
 					alertTextMobil += "- Order 3\n";
 					isWarningMobil = "true";
@@ -555,7 +598,7 @@ function saveForm(obj){
 					if(selisihDimensi4<0){
 						alertText += "- Order 4\n";
 						isWarning = "true";
-					}		
+					}
 					if(jumlahMobil4<=0){
 						alertTextMobil += "- Order 4\n";
 						isWarningMobil = "true";
@@ -564,34 +607,34 @@ function saveForm(obj){
 						if(selisihDimensi5<0){
 							alertText += "- Order 5\n";
 							isWarning = "true";
-						}			
+						}
 						if(jumlahMobil5<=0){
 							alertTextMobil += "- Order 5\n";
 							isWarningMobil = "true";
-						}	
+						}
 					}
 				}
 			}
 		}
 	}
-	
-	
+
+
 	if(isWarning==="true"){
 		alertText += "Melebihi Kapasitas Mobil. Mohon Diperiksa Kembali.";
 		alert(alertText);
 	}
-	
+
 	if(isWarningMobil==="true"){
 		alertTextMobil += "Masih Kosong. Mohon Diisi.";
 		alert(alertTextMobil);
 	}
-	
+
 	if(submitStatus.value==="false"){
-		
+
         submitStatus.value = "true";
         obj.name = "action";
         btnSubmit.name = "action";
-        
+
 		loading.style.display = "block";
 		saveOrderGrp("DRAFT");
 
@@ -603,51 +646,91 @@ function saveForm(obj){
         obj.name = "action1";
         btnSubmit.name = "action1";
 	}
-		
+
 	return false;
 }
 
 function submitForm(obj){
 
-	var loading = document.getElementById('loading');
-	
-	var tblOrder = 
-		document.getElementById("tblOrder");
-	var jumlahOrderSelected = 
+	var jumlahOrderSelected =
 		parseFloat(document.getElementById("jumlahOrderSelected").value);
-	var productQty = 
-		parseFloat(document.getElementById("productQty").value);
-	
 
-    var selisihDimensi1 = 
+	var shipDate1 =
+			document.getElementById("shipDate1").value;
+	var shipDate2 =
+			document.getElementById("shipDate2").value;
+	var shipDate3 =
+			document.getElementById("shipDate3").value;
+	var shipDate4 =
+			document.getElementById("shipDate4").value;
+	var shipDate5 =
+			document.getElementById("shipDate5").value;
+
+
+	var isShipDateWarning = false;
+	var shipDateWarning = "" ;
+	if(jumlahOrderSelected>0 && shipDate1.length==0){
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 1 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>1 && shipDate2.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 2 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>2 && shipDate3.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 3 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>3 && shipDate4.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 4 tidak boleh kosong.\n";
+	}
+	if (jumlahOrderSelected>4 && shipDate5.length==0) {
+		isShipDateWarning = true;
+		shipDateWarning += "Tanggal Kirim untuk Order 5 tidak boleh kosong.\n";
+	}
+
+	if (isShipDateWarning===true) {
+		alert(shipDateWarning);
+		return false;
+	}
+
+	var loading = document.getElementById('loading');
+
+	var tblOrder =
+		document.getElementById("tblOrder");
+	var productQty =
+		parseFloat(document.getElementById("productQty").value);
+
+  var selisihDimensi1 =
 		unformatText(document.getElementById("selisihDimensi1Text").value);
-	var selisihDimensi2 = 
+	var selisihDimensi2 =
 		unformatText(document.getElementById("selisihDimensi2Text").value);
-	var selisihDimensi3 = 
+	var selisihDimensi3 =
 		unformatText(document.getElementById("selisihDimensi3Text").value);
-	var selisihDimensi4 = 
+	var selisihDimensi4 =
 		unformatText(document.getElementById("selisihDimensi4Text").value);
-	var selisihDimensi5 = 
+	var selisihDimensi5 =
 		unformatText(document.getElementById("selisihDimensi5Text").value);
-    var jumlahMobil1 = 
+    var jumlahMobil1 =
     	unformatText(document.getElementById("jumlahMobil1").value);
-    var jumlahMobil2 = 
+    var jumlahMobil2 =
     	unformatText(document.getElementById("jumlahMobil2").value);
-    var jumlahMobil3 = 
+    var jumlahMobil3 =
     	unformatText(document.getElementById("jumlahMobil3").value);
-    var jumlahMobil4 = 
+    var jumlahMobil4 =
     	unformatText(document.getElementById("jumlahMobil4").value);
-    var jumlahMobil5 = 
+    var jumlahMobil5 =
     	unformatText(document.getElementById("jumlahMobil5").value);
-	var jumlahOrderSelected = 
-		parseFloat(document.getElementById("jumlahOrderSelected").value);
-	
+		var jumlahOrderSelected =
+		  parseFloat(document.getElementById("jumlahOrderSelected").value);
+
 	var isWarning = "false";
 	var alertText = "Dimensi Order pada : \n";
-	
+
 	var isWarningMobil = "false";
 	var alertTextMobil = "Jumlah Mobil pada : \n";
-	
+
 	if(jumlahOrderSelected>0){
 		if(selisihDimensi1<0){
 			alertText += "- Order 1\n";
@@ -661,7 +744,7 @@ function submitForm(obj){
 			if(selisihDimensi2<0){
 				alertText += "- Order 2\n";
 				isWarning = "true";
-			}	
+			}
 			if(jumlahMobil2<=0){
 				alertTextMobil += "- Order 2\n";
 				isWarningMobil = "true";
@@ -670,7 +753,7 @@ function submitForm(obj){
 				if(selisihDimensi3<0){
 					alertText += "- Order 3\n";
 					isWarning = "true";
-				}		
+				}
 				if(jumlahMobil3<=0){
 					alertTextMobil += "- Order 3\n";
 					isWarningMobil = "true";
@@ -679,7 +762,7 @@ function submitForm(obj){
 					if(selisihDimensi4<0){
 						alertText += "- Order 4\n";
 						isWarning = "true";
-					}		
+					}
 					if(jumlahMobil4<=0){
 						alertTextMobil += "- Order 4\n";
 						isWarningMobil = "true";
@@ -688,28 +771,28 @@ function submitForm(obj){
 						if(selisihDimensi5<0){
 							alertText += "- Order 5\n";
 							isWarning = "true";
-						}			
+						}
 						if(jumlahMobil5<=0){
 							alertTextMobil += "- Order 5\n";
 							isWarningMobil = "true";
-						}	
+						}
 					}
 				}
 			}
 		}
 	}
-	
-	
+
+
 	if(isWarning==="true"){
 		alertText += "Melebihi Kapasitas Mobil. Mohon Diperiksa Kembali.";
 		alert(alertText);
 	}
-	
+
 	if(isWarningMobil==="true"){
 		alertTextMobil += "Masih Kosong. Mohon Diisi.";
 		alert(alertTextMobil);
 	}
-	
+
 	var orderItem1 = 0;
 	var orderItem2 = 0;
 	var orderItem3 = 0;
@@ -720,7 +803,7 @@ function submitForm(obj){
 		var item = 0;
 		for(var idxRow = 1; idxRow<=productQty; idxRow++){
 			var qty =
-				unformatText(tblOrder.rows[idxRow].cells[o-1].children[0].value);	
+				unformatText(tblOrder.rows[idxRow].cells[o-1].children[0].value);
 			if(qty>0){
 				item += 1;
 				if(o==1){
@@ -739,20 +822,20 @@ function submitForm(obj){
 					orderItem5 += 1;
 				}
 			}
-		}	
+		}
 		if(item<=0){
 			isOrderQuantityFilled = false;
 		}
 	}
-	
+
 	if(isOrderQuantityFilled){
-		var submitStatus = 
-			document.getElementById("submitStatus");    
-	    var btnSave = 
+		var submitStatus =
+			document.getElementById("submitStatus");
+	    var btnSave =
 			document.getElementById("btnSave");
-	    
+
 	    if(submitStatus.value==="false"){
-		    
+
 	    	submitStatus.value = "true";
 	        obj.name = "action";
 	        btnSave.name = "action";
@@ -775,7 +858,7 @@ function submitForm(obj){
 	}
 	else{
         var alertText = "Jumlah produk yang diorder pada: \n";
-        
+
         if(jumlahOrderSelected>0){
         	if(orderItem1<=0){
         		alertText+= "- Order 1\n";
@@ -801,42 +884,42 @@ function submitForm(obj){
             	}
         	}
         }
-        
+
         alertText+= "minimum 1. Silahkan isi jumlah produk pada Order di atas atau simpan dahulu data dengan Button Save!";
 		alert(alertText);
 	}
-	
+
 	return false;
 }
 
 function saveOrderGrp(ss){
-	
-	var orderGrpId = 
+
+	var orderGrpId =
 		document.getElementById("orderGrpId").value;
-	var company = 
+	var company =
 		document.getElementById("company").value;
-	var custId = 
+	var custId =
 		document.getElementById("custId").value;
-	var jumlahOrderSelected = 
+	var jumlahOrderSelected =
 		document.getElementById("jumlahOrderSelected").value;
-	var periodeSelected = 
-		formatPeriodeOracle( 
+	var periodeSelected =
+		formatPeriodeOracle(
 				document.getElementById("periodeSelected").value);
-	var orderTypeSelected = 
+	var orderTypeSelected =
 		document.getElementById("orderTypeSelected").value;
-	var orderBySelected = 
+	var orderBySelected =
 		document.getElementById("orderBySelected").value;
-	var leadTime = 
+	var leadTime =
 		document.getElementById("leadTime").value;
-	var sisaLimit = 
+	var sisaLimit =
 		unformatText(document.getElementById("sisaLimit").value);
-	var qtyTotal = 
+	var qtyTotal =
 		unformatText(document.getElementById("qtyTotal").value);
-	var amtTotal = 
+	var amtTotal =
 		unformatText(document.getElementById("amtTotal").value);
-	var createTime = 
+	var createTime =
 		document.getElementById("createTime").value;
-	var maxInactiveInterval = 
+	var maxInactiveInterval =
 		(parseInt(document.getElementById("maxInactiveInterval").value))*1000;
 	console.log("maxInactiveInterval: " + maxInactiveInterval);
 	var currentdate = new Date();
@@ -845,7 +928,7 @@ function saveOrderGrp(ss){
 		createTime = currentdate.getTime();
 	}
 
-	var ordergrp = 
+	var ordergrp =
 		{
 		   "orderGrpId": orderGrpId,
 		   "company": company,
@@ -864,7 +947,7 @@ function saveOrderGrp(ss){
 		};
 
 	console.log(ordergrp);
-	
+
 	$.ajax({
 	    type: "PUT",
 	    url: "/weborder/rest/ordergrp",
@@ -878,29 +961,29 @@ function saveOrderGrp(ss){
 	    },
 	    complete: function( xhr, status ) {
             console.log( "ordergrp >> complete for " + orderGrpId );
-            
+
             //----delete order----//
             var orderids = [];
             if(jumlahOrderSelected<5){
-            	var orderId5 = 
+            	var orderId5 =
             		document.getElementById("orderId5").value;
             	if(orderId5.trim().length>0){
     				orderids.push(orderId5);
     			}
                 if(jumlahOrderSelected<4){
-                	var orderId4 = 
+                	var orderId4 =
                 		document.getElementById("orderId4").value;
                 	if(orderId4.trim().length>0){
         				orderids.push(orderId4);
         			}
                     if(jumlahOrderSelected<3){
-                    	var orderId3 = 
+                    	var orderId3 =
                     		document.getElementById("orderId3").value;
                     	if(orderId3.trim().length>0){
             				orderids.push(orderId3);
             			}
                         if(jumlahOrderSelected<2){
-                        	var orderId2 = 
+                        	var orderId2 =
                         		document.getElementById("orderId2").value;
                         	if(orderId2.trim().length>0){
                 				orderids.push(orderId2);
@@ -909,7 +992,7 @@ function saveOrderGrp(ss){
                     }
                 }
             }
-            
+
             if(orderids.length>0){
             	$.ajax({
                     type: "DELETE",
@@ -923,20 +1006,20 @@ function saveOrderGrp(ss){
                     error: function( xhr, textStatus, errorThrown ) {
             			console.log( "XMLHttpRequest.status:  " + xhr.status);
             			if(xhr.status!==200){
-            				console.log( 
-            						"XMLHttpRequest.responseText:  " 
+            				console.log(
+            						"XMLHttpRequest.responseText:  "
             						+ xhr.responseText);
             				responseText = JSON.parse(xhr.responseText);
-            				console.log( 
-            						"XMLHttpRequest.responseText.Error:  " 
+            				console.log(
+            						"XMLHttpRequest.responseText.Error:  "
             						+ responseText.error);
-            				console.log( 
-            						"XMLHttpRequest.responseText.Message:  " 
+            				console.log(
+            						"XMLHttpRequest.responseText.Message:  "
             						+ responseText.message);
             			}
-            			
+
             			if(textStatus === 'timeout')
-            	        { 
+            	        {
             				loading.style.display = "none";
             				var to = document.getElementById('timeout');
             				to.style.display = "block";
@@ -945,9 +1028,9 @@ function saveOrderGrp(ss){
             		timeout: maxInactiveInterval
                 });
             }
-            
+
             //----end of delete order----//
-            
+
             if(jumlahOrderSelected>0){
             	saveOrder(1, company, custId, orderGrpId, periodeSelected);
             }
@@ -955,20 +1038,20 @@ function saveOrderGrp(ss){
 	    error: function( xhr, textStatus, errorThrown ) {
 			console.log( "XMLHttpRequest.status:  " + xhr.status);
 			if(xhr.status!==200){
-				console.log( 
-						"ordergrp >> XMLHttpRequest.responseText:  " 
+				console.log(
+						"ordergrp >> XMLHttpRequest.responseText:  "
 						+ xhr.responseText);
 				responseText = JSON.parse(xhr.responseText);
-				console.log( 
-						"ordergrp >> XMLHttpRequest.responseText.Error:  " 
+				console.log(
+						"ordergrp >> XMLHttpRequest.responseText.Error:  "
 						+ responseText.error);
-				console.log( 
-						"ordergrp >> XMLHttpRequest.responseText.Message:  " 
+				console.log(
+						"ordergrp >> XMLHttpRequest.responseText.Message:  "
 						+ responseText.message);
 			}
-			
+
 			if(textStatus === 'timeout')
-	        { 
+	        {
 				loading.style.display = "none";
 				var to = document.getElementById('timeout');
 				to.style.display = "block";
@@ -979,32 +1062,34 @@ function saveOrderGrp(ss){
 }
 
 function saveOrder(o, c, ci, ogi, ps){
-	
-	var orderId = 
+
+	var orderId =
 		document.getElementById("orderId"+o).value;
-	var poNumber = 
+	var poNumber =
 		document.getElementById("poNumber"+o).value;
-	var poDate = 
+	var poDate =
 		document.getElementById("poDate"+o).value;
-	var notes = 
+	var notes =
 		document.getElementById("notes"+o).value;
-	var shipToSelected = 
+	var shipDate =
+		document.getElementById("shipDate"+o).value;
+	var shipToSelected =
 		document.getElementById("shipTo"+o+"Selected").value;
-	var expedisiSelected = 
+	var expedisiSelected =
 		document.getElementById("expedisi"+o+"Selected").value;
-	var tblMobil = 
+	var tblMobil =
 		document.getElementById("tblMobil"+o);
-	var dimensiMobil = 
+	var dimensiMobil =
 		document.getElementById("dimensiMobil"+o).value;
-	var dimensiOrder = 
+	var dimensiOrder =
 		document.getElementById("dimensiOrder"+o).value;
-	var selisihDimensi = 
+	var selisihDimensi =
 		document.getElementById("selisihDimensi"+o).value;
-	var totalAmount = 
+	var totalAmount =
 		document.getElementById("totalAmount"+o).value;
-	var maxInactiveInterval = 
+	var maxInactiveInterval =
 		parseInt(document.getElementById("maxInactiveInterval").value)*1000;
-	
+
 	var mobilSelected = "";
 
     var rowCount = tblMobil.rows.length - 1;
@@ -1019,7 +1104,7 @@ function saveOrder(o, c, ci, ogi, ps){
     		mobilSelected += desc + ":" + jumlah;
         }
     }
-	var order = 
+	var order =
 		{
 		   "orderId": orderId,
 		   "orderGrpId": ogi,
@@ -1028,6 +1113,7 @@ function saveOrder(o, c, ci, ogi, ps){
 		   "poNumber": poNumber,
 		   "orderDate": poDate,
 		   "notes": notes,
+			 "shipDate": shipDate,
 		   "shipTo": shipToSelected,
 		   "expedisi": expedisiSelected,
 		   "jenisMobil": mobilSelected,
@@ -1047,7 +1133,7 @@ function saveOrder(o, c, ci, ogi, ps){
 		};
 
 	console.log(order);
-	
+
 	$.ajax({
 	    type: "PUT",
 	    url: "/weborder/rest/order",
@@ -1066,20 +1152,20 @@ function saveOrder(o, c, ci, ogi, ps){
 	    error: function( xhr, textStatus, errorThrown ) {
 			console.log( "order >> XMLHttpRequest.status:  " + xhr.status);
 			if(xhr.status!==200){
-				console.log( 
-						"order >> XMLHttpRequest.responseText:  " 
+				console.log(
+						"order >> XMLHttpRequest.responseText:  "
 						+ xhr.responseText);
 				responseText = JSON.parse(xhr.responseText);
-				console.log( 
-						"order >> XMLHttpRequest.responseText.Error:  " 
+				console.log(
+						"order >> XMLHttpRequest.responseText.Error:  "
 						+ responseText.error);
-				console.log( 
-						"order >> XMLHttpRequest.responseText.Message:  " 
+				console.log(
+						"order >> XMLHttpRequest.responseText.Message:  "
 						+ responseText.message);
 			}
-			
+
 			if(textStatus === 'timeout')
-	        { 
+	        {
 				loading.style.display = "none";
 				var to = document.getElementById('timeout');
 				to.style.display = "block";
@@ -1092,40 +1178,40 @@ function saveOrder(o, c, ci, ogi, ps){
 var orderSavedCount = 0;
 
 function saveOrderDetail(o, odi, c, ci, ogi, ps){
-	
+
 	var orderdetail = [];
 	var orderdetailids = [];
-	
-	var tblOrderItemFixed = 
+
+	var tblOrderItemFixed =
 		document.getElementById("tblOrderItemFixed");
-	var tblOrder = 
+	var tblOrder =
 		document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
-	var jumlahOrderSelected = 
+	var jumlahOrderSelected =
 		document.getElementById("jumlahOrderSelected").value;
-	var maxInactiveInterval = 
+	var maxInactiveInterval =
 		parseInt(document.getElementById("maxInactiveInterval").value)*1000;
 	var item = 0;
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 
 		var qty =
 			unformatText(tblOrder.rows[idxRow].cells[o-1].children[0].value);
 		var orderDetailId =
 			tblOrder.rows[idxRow].cells[o-1].children[1].value;
-		
+
 		if(qty>0){
 			item += 1;
 			var productCode=
 				tblOrderItemFixed.rows[idxRow].cells[0].children[0].value;
 			var productDesc=
 				tblOrderItemFixed.rows[idxRow].cells[1].children[0].value;
-			var uomSelected = 
+			var uomSelected =
 				tblOrder.rows[idxRow].cells[8].children[3].value;
-			var unitPrice = 
+			var unitPrice =
 				unformatText(tblOrder.rows[idxRow].cells[8].children[0].value);
-			var totalPrice = 
+			var totalPrice =
 				qty*unitPrice;
 			var lastStock =
 				tblOrder.rows[idxRow].cells[10].children[0].value;
@@ -1138,7 +1224,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 			var outstandingOrder =
 				tblOrder.rows[idxRow].cells[10].children[4].value;
 			//console.log("lastStock: " + lastStock);
-			orderdetail.push({ 
+			orderdetail.push({
 		        "orderDetailId" : orderDetailId,
 				"orderId": odi,
 				"productCode": productCode,
@@ -1160,10 +1246,10 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 			}
 		}
 	}
-	
+
 	console.log("orderdetail: " + orderdetail);
 	console.log("orderdetailids.length: " + orderdetailids.length);
-	
+
 	if(orderdetailids.length>0){
 		console.log("orderdetailids: " + orderdetailids);
 		$.ajax({
@@ -1178,20 +1264,20 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 	        error: function( xhr, textStatus, errorThrown ) {
 				console.log( "XMLHttpRequest.status:  " + xhr.status);
 				if(xhr.status!==200){
-					console.log( 
-							"XMLHttpRequest.responseText:  " 
+					console.log(
+							"XMLHttpRequest.responseText:  "
 							+ xhr.responseText);
 					responseText = JSON.parse(xhr.responseText);
-					console.log( 
-							"XMLHttpRequest.responseText.Error:  " 
+					console.log(
+							"XMLHttpRequest.responseText.Error:  "
 							+ responseText.error);
-					console.log( 
-							"XMLHttpRequest.responseText.Message:  " 
+					console.log(
+							"XMLHttpRequest.responseText.Message:  "
 							+ responseText.message);
 				}
-    			
+
     			if(textStatus === 'timeout')
-    	        { 
+    	        {
     				loading.style.display = "none";
     				var to = document.getElementById('timeout');
     				to.style.display = "block";
@@ -1200,7 +1286,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
     		timeout: maxInactiveInterval
 	    });
 	}
-	
+
 	$.ajax({
 	    type: "PUT",
 	    url: "/weborder/rest/orderdetail",
@@ -1209,7 +1295,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 	    contentType: "application/json; charset=utf-8",
 	    dataType: "json",
 	    success: function(result){
-	    	console.log("orderdetail >> put: " 
+	    	console.log("orderdetail >> put: "
 	    			+ result + " rows from " + item + " rows");
 	    },
 	    complete: function( xhr, status ) {
@@ -1227,7 +1313,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 			}
 			if(jumlahOrderSelected>4 && orderSavedCount==4){
 				saveOrder(5, c, ci, ogi, ps);
-			}          
+			}
 			//block below code for test only
            if(orderSavedCount==jumlahOrderSelected){
     	    	window.location.replace("/weborder/home");
@@ -1236,20 +1322,20 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 	    error: function( xhr, textStatus, errorThrown ) {
 			console.log( "XMLHttpRequest.status:  " + xhr.status);
 			if(xhr.status!==200){
-				console.log( 
-						"XMLHttpRequest.responseText:  " 
+				console.log(
+						"XMLHttpRequest.responseText:  "
 						+ xhr.responseText);
 				responseText = JSON.parse(xhr.responseText);
-				console.log( 
-						"XMLHttpRequest.responseText.Error:  " 
+				console.log(
+						"XMLHttpRequest.responseText.Error:  "
 						+ responseText.error);
-				console.log( 
-						"XMLHttpRequest.responseText.Message:  " 
+				console.log(
+						"XMLHttpRequest.responseText.Message:  "
 						+ responseText.message);
 			}
-			
+
 			if(textStatus === 'timeout')
-	        { 
+	        {
 				loading.style.display = "none";
 				var to = document.getElementById('timeout');
 				to.style.display = "block";
@@ -1257,7 +1343,7 @@ function saveOrderDetail(o, odi, c, ci, ogi, ps){
 		},
 		timeout: maxInactiveInterval
 	});
-	
+
 }
 
 function formatPeriodeOracle(obj){
@@ -1281,7 +1367,7 @@ function formatPeriodeOracle(obj){
 }
 
 function formatText(obj){
-	
+
 	text = obj.value;
 	//if(!isNaN(text)){
 		text = text.replace(/[\D\s\._\-]+/g, "");
@@ -1299,7 +1385,7 @@ function formatText(obj){
 }
 
 function formatTextValue(obj){
-	
+
 	text = obj;
 	//text = text.toString().replace(/[\D\s\._\-]+/g, "");
 	text = text ? parseFloat( text, 10 ) : 0;
@@ -1609,54 +1695,54 @@ function dimensiMobilInit5(){
 }
 
 function poDateInit(){
-	   
+
 	var poDate1 = document.getElementById("poDate1");
 	var poDate2 = document.getElementById("poDate2");
 	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
-	
+
 	var pd1 = getDate(poDate1.value);
 	var pd2 = getDate(poDate2.value);
 	var pd3 = getDate(poDate3.value);
 	var pd4 = getDate(poDate4.value);
 	var pd5 = getDate(poDate5.value);
-	
+
 	if(pd2<pd1){
 		poDate2.value = poDate1.value;
 		pd2 = getDate(poDate2.value);
 	}
-	
+
 	if(pd3<pd2){
 		poDate3.value = poDate2.value;
 		pd3 = getDate(poDate3.value);
 	}
-	
+
 	if(pd4<pd3){
 		poDate4.value = poDate3.value;
 		pd4 = getDate(poDate4.value);
 	}
-	
+
 	if(pd5<pd5){
 		poDate5.value = poDate4.value;
 		pd5 = getDate(poDate5.value);
 	}
-	
+
 	poDate2.min = poDate1.value;
 	poDate3.min = poDate2.value;
 	poDate4.min = poDate3.value;
 	poDate5.min = poDate4.value;
-	
+
 }
 
 function poDate1Change(obj){
-	
+
 	var poDate1 = document.getElementById("poDate1");
 	var poDate2 = document.getElementById("poDate2");
 	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
-	
+
 	if(obj.value===""){
 		poDate1.value = poDate1.min;
 	}
@@ -1666,165 +1752,165 @@ function poDate1Change(obj){
 	pd3 = getDate(poDate3.value);
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
-	
+
 	pd1min = getDate(poDate1.min);
 	if(pd1<pd1min){
 		poDate1.value = poDate1.min;
 	}
-	
+
 	if(pd2<pd1){
 		poDate2.value = poDate1.value;
 	}
-	
+
 	if(pd3<pd1){
 		poDate3.value = poDate1.value;
 	}
-	
+
 	if(pd4<pd1){
 		poDate4.value = poDate1.value;
 	}
-	
+
 	if(pd5<pd1){
 		poDate5.value = poDate1.value;
 	}
-	
+
 	poDate2.min = poDate1.value;
 	poDate3.min = poDate1.value;
 	poDate4.min = poDate1.value;
 	poDate5.min = poDate1.value;
-	
+
 }
 
 function poDate2Change(obj){
-	
+
 	var poDate2 = document.getElementById("poDate2");
 	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
-	
+
 	if(obj.value===""){
 		poDate2.value = poDate2.min;
 	}
-	
+
 	pd2 = getDate(poDate2.value);
 	pd3 = getDate(poDate3.value);
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
-	
+
 	pd2min = getDate(poDate2.min);
 	if(pd2<pd2min){
 		poDate2.value = poDate2.min;
 	}
-	
+
 	if(pd3<pd2){
 		poDate3.value = poDate2.value;
 	}
-	
+
 	if(pd4<pd2){
 		poDate4.value = poDate2.value;
 	}
-	
+
 	if(pd5<pd2){
 		poDate5.value = poDate2.value;
 	}
-	
+
 	poDate3.min = poDate2.value;
 	poDate4.min = poDate2.value;
 	poDate5.min = poDate2.value;
-	
+
 }
 
 function poDate3Change(obj){
-	   
+
 	var poDate3 = document.getElementById("poDate3");
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
-	
+
 	if(obj.value===""){
 		poDate3.value = poDate3.min;
 	}
-	
+
 	pd3 = getDate(poDate3.value);
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
-	
+
 	pd3min = getDate(poDate3.min);
 	if(pd3<pd3min){
 		poDate3.value = poDate3.min;
 	}
-	
+
 	if(pd4<pd3){
 		poDate4.value = poDate3.value;
 	}
-	
+
 	if(pd5<pd3){
 		poDate5.value = poDate3.value;
 	}
-	
+
 	poDate4.min = poDate3.value;
 	poDate5.min = poDate3.value;
-	
+
 }
 
 
 function poDate4Change(obj){
-	   
+
 	var poDate4 = document.getElementById("poDate4");
 	var poDate5 = document.getElementById("poDate5");
-	
+
 	if(obj.value===""){
 		poDate4.value = poDate4.min;
 	}
-	
+
 	pd4 = getDate(poDate4.value);
 	pd5 = getDate(poDate5.value);
-	
+
 	pd4min = getDate(poDate4.min);
 	if(pd4<pd4min){
 		poDate4.value = poDate4.min;
 	}
-	
+
 	if(pd5<pd4){
 		poDate5.value = poDate4.value;
 	}
-	
+
 	poDate5.min = poDate4.value;
-	
+
 }
 
 function poDate5Change(obj){
-	   
+
 	var poDate5 = document.getElementById("poDate5");
 
 	if(obj.value===""){
 		poDate5.value = poDate5.min;
 	}
-	
+
 	pd5 = getDate(poDate5.value);
-	
+
 	pd5min = getDate(poDate5.min);
 	if(pd5<pd5min){
 		poDate5.value = poDate5.min;
 	}
-	
+
 }
 
 function getDate(obj){
-	
+
 	var date = new Date();
-	
+
 	var d = obj.split("-");
     var year = d[0];
     var month = d[1];
     var day = d[2];
-	
+
     date.
 		setDate(day);
     date.
 		setMonth(month);
     date.
 		setFullYear(year);
-	
+
 	return date;
 }
 
@@ -1836,23 +1922,23 @@ function getDate(obj){
 }*/
 
 function searchProduct(obj){
-	
+
 	//console.log("===============================================================");
 	//console.log("Search");
 	//console.log("===============================================================");
-	
+
 	var tblOrderItemFixed = document.getElementById("tblOrderItemFixed");
 	var tblOrder = document.getElementById("tblOrder");
 	var searchInput = document.getElementById("searchInput");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
-	
+
 	var productCodeSelected =
 		searchInput.value;
 	//console.log("productCodeSelected: " + productCodeSelected);
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
-		
+
 		var productCodeCurrent =
 			tblOrderItemFixed.rows[idxRow].cells[1].children[0].value;
 		if(productCodeSelected===productCodeCurrent){
@@ -1861,7 +1947,7 @@ function searchProduct(obj){
 			break;
 		}
 	}
-	
+
 
 	//console.log("===============================================================");
 	return;
@@ -1871,11 +1957,11 @@ var isChangeUom = false;
 function changeUom(obj){
 
 	isChangeUom = true;
-	
+
 	//console.log("===============================================================");
 	//console.log("Change UOM");
 	//console.log("===============================================================");
-	
+
 	var uomCurrentRate = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	//console.log("idxRowCurrent: " + idxRowCurrent);
@@ -1896,10 +1982,10 @@ function changeUom(obj){
 	var prodHeightValue = prodHeight.value;
 
 	var uomCurrent;
-		
+
 	var uomInitRate = 0;
 	var uomSelectedRate = 0;
-	
+
 	for (var i=0; i<uom.length; i++){
 		if(uomInit.value==uom.options[i].text){
 			uomInitRate = uom.options[i].value;
@@ -1911,146 +1997,146 @@ function changeUom(obj){
 			uomCurrent = uom.options[i].text;
 		}
 	}
-	
+
 	var up = 0;
 	up =
 		parseFloat(untPriceInit.value)
 		* parseFloat(uomCurrentRate)
 		/ parseFloat(uomInitRate);
-	
+
 	//console.log("prodWidthValue: " + prodWidthValue);
 	//console.log("prodLengthValue: " + prodLengthValue);
 	//console.log("prodHeightValue: " + prodHeightValue);
-	
-	prodWidthValue = 
+
+	prodWidthValue =
 		parseFloat(prodWidthValue)
 		* parseFloat(uomCurrentRate)
 		/ parseFloat(uomSelectedRate);
 
-	prodLengthValue = 
+	prodLengthValue =
 		parseFloat(prodLengthValue)
 		* parseFloat(uomCurrentRate)
 		/ parseFloat(uomSelectedRate);
-	
-	prodHeightValue = 
+
+	prodHeightValue =
 		parseFloat(prodHeightValue)
 		* parseFloat(uomCurrentRate)
 		/ parseFloat(uomSelectedRate);
-	
+
 	//console.log("====================================");
 	//console.log("prodWidthValue: " + prodWidthValue);
 	//console.log("prodLengthValue: " + prodLengthValue);
 	//console.log("prodHeightValue: " + prodHeightValue);
-	
+
 	if(jumlahOrder.value>0){
-		
-		var up1 = 
+
+		var up1 =
 			document.getElementById("up1");
-		var amt1 = 
+		var amt1 =
 			document.getElementById("amt1");
 		var quantity1 = tblOrder.rows[idxRowCurrent].cells[0].children[0];
-		var qty1 = 
+		var qty1 =
 			parseFloat(quantity1.value);
-		
-		qty1 = 
+
+		qty1 =
 			parseFloat(qty1)
 			* parseFloat(uomSelectedRate)
 			/ parseFloat(uomCurrentRate);
-		
+
 
 		quantity1.value = qty1;
 		up1.value = up;
 		amt1.value = up*qty1;
-		
+
 		if(jumlahOrder.value>1){
-			
-			var up2 = 
+
+			var up2 =
 				document.getElementById("up2");
-			var amt2 = 
+			var amt2 =
 				document.getElementById("amt2");
 			var quantity2 = tblOrder.rows[idxRowCurrent].cells[1].children[0];
-			var qty2 = 
+			var qty2 =
 				parseFloat(quantity2.value);
-			
-			qty2 = 
+
+			qty2 =
 				parseFloat(qty2)
 				* parseFloat(uomSelectedRate)
 				/ parseFloat(uomCurrentRate);
-			
+
 
 			quantity2.value = qty2;
 			up2.value = up;
 			amt2.value = up*qty2;
-			
+
 			if(jumlahOrder.value>2){
-				
-				var up3 = 
+
+				var up3 =
 					document.getElementById("up3");
-				var amt3 = 
+				var amt3 =
 					document.getElementById("amt3");
-				var quantity3 = 
+				var quantity3 =
 					tblOrder.rows[idxRowCurrent].cells[2].children[0];
-				var qty3 = 
+				var qty3 =
 					parseFloat(quantity3.value);
-				
-				qty3 = 
+
+				qty3 =
 					parseFloat(qty3)
 					* parseFloat(uomSelectedRate)
 					/ parseFloat(uomCurrentRate);
-				
+
 
 				quantity3.value = qty3;
 				up3.value = up;
 				amt3.value = up*qty3;
-				
+
 				if(jumlahOrder.value>3){
 
-					var up4 = 
+					var up4 =
 						document.getElementById("up4");
-					var amt4 = 
+					var amt4 =
 						document.getElementById("amt4");
-					var quantity4 = 
+					var quantity4 =
 						tblOrder.rows[idxRowCurrent].cells[3].children[0];
-					var qty4 = 
+					var qty4 =
 						parseFloat(quantity4.value);
-					
-					qty4 = 
+
+					qty4 =
 						parseFloat(qty4)
 						* parseFloat(uomSelectedRate)
 						/ parseFloat(uomCurrentRate);
-					
+
 
 					quantity4.value = qty4;
 					up4.value = up;
 					amt4.value = up*qty4;
-					
+
 					if(jumlahOrder.value>4){
-						
-						var up5 = 
+
+						var up5 =
 							document.getElementById("up5");
-						var amt5 = 
+						var amt5 =
 							document.getElementById("amt5");
-						var quantity5 = 
+						var quantity5 =
 							tblOrder.rows[idxRowCurrent].cells[4].children[0];
-						var qty5 = 
+						var qty5 =
 							parseFloat(quantity5.value);
-						
-						qty5 = 
+
+						qty5 =
 							parseFloat(qty5)
 							* parseFloat(uomSelectedRate)
 							/ parseFloat(uomCurrentRate);
-						
+
 
 						quantity5.value = qty5;
 						up5.value = up;
 						amt5.value = up*qty5;
 					}
-					
+
 				}
-			}		
-		}	
+			}
+		}
 	}
-	
+
 	//console.log("uomCurrentRate: " + uomCurrentRate);
 	//console.log("untPriceInit: " + untPriceInit.value);
 	//console.log("uomCurrent: " + uomCurrent);
@@ -2058,13 +2144,13 @@ function changeUom(obj){
 	//console.log("uomSelectedRate: " + uomSelectedRate);
 	//console.log("untPrice: " + untPrice.value);
 	//console.log("up: " + up);
-	
+
 	untPrice.value = up;
 	prodWidth.value = prodWidthValue;
 	prodLength.value = prodLengthValue;
 	prodHeight.value = prodHeightValue;
 	uomSelected.value = uomCurrent;
-	changeJumlahOrder(jumlahOrder, false);	
+	changeJumlahOrder(jumlahOrder, false);
 	//console.log("===============================================================");
 }
 
@@ -2076,12 +2162,12 @@ function focus1(obj){
 	var dtl1 = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var up1 = document.getElementById("up1");
 	var amt1 = document.getElementById("amt1");
-	
+
 	up1.value = formatTextValue(parseFloat(untPrice));
 	amt1.value = formatTextValue(untPrice*unformatText(dtl1));
 	up2.value = "0";
@@ -2092,9 +2178,9 @@ function focus1(obj){
 	amt4.value = "0";
 	up5.value = "0";
 	amt5.value = "0";
-	
+
 	obj.select();
-	
+
 	return;
 }
 
@@ -2102,12 +2188,12 @@ function focus2(obj){
 	var dtl2 = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var up2 = document.getElementById("up2");
 	var amt2 = document.getElementById("amt2");
-	
+
 	up2.value = formatTextValue(parseFloat(untPrice));
 	amt2.value = formatTextValue(untPrice*unformatText(dtl2));
 	up1.value = "0";
@@ -2119,7 +2205,7 @@ function focus2(obj){
 	up5.value = "0";
 	amt5.value = "0";
 	obj.select();
-	
+
 	return;
 }
 
@@ -2127,12 +2213,12 @@ function focus3(obj){
 	var dtl3 = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var up3 = document.getElementById("up3");
 	var amt3 = document.getElementById("amt3");
-	
+
 	up3.value = formatTextValue(parseFloat(untPrice));
 	amt3.value = formatTextValue(untPrice*unformatText(dtl3));
 	up1.value = "0";
@@ -2144,7 +2230,7 @@ function focus3(obj){
 	up5.value = "0";
 	amt5.value = "0";
 	obj.select();
-	
+
 	return;
 }
 
@@ -2153,12 +2239,12 @@ function focus4(obj){
 	var dtl4 = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var up4 = document.getElementById("up4");
 	var amt4 = document.getElementById("amt4");
-	
+
 	up4.value = formatTextValue(parseFloat(untPrice));
 	amt4.value = formatTextValue(untPrice*unformatText(dtl4));
 	up1.value = "0";
@@ -2170,7 +2256,7 @@ function focus4(obj){
 	up5.value = "0";
 	amt5.value = "0";
 	obj.select();
-	
+
 	return;
 }
 
@@ -2179,12 +2265,12 @@ function focus5(obj){
 	var dtl5 = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var up5 = document.getElementById("up5");
 	var amt5 = document.getElementById("amt5");
-	
+
 	up5.value = formatTextValue(parseFloat(untPrice));
 	amt5.value = formatTextValue(untPrice*unformatText(dtl5));
 	up1.value = "0";
@@ -2196,18 +2282,18 @@ function focus5(obj){
 	up4.value = "0";
 	amt4.value = "0";
 	obj.select();
-	
+
 	return;
 }
 
 function calcAmount1(obj){
-	
+
 //	console.log("===============================================================");
 //	console.log("calcAmount1");
 //	console.log("===============================================================");
-//	
+//
 //	console.log("obj.value: " + obj.value);
-	
+
 	var dtl1 = obj.value;
 	var idxRowCurrent = parseFloat(obj.parentNode.parentNode.rowIndex);
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
@@ -2218,7 +2304,7 @@ function calcAmount1(obj){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
     var totalAmount1Text = document.getElementById("totalAmount1Text");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var qtyTotal = document.getElementById("qtyTotal");
@@ -2249,29 +2335,29 @@ function calcAmount1(obj){
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
-		
+
 		var qty1 =
 			unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
-		
-		dimensiOrder += 
+
+		dimensiOrder +=
 			qty1
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 			/1000000000;
-		
+
 		var qtyCurrentLine = 0;
-		qtyCurrentLine = 
+		qtyCurrentLine =
 			qty1;
-		
+
 		var amountCurrentLine = 0;
-		amountCurrentLine = 
+		amountCurrentLine =
 			qty1
 			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value);
-		totAmount1 += amountCurrentLine;	
-		
+		totAmount1 += amountCurrentLine;
+
 		if(jumlahOrder === "1"){
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
@@ -2286,24 +2372,24 @@ function calcAmount1(obj){
 			var qty2 =
 				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty2;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
-			totAmount += totAmountPerLine; 
+			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "3"){
 			var qty2 =
@@ -2311,19 +2397,19 @@ function calcAmount1(obj){
 			var qty3 =
 				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty2
 				+ qty3;
-						
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty2
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
@@ -2341,27 +2427,27 @@ function calcAmount1(obj){
 			var qty4 =
 				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty2
 				+ qty3
 				+ qty4;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty2
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
@@ -2376,18 +2462,18 @@ function calcAmount1(obj){
 			var qty5 =
 				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty2
 				+ qty3
 				+ qty4
 				+ qty5;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty2
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty4
@@ -2398,12 +2484,12 @@ function calcAmount1(obj){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
-		
+
 	}
 
 	dimensiOrder1.value = dimensiOrder;
@@ -2416,7 +2502,7 @@ function calcAmount1(obj){
 		selisihDimensi1.value = selisihDimensi;
 		selisihDimensi1Text.value = formatTextValue(selisihDimensi);
 	//}
-	
+
 	/*if(selisihDimensi<0){
 		selisihDimensi1Text.style.backgroundColor = "yellow";
 		//alert("Dimensi Mobil pada Order 1 Tidak Mencukupi. Mohon Periksa Kembali");
@@ -2424,14 +2510,14 @@ function calcAmount1(obj){
 	else{
 		selisihDimensi1Text.style.backgroundColor = "#D3D3D3";
 	}*/
-	
+
 	totalAmount1.value = totAmount1;
 	totalAmount1Text.value = formatTextValue(totAmount1);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
-	
+
 	if(jumlahOrder>0){
-		
+
 		var sl1 = 0;
 		sl1 = sisaLimitInit - totAmount1;
 		sisaLimit1.value = formatTextValue(sl1);
@@ -2442,9 +2528,9 @@ function calcAmount1(obj){
 		else{
 			sisaLimit1.style.backgroundColor = "#D3D3D3";
 		}
-		
+
 		if(jumlahOrder>1){
-			
+
 			var sl2 = 0;
 			sl2 = sl1 - totAmount2;
 			sisaLimit2.value = formatTextValue(sl2);
@@ -2455,9 +2541,9 @@ function calcAmount1(obj){
 			else{
 				sisaLimit2.style.backgroundColor = "#D3D3D3";
 			}
-			
+
 			if(jumlahOrder>2){
-				
+
 				var sl3 = 0;
 				sl3 = sl2 - totAmount3;
 				sisaLimit3.value = formatTextValue(sl3);
@@ -2468,9 +2554,9 @@ function calcAmount1(obj){
 				else{
 					sisaLimit3.style.backgroundColor = "#D3D3D3";
 				}
-				
+
 				if(jumlahOrder>3){
-					
+
 					var sl4 = 0;
 					sl4 = sl3 - totAmount4;
 					sisaLimit4.value = formatTextValue(sl4);
@@ -2481,9 +2567,9 @@ function calcAmount1(obj){
 					else{
 						sisaLimit4.style.backgroundColor = "#D3D3D3";
 					}
-					
+
 					if(jumlahOrder>4){
-						
+
 						var sl5 = 0;
 						sl5 = sl4 - totAmount5;
 						sisaLimit5.value = formatTextValue(sl5);
@@ -2494,14 +2580,14 @@ function calcAmount1(obj){
 						else{
 							sisaLimit5.style.backgroundColor = "#D3D3D3";
 						}
-						
-						
+
+
 					}
 				}
 			}
 		}
 	}
-	
+
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -2526,7 +2612,7 @@ function calcAmount2(obj){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
     var totalAmount2Text = document.getElementById("totalAmount2Text");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var qtyTotal = document.getElementById("qtyTotal");
@@ -2544,7 +2630,7 @@ function calcAmount2(obj){
     var sisaLimit4 = document.getElementById("sisaLimit4");
     var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
+
 	var totAmount1 = 0;
 	totAmount1 = totalAmount1.value;
 	var totAmount2 = 0;
@@ -2557,13 +2643,13 @@ function calcAmount2(obj){
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
-		
+
 		var qty2 =
 			unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
-		
-		dimensiOrder += 
+
+		dimensiOrder +=
 			qty2
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
@@ -2571,37 +2657,37 @@ function calcAmount2(obj){
 			/1000000000;
 
 		var qtyCurrentLine = 0;
-		qtyCurrentLine = 
+		qtyCurrentLine =
 			qty2;
-		
+
 		var amountCurrentLine = 0;
-		amountCurrentLine = 
+		amountCurrentLine =
 			qty2
 			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value);
 		totAmount2 += amountCurrentLine;
-		
+
 		if(jumlahOrder === "2"){
 			var qty1 =
 				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
-			totAmount += totAmountPerLine; 
+			totAmount += totAmountPerLine;
 		}
 		else if(jumlahOrder === "3"){
 			var qty1 =
@@ -2609,19 +2695,19 @@ function calcAmount2(obj){
 			var qty3 =
 				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty3;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
@@ -2639,27 +2725,27 @@ function calcAmount2(obj){
 			var qty4 =
 				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty3
 				+ qty4;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
@@ -2674,18 +2760,18 @@ function calcAmount2(obj){
 			var qty5 =
 				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty3
 				+ qty4
 				+ qty5;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty4
@@ -2696,12 +2782,12 @@ function calcAmount2(obj){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
-	
+
 	}
 
 	dimensiOrder2.value = dimensiOrder;
@@ -2720,14 +2806,14 @@ function calcAmount2(obj){
 	else{
 		selisihDimensi2Text.style.backgroundColor = "#D3D3D3";
 	}*/
-	
+
 	totalAmount2.value = totAmount2;
 	totalAmount2Text.value = formatTextValue(totAmount2);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 
 	if(jumlahOrder>0){
-		
+
 		var sl1 = 0;
 		sl1 = sisaLimitInit - totAmount1;
 		sisaLimit1.value = formatTextValue(sl1);
@@ -2738,9 +2824,9 @@ function calcAmount2(obj){
 		else{
 			sisaLimit1.style.backgroundColor = "#D3D3D3";
 		}
-		
+
 		if(jumlahOrder>1){
-			
+
 			var sl2 = 0;
 			sl2 = sl1 - totAmount2;
 			sisaLimit2.value = formatTextValue(sl2);
@@ -2751,9 +2837,9 @@ function calcAmount2(obj){
 			else{
 				sisaLimit2.style.backgroundColor = "#D3D3D3";
 			}
-			
+
 			if(jumlahOrder>2){
-				
+
 				var sl3 = 0;
 				sl3 = sl2 - totAmount3;
 				sisaLimit3.value = formatTextValue(sl3);
@@ -2764,9 +2850,9 @@ function calcAmount2(obj){
 				else{
 					sisaLimit3.style.backgroundColor = "#D3D3D3";
 				}
-				
+
 				if(jumlahOrder>3){
-					
+
 					var sl4 = 0;
 					sl4 = sl3 - totAmount4;
 					sisaLimit4.value = formatTextValue(sl4);
@@ -2777,9 +2863,9 @@ function calcAmount2(obj){
 					else{
 						sisaLimit4.style.backgroundColor = "#D3D3D3";
 					}
-					
+
 					if(jumlahOrder>4){
-						
+
 						var sl5 = 0;
 						sl5 = sl4 - totAmount5;
 						sisaLimit5.value = formatTextValue(sl5);
@@ -2790,14 +2876,14 @@ function calcAmount2(obj){
 						else{
 							sisaLimit5.style.backgroundColor = "#D3D3D3";
 						}
-						
-						
+
+
 					}
 				}
 			}
 		}
 	}
-	
+
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -2823,7 +2909,7 @@ function calcAmount3(obj){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
     var totalAmount3Text = document.getElementById("totalAmount3Text");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var qtyTotal = document.getElementById("qtyTotal");
@@ -2851,17 +2937,17 @@ function calcAmount3(obj){
 	totAmount4 = totalAmount4.value;
 	var totAmount5 = 0;
 	totAmount5 = totalAmount5.value;
-	
+
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 
 		var qty3 =
 			unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
-		
-		dimensiOrder += 
+
+		dimensiOrder +=
 			qty3
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
@@ -2869,33 +2955,33 @@ function calcAmount3(obj){
 			/1000000000;
 
 		var qtyCurrentLine = 0;
-		qtyCurrentLine = 
+		qtyCurrentLine =
 			qty3;
-		
-		amountCurrentLine = 
+
+		amountCurrentLine =
 			qty3
 			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value);
 		totAmount3 += amountCurrentLine;
-		
+
 		if(jumlahOrder === "3"){
 			var qty1 =
 				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
 			var qty2 =
 				unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty2;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
@@ -2913,27 +2999,27 @@ function calcAmount3(obj){
 			var qty4 =
 				unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty2
 				+ qty4;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty4
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
@@ -2948,18 +3034,18 @@ function calcAmount3(obj){
 			var qty5 =
 				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty2
 				+ qty4
 				+ qty5;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty4
@@ -2970,12 +3056,12 @@ function calcAmount3(obj){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
-		
+
 	}
 
 	dimensiOrder3.value = dimensiOrder;
@@ -2994,14 +3080,14 @@ function calcAmount3(obj){
 	else{
 		selisihDimensi3Text.style.backgroundColor = "#D3D3D3";
 	}*/
-	
+
 	totalAmount3.value = totAmount3;
 	totalAmount3Text.value = formatTextValue(totAmount3);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 
 	if(jumlahOrder>0){
-		
+
 		var sl1 = 0;
 		sl1 = sisaLimitInit - totAmount1;
 		sisaLimit1.value = formatTextValue(sl1);
@@ -3012,9 +3098,9 @@ function calcAmount3(obj){
 		else{
 			sisaLimit1.style.backgroundColor = "#D3D3D3";
 		}
-		
+
 		if(jumlahOrder>1){
-			
+
 			var sl2 = 0;
 			sl2 = sl1 - totAmount2;
 			sisaLimit2.value = formatTextValue(sl2);
@@ -3025,9 +3111,9 @@ function calcAmount3(obj){
 			else{
 				sisaLimit2.style.backgroundColor = "#D3D3D3";
 			}
-			
+
 			if(jumlahOrder>2){
-				
+
 				var sl3 = 0;
 				sl3 = sl2 - totAmount3;
 				sisaLimit3.value = formatTextValue(sl3);
@@ -3038,9 +3124,9 @@ function calcAmount3(obj){
 				else{
 					sisaLimit3.style.backgroundColor = "#D3D3D3";
 				}
-				
+
 				if(jumlahOrder>3){
-					
+
 					var sl4 = 0;
 					sl4 = sl3 - totAmount4;
 					sisaLimit4.value = formatTextValue(sl4);
@@ -3051,9 +3137,9 @@ function calcAmount3(obj){
 					else{
 						sisaLimit4.style.backgroundColor = "#D3D3D3";
 					}
-					
+
 					if(jumlahOrder>4){
-						
+
 						var sl5 = 0;
 						sl5 = sl4 - totAmount5;
 						sisaLimit5.value = formatTextValue(sl5);
@@ -3064,14 +3150,14 @@ function calcAmount3(obj){
 						else{
 							sisaLimit5.style.backgroundColor = "#D3D3D3";
 						}
-						
-						
+
+
 					}
 				}
 			}
 		}
 	}
-		
+
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -3097,7 +3183,7 @@ function calcAmount4(obj){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
     var totalAmount4Text = document.getElementById("totalAmount4Text");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var qtyTotal = document.getElementById("qtyTotal");
@@ -3128,13 +3214,13 @@ function calcAmount4(obj){
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 
 		var qty4 =
 			unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
-		
-		dimensiOrder += 
+
+		dimensiOrder +=
 			qty4
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
@@ -3142,15 +3228,15 @@ function calcAmount4(obj){
 			/1000000000;
 
 		var qtyCurrentLine = 0;
-		qtyCurrentLine = 
+		qtyCurrentLine =
 			qty4;
-		
+
 		var amountCurrentLine = 0;
-		amountCurrentLine = 
+		amountCurrentLine =
 			qty4
 			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value);
 		totAmount4 += amountCurrentLine;
-		
+
 		if(jumlahOrder === "4"){
 			var qty1 =
 				unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
@@ -3159,27 +3245,27 @@ function calcAmount4(obj){
 			var qty3 =
 				unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty2
 				+ qty3;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-			
+
 			if(idxRow === idxRowCurrent){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
@@ -3194,18 +3280,18 @@ function calcAmount4(obj){
 			var qty5 =
 				unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 			var totQtyPerLine = 0;
-			totQtyPerLine = 
+			totQtyPerLine =
 				qtyCurrentLine
 				+ qty1
 				+ qty2
 				+ qty3
 				+ qty5;
-			
+
 			var totAmountPerLine = 0;
-			totAmountPerLine = 
+			totAmountPerLine =
 				amountCurrentLine
 				+ (qty1
-				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty2
 				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 				+ (qty3
@@ -3216,12 +3302,12 @@ function calcAmount4(obj){
 				tblOrder.rows[idxRow].cells[5].children[0].value =
 					formatTextValue(totQtyPerLine);
 				tblOrder.rows[idxRow].cells[6].children[0].value =
-					formatTextValue(totAmountPerLine);	
+					formatTextValue(totAmountPerLine);
 			}
 			totQty += totQtyPerLine;
 			totAmount += totAmountPerLine;
 		}
-		
+
 	}
 
 	dimensiOrder4.value = dimensiOrder;
@@ -3240,14 +3326,14 @@ function calcAmount4(obj){
 	else{
 		selisihDimensi4Text.style.backgroundColor = "#D3D3D3";
 	}*/
-	
+
 	totalAmount4.value = totAmount4;
 	totalAmount4Text.value = formatTextValue(totAmount4);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
 
 	if(jumlahOrder>0){
-		
+
 		var sl1 = 0;
 		sl1 = sisaLimitInit - totAmount1;
 		sisaLimit1.value = formatTextValue(sl1);
@@ -3258,9 +3344,9 @@ function calcAmount4(obj){
 		else{
 			sisaLimit1.style.backgroundColor = "#D3D3D3";
 		}
-		
+
 		if(jumlahOrder>1){
-			
+
 			var sl2 = 0;
 			sl2 = sl1 - totAmount2;
 			sisaLimit2.value = formatTextValue(sl2);
@@ -3271,9 +3357,9 @@ function calcAmount4(obj){
 			else{
 				sisaLimit2.style.backgroundColor = "#D3D3D3";
 			}
-			
+
 			if(jumlahOrder>2){
-				
+
 				var sl3 = 0;
 				sl3 = sl2 - totAmount3;
 				sisaLimit3.value = formatTextValue(sl3);
@@ -3284,9 +3370,9 @@ function calcAmount4(obj){
 				else{
 					sisaLimit3.style.backgroundColor = "#D3D3D3";
 				}
-				
+
 				if(jumlahOrder>3){
-					
+
 					var sl4 = 0;
 					sl4 = sl3 - totAmount4;
 					sisaLimit4.value = formatTextValue(sl4);
@@ -3297,9 +3383,9 @@ function calcAmount4(obj){
 					else{
 						sisaLimit4.style.backgroundColor = "#D3D3D3";
 					}
-					
+
 					if(jumlahOrder>4){
-						
+
 						var sl5 = 0;
 						sl5 = sl4 - totAmount5;
 						sisaLimit5.value = formatTextValue(sl5);
@@ -3310,14 +3396,14 @@ function calcAmount4(obj){
 						else{
 							sisaLimit5.style.backgroundColor = "#D3D3D3";
 						}
-						
-						
+
+
 					}
 				}
 			}
 		}
 	}
-	
+
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -3343,7 +3429,7 @@ function calcAmount5(obj){
 	var totalAmount4 = document.getElementById("totalAmount4");
 	var totalAmount5 = document.getElementById("totalAmount5");
     var totalAmount5Text = document.getElementById("totalAmount5Text");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var untPrice = tblOrder.rows[idxRowCurrent].cells[8].children[0].value;
 	var qtyTotal = document.getElementById("qtyTotal");
@@ -3361,7 +3447,7 @@ function calcAmount5(obj){
     var sisaLimit4 = document.getElementById("sisaLimit4");
     var sisaLimit5 = document.getElementById("sisaLimit5");
     var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-    
+
 	var totAmount1 = 0;
 	totAmount1 = totalAmount1.value;
 	var totAmount2 = 0;
@@ -3374,13 +3460,13 @@ function calcAmount5(obj){
 	var totQty = 0;
 	var totAmount = 0;
 	var dimensiOrder = 0;
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
 
 		var qty5 =
 			unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
-		
-		dimensiOrder += 
+
+		dimensiOrder +=
 			qty5
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 			*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
@@ -3388,11 +3474,11 @@ function calcAmount5(obj){
 			/1000000000;
 
 		var qtyCurrentLine = 0;
-		qtyCurrentLine = 
+		qtyCurrentLine =
 			qty5;
-		
+
 		var amountCurrentLine = 0;
-		amountCurrentLine = 
+		amountCurrentLine =
 			qty5
 			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value);
 		totAmount5 += amountCurrentLine;
@@ -3405,20 +3491,20 @@ function calcAmount5(obj){
 			unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 		var qty4 =
 			unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
-		
+
 		var totQtyPerLine = 0;
-		totQtyPerLine = 
+		totQtyPerLine =
 			qtyCurrentLine
 			+ qty1
 			+ qty2
 			+ qty3
 			+ qty4;
-		
+
 		var totAmountPerLine = 0;
-		totAmountPerLine = 
+		totAmountPerLine =
 			amountCurrentLine
 			+ (qty1
-			* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value)) 
+			* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 			+ (qty2
 			* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 			+ (qty3
@@ -3429,11 +3515,11 @@ function calcAmount5(obj){
 			tblOrder.rows[idxRow].cells[5].children[0].value =
 				formatTextValue(totQtyPerLine);
 			tblOrder.rows[idxRow].cells[6].children[0].value =
-				formatTextValue(totAmountPerLine);	
+				formatTextValue(totAmountPerLine);
 		}
 		totQty += totQtyPerLine;
 		totAmount += totAmountPerLine;
-		
+
 	}
 
 	dimensiOrder5.value = dimensiOrder;
@@ -3458,7 +3544,7 @@ function calcAmount5(obj){
 	amtTotal.value = formatTextValue(totAmount);
 
 	if(jumlahOrder>0){
-		
+
 		var sl1 = 0;
 		sl1 = sisaLimitInit - totAmount1;
 		sisaLimit1.value = formatTextValue(sl1);
@@ -3469,9 +3555,9 @@ function calcAmount5(obj){
 		else{
 			sisaLimit1.style.backgroundColor = "#D3D3D3";
 		}
-		
+
 		if(jumlahOrder>1){
-			
+
 			var sl2 = 0;
 			sl2 = sl1 - totAmount2;
 			sisaLimit2.value = formatTextValue(sl2);
@@ -3482,9 +3568,9 @@ function calcAmount5(obj){
 			else{
 				sisaLimit2.style.backgroundColor = "#D3D3D3";
 			}
-			
+
 			if(jumlahOrder>2){
-				
+
 				var sl3 = 0;
 				sl3 = sl2 - totAmount3;
 				sisaLimit3.value = formatTextValue(sl3);
@@ -3495,9 +3581,9 @@ function calcAmount5(obj){
 				else{
 					sisaLimit3.style.backgroundColor = "#D3D3D3";
 				}
-				
+
 				if(jumlahOrder>3){
-					
+
 					var sl4 = 0;
 					sl4 = sl3 - totAmount4;
 					sisaLimit4.value = formatTextValue(sl4);
@@ -3508,9 +3594,9 @@ function calcAmount5(obj){
 					else{
 						sisaLimit4.style.backgroundColor = "#D3D3D3";
 					}
-					
+
 					if(jumlahOrder>4){
-						
+
 						var sl5 = 0;
 						sl5 = sl4 - totAmount5;
 						sisaLimit5.value = formatTextValue(sl5);
@@ -3521,14 +3607,14 @@ function calcAmount5(obj){
 						else{
 							sisaLimit5.style.backgroundColor = "#D3D3D3";
 						}
-						
-						
+
+
 					}
 				}
 			}
 		}
 	}
-	
+
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -3544,7 +3630,7 @@ function calcAmount5(obj){
 }
 
 function generateCMOB(){
-	
+
 	var loadingCmob = document.getElementById("loadingCmob");
 	var doneCmob = document.getElementById("doneCmob");
 	doneCmob.style.display = "none";
@@ -3553,15 +3639,15 @@ function generateCMOB(){
 	var custId = document.getElementById("custId").value;
 	var periodeSelected = document.getElementById("periodeSelected").value;
 	var leadTime = document.getElementById("leadTime").value;
-	
-	var tblOrderItemFixed = 
+
+	var tblOrderItemFixed =
 		document.getElementById("tblOrderItemFixed");
-	var jumlahOrderSelected = 
+	var jumlahOrderSelected =
 		document.getElementById("jumlahOrderSelected").value;
 	var orderBySelected = document.getElementById("orderBySelected");
 	orderBySelected.value = "CMOB";
 	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var totalAmount1 = document.getElementById("totalAmount1");
 	var totalAmount2 = document.getElementById("totalAmount2");
@@ -3570,20 +3656,20 @@ function generateCMOB(){
 	var totalAmount5 = document.getElementById("totalAmount5");
 	var sisaLimit = document.getElementById("sisaLimit");
 	var sisaLimitInit = document.getElementById("sisaLimitInit").value;
-	
+
 	var totAmount1 = 0;
 	var totAmount2 = 0;
 	var totAmount3 = 0;
 	var totAmount4 = 0;
 	var totAmount5 = 0;
-	
+
 	var amtTotal = document.getElementById("amtTotal");
     var totAmount = 0;
-	
+
     var orderdetail = [];
-    
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
-		
+
 		var productCode =
 			tblOrderItemFixed.rows[idxRow].cells[0].children[0].value;
 		var primaryUom =
@@ -3598,12 +3684,12 @@ function generateCMOB(){
 		if(tblOrder.rows[idxRow].cells[0].children[9].value!=null){
 			outstandingSo = tblOrder.rows[idxRow].cells[0].children[9].value;
 		}
-		var uom = 
+		var uom =
 			tblOrderItemFixed.rows[idxRow].cells[2].children[0];
-	
+
 		var uomPrimaryRate = 0;
 		var uomSelectedRate = 0;
-		
+
 		for (var i=0; i<uom.length; i++){
 			if(primaryUom==uom.options[i].text){
 				primaryUomRate = uom.options[i].value;
@@ -3612,8 +3698,8 @@ function generateCMOB(){
 				selectedUomRate = uom.options[i].value;
 			}
 		}
-		
-		orderdetail.push({ 
+
+		orderdetail.push({
 	        "company" : company,
 			"custId": custId,
 			"productCode": productCode,
@@ -3626,9 +3712,9 @@ function generateCMOB(){
 	    });
 
 	}
-	
+
 	console.log(orderdetail);
-	
+
 	$.ajax({
 	    type: "POST",
 	    url: "/weborder/rest/inputproduct/cmob",
@@ -3638,15 +3724,15 @@ function generateCMOB(){
 	    dataType: "json",
 	    success: function(result, textStatus, xhr){
 	    	console.log("cmob >> status: " + xhr.status);
-			if(Object.keys(result).length>0){	
-				
+			if(Object.keys(result).length>0){
+
 				$.each(result, function(i, field){
-					
+
 					for(var idxRow = 1; idxRow<=productQty; idxRow++){
-						
-						var productCode = 
+
+						var productCode =
 							tblOrder.rows[idxRow].cells[0].children[5];
-						
+
 						if(productCode!=null){
 							if(productCode.value==field.productCode){
 								/*console.log(
@@ -3675,17 +3761,17 @@ function generateCMOB(){
 									field.bufferStock;
 								tblOrder.rows[idxRow].cells[10].children[4].value =
 									field.outstandingOrder;
-							}					
-						}	
-					}		
-				});	
+							}
+						}
+					}
+				});
 			}
 	    },
 	    complete: function( xhr, status ) {
 
 	    	firstLoadCMOB = false;
 	    	var jumlahOrder = document.getElementById("jumlahOrder");
-		    changeJumlahOrder(jumlahOrder, false);	
+		    changeJumlahOrder(jumlahOrder, false);
 			loadingCmob.style.display = "none";
 			var doneCmob = document.getElementById("doneCmob");
 			doneCmob.style.display = "block";
@@ -3693,20 +3779,20 @@ function generateCMOB(){
 	    error: function( xhr, textStatus, errorThrown ) {
 			console.log( "XMLHttpRequest.status:  " + xhr.status);
 			if(xhr.status!==200){
-				console.log( 
-						"XMLHttpRequest.responseText:  " 
+				console.log(
+						"XMLHttpRequest.responseText:  "
 						+ xhr.responseText);
 				responseText = JSON.parse(xhr.responseText);
-				console.log( 
-						"XMLHttpRequest.responseText.Error:  " 
+				console.log(
+						"XMLHttpRequest.responseText.Error:  "
 						+ responseText.error);
-				console.log( 
-						"XMLHttpRequest.responseText.Message:  " 
+				console.log(
+						"XMLHttpRequest.responseText.Message:  "
 						+ responseText.message);
 			}
 		}
 	});
-	
+
 	return false;
 }
 
@@ -3716,14 +3802,14 @@ function selectCMOB(){
 }
 
 function resetOrder(){
-	
+
 	var jumlahOrder = document.getElementById("jumlahOrder").value;
 	var orderBySelected = document.getElementById("orderBySelected");
 	orderBySelected.value = "Manual";
 	var rowLeadTime = document.getElementById("rowLeadTime");
 	rowLeadTime.style.display = "none";
 	var tblOrder = document.getElementById("tblOrder");
-	var productQty = 
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
 	var totalAmount1 = document.getElementById("totalAmount1");
 	var totalAmount2 = document.getElementById("totalAmount2");
@@ -3770,7 +3856,7 @@ function resetOrder(){
 	var selisihDimensi3Text = document.getElementById("selisihDimensi3Text");
 	var selisihDimensi4Text = document.getElementById("selisihDimensi4Text");
 	var selisihDimensi5Text = document.getElementById("selisihDimensi5Text");
-	
+
 	sisaLimitText.value = formatTextValue(sisaLimitInit);
 	totalAmount1Text.value = "0";
 	totalAmount2Text.value = "0";
@@ -3805,9 +3891,9 @@ function resetOrder(){
 	sisaLimit4.style.backgroundColor = "#D3D3D3";
 	sisaLimit5.style.backgroundColor = "#D3D3D3";
 	sisaLimitText.style.backgroundColor = "#D3D3D3";
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
-		
+
 		tblOrder.rows[idxRow].cells[0].children[0].value = 0;
 		tblOrder.rows[idxRow].cells[1].children[0].value = 0;
 		tblOrder.rows[idxRow].cells[2].children[0].value = 0;
@@ -3817,11 +3903,11 @@ function resetOrder(){
 		tblOrder.rows[idxRow].cells[6].children[0].value = 0;
 
 	}
-	
+
 }
 
 function changeMobil1(obj){
-	
+
 	var selectBox = obj;
 	var dimensiMobil = obj.value;
 	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
@@ -3848,7 +3934,7 @@ function changeMobil1(obj){
 }
 
 function changeMobil2(obj){
-	
+
 	var selectBox = obj;
 	var dimensiMobil = obj.value;
 	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
@@ -3875,7 +3961,7 @@ function changeMobil2(obj){
 }
 
 function changeMobil3(obj){
-	
+
 	var selectBox = obj;
 	var dimensiMobil = obj.value;
 	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
@@ -3902,7 +3988,7 @@ function changeMobil3(obj){
 }
 
 function changeMobil4(obj){
-	
+
 	var selectBox = obj;
 	var dimensiMobil = obj.value;
 	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
@@ -3929,7 +4015,7 @@ function changeMobil4(obj){
 }
 
 function changeMobil5(obj){
-	
+
 	var selectBox = obj;
 	var dimensiMobil = obj.value;
 	var jenisMobil = selectBox.options[selectBox.selectedIndex].text;
@@ -4021,7 +4107,7 @@ function changeShipTo5(obj){
 }
 
 function changeOrderType(obj, isInit){
-	
+
 	var selectBox = obj;
 	var orderType = selectBox.options[selectBox.selectedIndex].value;
     var orderTypeSelected = document.getElementById("orderTypeSelected");
@@ -4046,10 +4132,10 @@ function changeOrderType(obj, isInit){
 
 	var tblOrder = document.getElementById("tblOrder");
 	var tblOrderItemFixed = document.getElementById("tblOrderItemFixed");
-	
-	var productQty = 
+
+	var productQty =
 		parseFloat(document.getElementById("productQty").value);
-	
+
 	up1.value = "0";
 	up2.value = "0";
 	up3.value = "0";
@@ -4060,7 +4146,7 @@ function changeOrderType(obj, isInit){
 	amt3.value = "0";
 	amt4.value = "0";
 	amt5.value = "0";
-	
+
 	if(orderType === "SO Lokal Food With CO"
 			|| orderType === "SO Lokal Non Food With CO"){
 		sisaLimit.style.display = "block";
@@ -4070,20 +4156,20 @@ function changeOrderType(obj, isInit){
 		sisaLimit.style.display = "none";
 		sisaLimitDP.style.display = "block";
 	}
-	
+
 	var oType = "Unknown";
-	
+
 	if(orderType === "SO Lokal Non Food With CO - DP"
 		|| orderType === "SO Lokal Non Food With CO"){
 		oType = "Non Food";
 	}
 	else if(orderType === "SO Lokal Food With CO - DP"
 		|| orderType === "SO Lokal Food With CO"){
-		oType = "Food";		
+		oType = "Food";
 	}
-	
+
 	for(var idxRow = 1; idxRow<=productQty; idxRow++){
-		
+
 		//console.log(tblOrder.rows[idxRow].cells[0].children[10].value);
 		if(tblOrder.rows[idxRow].cells[0].children[10].value
 				=== oType){
@@ -4095,11 +4181,11 @@ function changeOrderType(obj, isInit){
 			tblOrderItemFixed.rows[idxRow].style.display = "none";
 		}
 	}
-	
+
 	if(!isInit){
 		resetOrder();
 	}
-	
+
 }
 
 String.prototype.replaceAt=function(index, replacement) {
@@ -4132,18 +4218,18 @@ function changePeriode(obj){
     var poNumber3NextMonth = document.getElementById("poNumber3NextMonth").value;
     var poNumber4NextMonth = document.getElementById("poNumber4NextMonth").value;
     var poNumber5NextMonth = document.getElementById("poNumber5NextMonth").value;
-    
+
     var p = periode.split(" ");
     var month = p[0];
     var year = p[1];
     var minDate = '2017-01-01';
     var maxDate = '2117-12-31';
-    var monthIndex = "00"; 
+    var monthIndex = "00";
 
 	var currentdate = new Date();
 	var dayCurrent = currentdate.getDate();
 	var monthCurrent = currentdate.getMonth()+1;
-    
+
     if(month === "Januari"){
     	if(monthCurrent==1){
     		if(dayCurrent<10){
@@ -4323,8 +4409,8 @@ function changePeriode(obj){
     	}
     	maxDate = year + "-12-31";
     	monthIndex = "12";
-    } 
-    
+    }
+
     poDate1.min = minDate;
     poDate1.max = maxDate;
     poDate1.value = minDate;
@@ -4340,7 +4426,7 @@ function changePeriode(obj){
     poDate5.min = minDate;
     poDate5.max = maxDate;
     poDate5.value = minDate;
-    
+
     //PO201801009/AN00201
     //console.log("poNumber1CurrentMonth: " + poNumber1CurrentMonth);
     //console.log("poNumber1NextMonth: " + poNumber1NextMonth);
@@ -4386,7 +4472,7 @@ function changePeriode(obj){
         //po5 = po5.replaceAt(2, year);
         poNumber5.value = po5;
     }
-    
+
 }
 
 function changeJumlahOrder(obj, isInit) {
@@ -4396,7 +4482,7 @@ function changeJumlahOrder(obj, isInit) {
     var jumlahOrderSelected = document.getElementById("jumlahOrderSelected");
     jumlahOrderSelected.value = jumlahOrder;
     var tblOrder = document.getElementById("tblOrder");
-    var productQty = 
+    var productQty =
     	parseFloat(document.getElementById("productQty").value);
     var cmob = document.getElementById("cmob");
     var manual = document.getElementById("manual");
@@ -4461,12 +4547,12 @@ function changeJumlahOrder(obj, isInit) {
 	var totAmount3 = 0;
 	var totAmount4 = 0;
 	var totAmount5 = 0;
-	
+
 	var qtyTotal = document.getElementById("qtyTotal");
     var totQty = 0;
 	var amtTotal = document.getElementById("amtTotal");
     var totAmount = 0;
-    
+
     var order2Length = 0;
     var order3Length = 0;
     var order4Length = 0;
@@ -4481,7 +4567,7 @@ function changeJumlahOrder(obj, isInit) {
 	var do3= 0;
 	var do4= 0;
 	var do5= 0;
-	
+
 	if(cmob.checked){
     	if(firstLoadCMOB){
     		firstLoadCMOB = false;
@@ -4535,14 +4621,14 @@ function changeJumlahOrder(obj, isInit) {
                     	tblOrder.rows[idxRow].cells[4].children[0].value =
                     		qty;
             		}
-            	}	
+            	}
         		isChangeUom = false;
     		}
     	}
     }
 
     if(jumlahOrder === "1"){
-    	
+
     	unitPrice2.style.display = "none";
     	unitPrice3.style.display = "none";
     	unitPrice4.style.display = "none";
@@ -4551,24 +4637,24 @@ function changeJumlahOrder(obj, isInit) {
     	amount3.style.display = "none";
     	amount4.style.display = "none";
     	amount5.style.display = "none";
-    	
+
     	for(var i=0; i<order2Length; i++){
     		order2[i].style.display = "none";
-    		
+
     	}
     	for(var i=0; i<order3Length; i++){
     		order3[i].style.display = "none";
-    		
+
     	}
     	for(var i=0; i<order4Length; i++){
     		order4[i].style.display = "none";
-    		
+
     	}
     	for(var i=0; i<order5Length; i++){
     		order5[i].style.display = "none";
-    		
+
     	}
-    	
+
     	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "none";
     		tblOrder.rows[idxRow].cells[2].style.display = "none";
@@ -4579,40 +4665,40 @@ function changeJumlahOrder(obj, isInit) {
 
 				var qty1 =
 					unformatText(tblOrder.rows[idxRow].cells[0].children[0].value);
-				
-				do1 += 
+
+				do1 +=
 					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				
+
 				var totQtyPerLine = 0;
-				totQtyPerLine = 
+				totQtyPerLine =
 					qty1;
-    			
+
 				var totAmountPerLine = 0;
-    			totAmountPerLine = 
+    			totAmountPerLine =
     				qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value);
-    			
+
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				formatTextValue(totQtyPerLine);
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				formatTextValue(totAmountPerLine);
-    			
+
     			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
-    			
-    			totAmount1 += 
+
+    			totAmount1 +=
     				(qty1
     					*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
     		}
-			
+
     	}
     }
     else if(jumlahOrder === "2"){
-    	
+
     	unitPrice2.style.display = "table-cell";
     	unitPrice3.style.display = "none";
     	unitPrice4.style.display = "none";
@@ -4621,30 +4707,30 @@ function changeJumlahOrder(obj, isInit) {
     	amount3.style.display = "none";
     	amount4.style.display = "none";
     	amount5.style.display = "none";
-    	
+
     	for(var i=0; i<order2Length; i++){
     		order2[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order3Length; i++){
     		order3[i].style.display = "none";
-    		
+
     	}
     	for(var i=0; i<order4Length; i++){
     		order4[i].style.display = "none";
-    		
+
     	}
     	for(var i=0; i<order5Length; i++){
     		order5[i].style.display = "none";
-    		
+
     	}
-    	
+
     	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "none";
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
-    		
+
 			if(idxRow!==0){
 
 				var qty1 =
@@ -4652,52 +4738,52 @@ function changeJumlahOrder(obj, isInit) {
 				var qty2 =
 					unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
 
-				do1 += 
+				do1 +=
 					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				do2 += 
+				do2 +=
 					qty2
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				
+
 				var totQtyPerLine = 0;
-				totQtyPerLine = 
+				totQtyPerLine =
 					qty1
 					+ qty2;
-    			
+
 				var totAmountPerLine = 0;
-    			totAmountPerLine = 
+    			totAmountPerLine =
     				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
     				+ (qty2
     	    		* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			
+
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				formatTextValue(totQtyPerLine);
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				formatTextValue(totAmountPerLine);
-    			
+
     			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
-    			totAmount1 += 
+    			totAmount1 +=
     				(qty1
     					*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			totAmount2 += 
+    			totAmount2 +=
     				(qty2
     					*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			
+
     		}
-    		
+
     	}
     }
     else if(jumlahOrder === "3"){
-    	
+
     	unitPrice2.style.display = "table-cell";
     	unitPrice3.style.display = "table-cell";
     	unitPrice4.style.display = "none";
@@ -4706,30 +4792,30 @@ function changeJumlahOrder(obj, isInit) {
     	amount3.style.display = "table-cell";
     	amount4.style.display = "none";
     	amount5.style.display = "none";
-    	
+
     	for(var i=0; i<order2Length; i++){
     		order2[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order3Length; i++){
     		order3[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order4Length; i++){
     		order4[i].style.display = "none";
-    		
+
     	}
     	for(var i=0; i<order5Length; i++){
     		order5[i].style.display = "none";
-    		
+
     	}
-    	
+
     	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[3].style.display = "none";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
-			
+
 			if(idxRow!==0){
 
 				var qty1 =
@@ -4738,65 +4824,65 @@ function changeJumlahOrder(obj, isInit) {
 					unformatText(tblOrder.rows[idxRow].cells[1].children[0].value);
 				var qty3 =
 					unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
-				
-				do1 += 
+
+				do1 +=
 					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				do2 += 
+				do2 +=
 					qty2
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				do3 += 
+				do3 +=
 					qty3
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				
+
 				var totQtyPerLine = 0;
-				totQtyPerLine = 
+				totQtyPerLine =
 					qty1
 					+ qty2
 					+ qty3;
-    			
+
 				var totAmountPerLine = 0;
-    			totAmountPerLine = 
+    			totAmountPerLine =
     				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
     				+ (qty2
     				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
     				+ (qty3
     	    		* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			
+
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				formatTextValue(totQtyPerLine);
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				formatTextValue(totAmountPerLine);
-    			
+
     			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
-    			totAmount1 += 
+    			totAmount1 +=
     				(qty1
     				*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			totAmount2 += 
+    			totAmount2 +=
     				(qty2
     				*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			totAmount3 += 
+    			totAmount3 +=
     				(qty3
     				*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-        		
+
     		}
-			
+
     	}
     }
     else if(jumlahOrder === "4"){
-    	
+
     	unitPrice2.style.display = "table-cell";
     	unitPrice3.style.display = "table-cell";
     	unitPrice4.style.display = "table-cell";
@@ -4805,30 +4891,30 @@ function changeJumlahOrder(obj, isInit) {
     	amount3.style.display = "table-cell";
     	amount4.style.display = "table-cell";
     	amount5.style.display = "none";
-    	
+
     	for(var i=0; i<order2Length; i++){
     		order2[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order3Length; i++){
     		order3[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order4Length; i++){
     		order4[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order5Length; i++){
     		order5[i].style.display = "none";
-    		
+
     	}
-    	
+
     	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[4].style.display = "none";
-			
+
 			if(idxRow!==0){
 
 				var qty1 =
@@ -4839,41 +4925,41 @@ function changeJumlahOrder(obj, isInit) {
 					unformatText(tblOrder.rows[idxRow].cells[2].children[0].value);
 				var qty4 =
 					unformatText(tblOrder.rows[idxRow].cells[3].children[0].value);
-				
-				do1 += 
+
+				do1 +=
 					qty1
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				do2 += 
+				do2 +=
 					qty2
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				do3 += 
+				do3 +=
 					qty3
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				do4 += 
+				do4 +=
 					qty4
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
 					*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
 					/1000000000;
-				
+
 				var totQtyPerLine = 0;
-				totQtyPerLine = 
+				totQtyPerLine =
 					qty1
 					+ qty2
 					+ qty3
 					+ qty4;
-    			
+
 				var totAmountPerLine = 0;
-    			totAmountPerLine = 
+    			totAmountPerLine =
     				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
     				+ (qty2
@@ -4882,34 +4968,34 @@ function changeJumlahOrder(obj, isInit) {
 	   				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 	   				+ (qty4
 	   	    		* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			
+
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				formatTextValue(totQtyPerLine);
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				formatTextValue(totAmountPerLine);
-    			
+
     			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
-    			totAmount1 += 
+    			totAmount1 +=
     				(qty1
     					*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			totAmount2 += 
+    			totAmount2 +=
     				(qty2
     					*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			totAmount3 += 
+    			totAmount3 +=
     				(qty3
     					*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			totAmount4 += 
+    			totAmount4 +=
     				(qty4
     					*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-        		
+
     		}
-			
+
     	}
     }
     else if(jumlahOrder === "5"){
-    	
+
     	unitPrice2.style.display = "table-cell";
     	unitPrice3.style.display = "table-cell";
     	unitPrice4.style.display = "table-cell";
@@ -4918,30 +5004,30 @@ function changeJumlahOrder(obj, isInit) {
     	amount3.style.display = "table-cell";
     	amount4.style.display = "table-cell";
     	amount5.style.display = "table-cell";
-    	
+
     	for(var i=0; i<order2Length; i++){
     		order2[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order3Length; i++){
     		order3[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order4Length; i++){
     		order4[i].style.display = "table-cell";
-    		
+
     	}
     	for(var i=0; i<order5Length; i++){
     		order5[i].style.display = "table-cell";
-    		
+
     	}
-    	
+
     	for(var idxRow = 1; idxRow<=productQty; idxRow++){
     		tblOrder.rows[idxRow].cells[1].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[2].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[3].style.display = "table-cell";
     		tblOrder.rows[idxRow].cells[4].style.display = "table-cell";
-   			
+
     		if(idxRow!==0){
 
 				var qty1 =
@@ -4955,47 +5041,47 @@ function changeJumlahOrder(obj, isInit) {
 				var qty5 =
 					unformatText(tblOrder.rows[idxRow].cells[4].children[0].value);
 
-    			do1 += 
+    			do1 +=
     				qty1
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
-    			do2 += 
+    			do2 +=
     				qty2
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
-    			do3 += 
+    			do3 +=
     				qty3
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
-    			do4 += 
+    			do4 +=
     				qty4
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
-    			do5 += 
+    			do5 +=
     				qty5
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[0].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[1].value)
     				*parseFloat(tblOrder.rows[idxRow].cells[9].children[2].value)
     				/1000000000;
-    			
+
 				var totQtyPerLine = 0;
-				totQtyPerLine = 
+				totQtyPerLine =
 					qty1
 					+ qty2
 					+ qty3
 					+ qty4
 					+ qty5;
-    			
+
 				var totAmountPerLine = 0;
-    			totAmountPerLine = 
+    			totAmountPerLine =
     				(qty1
     				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
     				+ (qty2
@@ -5006,38 +5092,38 @@ function changeJumlahOrder(obj, isInit) {
 	   				* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value))
 	   				+ (qty5
 	   	    		* parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-    			
+
     			tblOrder.rows[idxRow].cells[5].children[0].value =
     				formatTextValue(totQtyPerLine);
     			tblOrder.rows[idxRow].cells[6].children[0].value =
     				formatTextValue(totAmountPerLine);
-    			
+
     			totQty += totQtyPerLine;
     			totAmount += totAmountPerLine;
 
-        		totAmount1 += 
+        		totAmount1 +=
         			(qty1
         			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-        		totAmount2 += 
+        		totAmount2 +=
         			(qty2
         			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-        		totAmount3 += 
+        		totAmount3 +=
         			(qty3
         			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-        		totAmount4 += 
+        		totAmount4 +=
         			(qty4
         			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-        		totAmount5 += 
+        		totAmount5 +=
         			(qty5
         			*parseFloat(tblOrder.rows[idxRow].cells[8].children[0].value));
-        		
+
     		}
-    		
+
     	}
     }
-    	
+
 	if(jumlahOrder>0){
-		
+
 		dimensiOrder1.value = do1;
 		dimensiOrder1Text.value = formatTextValue(do1);
 
@@ -5055,7 +5141,7 @@ function changeJumlahOrder(obj, isInit) {
 		else{
 			selisihDimensi1Text.style.backgroundColor = "#D3D3D3";
 		}*/
-		
+
 		var sl1 = 0;
     	sl1 = sisaLimitInit - totAmount1;
     	sisaLimit1.value = formatTextValue(sl1);
@@ -5068,7 +5154,7 @@ function changeJumlahOrder(obj, isInit) {
     	else{
     		sisaLimit1.style.backgroundColor = "#D3D3D3";
     	}
-		
+
 		if(jumlahOrder>1){
 
     		dimensiOrder2.value = do2;
@@ -5101,7 +5187,7 @@ function changeJumlahOrder(obj, isInit) {
         	else{
         		sisaLimit2.style.backgroundColor = "#D3D3D3";
         	}
-			
+
 			if(jumlahOrder>2){
 
 	    		dimensiOrder3.value = do3;
@@ -5134,7 +5220,7 @@ function changeJumlahOrder(obj, isInit) {
             	else{
             		sisaLimit3.style.backgroundColor = "#D3D3D3";
             	}
-				
+
 				if(jumlahOrder>3){
 
 		    		dimensiOrder4.value = do4;
@@ -5166,7 +5252,7 @@ function changeJumlahOrder(obj, isInit) {
 	            	else{
 	            		sisaLimit4.style.backgroundColor = "#D3D3D3";
 	            	}
-					
+
 					if(jumlahOrder>4){
 
 			    		dimensiOrder5.value = do5;
@@ -5198,13 +5284,13 @@ function changeJumlahOrder(obj, isInit) {
 		            	else{
 		            		sisaLimit5.style.backgroundColor = "#D3D3D3";
 		            	}
-						
+
 					}
 				}
 			}
 		}
 	}
-	
+
 	totalAmount1.value = totAmount1;
 	totalAmount2.value = totAmount2;
 	totalAmount3.value = totAmount3;
@@ -5217,7 +5303,7 @@ function changeJumlahOrder(obj, isInit) {
 	totalAmount5Text.value = formatTextValue(totAmount5);
 	qtyTotal.value = formatTextValue(totQty);
 	amtTotal.value = formatTextValue(totAmount);
-	
+
 	var sl = 0;
 	sl = sisaLimitInit - totAmount;
 	sisaLimit.value = sl;
@@ -5229,55 +5315,55 @@ function changeJumlahOrder(obj, isInit) {
 	else{
 		sisaLimitText.style.backgroundColor = "#D3D3D3";
 	}*/
-	
+
 }
 
 function showSisaLimit(){
 	var sisaLimitDetail = document.getElementById("sisaLimitDetail");
 	sisaLimitDetail.style.display = "block";
-	
+
     return false;
 }
 
 function closeSisaLimit(){
 	var sisaLimitDetail = document.getElementById("sisaLimitDetail");
 	sisaLimitDetail.style.display = "none";
-	
+
     return false;
 }
 
 function addMobil1(){
 	var mobilInput = document.getElementById("mobil1Input");
 	mobilInput.style.display = "block";
-	
+
     return false;
 }
 
 function addMobil2(){
 	var mobilInput = document.getElementById("mobil2Input");
 	mobilInput.style.display = "block";
-	
+
     return false;
 }
 
 function addMobil3(){
 	var mobilInput = document.getElementById("mobil3Input");
 	mobilInput.style.display = "block";
-	
+
     return false;
 }
 
 function addMobil4(){
 	var mobilInput = document.getElementById("mobil4Input");
 	mobilInput.style.display = "block";
-	
+
     return false;
 }
 
 function addMobil5(){
 	var mobilInput = document.getElementById("mobil5Input");
 	mobilInput.style.display = "block";
-	
+
     return false;
 }
 
@@ -5349,7 +5435,7 @@ function saveMobil1(){
     //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
-    mobilInput.style.display = "none"; 
+    mobilInput.style.display = "none";
     return false;
 }
 
@@ -5387,7 +5473,7 @@ function saveMobil2(){
     //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
-    mobilInput.style.display = "none"; 
+    mobilInput.style.display = "none";
     return false;
 }
 
@@ -5425,7 +5511,7 @@ function saveMobil3(){
     //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
-    mobilInput.style.display = "none"; 
+    mobilInput.style.display = "none";
     return false;
 }
 
@@ -5463,7 +5549,7 @@ function saveMobil4(){
     //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
-    mobilInput.style.display = "none"; 
+    mobilInput.style.display = "none";
     return false;
 }
 
@@ -5501,6 +5587,6 @@ function saveMobil5(){
     //}
     selisihDimensi.value = sd;
     selisihDimensiText.value = formatTextValue(sd);
-    mobilInput.style.display = "none"; 
+    mobilInput.style.display = "none";
     return false;
 }

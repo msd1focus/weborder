@@ -15,12 +15,12 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
-	
+
 	@RequestMapping("/orders")
 	public List<Order> getAllOrders() {
 		return orderService.getAllOrders();
 	}
-	
+
 	@RequestMapping("/order")
 	public List<Order> getByCompanyCustidGrpid(
 			@RequestParam String company,
@@ -29,7 +29,7 @@ public class OrderController {
 		return orderService.getByCompanyCustidGrpid(
 				ordergrpid, custid, company);
 	}
-	
+
 	@RequestMapping("/order/company")
 	public List<Order> getByCompanyCustid(
 			@RequestParam String company,
@@ -37,7 +37,7 @@ public class OrderController {
 		return orderService.getOrdersByCompanyAndCustid(
 				company, custid);
 	}
-	
+
 	@RequestMapping("/order/ponumber")
 	public Order getByCompanyCustidGrpidPonumber(
 			@RequestParam String company,
@@ -47,29 +47,29 @@ public class OrderController {
 		return orderService.getByCompanyCustidGrpidPonumber(
 				ordergrpid, custid, company, ponumber);
 	}
-	
+
 	@RequestMapping("/order/expedisi")
 	public List<String> getExpedisiByCompanyCustid(
 			@RequestParam String company,
 			@RequestParam Long custid){
 		return orderService.getExpedisiByCompanyCustid(company, custid);
 	}
-	
+
 	@RequestMapping(method=RequestMethod.POST, value="/order")
 	public void addOrder(@RequestBody Order order){
 		orderService.addOrder(order);
 	}
-	
+
 	@RequestMapping(method=RequestMethod.PUT, value="/order")
 	public Long updateOrder(@RequestBody Order order){
 		return orderService.updateOrder(order);
 	}
-	
+
 	@RequestMapping(method=RequestMethod.DELETE, value="/order")
 	public void deleteOrder(@RequestBody List<Long> orderids){
 		for(Long orderid: orderids) {
-			orderService.deleteOrder(orderid);		
+			orderService.deleteOrder(orderid);
 		}
 	}
-	
+
 }

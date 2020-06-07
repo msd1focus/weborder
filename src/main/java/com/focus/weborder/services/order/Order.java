@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ORDERS")
 public class Order {
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ORDER_ID")
@@ -29,6 +29,8 @@ public class Order {
 	private Date orderDate;
 	@Column(name="SHIP_TO")
 	private String shipTo;
+	@Column(name="SHIP_DATE")
+	private Date shipDate;
 	@Column(name="EXPEDISI")
 	private String expedisi;
 	@Column(name="JENIS_MOBIL")
@@ -61,23 +63,24 @@ public class Order {
 	private Date invoiceDate;
 	@Column(name="NOTES")
 	private String notes;
-	
-	
+
+
 	public Order() {
-		
+
 	}
-	
+
 	public Order(
-			Long orderId, Long orderGrpId, String company, 
+			Long orderId, Long orderGrpId, String company,
 			Long custId, String poNumber, Date orderDate, String shipTo,
+			Date shipDate,
 			String expedisi, String jenisMobil, Double tonaseMobil,
 			Double tonaseOrder, Double selisihTonase, Double totalPrice,
-			String periode, String ebsSubmitStatus, Date ebsSubmitDate, 
-			String soNumber, String soStatus, Date soDate, 
+			String periode, String ebsSubmitStatus, Date ebsSubmitDate,
+			String soNumber, String soStatus, Date soDate,
 			String invoiceNumber,
 			String invoiceStatus,
 			Date invoiceDate, String notes) {
-		
+
 		super();
 		this.orderId = orderId;
 		this.orderGrpId = orderGrpId;
@@ -86,6 +89,7 @@ public class Order {
 		this.poNumber = poNumber;
 		this.orderDate = orderDate;
 		this.shipTo = shipTo;
+		this.shipDate = shipDate;
 		this.expedisi = expedisi;
 		this.jenisMobil = jenisMobil;
 		this.tonaseMobil = tonaseMobil;
@@ -158,6 +162,14 @@ public class Order {
 
 	public void setShipTo(String shipTo) {
 		this.shipTo = shipTo;
+	}
+
+	public Date getShipDate() {
+		return shipDate;
+	}
+
+	public void setShipDate(Date shipDate) {
+		this.shipDate = shipDate;
 	}
 
 	public String getExpedisi() {

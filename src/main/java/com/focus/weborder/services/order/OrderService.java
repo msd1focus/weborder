@@ -11,67 +11,67 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderService {
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	public List<Order> getOrdersByCompanyAndCustid(String company, Long custId) {
-		List<Order> orders = 
+		List<Order> orders =
 				orderRepository.findOrderByCompanyAndCustId(company, custId);
-		return orders;		
+		return orders;
 	}
-	
+
 	public List<Order> getByCompanyCustidStartEndorderdate(
 			String company,
 			Long custId,
 			Date startOrderDate,
 			Date endOrderDate) {
-		List<Order> orders = 
+		List<Order> orders =
 				orderRepository.getByCompanyCustidStartEndorderdate(
 						company, custId, startOrderDate, endOrderDate);
-		return orders;		
+		return orders;
 	}
-	
+
 	public List<Order> getAllOrders() {
-		List<Order> orders = 
+		List<Order> orders =
 				orderRepository.getAll();
-		return orders;		
+		return orders;
 	}
-	
+
 	public List<String> getExpedisiByCompanyCustid(
 			String company, Long custId) {
 		return orderRepository.getExpedisiByCompanyCustid(
 				company, custId);
 	}
-	
+
 	public List<Order> getByCompanyCustidGrpid(
 			Long orderGrpId, Long custId, String company) {
 		return orderRepository.getByCompanyCustidGrpid(
 				orderGrpId, custId, company);
 	}
-	
+
 	public Order getByCompanyCustidGrpidPonumber(
 			Long orderGrpId, Long custId, String company,
 			String poNumber) {
 		return orderRepository.getByCompanyCustidGrpidPonumber(
 				orderGrpId, custId, company, poNumber);
 	}
-	
+
 	public Order getByOrderid(Long orderId) {
 		//return orderRepository.findOne(orderId);
 		return null;
 	}
-	
+
 	public Long addOrder(Order order) {
-		
+
 		orderRepository.save(order);
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			Calendar c = Calendar.getInstance();
 			System.out.println();
 			System.out.print("[WebOrder-POST-Order]"
-					+ c.get(Calendar.YEAR) 
+					+ c.get(Calendar.YEAR)
 					+ "/"
 					+ (c.get(Calendar.MONTH) + 1)
 					+ "/"
@@ -84,7 +84,7 @@ public class OrderService {
 					+ c.get(Calendar.SECOND)
 					+ "."
 					+ c.get(Calendar.MILLISECOND)
-					+ " by " 
+					+ " by "
 					+ auth.getName()
 					+ " with role: "
 					+ auth.getAuthorities());
@@ -102,34 +102,34 @@ public class OrderService {
 			System.out.print("; periode: " + order.getPeriode());
 			System.out.print("; notes: " + order.getNotes() + ";");
 		}
-		
+
 		return order.getOrderId();
-		
+
 		/*orderRepository.insert(
-				order.getOrderId(), order.getOrderGrpId(), 
+				order.getOrderId(), order.getOrderGrpId(),
 				order.getCompany(), order.getCustId(),
 				order.getPoNumber(),
-				order.getOrderDate(), order.getShipTo(), 
-				order.getExpedisi(), order.getJenisMobil(), 
+				order.getOrderDate(), order.getShipTo(),
+				order.getExpedisi(), order.getJenisMobil(),
 				order.getTonaseMobil(), order.getTonaseOrder(),
-				order.getSelisihTonase(), order.getTotalPrice(), 
+				order.getSelisihTonase(), order.getTotalPrice(),
 				order.getPeriode(), order.getEbsSubmitStatus(),
-				order.getEbsSubmitDate(), 
+				order.getEbsSubmitDate(),
 				order.getSoNumber(), order.getSoStatus(),
-				order.getSoDate(), order.getInvoiceStatus(), 
+				order.getSoDate(), order.getInvoiceStatus(),
 				order.getInvoiceDate());*/
 	}
-	
+
 	public Long updateOrder(Order order) {
-		
+
 		orderRepository.save(order);
-		
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			Calendar c = Calendar.getInstance();
 			System.out.println();
 			System.out.print("[WebOrder-POST-Order]"
-					+ c.get(Calendar.YEAR) 
+					+ c.get(Calendar.YEAR)
 					+ "/"
 					+ (c.get(Calendar.MONTH) + 1)
 					+ "/"
@@ -142,7 +142,7 @@ public class OrderService {
 					+ c.get(Calendar.SECOND)
 					+ "."
 					+ c.get(Calendar.MILLISECOND)
-					+ " by " 
+					+ " by "
 					+ auth.getName()
 					+ " with role: "
 					+ auth.getAuthorities());
@@ -152,6 +152,7 @@ public class OrderService {
 			System.out.print("; poNumber: " + order.getPoNumber());
 			System.out.print("; orderDate: " + order.getOrderDate());
 			System.out.print("; shipTo: " + order.getShipTo());
+			System.out.print("; shipDate: " + order.getShipDate());
 			System.out.print("; expedisi: " + order.getExpedisi());
 			System.out.print("; jenisMobil: " + order.getJenisMobil());
 			System.out.print("; tonaseMobil: " + order.getTonaseMobil());
@@ -160,26 +161,26 @@ public class OrderService {
 			System.out.print("; periode: " + order.getPeriode());
 			System.out.print("; notes: " + order.getNotes() + ";");
 		}
-		
+
 		return order.getOrderId();
-		
+
 		/*orderRepository.updateByCompanyCustidGrpidOrderid(
-				order.getOrderId(), order.getOrderGrpId(), 
-				order.getCompany(), order.getCustId(), 
+				order.getOrderId(), order.getOrderGrpId(),
+				order.getCompany(), order.getCustId(),
 				order.getPoNumber(),
-				order.getOrderDate(), order.getShipTo(), 
-				order.getExpedisi(), order.getJenisMobil(), 
+				order.getOrderDate(), order.getShipTo(),
+				order.getExpedisi(), order.getJenisMobil(),
 				order.getTonaseMobil(), order.getTonaseOrder(),
-				order.getSelisihTonase(), order.getTotalPrice(), 
+				order.getSelisihTonase(), order.getTotalPrice(),
 				order.getPeriode(), order.getEbsSubmitStatus(),
-				order.getEbsSubmitDate(), 
+				order.getEbsSubmitDate(),
 				order.getSoNumber(), order.getSoStatus(),
-				order.getSoDate(), order.getInvoiceStatus(), 
+				order.getSoDate(), order.getInvoiceStatus(),
 				order.getInvoiceDate(), order.getNotes());*/
 	}
-	
+
 	public void deleteOrder(Long orderId) {
 		orderRepository.delete(orderId);;
 	}
-	
+
 }
