@@ -6798,7 +6798,7 @@ button.close {
 
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
-    from {opacity: 0;} 
+    from {opacity: 0;}
     to {opacity: 1;}
 }
 
@@ -6843,4 +6843,4 @@ button.close {
     text-decoration: none;
     cursor: pointer;
 }
-/*# sourceMappingURL=bootstrap.css.map */
+/* sourceMappingURL=bootstrap.css.map */

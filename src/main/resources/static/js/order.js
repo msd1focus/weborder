@@ -504,35 +504,66 @@ function saveForm(obj){
 	var shipDate5 =
 			document.getElementById("shipDate5").value;
 
+console.log("Jadwal kirim-1 length: " + shipDate1.length);
 
 	var isShipDateWarning = false;
 	var shipDateWarning = "" ;
-	if(jumlahOrderSelected>0 && shipDate1.length==0){
+//	var podate = document.getElementById("poDate1").value;
+	if (jumlahOrderSelected>0) {
+		if (shipDate1.length==0) {
 			isShipDateWarning = true;
 			shipDateWarning += "Tanggal Kirim untuk Order 1 tidak boleh kosong.\n";
-	}
-	if (jumlahOrderSelected>1 && shipDate2.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 2 tidak boleh kosong.\n";
-	}
-	if (jumlahOrderSelected>2 && shipDate3.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 3 tidak boleh kosong.\n";
-	}
-	if (jumlahOrderSelected>3 && shipDate4.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 4 tidak boleh kosong.\n";
-	}
-	if (jumlahOrderSelected>4 && shipDate5.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 5 tidak boleh kosong.\n";
+		} else if (shipDate1 < $("#poDate1").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 1 harus sama atau setelah tanggal Order.\n";
+		}
 	}
 
+	if (jumlahOrderSelected>1) {
+		if (shipDate2.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 2 tidak boleh kosong.\n";
+		} else if (shipDate2 < $("#poDate2").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 2 harus sama atau setelah tanggal Order.\n";
+		}
+	}
+
+	if (jumlahOrderSelected>2) {
+		if (shipDate3.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 3 tidak boleh kosong.\n";
+		} else if (shipDate3 < $("#poDate3").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 3 harus sama atau setelah tanggal Order.\n";
+		}
+	}
+
+	if (jumlahOrderSelected>3) {
+		if (shipDate4.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 4 tidak boleh kosong.\n";
+		} else if (shipDate4 < $("#poDate4").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 4 harus sama atau setelah tanggal Order.\n";
+		}
+	}
+
+	if (jumlahOrderSelected>4) {
+		if (shipDate5.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 5 tidak boleh kosong.\n";
+		} else if (shipDate5 < $("#poDate5").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 5 harus sama atau setelah tanggal Order.\n";
+		}
+	}
+
+console.log(shipDateWarning);
 	if (isShipDateWarning===true) {
 		alert(shipDateWarning);
 		return false;
 	}
-
 
 	var loading = document.getElementById('loading');
 	var submitStatus =
@@ -669,25 +700,54 @@ function submitForm(obj){
 
 	var isShipDateWarning = false;
 	var shipDateWarning = "" ;
-	if(jumlahOrderSelected>0 && shipDate1.length==0){
+	if (jumlahOrderSelected>0) {
+		if (shipDate1.length==0) {
 			isShipDateWarning = true;
 			shipDateWarning += "Tanggal Kirim untuk Order 1 tidak boleh kosong.\n";
+		} else if (shipDate1 < $("#poDate1").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 1 harus sama atau setelah tanggal Order.\n";
+		}
 	}
-	if (jumlahOrderSelected>1 && shipDate2.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 2 tidak boleh kosong.\n";
+
+	if (jumlahOrderSelected>1) {
+		if (shipDate2.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 2 tidak boleh kosong.\n";
+		} else if (shipDate2 < $("#poDate2").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 2 harus sama atau setelah tanggal Order.\n";
+		}
 	}
-	if (jumlahOrderSelected>2 && shipDate3.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 3 tidak boleh kosong.\n";
+
+	if (jumlahOrderSelected>2) {
+		if (shipDate3.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 3 tidak boleh kosong.\n";
+		} else if (shipDate3 < $("#poDate3").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 3 harus sama atau setelah tanggal Order.\n";
+		}
 	}
-	if (jumlahOrderSelected>3 && shipDate4.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 4 tidak boleh kosong.\n";
+
+	if (jumlahOrderSelected>3) {
+		if (shipDate4.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 4 tidak boleh kosong.\n";
+		} else if (shipDate4 < $("#poDate4").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 4 harus sama atau setelah tanggal Order.\n";
+		}
 	}
-	if (jumlahOrderSelected>4 && shipDate5.length==0) {
-		isShipDateWarning = true;
-		shipDateWarning += "Tanggal Kirim untuk Order 5 tidak boleh kosong.\n";
+
+	if (jumlahOrderSelected>4) {
+		if (shipDate5.length==0) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim untuk Order 5 tidak boleh kosong.\n";
+		} else if (shipDate5 < $("#poDate5").val()) {
+			isShipDateWarning = true;
+			shipDateWarning += "Tanggal Kirim 5 harus sama atau setelah tanggal Order.\n";
+		}
 	}
 
 	if (isShipDateWarning===true) {

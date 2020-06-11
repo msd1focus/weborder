@@ -64,13 +64,17 @@ public class OrderService {
 
 	public Long addOrder(Order order) {
 
+		System.out.println("frans: " + order.getShipDate());
+		if (order.getShipDate() == null) {
+			order.setShipDate(order.getOrderDate());
+		}
 		orderRepository.save(order);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			Calendar c = Calendar.getInstance();
 			System.out.println();
-			System.out.print("[WebOrder-POST-Order]"
+			System.out.print("[WebOrder-POST-addOrder]"
 					+ c.get(Calendar.YEAR)
 					+ "/"
 					+ (c.get(Calendar.MONTH) + 1)
@@ -122,13 +126,17 @@ public class OrderService {
 
 	public Long updateOrder(Order order) {
 
+		System.out.println("frans: " + order.getShipDate());
+		if (order.getShipDate() == null) {
+			order.setShipDate(order.getOrderDate());
+		}
 		orderRepository.save(order);
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			Calendar c = Calendar.getInstance();
 			System.out.println();
-			System.out.print("[WebOrder-POST-Order]"
+			System.out.print("[WebOrder-POST-updateOrder]"
 					+ c.get(Calendar.YEAR)
 					+ "/"
 					+ (c.get(Calendar.MONTH) + 1)

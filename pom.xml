@@ -5,7 +5,7 @@
 
 	<groupId>com.focus.focus-weborder</groupId>
 	<artifactId>focus-weborder</artifactId>
-	<version>2.0.5</version>
+	<version>2.0.8</version>
 	<packaging>war</packaging>
 
 	<name>focus-weborder</name>
