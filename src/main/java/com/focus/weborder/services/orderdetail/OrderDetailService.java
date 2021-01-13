@@ -1,15 +1,25 @@
 package com.focus.weborder.services.orderdetail;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class OrderDetailService {
 
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
+	
+	@Value("${external.orderdetail.urlfdn}")
+	private String urlfdn;
+	@Value("${external.orderdetail.urlfdi}")
+	private String urlfdi;
+
 	
 	public List<OrderDetail> getAllOrderDetails() {
 		List<OrderDetail> orderDetails = 
@@ -21,8 +31,34 @@ public class OrderDetailService {
 		return orderDetailRepository.findOne(orderDetailId);
 	}
 	
-	public List<OrderDetail> getByOrderid(Long orderId) {
-		return orderDetailRepository.getByOrderid(orderId);
+	private List<OrderStatusEbs> getOrderStatus (String company, String orderId) {
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "";
+		if (company.equals("FDI")) url = urlfdi + "?orderid=" + orderId;
+		else url=urlfdn + "?orderid=" + orderId;
+
+		OrderStatusEbs[] dtls = restTemplate.getForObject(url, OrderStatusEbs[].class);
+		return Arrays.asList(dtls);
+	}
+	
+	public List<OrderDetailDto> getByOrderid(String company, String orderId) {
+		Long oid = Long.parseLong(orderId);
+		List<OrderDetail> orderDetails = orderDetailRepository.getByOrderid(oid);
+		
+		List<OrderStatusEbs> ordersStatus = getOrderStatus(company, orderId);
+
+		List<OrderDetailDto> orderDetailList = new ArrayList<>();
+		for (OrderDetail od : orderDetails) {
+			OrderDetailDto detailDto = new OrderDetailDto (od);
+			for (OrderStatusEbs ordEbs : ordersStatus)  {
+				if (ordEbs.getOrderDetailId().equals(od.getOrderDetailId().toString())) {
+					detailDto.add(ordEbs);
+				}
+			}
+			orderDetailList.add(detailDto);
+		}
+		
+		return orderDetailList;
 	}
 	
 	public OrderDetail getByOrderidProductcode(

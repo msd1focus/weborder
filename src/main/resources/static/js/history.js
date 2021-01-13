@@ -113,7 +113,8 @@ function showdetail(obj) {
 
 			for (var i = 0; i < objitems.length; i++) {
 				tab.insertRow(i).outerHTML = 
-						'<tr><td>'
+						'<tr>'
+						+ '<td>'
 						+ objitems[i].productCode 
 						+ '</td><td>'
 						+ objitems[i].productDesc 
@@ -125,6 +126,28 @@ function showdetail(obj) {
 						+ objitems[i].jumlah 
 						+ '</td><td style="text-align:right">' 
 						+ nf.format(objitems[i].totalPrice) 
+						+ '</td><td>'
+						+ objitems[i].nomorCo
+						+ '</td><td>'
+						+ objitems[i].tanggalCo
+						+ '</td><td style="text-align:right">'
+						+ nf.format(objitems[i].qtyCo)
+						+ '</td><td>'
+						+ objitems[i].orderStatus
+						+ '</td><td>'
+						+ objitems[i].nomorSo
+						+ '</td><td>'
+						+ objitems[i].tanggalSo
+						+ '</td><td>'
+						+ objitems[i].orderDetailStatus
+						+ '</td><td style="text-align:right">'
+						+ nf.format(objitems[i].qtySo)
+						+ '</td><td>'
+						+ objitems[i].nomorDo
+						+ '</td><td>'
+						+ objitems[i].tanggalDo
+						+ '</td><td style="text-align:right">'
+						+ nf.format(objitems[i].qtyDo)
 						+ '</td></tr>';
 			}
 		}

@@ -20,6 +20,56 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+/* Modal Body */
+.modal-body {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 10px;
+    border: 2px solid #888;
+    width: 95%;
+    height: 500px;
+    overflow-x: auto;
+    display: block;
+    /* grid-template-columns: 250px auto; --am*/ 
+    grid-template-rows: 40px auto;
+    grid-gap: 5px;
+}
+
+.tpoinfo {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#poinfo td, #poinfo th{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+#rincian td, #rincian th{
+    overflow-x: auto;
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+#rincian tr:nth-child(even) {background-color: #f2f2f2;}
+
+#rincian tr:hover {background-color: #ddd;}
+
+#rincian th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: rgb(49, 49, 49);
+    color: white;
+}
+
+.trincian {
+    text-align:bottom;
+    width:100%; 
+    border-spacing: 5px;
+}
+
 /* Modal Content */
 .modal-content {
     background-color: #fefefe;

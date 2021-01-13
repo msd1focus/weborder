@@ -3,11 +3,15 @@ package com.focus.weborder.services.orderdetail;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.focus.weborder.security.service.UserService;
 
 @RestController
 @RequestMapping("/rest")
@@ -15,6 +19,8 @@ public class OrderDetailController {
 
 	@Autowired
 	private OrderDetailService orderDetailService;
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping("/orderdetails")
 	public List<OrderDetail> getAllOrderDetails() {
@@ -22,8 +28,12 @@ public class OrderDetailController {
 	}
 	
 	@RequestMapping("/orderdetail")
-	public List<OrderDetail> getOrderDetail(@RequestParam Long orderid){
-		return orderDetailService.getByOrderid(orderid);
+	public List<OrderDetailDto> getOrderDetail(@RequestParam String orderid){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		String company = userService.findUserByUsername(auth.getName()).getCompany();
+
+		return orderDetailService.getByOrderid(company, orderid);
 	}
 	
 	@RequestMapping("/orderdetail/productcode")

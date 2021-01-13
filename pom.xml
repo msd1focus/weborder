@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.focus.focus-weborder</groupId>
-	<artifactId>focus-weborder</artifactId>
+	<artifactId>weborder</artifactId>
 	<version>2.0.8</version>
 	<packaging>war</packaging>
 
-	<name>focus-weborder</name>
+	<name>weborder</name>
 	<description>Web Order for PT Focus Distribusi Indonesia</description>
 
 	<parent>

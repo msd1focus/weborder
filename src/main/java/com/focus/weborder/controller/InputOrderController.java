@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.focus.weborder.external.creditlimit.CreditLimitService;
+import com.focus.weborder.ebs.creditlimit.CreditLimitService;
 import com.focus.weborder.security.model.User;
 import com.focus.weborder.security.service.UserService;
 import com.focus.weborder.services.custmobil.CustMobil;

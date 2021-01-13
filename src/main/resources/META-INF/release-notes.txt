@@ -231,3 +231,9 @@ Version 1.28.3 (Thursday, 26 April 2018 by Amin Mutohar)
  - Bug Fixing
  	1. Delete last order group when order is empty
  	2. Order date must be not null and fill with current date
+
+Version 2.0.8 (12 Jan 2021 by Frans Mazhar)
+	
+- Change Application
+	1. Modify history report with detail process status from EBS
+	
