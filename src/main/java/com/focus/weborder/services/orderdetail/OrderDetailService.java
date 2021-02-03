@@ -36,7 +36,7 @@ public class OrderDetailService {
 		String url = "";
 		if (company.equals("FDI")) url = urlfdi + "?orderid=" + orderId;
 		else url=urlfdn + "?orderid=" + orderId;
-
+		
 		OrderStatusEbs[] dtls = restTemplate.getForObject(url, OrderStatusEbs[].class);
 		return Arrays.asList(dtls);
 	}

@@ -1,7 +1,5 @@
 package com.focus.weborder.services.orderdetail;
 
-import java.util.Date;
-
 public class OrderDetailDto {
 
 	private Long orderDetailId;
@@ -51,10 +49,15 @@ public class OrderDetailDto {
 		this.nomorCo = orderEbs.getCoNo();
 		this.tanggalCo = orderEbs.getCoTgl();
 		this.qtyCo = orderEbs.getCoQty();
-		this.orderStatus = orderEbs.getOrderStatus();
+
+		if (null==orderEbs.getSoStatus())
+			this.orderStatus = orderEbs.getCoStatus();
+		else
+			this.orderStatus = orderEbs.getSoStatus();
+			
 		this.nomorSo = orderEbs.getSoNo();
 		this.tanggalSo = orderEbs.getSoTgl();
-		this.orderDetailStatus = orderEbs.getOrderDetailStatus();
+		this.orderDetailStatus = orderEbs.getSoDetailStatus();
 		this.qtySo = orderEbs.getSoQty();
 		this.nomorDo = orderEbs.getDoNo();
 		this.tanggalDo = orderEbs.getDoTgl();

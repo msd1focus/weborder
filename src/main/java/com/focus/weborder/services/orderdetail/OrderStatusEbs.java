@@ -1,7 +1,5 @@
 package com.focus.weborder.services.orderdetail;
 
-import java.util.Date;
-
 public class OrderStatusEbs {
 
 	private String orderDetailId;
@@ -17,14 +15,14 @@ public class OrderStatusEbs {
 	private Long coNo;
 	private String coTgl;
 	private Long coQty;
+	private String coStatus;
 
-	private String orderStatus;
-	
 	private Long soNo;
 	private String soTgl;
 	private Long soQty;
+	private String soStatus;
 	
-	private String orderDetailStatus;
+	private String soDetailStatus;
 	
 	private String doNo;
 	private String doTgl;
@@ -72,6 +70,12 @@ public class OrderStatusEbs {
 	public void setProductCode(String productCode) {
 		this.productCode = productCode;
 	}
+	public String getCoStatus() {
+		return coStatus;
+	}
+	public void setCoStatus(String coStatus) {
+		this.coStatus = coStatus;
+	}
 	public Long getCoNo() {
 		return coNo;
 	}
@@ -90,12 +94,14 @@ public class OrderStatusEbs {
 	public void setCoQty(Long coQty) {
 		this.coQty = coQty;
 	}
-	public String getOrderStatus() {
-		return orderStatus;
+
+	public String getSoStatus() {
+		return soStatus;
 	}
-	public void setOrderStatus(String orderStatus) {
-		this.orderStatus = orderStatus;
+	public void setSoStatus(String soStatus) {
+		this.soStatus = soStatus;
 	}
+	
 	public Long getSoNo() {
 		return soNo;
 	}
@@ -114,11 +120,11 @@ public class OrderStatusEbs {
 	public void setSoQty(Long soQty) {
 		this.soQty = soQty;
 	}
-	public String getOrderDetailStatus() {
-		return orderDetailStatus;
+	public String getSoDetailStatus() {
+		return soDetailStatus;
 	}
-	public void setOrderDetailStatus(String orderDetailStatus) {
-		this.orderDetailStatus = orderDetailStatus;
+	public void setSoDetailStatus(String soDetailStatus) {
+		this.soDetailStatus = soDetailStatus;
 	}
 	public String getDoNo() {
 		return doNo;
