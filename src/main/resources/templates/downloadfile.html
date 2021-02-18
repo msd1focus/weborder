@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head> 
+    <title>Web Order - Focus Distribusi Indonesia</title>
+    <div th:replace="fragments/header :: header-css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </meta>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/3.3.7/css/bootstrap.min.css} "/>
+    <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>
+
+    <script th:inline="javascript"
+		src="../static/js/downloadfile.js"
+		th:src="@{js/downloadfile.js}">
+	</script>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container my-5">
+    <h3> Download FIle</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-10">
+                 <div class="row">
+                     <div class="form-group col-md-8">
+                         <label for="name" class="col-form-label">Jenis Report</label> 
+                          <select class="form-control" id="jenisReport" name="jenisReport">
+					        <option value=''>Select Jenis Report</option>
+					        <option th:each="data : ${parameterList}"
+					                th:value="${data.id}"
+					                th:text="${data.nama}"></option>
+					   	  </select>
+					   	  <div id="alertJenisReport" style="display: none;">
+	                        <div class="alert alert-danger">
+	                            Pilih Jenis Report !
+	                        </div>
+	                     </div>
+                     </div>
+                     
+                     <div class="form-group col-md-8">
+                         <label for="name" class="col-form-label">Periode</label> 
+                          <select class="form-control" id="periode" name="periode">
+					        	<option value="">Select Periode</option>
+					   	  </select>
+					   	  <div id="alertPeriode" style="display: none;">
+	                        <div class="alert alert-danger">
+	                            Pilih periode !
+	                        </div>
+	                     </div>
+                     </div>
+                     
+                 </div>
+              	 <div class="row">
+					
+					<div class="form-group col-md-8">
+						 
+						  <input type="hidden" id="custCode" name="custCode" th:value="${custName}" class="form-control"/>
+						  
+						  <button id="buttonDownload" class="btn btn-primary" type="button" >Download File</button>
+                          
+                    </div>
+                    
+                       <div class="form-group col-md-8"></div>
+             		 
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+
+</html>
