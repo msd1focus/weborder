@@ -26,7 +26,7 @@
 	              	<div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Nama</label>
 	                     <input type="hidden" class="form-control" name="id"  id="id" th:field="*{id}"/>
-	                     <input type="text" class="form-control" name="nama"  id="nama" th:field="*{nama}"/>
+	                     <input type="text" placeholder="Contoh Aging" class="form-control" name="nama"  id="nama" th:field="*{nama}"/>
 	                     
 					   	 <div id="alertNama" style="display: none;">
 	                        <div class="alert alert-danger">
@@ -37,7 +37,7 @@
 	               
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Prefix</label> 
-	                     <input type="text" class="form-control" name="prefix"  id="prefix" th:field="*{prefix}"/>
+	                     <input type="text" placeholder="Contoh AR" class="form-control" name="prefix"  id="prefix" th:field="*{prefix}"/>
 	                     
 					   	 <div id="alertFrefixNameFile" style="display: none;">
 	                        <div class="alert alert-danger">
@@ -71,18 +71,24 @@
 	                 
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Path</label> 
-	                     <input type="text" class="form-control" name="path"  id="path" th:field="*{path}"/>
+	                     <input type="text" placeholder="Contoh /opt/upload/AGING/" class="form-control" name="path"  id="path" th:field="*{path}"/>
 	                     
-					   	 <div id="alertPath" style="display: none;">
+					   	  <div id="alertPathNull" style="display: none;">
 	                        <div class="alert alert-danger">
 	                           Path Harus Di isi !
+	                        </div>
+	                 	</div>
+	                 	
+	                 	<div id="alertPath" style="display: none;">
+	                        <div class="alert alert-danger">
+	                           Path Harus di Akhiri dengan '/' !;
 	                        </div>
 	                 	</div>
 	               </div>
 	               
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Last Show</label> 
-	                     <input type="text" class="form-control" name="lastShow"  id="lastShow" th:field="*{lastShow}"/>
+	                     <input type="text" placeholder="Contoh 5 "  class="form-control" name="lastShow"  id="lastShow" th:field="*{lastShow}"/>
 	                     
 					   	 <div id="alertLastShow" style="display: none;">
 	                        <div class="alert alert-danger">
@@ -107,13 +113,18 @@
 	               
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">EXT</label> 
-	                     <input type="text" class="form-control" name="jenisFile"  id="jenisFile" th:field="*{jenisFile}"/>
+	                     <input type="text"  placeholder="Contoh .pdf " class="form-control" name="jenisFile"  id="jenisFile" th:field="*{jenisFile}"/>
 	                     
+					   	 <div id="alertJenisFileNull" style="display: none;">
+	                        <div class="alert alert-danger">
+	                          EXT Harus Di isi ! 
+	                        </div>
+	                 	 </div>
 					   	 <div id="alertJenisFile" style="display: none;">
 	                        <div class="alert alert-danger">
-	                          EXT Harus Di isi !
+	                          EXT tidak sesuai !, EXT harus di isi sesuai contoh .pdf !
 	                        </div>
-	                 	</div>
+	                 	 </div>
 	               </div>
 	               
 	               <div class="form-group col-md-8">
@@ -128,62 +139,117 @@
 <div th:replace="fragments/footer :: footer"/>
 
 <script th:inline="javascript">
-	
+
+jQuery(function ($) {
+
+	$("#lastShow").on("keyup", function () {
+        var lastShow = $(this).val();
+        lastShow = lastShow.replace(/[^0-9.]/g, "");
+        lastShow = lastShow.replace(/\./g, "");
+        $("#lastShow").val(lastShow);
+    });
+    
+    $("#jenisFile").on("keyup", function () {
+        var jenisFile = $(this).val();
+        jenisFile = jenisFile.replace(/[^0-9a-zA-Z.]/g, "")
+        $("#jenisFile").val(jenisFile);
+    });
+    
+    $("#path").on("keyup", function () {
+        var path = $(this).val();
+        path = path.replace(/[^0-9a-zA-Z/]/g, "")
+        $("#path").val(path);
+    });
+
+});
+
 	function validasi(){
 		
-		var status = true;
+		var statusAll = 0;
 		
 		if($('#nama').val() == '' ){
 			 $("#alertNama").show();
-			 status = false;
+			 		 
 		}else{
 			 $("#alertNama").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#prefix').val() == '' ){
-			 $("#alertFrefixNameFile").show();
-			status = false;
+			 $("#alertPrefix").show();
 		}else{
-			 $("#alertFrefixNameFile").hide();
+			 $("#alertPrefix").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#jenisPeriode').val() == 'A' ){
 			 $("#alertJenisPeriode").show();
-			status = false;
+			 
 		}else{
 			 $("#alertJenisPeriode").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#path').val() == '' ){
-			 $("#alertPath").show();
-			status = false;
-		}else{
+			 $("#alertPathNull").show();
 			 $("#alertPath").hide();
+		}else{
+		
+			 var path = $('#path').val();
+		     var pethEnd = path.slice(-1);
+			
+			 	if(pethEnd == '/'){
+			 		$("#alertPathNull").hide();
+				    $("#alertPath").hide();
+				    statusAll += 1;
+			 		
+				}else{
+				    $("#alertPath").show();
+			 		$("#alertPathNull").hide();
+				}
 		}
+		
 		
 		if($('#lastShow').val() == '' ){
 			 $("#alertLastShow").show();
-			status = false;
 		}else{
 			 $("#alertLastShow").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#incCurrent').val() == 'A' ){
 			 $("#alertIncCurrent").show();
-			status = false;
+			
 		}else{
 			 $("#alertIncCurrent").hide();
+			  statusAll += 1;
 		}
 		
 		if($('#jenisFile').val() == '' ){
-			 $("#alertJenisFile").show();
-			status = false;
-		}else{
+			 $("#alertJenisFileNull").show();
 			 $("#alertJenisFile").hide();
+		}else{
+		
+		     var jenisFile = $('#jenisFile').val();
+		     jenisFile = jenisFile.trim();
+		     var status = (/[.]/.exec(jenisFile)) ? /[^.]+$/.exec(jenisFile) : undefined;
+             
+			 if(status == null){
+				 $("#alertJenisFile").show();
+				 $("#alertJenisFileNull").hide();
+			 }else{
+			 	 statusAll += 1;
+			 	  $("#alertJenisFileNull").hide();
+				 $("#alertJenisFile").hide();
+			 } 
 		}
 		
-		return status;
-		
+		if(statusAll == 7){
+			return true;
+		}else{
+			return false;
+		}
+	
 	}
 	
 	function simpan(){

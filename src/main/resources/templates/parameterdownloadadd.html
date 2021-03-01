@@ -22,7 +22,7 @@
               	<form id="AddForm" name="AddForm" method="post">
 	              	<div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Nama</label> 
-	                     <input type="text" class="form-control" name="nama"  id="nama"/>
+	                     <input type="text" placeholder="Contoh Aging" class="form-control" name="nama"  id="nama"/>
 	                     
 					   	 <div id="alertNama" style="display: none;">
 	                        <div class="alert alert-danger">
@@ -33,7 +33,7 @@
 	               
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Prefix</label> 
-	                     <input type="text" class="form-control" name="prefix"  id="prefix"/>
+	                     <input type="text" placeholder="Contoh AR" class="form-control" name="prefix"  id="prefix"/>
 	                     
 					   	 <div id="alertPrefix" style="display: none;">
 	                        <div class="alert alert-danger">
@@ -57,7 +57,7 @@
 					        <option value="6">6-Bulanan</option>
 					        <option value="1">Tahunan</option>
 					   	  </select>
-	                     
+	                      <label></label>
 					   	 <div id="alertJenisPeriode" style="display: none;">
 	                        <div class="alert alert-danger">
 	                           JenisPeriode Harus Di Pilih !
@@ -67,19 +67,25 @@
 	                 
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Path</label> 
-	                     <input type="text" class="form-control" name="path"  id="path"/>
+	                     <input type="text" placeholder="Contoh /opt/upload/AGING/" class="form-control" name="path"  id="path"/>
 	                     
-					   	 <div id="alertPath" style="display: none;">
+					   	 <div id="alertPathNull" style="display: none;">
 	                        <div class="alert alert-danger">
 	                           Path Harus Di isi !
+	                        </div>
+	                 	</div>
+	                 	
+	                 	<div id="alertPath" style="display: none;">
+	                        <div class="alert alert-danger">
+	                           Path Harus di Akhiri dengan '/' !;
 	                        </div>
 	                 	</div>
 	               </div>
 	               
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">Last Show</label> 
-	                     <input type="text" class="form-control" name="lastShow"  id="lastShow"/>
-	                     
+	                     <input type="text" placeholder="Contoh 5 " class="form-control" name="lastShow"  id="lastShow"/>
+	                     <i>Last Show Harus Di isi Angka </i>
 					   	 <div id="alertLastShow" style="display: none;">
 	                        <div class="alert alert-danger">
 	                           Last Show Harus Di isi !
@@ -104,13 +110,18 @@
 	               
 	               <div class="form-group col-md-8">
 	                     <label for="name" class="col-form-label">EXT</label> 
-	                     <input type="text" class="form-control" name="jenisFile"  id="jenisFile"/>
+	                     <input type="text" class="form-control"  placeholder="Contoh .pdf " name="jenisFile"  id="jenisFile" value=".PDF"/>
 	                     
+	                     <div id="alertJenisFileNull" style="display: none;">
+	                        <div class="alert alert-danger">
+	                          EXT Harus Di isi ! 
+	                        </div>
+	                 	 </div>
 					   	 <div id="alertJenisFile" style="display: none;">
 	                        <div class="alert alert-danger">
-	                          EXT Harus Di isi !
+	                          EXT tidak sesuai !, EXT harus di isi sesuai contoh .pdf !
 	                        </div>
-	                 	</div>
+	                 	 </div>
 	               </div>
 	               
 	               <div class="form-group col-md-8">
@@ -126,62 +137,116 @@
 
 
 <script th:inline="javascript">
+jQuery(function ($) {
+
+	$("#lastShow").on("keyup", function () {
+        var lastShow = $(this).val();
+        lastShow = lastShow.replace(/[^0-9.]/g, "");
+        lastShow = lastShow.replace(/\./g, "");
+        $("#lastShow").val(lastShow);
+    });
+    
+    $("#jenisFile").on("keyup", function () {
+        var jenisFile = $(this).val();
+        jenisFile = jenisFile.replace(/[^0-9a-zA-Z.]/g, "")
+        $("#jenisFile").val(jenisFile);
+    });
+    
+    $("#path").on("keyup", function () {
+        var path = $(this).val();
+        path = path.replace(/[^0-9a-zA-Z/]/g, "")
+        $("#path").val(path);
+    });
+
+});
 	
 	function validasi(){
 		
-		var status = true;
+		var statusAll = 0;
 		
 		if($('#nama').val() == '' ){
 			 $("#alertNama").show();
-			 status = false;
+			 		 
 		}else{
 			 $("#alertNama").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#prefix').val() == '' ){
 			 $("#alertPrefix").show();
-			status = false;
 		}else{
 			 $("#alertPrefix").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#jenisPeriode').val() == 'A' ){
 			 $("#alertJenisPeriode").show();
-			status = false;
+			 
 		}else{
 			 $("#alertJenisPeriode").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#path').val() == '' ){
-			 $("#alertPath").show();
-			status = false;
-		}else{
+			 $("#alertPathNull").show();
 			 $("#alertPath").hide();
+		}else{
+		
+			 var path = $('#path').val();
+		     var pethEnd = path.slice(-1);
+			
+			 	if(pethEnd == '/'){
+			 		$("#alertPathNull").hide();
+				    $("#alertPath").hide();
+				    statusAll += 1;
+			 		
+				}else{
+				    $("#alertPath").show();
+			 		$("#alertPathNull").hide();
+				}
 		}
+		
 		
 		if($('#lastShow').val() == '' ){
 			 $("#alertLastShow").show();
-			status = false;
 		}else{
 			 $("#alertLastShow").hide();
+			 statusAll += 1;
 		}
 		
 		if($('#incCurrent').val() == 'A' ){
 			 $("#alertIncCurrent").show();
-			status = false;
+			
 		}else{
 			 $("#alertIncCurrent").hide();
+			  statusAll += 1;
 		}
 		
 		if($('#jenisFile').val() == '' ){
-			 $("#alertJenisFile").show();
-			status = false;
-		}else{
+			 $("#alertJenisFileNull").show();
 			 $("#alertJenisFile").hide();
+		}else{
+		
+		     var jenisFile = $('#jenisFile').val();
+		     jenisFile = jenisFile.trim();
+		     var status = (/[.]/.exec(jenisFile)) ? /[^.]+$/.exec(jenisFile) : undefined;
+             
+			 if(status == null){
+				 $("#alertJenisFile").show();
+				 $("#alertJenisFileNull").hide();
+			 }else{
+			 	 statusAll += 1;
+			 	  $("#alertJenisFileNull").hide();
+				 $("#alertJenisFile").hide();
+			 } 
 		}
 		
-		return status;
-		
+		if(statusAll == 7){
+			return true;
+		}else{
+			return false;
+		}
+	
 	}
 	
 	function simpan(){

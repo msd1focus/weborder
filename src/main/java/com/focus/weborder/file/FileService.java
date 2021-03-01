@@ -25,7 +25,7 @@ public class FileService {
     	
     	String  uploadDir = param.getPath();
     	
-    	Path path = Paths.get(uploadDir + "/"+fileName);
+    	Path path = Paths.get(uploadDir+fileName);
     	Resource resource = null;
     	
 		resource = new UrlResource(path.toUri());
