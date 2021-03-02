@@ -53,15 +53,22 @@
                  </div>
               	 <div class="row">
 					
-					<div class="form-group col-md-8">
+					<div class="form-group col-md-2">
 						 
 						  <input type="hidden" id="custCode" name="custCode" th:value="${custName}" class="form-control"/>
-						  
 						  <button id="buttonDownload" class="btn btn-primary" type="button" >Download File</button>
-                          
+                         	
                     </div>
-                    
-                       <div class="form-group col-md-8"></div>
+               		
+                    <div class="form-group col-md-2">
+                    	 <div id="loading">
+                    	 	Loading ..
+						    <img src="../static/images/loading.gif"
+						    	th:src="@{images/loading.gif}"
+						    	width="25" height="25"/>
+							    			
+					     </div>
+                    </div>
              		 
                  </div>
             </div>

@@ -2,7 +2,7 @@ var jenisPeriode = '';
 var parameter = {};
 $(document).ready(function() {
   
-   
+    $("#loading").hide();
     $('#jenisReport').prop('selectedIndex',0);
     $('#periode').prop('selectedIndex',0);
     
@@ -124,6 +124,9 @@ jQuery(function ($) {
 			data["fileName"] = fileName;
 			
 			//proses Download
+			
+			$("#loading").show();
+			$('#buttonDownload').prop('disabled', true);
 			$.ajax({		
 				  type: "GET",
 				  url: "/weborder/downloadFile",
@@ -132,6 +135,9 @@ jQuery(function ($) {
 	                 responseType: 'blob'
 	              },
 		       	  success: function (data) {
+					    $("#loading").hide();
+						$('#buttonDownload').prop('disabled', false);
+						
 			            var a = document.createElement('a');
 			            var url = window.URL.createObjectURL(data);
 			            a.href = url;
@@ -142,6 +148,9 @@ jQuery(function ($) {
 			            window.URL.revokeObjectURL(url);
 			      },
 				  error: function( xhr, textStatus, errorThrown ) {
+						$("#loading").hide();
+						$('#buttonDownload').prop('disabled', false);
+						
 			            alert("File "+ fileName+ " Tidak Ditemukan !");
 			      }
 		    });
