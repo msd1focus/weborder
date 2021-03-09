@@ -68,8 +68,9 @@ public class FileController {
 		if (auth != null) {
 			user = userService.findUserByUsername(auth.getName());
 		}
-        model.addAttribute("parameterList", parameterDownloadService.getAll());
-        model.addAttribute("custName", user.getName());
+        model.addAttribute("parameterList", parameterDownloadService.getListByCompany(user.getCompany()));
+        model.addAttribute("custName", user.getCompany()+user.getName());
+        
         return "downloadfile";
     }
 	
