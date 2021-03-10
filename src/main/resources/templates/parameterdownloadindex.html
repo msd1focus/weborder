@@ -34,7 +34,6 @@
 		                                <th width="20%">Path</th>
 		                                <th width="5%">Last Show</th>
 		                                <th width="5%">Inc Current</th>
-		                                <th width="5%">Company</th>
 		                                <th width="10%">Ext</th>
 		                                <th width="10%">Action</th>
 		                            </tr>
@@ -60,7 +59,6 @@
 		                                <td th:text="${paramDownload.path}"></td>
 		                                <td th:text="${paramDownload.lastShow}"></td>
 		                                <td th:text="${paramDownload.incCurrent}"></td>
-		                                <td th:text="${paramDownload.company}"></td>
 		                                <td th:text="${paramDownload.jenisFile}"></td>
 		                                <td>
 		                                	<a th:href="@{/parameterDownloadEdit/{id}(id=${paramDownload.id})}" class="btn btn-primary"><i class="fas fa-edit sm-2"></i></a>

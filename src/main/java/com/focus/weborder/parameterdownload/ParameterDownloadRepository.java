@@ -17,7 +17,4 @@ public interface ParameterDownloadRepository extends JpaRepository<ParameterDown
     @Query("SELECT p FROM ParameterDownload p ")
     List<ParameterDownload> getAll();
     
-    @Query("SELECT p FROM ParameterDownload p where p.company = :company ")
-    List<ParameterDownload> getListByCompany(@Param("company") String company);
-    
 }

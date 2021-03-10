@@ -41,9 +41,6 @@ public class ParameterDownload {
 	@Column(name = "INC_CURRENT", length = 10)
 	private String incCurrent;
 	
-	@Column(name = "COMPANY", length = 10)
-	private String company;
-	
 	@Column(name = "JENIS_FILE", length = 20)
 	private String jenisFile;
 
@@ -109,14 +106,6 @@ public class ParameterDownload {
 
 	public void setIncCurrent(String incCurrent) {
 		this.incCurrent = incCurrent;
-	}
-	
-	public String getCompany() {
-		return company;
-	}
-
-	public void setCompany(String company) {
-		this.company = company;
 	}
 
 	public String getJenisFile() {

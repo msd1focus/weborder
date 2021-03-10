@@ -17,11 +17,6 @@ public class ParameterDownloadService {
 		return downloadRepository.getAll();
 	}
 	
-	public List<ParameterDownload> getListByCompany (String company){
-		
-		return downloadRepository.getListByCompany(company);
-	}
-	
 	public ParameterDownload getById (Integer id){
 		
 		return downloadRepository.getById(id);
