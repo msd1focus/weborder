@@ -1,5 +1,7 @@
 "use strict";
 
+var list = [];
+
 function onload(){
 	var conftab = document.getElementById("conftab");
 	var company = document.getElementById("company").value.toLowerCase();
@@ -44,24 +46,32 @@ function onload(){
 			
 			if(objitems.length>0){
 				
+				list = objitems;
+				
 				for (var i = 0; i < objitems.length; i++) {
 					tabNonWO.insertRow(i).innerHTML = 
 							'<tr>'
-							+ '<td>Non Web Order</td>'
-							+ '<td style="text-align:center;">-</td>'
-							+ '<td style="text-align:center;">-</td>'
+							+ '<td>'
+							+ objitems[i].custPoNo
+							+'</td>'
 							+ '<td style="text-align:center;">'
-							+ '<input id="customerTrxId" type="hidden" value="'
-							+ objitems[i].customerTrxId
-							+ '"/>'
-							+ '-</td>'
+							+ objitems[i].tglPo
+							+'</td>'
 							+ '<td style="text-align:center;">'
-							+ '<input type="button" value="'
-							+ objitems[i].trxNumber
-							+ '" style="width:10em; color:blue; border:none; background-color:white;"'
-							+ 'onclick="showinvoicenonwo(this)"/>'
+							+ nf.format(objitems[i].total) 
+							+'</td>'
+							+ '<td style="text-align:center;">'
+								+ '<input type="button" '
+								+' value="Click Detail PO" '
+								+ ' style="width:10em; color:blue; border:none; background-color:white;" '
+								+ ' onclick="showDetailNonWebOrder('+i+')"/>'
+							+'</td>'
+							+ '<td style="text-align:center;" id="inv'+i+'" >'
+								
 							+ '</td>'
 							+ '</tr>';
+							
+							addInvoice(i,objitems[i].invoices);
 				}
 			}else{
 				
@@ -81,11 +91,108 @@ function onload(){
 	xhttp.open(
 			"GET",
 			"/oracle" + company 
-			+ "/rest/invdetailnonwo/custidstartenddate?custid=" + custId 
-			+ "&startdate=" + startInvoiceDate
-			+ "&enddate=" + endInvoiceDate,
+			+ "/rest/ordersummarynonwo?pCustId=" + custId 
+			+ "&pDate1=" + startInvoiceDate
+			+ "&pDate2=" + endInvoiceDate,
 			true);
 	xhttp.send();
+}
+
+function addInvoice(i,invoices) {
+	console.log(i);
+	
+	var invString = "";
+	
+	for (var a = 0; a < invoices.length; a++) {
+		invString += '<input type="button" value="'
+					 + invoices[a]
+					 + '" style="width:10em; color:blue; border:none; background-color:white;"'
+					 + 'onclick="showinvoicenonwo(this)"/>' + '<br/>';
+	}
+	
+	document.getElementById("inv"+i).innerHTML = invString;
+}
+
+function showDetailNonWebOrder(i) {
+	console.log(list[i]);
+	var nf = Intl.NumberFormat();
+	
+	var data = list[i];
+	
+	var custPoNo = data.custPoNo
+	var custId = document.getElementById("custId").value;
+	var company = document.getElementById("company").value.toLowerCase();
+	var tab = document.getElementById("rincianorder");
+	tab.innerHTML = "";
+	
+	document.getElementById("cell_ponumber").innerHTML = data.custPoNo;
+	document.getElementById("cell_podate").innerHTML = data.tglPo;
+
+	document.getElementById("cell_totalorder").innerHTML = nf.format(data.total);
+	
+	
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var objitems;
+
+			objitems = JSON.parse(this.responseText);
+			
+			for (var i = 0; i < objitems.length; i++) {
+				tab.insertRow(i).outerHTML = 
+						'<tr>'
+						+'<td>'
+						+ objitems[i].coNo
+						+ '</td><td>'
+						+ objitems[i].coTgl
+						+ '</td>'
+						+ '<td>'
+						+ objitems[i].productCode 
+						+ '</td><td>'
+						+ objitems[i].productName 
+						+ '</td><td>' 
+						+ objitems[i].unit 
+						+ '</td><td style="text-align:right">' 
+						+ nf.format(objitems[i].unitPrice) 
+						+ '</td><td style="text-align:right">' 
+						+ objitems[i].quantity 
+						+ '</td><td style="text-align:right">' 
+						+ nf.format(objitems[i].total) 
+						+ '</td>'
+						+'<td style="text-align:right">'
+						+ nf.format(objitems[i].coQty)
+						+ '</td><td>'
+						+ objitems[i].soStatus
+						+ '</td><td>'
+						+ objitems[i].soNo
+						+ '</td><td>'
+						+ objitems[i].soTgl
+						+ '</td><td>'
+						+ objitems[i].soDetailStatus
+						+ '</td><td style="text-align:right">'
+						+ nf.format(objitems[i].soQty)
+						+ '</td><td>'
+						+ objitems[i].doNo
+						+ '</td><td>'
+						+ objitems[i].doTgl
+						+ '</td><td style="text-align:right">'
+						+ nf.format(objitems[i].doQty)
+						+ '</td></tr>';
+			}
+		}
+	};
+	
+	/*	setRequestHeader()	*/	
+	xhttp.open(
+			"GET",
+			"/oracle" + company 
+			+ "/rest/orderdetailnonwo?pCustId=" + custId 
+			+ "&noPo=" + custPoNo,
+			true);
+	xhttp.send();
+	
+	document.getElementById("myModal").style.display = "block";
 }
 
 function showdetail(obj) {
@@ -114,6 +221,11 @@ function showdetail(obj) {
 			for (var i = 0; i < objitems.length; i++) {
 				tab.insertRow(i).outerHTML = 
 						'<tr>'
+						+'<td>'
+						+ objitems[i].nomorCo
+						+ '</td><td>'
+						+ objitems[i].tanggalCo
+						+ '</td>'
 						+ '<td>'
 						+ objitems[i].productCode 
 						+ '</td><td>'
@@ -126,10 +238,6 @@ function showdetail(obj) {
 						+ objitems[i].jumlah 
 						+ '</td><td style="text-align:right">' 
 						+ nf.format(objitems[i].totalPrice) 
-						+ '</td><td>'
-						+ objitems[i].nomorCo
-						+ '</td><td>'
-						+ objitems[i].tanggalCo
 						+ '</td><td style="text-align:right">'
 						+ nf.format(objitems[i].qtyCo)
 						+ '</td><td>'
@@ -370,7 +478,6 @@ function showinvoicenonwo(obj){
 	var invoiceNumber = obj.value;
 	var rowobj = obj.parentElement.parentElement;
 	var tab = document.getElementById("detailInvoices");
-	var customerTrxId = rowobj.children[3].children[0].value;
 	
 	tab.innerHTML = "";
 	
@@ -562,7 +669,8 @@ function showinvoicenonwo(obj){
 		}*/
 	};
 /*	setRequestHeader()	*/	
-	xhttp.open("GET", "/oracle" + company + "/rest/invdetail/customertrxid?customertrxid=" + customerTrxId, true);
+	/*xhttp.open("GET", "/oracle" + company + "/rest/invdetail/customertrxid?customertrxid=" + customerTrxId, true);*/
+	xhttp.open("GET", "/oracle" + company + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
 	xhttp.send();
 }
 
