@@ -122,13 +122,13 @@ function showDetailNonWebOrder(i) {
 	var custPoNo = data.custPoNo
 	var custId = document.getElementById("custId").value;
 	var company = document.getElementById("company").value.toLowerCase();
-	var tab = document.getElementById("rincianorder");
+	var tab = document.getElementById("rincianorderNonWo");
 	tab.innerHTML = "";
 	
-	document.getElementById("cell_ponumber").innerHTML = data.custPoNo;
-	document.getElementById("cell_podate").innerHTML = data.tglPo;
+	document.getElementById("cell_ponumber_non_wo").innerHTML = data.custPoNo;
+	document.getElementById("cell_podate_non_wo").innerHTML = data.tglPo;
 
-	document.getElementById("cell_totalorder").innerHTML = nf.format(data.total);
+	document.getElementById("cell_totalorder_non_wo").innerHTML = nf.format(data.total);
 	
 	
 	
@@ -192,7 +192,7 @@ function showDetailNonWebOrder(i) {
 			true);
 	xhttp.send();
 	
-	document.getElementById("myModal").style.display = "block";
+	document.getElementById("myModalNonWo").style.display = "block";
 }
 
 function showdetail(obj) {
@@ -699,4 +699,8 @@ function formatCurrency(obj){
 
 function closeinvoice(){
 	document.getElementById("modalInvoice").style.display = "none";
+}
+
+function closeDivNonWo(){
+	document.getElementById("myModalNonWo").style.display = "none";
 }
