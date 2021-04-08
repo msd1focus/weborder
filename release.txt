@@ -1,0 +1,6 @@
+Release 2.1.0 
+8 April 2021
+
+- Modifikasi layar History
+- Melengkapi table-2 dengan informasi PO untuk non WEBORDER
+- Update juga link modal Detail PO
