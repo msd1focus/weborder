@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 public class OrderDetailService {
@@ -15,10 +20,10 @@ public class OrderDetailService {
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
 	
-	@Value("${external.orderdetail.urlfdn}")
-	private String urlfdn;
-	@Value("${external.orderdetail.urlfdi}")
-	private String urlfdi;
+//	@Value("${external.orderdetail.urlfdn}")
+//	private String urlfdn;
+//	@Value("${external.orderdetail.urlfdi}")
+//	private String urlfdi;
 
 	
 	public List<OrderDetail> getAllOrderDetails() {
@@ -32,10 +37,14 @@ public class OrderDetailService {
 	}
 	
 	private List<OrderStatusEbs> getOrderStatus (String company, String orderId) {
+		
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
+		String url = "http://localhost:8080/ebs-api/rest/orderinfo?orderid=" + orderId;
+
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "";
-		if (company.equals("FDI")) url = urlfdi + "?orderid=" + orderId;
-		else url=urlfdn + "?orderid=" + orderId;
+//		if (company.equals("FDI")) url = urlfdi + "?orderid=" + orderId;
+//		else url=urlfdn + "?orderid=" + orderId;
 		
 		OrderStatusEbs[] dtls = restTemplate.getForObject(url, OrderStatusEbs[].class);
 		return Arrays.asList(dtls);

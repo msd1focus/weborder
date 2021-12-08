@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.focus.weborder.properties.StorageProperties;
@@ -44,7 +45,10 @@ public class CustProdStockService {
 	private List<String> validMonths =
 			Arrays.asList("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
 			"JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
-	
+		
+	@Value("${wo.company.shortname}")
+	private String companyShortName;
+
 	public List<CustProdStock> getAllCustProdStocks() {
 		List<CustProdStock> custProdStocks = 
 				custProdStockRepository.getAll();
@@ -223,9 +227,10 @@ public class CustProdStockService {
 				                	endStock = Double.parseDouble(asCustProdStock[5].trim());
 				                }
 
-				                if(!(company.equals("FDI") 
-				                		|| company.equals("FDN"))) {   
-						            status = "ERROR";
+//				                if(!(company.equals("FDI") 
+//				                		|| company.equals("FDN"))) {   
+			                	if (!(company.equals(companyShortName))) {
+				                	status = "ERROR";
 				                	companyErrors.add(lineNumber);
 				                }
 				                else{

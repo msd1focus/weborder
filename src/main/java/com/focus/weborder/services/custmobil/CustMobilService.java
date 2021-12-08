@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.focus.weborder.properties.StorageProperties;
@@ -39,6 +40,9 @@ public class CustMobilService {
 
 	@Autowired
 	public UploadHistoryService uploadHistoryService;
+	
+	@Value("${wo.company.shortname}")
+	private String companyShortName;
 	
 	public List<CustMobil> getAll(){
 		return (List<CustMobil>) custMobilRepository.findAll();
@@ -123,7 +127,6 @@ public class CustMobilService {
 				        //System.out.println("customers: " + customers.size());
 				        List<ListMobil> listMobils =
 				        		listMobilService.getListMobils();
-				        //System.out.println("listMobils: " + listMobils.size());
 				        
 			        	br = new BufferedReader(new FileReader(csvFile));
 			        	Integer lineNumber = 0;
@@ -136,9 +139,10 @@ public class CustMobilService {
 				                Long custId = Long.parseLong(asCustMobil[2].trim());
 				                Long mobilId = Long.parseLong(asCustMobil[4].trim());
 				                
-				                if(!(company.equals("FDI") 
-				                		|| company.equals("FDN"))) {   
-						            status = "ERROR";
+//				                if(!(company.equals("FDI") 
+//				                		|| company.equals("FDN"))) {   
+				                if (!(company.equals(companyShortName))) {
+				                	status = "ERROR";
 				                	companyErrors.add(lineNumber);
 				                }
 				                else {

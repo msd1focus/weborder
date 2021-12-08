@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.focus.weborder.properties.StorageProperties;
@@ -40,7 +41,10 @@ public class CustProdTargetService {
 
 	@Autowired
 	private UploadHistoryService uploadHistoryService;
-	
+
+	@Value("${wo.company.shortname}")
+	private String companyShortName;
+
 	public List<CustProdTarget> getAllCustProdTargets() {
 		List<CustProdTarget> custProdTargets = 
 				custProdTargetRepository.getAll();
@@ -172,9 +176,10 @@ public class CustProdTargetService {
 				                	targetSales = Double.parseDouble(asCustProdTarget[5].trim());
 				                }
 
-				                if(!(company.equals("FDI") 
-				                		|| company.equals("FDN"))) {   
-						            status = "ERROR";
+//				                if(!(company.equals("FDI") 
+//				                		|| company.equals("FDN"))) {   
+				            	if (!(company.equals(companyShortName))) {
+				                	status = "ERROR";
 				                	companyErrors.add(lineNumber);
 				                }
 				                else{

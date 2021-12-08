@@ -15,7 +15,7 @@ public class CreditLimitProperties {
 		private String urlfdn;
 		private String usernamefdn;
 		private String passwordfdn;
-		private String param1;
+//		private String param1;
 		
 		public String getUrlfdi() {
 			return urlfdi;
@@ -53,12 +53,12 @@ public class CreditLimitProperties {
 		public void setPasswordfdn(String passwordfdn) {
 			this.passwordfdn = passwordfdn;
 		}
-		public String getParam1() {
-			return param1;
-		}
-		public void setParam1(String param1) {
-			this.param1 = param1;
-		}
+//		public String getParam1() {
+//			return param1;
+//		}
+//		public void setParam1(String param1) {
+//			this.param1 = param1;
+//		}
 		
 	}
 

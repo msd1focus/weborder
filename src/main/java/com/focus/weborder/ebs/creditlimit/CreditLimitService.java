@@ -2,9 +2,14 @@ package com.focus.weborder.ebs.creditlimit;
 
 import java.text.DecimalFormat;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.focus.weborder.properties.CreditLimitProperties;
 import com.focus.weborder.types.CreditLimit;
@@ -70,14 +75,18 @@ public class CreditLimitService {
 		RestTemplate restTemplate = new RestTemplate();
 		DecimalFormat df = new DecimalFormat("##,##0.00"); 
 
-		String url = "";
 		CreditLimit creditLimit = new CreditLimit();
 		
-		if(company.equals("FDI")) 
-			url = creditLimitProperties.getCreditlimit().getUrlfdi() + "?custid=" + custId;
-		else 
-			url = creditLimitProperties.getCreditlimit().getUrlfdn() + "?custid=" + custId;
+//		if(company.equals("FDI")) 
+//			url = creditLimitProperties.getCreditlimit().getUrlfdi() + "?custid=" + custId;
+//		else 
+//			url = creditLimitProperties.getCreditlimit().getUrlfdn() + "?custid=" + custId;
 
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
+		String url = "http://localhost:" + servletRequest.getServerPort() + "/ebs-api/rest/creditlimit?custid=" + custId;
+		System.out.println("URL: " + url);
+		
 		CreditLimitEbsDto[] restResponse = restTemplate.getForObject(url, CreditLimitEbsDto[].class);
 
 		creditLimit.setOverallCreditLimitText(

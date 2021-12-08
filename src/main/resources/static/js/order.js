@@ -2,18 +2,13 @@ var firstLoadCMOB = true;
 
 window.onload = function(){
 
-	var logofdn = document.getElementById("logofdn");
+/*	var logofdn = document.getElementById("logofdn");
 	var logofdi = document.getElementById("logofdi");
+*/	
+	var logo = document.getElementById("logo");
 	var company = document.getElementById("company").value;
+	logo.style.display = "block";
 	console.log("company: " + company);
-	if(company=="FDN"){
-		logofdn.style.display = "block";
-		logofdi.style.display = "none";
-	}
-	else if(company=="FDI"){
-		logofdn.style.display = "none";
-		logofdi.style.display = "block";
-	}
 
 	var loadingProduct1 = document.getElementById("loadingProduct1");
 	var loadingProduct2 = document.getElementById("loadingProduct2");

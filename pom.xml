@@ -9,7 +9,7 @@
 	<packaging>war</packaging>
 
 	<name>weborder</name>
-	<description>Web Order for PT Focus Distribusi Indonesia</description>
+	<description>Web Order for PT Fokus Retail Indoprima</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -19,7 +19,7 @@
 	</parent>
 
 	<properties>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
@@ -35,10 +35,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-	  <dependency>
-	    <groupId>mysql</groupId>
-	    <artifactId>mysql-connector-java</artifactId>
-	  </dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.27</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

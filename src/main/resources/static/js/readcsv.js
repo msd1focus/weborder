@@ -30,8 +30,8 @@ function chfiletype () {
 function companyIsValid (lineNum, company) {
 	var retvalue = true;
 	switch (company) {
-		case "FDI":
-		case "FDN": break;
+		case "FRI":
+		case "FRN": break;
 		default : retvalue = false;
 	}
 	return (retvalue);
