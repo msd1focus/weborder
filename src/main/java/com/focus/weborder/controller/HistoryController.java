@@ -3,9 +3,10 @@ package com.focus.weborder.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+//import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import com.focus.weborder.services.order.Order;
 import com.focus.weborder.services.order.OrderService;
 import com.focus.weborder.services.ordergrp.OrderGrp;
 import com.focus.weborder.services.ordergrp.OrderGrpService;
-import com.focus.weborder.utility.PropertiesReader;
+//import com.focus.weborder.utility.PropertiesReader;
 
 @Controller
 public class HistoryController {
@@ -40,6 +41,15 @@ public class HistoryController {
 	@Autowired
 	WebOrderProperties webOrderProperties;
 	
+	@Value("${filterDate.start}")
+	private String startDate;//		PropertiesReader pr = new PropertiesReader();
+//	Properties prop = pr.readProperties(woFileDir);
+//	String startDate = prop.getProperty("FilterDate.Start");
+//	String endDate = prop.getProperty("FilterDate.End");
+
+	@Value("${filterDate.end}")
+	private String endDate;
+	
 	@GetMapping("/history")
 	public ModelAndView orderHistory(){
 		
@@ -51,12 +61,12 @@ public class HistoryController {
 		String company = "";
 		Long custId = (long)0;
 		
-		String woFileDir = webOrderProperties.getWeborder();
+//		String woFileDir = webOrderProperties.getWeborder();
 		
-		PropertiesReader pr = new PropertiesReader();
-		Properties prop = pr.readProperties(woFileDir);
-		String startDate = prop.getProperty("FilterDate.Start");
-		String endDate = prop.getProperty("FilterDate.End");
+//		PropertiesReader pr = new PropertiesReader();
+//		Properties prop = pr.readProperties(woFileDir);
+//		String startDate = prop.getProperty("FilterDate.Start");
+//		String endDate = prop.getProperty("FilterDate.End");
 		
 		Date startOrderDate = Date.valueOf(startDate);
 		Date endOrderDate = Date.valueOf(endDate);
@@ -113,7 +123,11 @@ public class HistoryController {
 	}
 	
 	@RequestMapping(value = "/historyall", method = RequestMethod.POST)
-	public ModelAndView orderHistoryAll(
+	public ModelAndView orderHistoryAll(//		PropertiesReader pr = new PropertiesReader();
+//			Properties prop = pr.readProperties(woFileDir);
+//			String startDate = prop.getProperty("FilterDate.Start");
+//			String endDate = prop.getProperty("FilterDate.End");
+
 			@RequestParam(value="companyname", required=false) String companyname,
 			@RequestParam(value="customername", required=false) String customername){
 		
@@ -127,12 +141,12 @@ public class HistoryController {
 		
 		Long custId = (long)0;
 		
-		String woFileDir = webOrderProperties.getWeborder();
-		
-		PropertiesReader pr = new PropertiesReader();
-		Properties prop = pr.readProperties(woFileDir);
-		String startDate = prop.getProperty("FilterDate.Start");
-		String endDate = prop.getProperty("FilterDate.End");
+//		String woFileDir = webOrderProperties.getWeborder();
+//		
+//		PropertiesReader pr = new PropertiesReader();
+//		Properties prop = pr.readProperties(woFileDir);
+//		String startDate = prop.getProperty("FilterDate.Start");
+//		String endDate = prop.getProperty("FilterDate.End");
 		
 		Date startOrderDate = Date.valueOf(startDate);
 		Date endOrderDate = Date.valueOf(endDate);
