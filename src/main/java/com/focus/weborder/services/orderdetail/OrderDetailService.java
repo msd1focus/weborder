@@ -1,5 +1,7 @@
 package com.focus.weborder.services.orderdetail;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestAttributes;
@@ -24,8 +27,10 @@ public class OrderDetailService {
 //	private String urlfdn;
 //	@Value("${external.orderdetail.urlfdi}")
 //	private String urlfdi;
+	@LocalServerPort
+	private int port;
 
-	
+
 	public List<OrderDetail> getAllOrderDetails() {
 		List<OrderDetail> orderDetails = 
 				orderDetailRepository.getAll();
@@ -36,11 +41,14 @@ public class OrderDetailService {
 		return orderDetailRepository.findOne(orderDetailId);
 	}
 	
-	private List<OrderStatusEbs> getOrderStatus (String company, String orderId) {
+	private List<OrderStatusEbs> getOrderStatus (String company, String orderId) throws Exception {
+		
+		String ip = InetAddress.getLocalHost().getHostAddress();
 		
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
-		String url = "http://localhost:8080/ebs-api/rest/orderinfo?orderid=" + orderId;
+//		String url = "http://localhost:8080/ebs-api/rest/orderinfo?orderid=" + orderId;
+		String url = "http://" + ip + ":" + port + "/ebs-api/rest/orderinfo?orderid=" + orderId;
 
 		RestTemplate restTemplate = new RestTemplate();
 //		if (company.equals("FDI")) url = urlfdi + "?orderid=" + orderId;
