@@ -27,9 +27,6 @@ public class OrderDetailService {
 //	private String urlfdn;
 //	@Value("${external.orderdetail.urlfdi}")
 //	private String urlfdi;
-	@LocalServerPort
-	private int port;
-
 
 	public List<OrderDetail> getAllOrderDetails() {
 		List<OrderDetail> orderDetails = 
@@ -41,15 +38,16 @@ public class OrderDetailService {
 		return orderDetailRepository.findOne(orderDetailId);
 	}
 	
-	private List<OrderStatusEbs> getOrderStatus (String company, String orderId) throws Exception {
+	private List<OrderStatusEbs> getOrderStatus (String company, String orderId) {
 		
-		String ip = InetAddress.getLocalHost().getHostAddress();
-		
+	
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         HttpServletRequest servletRequest = ((ServletRequestAttributes) requestAttributes).getRequest();
+        String ip = servletRequest.getLocalAddr();
+        int port = servletRequest.getLocalPort();
 //		String url = "http://localhost:8080/ebs-api/rest/orderinfo?orderid=" + orderId;
-		String url = "http://" + ip + ":" + port + "/ebs-api/rest/orderinfo?orderid=" + orderId;
-
+		String url = "http://" + ip + ":" + Integer.toString(port) + "/ebs-api/rest/orderinfo?orderid=" + orderId;
+		
 		RestTemplate restTemplate = new RestTemplate();
 //		if (company.equals("FDI")) url = urlfdi + "?orderid=" + orderId;
 //		else url=urlfdn + "?orderid=" + orderId;
