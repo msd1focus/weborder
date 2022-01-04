@@ -90,7 +90,7 @@ function onload(){
 /*	setRequestHeader()	*/	
 	xhttp.open(
 			"GET",
-			"/oracle" + company 
+			"/ebs-api" 
 			+ "/rest/ordersummarynonwo?pCustId=" + custId 
 			+ "&pDate1=" + startInvoiceDate
 			+ "&pDate2=" + endInvoiceDate,
@@ -186,7 +186,7 @@ function showDetailNonWebOrder(i) {
 	/*	setRequestHeader()	*/	
 	xhttp.open(
 			"GET",
-			"/oracle" + company 
+			"/ebs-api"
 			+ "/rest/orderdetailnonwo?pCustId=" + custId 
 			+ "&noPo=" + custPoNo,
 			true);
@@ -466,7 +466,7 @@ function showinvoice(obj){
 		}*/
 	};
 /*	setRequestHeader()	*/	
-	xhttp.open("GET", "/oracle" + company + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
+	xhttp.open("GET", "/ebs-api" + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
 	xhttp.send();
 }
 
@@ -670,7 +670,7 @@ function showinvoicenonwo(obj){
 	};
 /*	setRequestHeader()	*/	
 	/*xhttp.open("GET", "/oracle" + company + "/rest/invdetail/customertrxid?customertrxid=" + customerTrxId, true);*/
-	xhttp.open("GET", "/oracle" + company + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
+	xhttp.open("GET", "/ebs-api" + "/rest/invdetail?trxnumber=" +invoiceNumber, true);
 	xhttp.send();
 }
 
